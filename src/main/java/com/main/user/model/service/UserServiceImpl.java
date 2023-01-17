@@ -17,9 +17,11 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
+
+
     @Override
     public User getUser(String userId) throws SQLException {
-        return null;
+        return userRepository.findByUserId(userId);
     }
 
     @Override
@@ -108,7 +110,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User checkMember(String type, String value) throws Exception {
+    public User checkUser(String type, String value) throws Exception {
         User user = null;
         if ("id".equals(type)){
             user = userRepository.findByUserId(value);
@@ -147,8 +149,4 @@ public class UserServiceImpl implements UserService{
         userRepository.save(user);
     }
 
-    @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
-    }
 }

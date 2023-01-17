@@ -262,7 +262,7 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            User result = userService.checkMember(type, value);
+            User result = userService.checkUser(type, value);
             if (result != null) {
                 // 존재하는 값인 경우, 200응답코드와 중복 메시지 반환
                 resultMap.put("message", ALREADY_EXIST);

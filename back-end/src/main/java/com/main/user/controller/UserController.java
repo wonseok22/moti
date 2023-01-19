@@ -1,8 +1,11 @@
 package com.main.user.controller;
 
+import com.main.user.model.dto.MailMessage;
+import com.main.user.model.dto.MailPost;
 import com.main.user.model.dto.UserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.service.JwtService;
+import com.main.user.model.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +35,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private MailService mailService;
     @Autowired
     private JwtService jwtService;
 
@@ -277,6 +281,46 @@ public class UserController {
             logger.error("중복 확인중 에러 발생 : {}", e);
             resultMap.put("message", FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @ApiOperation(value = "이메일본인인증요청", notes = "email을 통해 인증번호 요청해 본인인증", response = Map.class)
+    @PostMapping("/email")
+    public ResponseEntity<?> validateEmail(@RequestBody MailPost mailPost)
+            throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+
+        MailMessage mailMessage = MailMessage.builder()
+                .to(mailPost.getEmail())
+                .subject("[Moti] 이메일 인증을 위한 인증 코드 발송")
+                .build();
+
+        String code = mailService.sendMail(mailMessage, "email");
+        if (code != null) {
+            status = HttpStatus.OK;
+            resultMap.put("message",SUCCESS);
+        } else{
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            resultMap.put("message",FAIL);
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @ApiOperation(value = "이메일본인인증확인", notes = "email을 통해 인증번호 요청해 본인인증", response = Map.class)
+    @GetMapping("/email")
+    public ResponseEntity<?> validateEmailCheck(@RequestParam String code)
+            throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        if(mailService.checkCode(code)){
+            resultMap.put("message",SUCCESS);
+            status = HttpStatus.OK;
+        }
+        else{
+            resultMap.put("message",FAIL);
+            status = HttpStatus.REQUEST_TIMEOUT;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }

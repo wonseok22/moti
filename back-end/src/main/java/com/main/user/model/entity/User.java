@@ -1,10 +1,14 @@
 package com.main.user.model.entity;
 
 
+import com.main.playlist.model.entity.UserPlaylist;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 
 @Entity
@@ -26,6 +30,5 @@ public class User {
     private String salt;
     private int temporary;
     private String joinDate;
-
 
 }

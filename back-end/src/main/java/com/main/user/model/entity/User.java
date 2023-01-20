@@ -1,7 +1,10 @@
 package com.main.user.model.entity;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,6 +29,5 @@ public class User {
     private String salt;
     private int temporary;
     private String joinDate;
-
 
 }

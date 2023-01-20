@@ -324,4 +324,20 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+    @ApiOperation(value = "본인인증 여부 확인", notes = "본인인증이 되었는지 확인", response = Map.class)
+    @GetMapping("/auth")
+    public ResponseEntity<?> checkAuthentication(@RequestParam String email)
+            throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        if(mailService.checkAuthentication(email)){
+            resultMap.put("message",SUCCESS);
+            status = HttpStatus.OK;
+        }
+        else{
+            resultMap.put("message",FAIL);
+            status = HttpStatus.REQUEST_TIMEOUT;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }

@@ -7,4 +7,5 @@ public interface MailService {
     public String createCode();
     public String setContext(String code, String type);
     public boolean checkCode(String code);
+    public boolean checkAuthentication(String email) ;
 }

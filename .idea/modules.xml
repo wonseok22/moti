@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/S08P12A509.iml" filepath="$PROJECT_DIR$/.idea/S08P12A509.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/babysteps.main.iml" filepath="$PROJECT_DIR$/.idea/modules/babysteps.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.babysteps.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.babysteps.main.iml" />
+>>>>>>> 731a2deea62c8fbe510e998d2b932ce84519c38b
     </modules>
   </component>
 </project>

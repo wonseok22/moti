@@ -1,0 +1,19 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://babysteps.c6vpbkzcxdkw.ap-northeast-2.rds.amazonaws.com:3306/moti?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: asdf1234
+  jpa:
+    database: mysql
+    properties:
+      hibernate:
+        use_sql_comments : true
+        show_sql: true #쿼리 출력
+        format_sql: true # 쿼리 출력시 포맷 정렬되도록 설정
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+file:
+  path : C:/Users/SSAFY/ideaProjects/S08P12A509/upload

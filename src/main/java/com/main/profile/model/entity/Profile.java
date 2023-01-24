@@ -1,21 +1,29 @@
 package com.main.profile.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.main.user.model.entity.User;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Profile {
     @Id
-    private int userNo;
+    private Long id;
+    private String userDesc;
+    private int follower;
+    private int following;
+
+    @OneToOne
+    @JoinColumn(name = "profileImageId")
+    private ProfileImage profileImage;
 
 
 }

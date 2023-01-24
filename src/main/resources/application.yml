@@ -15,3 +15,5 @@ spring:
         show_sql: true #쿼리 출력
         format_sql: true # 쿼리 출력시 포맷 정렬되도록 설정
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+file:
+  path : C:/Users/SSAFY/ideaProjects/S08P12A509/upload

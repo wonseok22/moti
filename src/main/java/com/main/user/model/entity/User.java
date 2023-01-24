@@ -1,10 +1,14 @@
 package com.main.user.model.entity;
 
 
+import com.main.profile.model.entity.Profile;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.Name;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 
 @Entity
@@ -12,10 +16,10 @@ import javax.persistence.Id;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User {
 
 
-    private int userNo;
     @Id
     private String userId;
     private String password;
@@ -27,5 +31,8 @@ public class User {
     private int temporary;
     private String joinDate;
 
+    @OneToOne
+    @JoinColumn(name="profile_id")
+    private Profile profile;
 
 }

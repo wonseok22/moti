@@ -43,7 +43,7 @@ public class SwaggerConfig {
                 .globalOperationParameters(globalParamters)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.main.user.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.main.*.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

@@ -57,6 +57,7 @@ public class UserController {
                 // 회원가입 실패한 경우 실패 메시지 반환, 회워 정보 유효 X,  204 응답 코드
             }
         } catch (Exception e) {
+            logger.error("회원가입 실패 : {}",e);
             resultMap.put("message", FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             // 회원가입 중 에러 발생한 경우 실패 메시지 반환, 500 응답 코드
@@ -163,11 +164,13 @@ public class UserController {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         String access_token = request.getHeader("access-token");
         if (access_token == null || "".equals(access_token)){
+            logger.error("need access-token : {}");
             resultMap.put("message", FAIL);
             return new ResponseEntity<Map<String, Object>>(resultMap, status);
         }
         if (jwtService.checkToken(request.getHeader("access-token"))) {
             logger.info("회원 탈퇴: 사용 가능한 access-token");
+            logger.info("삭제하려는 ID : {}", userId);
             try {
                 int result = userService.deleteUser(userId);
                 if (result == 1) {
@@ -186,6 +189,10 @@ public class UserController {
                 resultMap.put("message", FAIL);
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
+        } else {
+            logger.error("access-token 사용 불가능, 재발급 요청");
+            resultMap.put("message", FAIL);
+            status = HttpStatus.UNAUTHORIZED;
         }
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);

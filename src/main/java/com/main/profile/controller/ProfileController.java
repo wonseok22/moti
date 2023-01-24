@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -41,13 +42,13 @@ public class ProfileController {
     @ApiOperation(value = "프로필 수정", notes = "프로필 수정 API", response = Map.class)
     @PutMapping("")
     public ResponseEntity<?> modifyProfile(
-            @RequestBody @ApiParam(value = "수정하려는 프로필 Dto", required = true) ProfileDto profileDto, HttpServletRequest request) {
+              @ApiParam(value = "수정하려는 프로필 Dto", required = true)  @RequestBody ProfileDto profileDto, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         if(jwtService.checkToken(request.getHeader("access-token"))) {
             try {
-                User result = profileService.modifyProfile(profileDto.toEntity());
-                if (result != null) {
+                int result = profileService.modifyProfile(profileDto);
+                if (result == 1) {
                     // 프로필 수정 성공한 경우, 성공 메시지 반환, 200 응답 코드
                     resultMap.put("message", SUCCESS);
                     logger.debug("수정된 프로필 정보 : {}", profileDto.toString());
@@ -67,6 +68,34 @@ public class ProfileController {
             resultMap.put("message", FAIL);
             status = HttpStatus.UNAUTHORIZED;
         }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @ApiOperation(value = "프로필 수정", notes = "프로필 수정 API", response = Map.class)
+    @GetMapping("")
+    public ResponseEntity<?> getProfile(
+            @ApiParam(value = "프로필을 요청할 유저의 ID", required = true)  @RequestParam String userId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        try {
+            ProfileDto profileDto = profileService.getProfile(userId);
+            if (profileDto != null) {
+                // 유저 프로필 요청 성공한 경우
+                resultMap.put("message", SUCCESS);
+                resultMap.put("profile", profileDto);
+                logger.debug("수정된 프로필 정보 : {}", profileDto.toString());
+                status = HttpStatus.OK;
+            } else {
+                //유저 프로필 요청 실패한 경우, 실패 메시지 반환, 회원 정보 유효 X,  202 응답 코드
+                resultMap.put("message", FAIL);
+                status = HttpStatus.ACCEPTED;
+            }
+        } catch (Exception e) {
+            logger.error("프로필 요청 에러: {}", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 }

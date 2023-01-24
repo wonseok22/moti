@@ -15,5 +15,22 @@ spring:
         show_sql: true #쿼리 출력
         format_sql: true # 쿼리 출력시 포맷 정렬되도록 설정
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dontreply20230111
+    password: dzoozeyrejfcqfuu
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
 file:
-  path : C:/Users/SSAFY/ideaProjects/S08P12A509/upload
+  path: C:/Users/SSAFY/ideaProjects/S08P12A509/upload
+

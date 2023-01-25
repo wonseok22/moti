@@ -1,0 +1,9 @@
+.text-active {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.text-inactive {
+  font-weight: lighter;
+  color: $light-grey
+}

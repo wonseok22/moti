@@ -1,0 +1,18 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+.btn-green {
+  @include btn-green-isactive
+}
+
+.btn-green-inactive {
+  @include btn-green-isactive($murky-green)
+}
+
+.btn-green-sm {
+  @include btn-green-isactive($width:6rem, $height:2rem)
+}
+
+.btn-green-inactive-sm {
+  @include btn-green-isactive($bg-color:$murky-green, $width:6rem, $height:2rem)
+}

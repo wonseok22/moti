@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService{
 //        }'
 
 
-        // Create UUID
+        // Create (Positive Long type) UUID
         Long uuid = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
 
         // Profile Image Build
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService{
         profile.setProfileImage(profileImage);
         profileRepository.save(profile);
 
-        // 암호화
+        // Password Encoding
         String pw = user.getPassword();
         String hex = "";
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -135,11 +135,9 @@ public class UserServiceImpl implements UserService{
     public int deleteUser(String userId) throws Exception {
         User user = userRepository.findByUserId(userId);
         Profile profile = user.getProfile();
-        System.out.println(user.toString());
-        System.out.println(profile.toString());
-//        ProfileImage profileImage = profile.getProfileImage();
-//        profileRepository.delete(profile);
-//        profileImageRepository.delete(profileImage);
+        ProfileImage profileImage = profile.getProfileImage();
+        profileRepository.delete(profile);
+        profileImageRepository.delete(profileImage);
         return userRepository.deleteByUserId(userId);
     }
 

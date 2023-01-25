@@ -133,12 +133,16 @@ public class ProfileController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         try {
+
             int result = profileService.doFollow(type, userId, targetId);
             if(result == 1) {
+
                 // 유저 팔로우, 팔로우 취소
+                logger.info("팔로우 요청 성공");
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.OK;
             } else {
+                logger.info("팔로우 요청 씰패");
                 resultMap.put("message", FAIL);
                 status = HttpStatus.ACCEPTED;
             }

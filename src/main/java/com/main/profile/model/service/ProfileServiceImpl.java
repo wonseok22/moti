@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -121,23 +122,25 @@ public class ProfileServiceImpl implements ProfileService{
         Follow follow = new Follow();
         User requestuser = userRepository.findByUserId(userId);
         User targetUser = userRepository.findByUserId(targetId);
-        if("follow".equals(type)) {
-            follow.setFollowerId(userId);
-            follow.setFollowingId(targetId);
-            follow.setFollowerNickname(requestuser.getNickname());
-            follow.setFollowingNickname(targetUser.getNickname());
-        } else {
-            follow.setFollowerId(targetId);
-            follow.setFollowingId(userId);
-            follow.setFollowerNickname(targetUser.getNickname());
-            follow.setFollowingNickname(requestuser.getNickname());
-        }
+        Long uuid = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+
         try {
-            followRepository.save(follow);
+            if("follow".equals(type)) {
+                follow.setId(uuid);
+                follow.setFollowerId(userId);
+                follow.setFollowingId(targetId);
+                follow.setFollowerNickname(requestuser.getNickname());
+                follow.setFollowingNickname(targetUser.getNickname());
+                followRepository.save(follow);
+            } else {
+                follow = followRepository.findByFollowerIdAndFollowingId(requestuser.getUserId(), targetUser.getUserId());
+                followRepository.delete(follow);
+            }
             return 1;
         } catch (Exception e){
             return -1;
         }
+
     }
 
 

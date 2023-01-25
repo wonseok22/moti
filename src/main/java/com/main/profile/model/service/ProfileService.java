@@ -10,6 +10,7 @@ public interface ProfileService {
     public ProfileDto getProfile(String userId) throws Exception;
 
     public List<FollowDto> getFollow(String type, String userId) throws Exception;
+    public int doFollow(String type, String userId, String targetId) throws Exception;
 }
 
 

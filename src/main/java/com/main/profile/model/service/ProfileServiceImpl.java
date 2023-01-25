@@ -116,5 +116,29 @@ public class ProfileServiceImpl implements ProfileService{
         return followList;
     }
 
+    @Override
+    public int doFollow(String type, String userId, String targetId) throws Exception {
+        Follow follow = new Follow();
+        User requestuser = userRepository.findByUserId(userId);
+        User targetUser = userRepository.findByUserId(targetId);
+        if("follow".equals(type)) {
+            follow.setFollowerId(userId);
+            follow.setFollowingId(targetId);
+            follow.setFollowerNickname(requestuser.getNickname());
+            follow.setFollowingNickname(targetUser.getNickname());
+        } else {
+            follow.setFollowerId(targetId);
+            follow.setFollowingId(userId);
+            follow.setFollowerNickname(targetUser.getNickname());
+            follow.setFollowingNickname(requestuser.getNickname());
+        }
+        try {
+            followRepository.save(follow);
+            return 1;
+        } catch (Exception e){
+            return -1;
+        }
+    }
+
 
 }

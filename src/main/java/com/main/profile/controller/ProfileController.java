@@ -123,4 +123,31 @@ public class ProfileController {
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
+    @ApiOperation(value = "팔로우하기, 팔로우추소 구현", notes = "팔로우하기, 팔로우취소 API", response = Map.class)
+    @GetMapping("/follow/{userId}/{targetId}")
+    public ResponseEntity<?> doFollow(
+            @ApiParam(value = "팔로우 하는사람의 ID", required = true)  @PathVariable String userId,
+            @ApiParam(value = "팔로우 당하는사람의 ID", required = true) @PathVariable String targetId,
+            @ApiParam(value = "팔로우 당하는사람의 ID", required = true) @RequestParam String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        try {
+            int result = profileService.doFollow(type, userId, targetId);
+            if(result == 1) {
+                // 유저 팔로우, 팔로우 취소
+                resultMap.put("message", SUCCESS);
+                status = HttpStatus.OK;
+            } else {
+                resultMap.put("message", FAIL);
+                status = HttpStatus.ACCEPTED;
+            }
+        } catch (Exception e) {
+            logger.error("팔로우쵸청, 팔로우 취소중 에러: {}", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }

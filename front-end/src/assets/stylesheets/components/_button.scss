@@ -2,39 +2,17 @@
 // This file contains all styles related to the button component.
 // -----------------------------------------------------------------------------
 .btn-green {
-  width: 226px;
-  height: 47px;
-
-  background: $main-green;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.45);
-  border: none;
-  border-radius: 999px;
-
-  font-family: 'Abhaya Libre';
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-
-  color: #FFFFFF;
-
-  cursor: pointer;
+  @include btn-green-isactive
 }
 
 .btn-green-inactive {
-  width: 226px;
-  height: 47px;
+  @include btn-green-isactive($murky-green)
+}
 
-  background: $murky-green;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.45);
-  border: none;
-  border-radius: 999px;
+.btn-green-sm {
+  @include btn-green-isactive($width:6rem, $height:2rem)
+}
 
-  font-family: 'Abhaya Libre';
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-
-  color: #FFFFFF;
-
-  cursor: pointer;
+.btn-green-inactive-sm {
+  @include btn-green-isactive($bg-color:$murky-green, $width:6rem, $height:2rem)
 }

@@ -1,25 +1,74 @@
 <template>
   <div id="signup-form-comp">
-		<signup-form></signup-form>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import SignupForm from '@/components/SignupForm.vue'
 export default {
 	name: 'SignupView',
-	components: {
-		SignupForm,
-	},
 }
 </script>
 
-<style>
+<style lang="scss">
+// 컴포넌트 중앙 정렬 등
 #signup-form-comp {
   height: 800px;
+  margin: 0px 10px 0px 10px;  
   
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#auth-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: $signup-height
+}
+
+// input 태그와 다음 버튼에 대한 css
+#auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 26px;
+
+  // position: absolute;
+  width: 332px;
+  height: 245px;
+  left: 14px;
+  top: 217px;
+}
+
+// input 태그에 대한 css
+.auth-input-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 332px;
+  height: 172px;
+}
+
+#id-box {
+  position: relative;
+}
+
+#double-check-id {
+  $height: 26px;
+
+  position: absolute;
+  right: 10px;
+  // inputbox height 42px
+  top: (42px - $height)/2;
+  width: 63px;
+  height: $height;
+
+  font-size: $fs-7;
 }
 </style>

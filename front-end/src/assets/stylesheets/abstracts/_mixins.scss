@@ -34,3 +34,23 @@
   }
 }
 
+//------------직접 정의
+@mixin btn-green-isactive($bg-color:$main-green, $width:226px, $height:47px) {
+  width: $width;
+  height: $height;
+
+  background: $bg-color;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.45);
+  border: none;
+  border-radius: 999px;
+
+  font-family: 'Abhaya Libre';
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+
+  color: white;
+
+
+  cursor: pointer;
+}

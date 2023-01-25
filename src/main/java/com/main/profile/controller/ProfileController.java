@@ -1,5 +1,6 @@
 package com.main.profile.controller;
 
+import com.main.profile.model.dto.FollowDto;
 import com.main.profile.model.dto.ProfileDto;
 import com.main.profile.model.service.ProfileService;
 import com.main.user.controller.UserController;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -71,7 +73,7 @@ public class ProfileController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @ApiOperation(value = "프로필 수정", notes = "프로필 수정 API", response = Map.class)
+    @ApiOperation(value = "ㅍ로필 조회", notes = "프로필 조회 API", response = Map.class)
     @GetMapping("")
     public ResponseEntity<?> getProfile(
             @ApiParam(value = "프로필을 요청할 유저의 ID", required = true)  @RequestParam String userId) {
@@ -92,6 +94,29 @@ public class ProfileController {
             }
         } catch (Exception e) {
             logger.error("프로필 요청 에러: {}", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @ApiOperation(value = "팔로워, 팔로잉 조회", notes = "팔로워, 팔로잉 조회 API", response = Map.class)
+    @GetMapping("/follow")
+    public ResponseEntity<?> getFollow(
+            @ApiParam(value = "팔로워, 팔로잉 목록을 요청할 유저의 ID", required = true)  @RequestParam String userId, @RequestParam String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        try {
+            List<FollowDto> followList = profileService.getFollow(type, userId);
+
+            // 유저 팔로워 요청 처리
+            resultMap.put("message", SUCCESS);
+            resultMap.put("followerList", followList);
+            logger.debug("팔로워 정보 : {}", followList.toString());
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            logger.error("팔로워 요청 에러: {}", e);
             resultMap.put("message", FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

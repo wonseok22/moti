@@ -1,8 +1,11 @@
 package com.main.profile.model.service;
 
+import com.main.profile.model.dto.FollowDto;
 import com.main.profile.model.dto.ProfileDto;
+import com.main.profile.model.entity.Follow;
 import com.main.profile.model.entity.Profile;
 import com.main.profile.model.entity.ProfileImage;
+import com.main.profile.model.repository.FollowRepository;
 import com.main.profile.model.repository.ProfileImageRepository;
 import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.entity.User;
@@ -15,6 +18,8 @@ import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -23,10 +28,8 @@ public class ProfileServiceImpl implements ProfileService{
     private UserRepository userRepository;
 
     @Autowired
-    private ProfileRepository profileRepository;
+    private FollowRepository followRepository;
 
-    @Autowired
-    private ProfileImageRepository profileImageRepository;
 
     @Value("${file.path}")
     private String uploadFolder;
@@ -90,4 +93,28 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
     }
+
+    @Override
+    public List<FollowDto> getFollow(String type, String userId) throws Exception {
+        User user = userRepository.findByUserId(userId);
+        List<Follow> follows = null;
+        if ("Follower".equals(type)){
+            follows = followRepository.findAllByFollowingId(userId);
+        } else {
+            follows = followRepository.findAllByFollowerId(userId);
+        }
+        List<FollowDto> followList = new ArrayList();
+        for(Follow f : follows) {
+            followList.add(
+                    new FollowDto(
+                            f.getFollowerNickname(),
+                            f.getFollowingNickname(),
+                            f.getFollowerId(),
+                            f.getFollowingId()
+                    ));
+        }
+        return followList;
+    }
+
+
 }

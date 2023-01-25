@@ -7,13 +7,45 @@
         <div id="signup-input-form">
           <!-- 아이디 -->
           <div id="id-box">
-            <input type="text" id="input-id" class="inputbox" name="input-id" placeholder="아이디" v-model="id">
+            <input type="text" id="input-id" class="inputbox" name="input-id" placeholder="아이디" @input="idInput">
             <button id="double-check-id" class="btn-green" @click="doubleCheck">중복체크</button>
+            <div v-if="idActive">
+              <p
+                v-for="(condition, idx) in idConditions"
+                :key="idx"
+                :class="[condition.valid? 'condition-valid': 'condition-invalid']"
+              >
+                {{ condition.comment }}
+              </p>
+            </div>
+            
           </div>
           <!-- 비밀번호 -->
-          <input type="password" id="input-pw" class="inputbox" name="input-pw" placeholder="비밀번호" v-model="password">
+          <div>
+            <input type="password" id="input-pw" class="inputbox" name="input-pw" placeholder="비밀번호" @input="pwInput">
+            <div v-if="pwActive">
+              <p
+                v-for="(condition, idx) in pwConditions"
+                :key="idx"
+                :class="[condition.valid? 'condition-valid': 'condition-invalid']"
+              >
+                {{ condition.comment }}
+              </p>
+            </div>
+          </div>
           <!-- 비밀번호 재입력 -->
-          <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" v-model="password2">
+          <div>
+            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2">
+            <div v-if="pw2Active">
+              <p
+                v-for="(condition, idx) in pw2Conditions"
+                :key="idx"
+                :class="[condition.valid? 'condition-valid': 'condition-invalid']"
+              >
+                {{ condition.comment }}
+              </p>
+            </div>
+          </div>
         </div>
         <button v-if="isvalid" class="btn-green" @click="toEmailAuth">다음</button>
         <button v-else class="btn-green-inactive">다음</button>
@@ -33,6 +65,42 @@
 </template>
 
 <script>
+// eslint-disable-next-line
+const regExp = /[^a-zA-Z0-9]/
+// eslint-disable-next-line
+const regExpEng = /[a-zA-Z]/
+// eslint-disable-next-line
+const regExpNum = /[0-9]/
+
+// 특수문자 입력 방지
+function characterCheck(str) {
+  // 지금은 띄어쓰기도 특수문자 처리
+  if ( regExp.test(str) ) {
+    str = str.substring( 0, str.length - 1 ) // 입력한 특수문자 한자리 지움
+  } 
+  return str
+}
+
+// 영어 포함 여부
+function englishCheck(str) {
+  // eslint-disable-next-line
+  if ( regExpEng.test(str) ) {
+    return true
+  } else {
+    return false
+  }
+}
+
+// 숫자 포함 여부
+function numberCheck(str) {
+  // eslint-disable-next-line
+  if ( regExpNum.test(str) ) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export default {
 	name: 'SignupForm',
   data() {
@@ -40,9 +108,29 @@ export default {
       id: null,
       password: null,
       password2: null,
+
+      idActive: false,
+      pwActive: false,
+      pw2Active: false,
     }
   },
   methods: {
+    idInput(event) {
+      this.idActive = true
+      // 띄어쓰기 및 특수문자 제거
+      this.id = characterCheck(event.target.value)
+      event.target.value = this.id
+    },
+    pwInput(event) {
+      this.pwActive = true
+      // 띄어쓰기 및 특수문자 제거
+      this.password = characterCheck(event.target.value)
+      event.target.value = this.password
+    },
+    pwInput2(event) {
+      this.pw2Active = true
+      this.password2 = event.target.value
+    },
     // 아이디 중복 체크
     doubleCheck() {
       console.log('중복체크 실행')
@@ -55,6 +143,65 @@ export default {
     // input이 제대로 입력되었는지 여부 return
     isvalid() {
       return true
+    },
+    idConditions() {
+      let conditions = [{
+        comment: 'X 4~16자. 띄어쓰기와 특수문자는 사용이 안 돼요',
+        valid: false,
+      }]
+      // 아이디 길이 체크
+      if (this.id.length >= 4 & this.id.length <= 16) {
+        conditions[0].comment = 'O ' + conditions[0].comment.substring(1, )
+        conditions[0].valid = true
+      }
+      return conditions
+    },
+    pwConditions() {
+      let conditions = [
+        {
+          comment: 'X 6~50자. 띄어쓰기와 특수문자는 사용이 안 돼요',
+          valid: false,
+        },
+        {
+          comment: 'X 영어 대문자 또는 소문자가 포함되어야 해요.',
+          valid: false,
+        },
+        {
+          comment: 'X 숫자가 포함되어야 해요.',
+          valid: false,
+        }
+      ]
+
+      // 아이디 길이 체크
+      if (this.password.length >= 6 & this.password.length <= 50) {
+        conditions[0].comment = 'O ' + conditions[0].comment.substring(1, )
+        conditions[0].valid = true
+      }
+      // 영어 포함 여부 체크
+      if ( englishCheck(this.password) ) {
+        conditions[1].comment = 'O ' + conditions[1].comment.substring(1, )
+        conditions[1].valid = true
+      }
+      // 숫자 포함 여부 체크
+      if ( numberCheck(this.password) ) {
+        conditions[2].comment = 'O ' + conditions[2].comment.substring(1, )
+        conditions[2].valid = true
+      }
+      return conditions
+    },
+    pw2Conditions() {
+      let conditions = [
+        {
+          comment: 'X 비밀번호가 일치해야 해요.',
+          valid: false,
+        },
+      ]
+      // 비밀번호 일치 여부
+      if ( this.password === this.password2 ) {
+        conditions[0].comment = 'O ' + conditions[0].comment.substring(1, )
+        conditions[0].valid = true
+      }
+      return conditions
     }
   }
 }
@@ -81,7 +228,7 @@ export default {
 
   // position: absolute;
   width: 332px;
-  height: 245px;
+  // height: 245px;
   left: 14px;
   top: 217px;
 }
@@ -95,7 +242,6 @@ export default {
   gap: 23px;
 
   width: 332px;
-  height: 172px;
 }
 
 #signup-sub {

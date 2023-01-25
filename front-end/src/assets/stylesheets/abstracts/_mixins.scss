@@ -54,3 +54,10 @@
 
   cursor: pointer;
 }
+
+@mixin condition-isvalid($color:$main-green) {
+  margin: 0px;
+  font-size: $fs-7;
+  color: $color;
+  text-align: start;
+}

@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 // 컴포넌트 중앙 정렬 등
 #signup-form-comp {
   height: 800px;
@@ -57,6 +58,14 @@ export default {
 
 #id-box {
   position: relative;
+}
+
+.condition-valid {
+  @include condition-isvalid
+}
+
+.condition-invalid {
+  @include condition-isvalid($light-grey)
 }
 
 #double-check-id {

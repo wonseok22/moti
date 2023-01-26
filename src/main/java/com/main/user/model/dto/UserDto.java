@@ -22,6 +22,6 @@ public class UserDto {
     private String joinDate;
 
     public User toEntity() {
-        return new User(userId, password, email, nickname, null, type,null,  temporary, joinDate, null);
+        return new User(userId, password, email, nickname, null, type,null,  temporary, joinDate, null,null);
     }
 }

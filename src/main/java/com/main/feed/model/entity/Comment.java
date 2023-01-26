@@ -18,28 +18,23 @@ public class Comment {
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "comment_id")
 	private Long commentId;
 	
-	@Column(name = "user_id")
 	private String userId;
 	
-	@Column(name = "feed_no")
 	private Long feedNo;
 	
-	@Column(name = "content")
 	private String content;
 	
-	@Column(name = "created_date")
 	private LocalDateTime createdDate;
 	
 	// User 쪽에서 일대다 맵핑 필요
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "userId", insertable = false, updatable = false)
 	private User user;
 	
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "feedNo")
+	@JoinColumn(name = "feedNo", insertable = false, updatable = false)
 	private Feed feed;
 
 }

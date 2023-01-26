@@ -20,30 +20,23 @@ public class Feed {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "feed_no")
 	private Long feedNo;
 	
-	@Column(name = "user_id")
 	private String userId;
 	
-	@Column(name = "playlist_id")
 	private Long playlistId;
 	
-	@Column(name = "mission_name")
 	private String missionName;
 	
-	@Column(name = "content")
 	private String content;
 	
-	@Column(name = "created_date")
 	private LocalDateTime createdDate;
 	
-	@Column(name = "category_no")
 	private Long categoryNo;
 	
 	// User 쪽에서 일대다 맵핑 필요
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "userId", insertable = false, updatable = false)
 	private User user;
 	
 	@OneToMany(mappedBy = "feed")

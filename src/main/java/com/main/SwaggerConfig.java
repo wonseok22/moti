@@ -43,7 +43,10 @@ public class SwaggerConfig {
                 .globalOperationParameters(globalParamters)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.main.*.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.main.user.controller")
+                        .or(RequestHandlerSelectors.basePackage("com.main.profile.controller"))
+                        .or(RequestHandlerSelectors.basePackage("com.main.playlist.controller"))
+                        .or(RequestHandlerSelectors.basePackage("com.main.feed.controller")))
                 .paths(PathSelectors.any())
                 .build();
     }

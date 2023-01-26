@@ -1,32 +1,21 @@
 package com.main.feed.model.entity;
 
 import com.main.user.model.entity.User;
-import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.*;
 
-@Entity
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-public class Comment {
-	
+@Entity(name = "likes")
+public class Like {
+
 	@Id
 	@GeneratedValue
-	private Long commentId;
+	private Long likeId;
 	
-	private String userId;
+	private Long userId;
 	
-	private Long feedNo;
-	
-	private String content;
-	
-	private LocalDateTime createdDate;
+	private Long feedId;
 	
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "userId", insertable = false, updatable = false)

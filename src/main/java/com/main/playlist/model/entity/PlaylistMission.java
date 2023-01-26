@@ -16,14 +16,12 @@ public class PlaylistMission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="playlistNo")
-//    private Playlist playlist;
-    private Long playlistNo;
+    private Long playlistMissionId;
+
+    private Long playlistId;
 
     @ManyToOne
-    @JoinColumn(name="missionNo")
+    @JoinColumn(name="missionId")
     private Mission mission;
 
 }

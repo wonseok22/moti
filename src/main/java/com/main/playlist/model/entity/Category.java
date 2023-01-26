@@ -17,10 +17,11 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryNo;
+    private Long categoryId;
+    
     @Column(nullable = false,unique = true)
     private String categoryName;
-
+    
     @OneToMany
     @JoinColumn(name="categoryNo")
     private List<Playlist> playlists = new ArrayList<>();

@@ -6,7 +6,6 @@ import com.main.playlist.model.entity.*;
 import com.main.playlist.model.respository.CategoryRepository;
 import com.main.playlist.model.respository.PlaylistRepository;
 import com.main.playlist.model.respository.UserPlaylistRepository;
-import com.main.user.model.dto.UserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,50 +21,51 @@ public class PlaylistServiceImpl implements PlaylistService{
     private UserRepository userRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    
 
     @Autowired
     private PlaylistRepository playlistRepository;
+    
     @Autowired
     private UserPlaylistRepository userPlaylistRepository;
+    
     @Override
-    public List<UserPlaylistDto> getUserPlaylist(String userId) throws SQLException {
+    public List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException {
         List<UserPlaylistDto> userPlaylists = new ArrayList<>();
         userPlaylistRepository.findByUser_UserId(userId).forEach(x->userPlaylists.add(UserPlaylistDto.toDto(x)));
         return userPlaylists;
     }
 
     @Override
-    public List<PlaylistDto> getPlaylist(Long categoryNo) throws SQLException {
-        Category category = categoryRepository.findByCategoryNo(categoryNo);
+    public List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException {
+        Category category = categoryRepository.findByCategoryId(categoryId);
         List<PlaylistDto> playlists = new ArrayList<>();
         category.getPlaylists().forEach(x->playlists.add(PlaylistDto.toDto(x)));
         return playlists;
     }
 
     @Override
-    public List<Mission> getMyMissions(String userId, Long playlistNo) throws SQLException {
+    public UserPlaylistDto getMyPlaylist(String userId, Long playlistId) throws SQLException {
         
-        return UserPlaylistDto.toDto(userPlaylistRepository.findByUser_UserIdAndPlaylist_PlaylistNo(userId,playlistNo)).getPlaylist().getMissions();
+        return UserPlaylistDto.toDto(userPlaylistRepository.findByUser_UserIdAndPlaylist_PlaylistId(userId,playlistId));
     }
 
     @Override
-    public List<Mission> getMissions(Long playlistNo) throws SQLException {
-        Playlist playlist = playlistRepository.findByPlaylistNo(playlistNo);
-        List<Mission> missions = new ArrayList<Mission>();
-        for (PlaylistMission playlistMission : playlist.getPlaylistMissions()) {
-            missions.add(playlistMission.getMission());
-        }
+    public PlaylistDto getPlaylist(Long playlistId) throws SQLException {
 
-        return missions;
+        return PlaylistDto.toDto(playlistRepository.findByPlaylistId(playlistId));
     }
 
     @Override
-    public int registMyPlaylist(String userId, Long playlistNo) throws SQLException {
+    public UserPlaylist registMyPlaylist(String userId, Long playlistId) throws SQLException {
         User user = userRepository.findByUserId(userId);
-        Playlist playlist = playlistRepository.findByPlaylistNo(playlistNo);
+        Playlist playlist = playlistRepository.findByPlaylistId(playlistId);
         UserPlaylist userPlaylist = new UserPlaylist();
         userPlaylist.setPlaylist(playlist);
+        userPlaylist.setUser(user);
+        
+        userPlaylistRepository.save(userPlaylist);
 
-        return 0;
+        return userPlaylist;
     }
 }

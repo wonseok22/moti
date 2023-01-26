@@ -13,16 +13,20 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 public class UserPlaylistDto {
-    private Long userPlaylistNo;
+    private Long userPlaylistId;
+
     private String userId;
+    
     private PlaylistDto playlist;
+    
     private LocalDateTime startDate;
+    
     private LocalDateTime endDate;
 
     public static UserPlaylistDto toDto(UserPlaylist userPlaylist){
         
         return new UserPlaylistDto(
-                userPlaylist.getUserPlaylistNo(),
+                userPlaylist.getUserPlaylistId(),
                 userPlaylist.getUser().getUserId(),
                 PlaylistDto.toDto(userPlaylist.getPlaylist()),
                 userPlaylist.getStartDate(),

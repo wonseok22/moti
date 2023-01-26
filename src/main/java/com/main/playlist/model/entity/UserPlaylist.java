@@ -15,16 +15,17 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@NamedEntityGraph
 public class UserPlaylist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userPlaylistNo;
+    private Long userPlaylistId;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
     private User user;
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="playlistNo")
+    @JoinColumn(name="playlistId")
     private Playlist playlist;
 
     private LocalDateTime startDate;
@@ -32,8 +33,5 @@ public class UserPlaylist {
     private LocalDateTime endDate;
 
     private int done;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="flower_image_id")
-    private FlowerImage flowerImage;
+    
 }

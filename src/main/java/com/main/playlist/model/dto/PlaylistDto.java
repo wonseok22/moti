@@ -14,13 +14,14 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class PlaylistDto {
-
     private Long playlistNo;
+    
     private String playlistName;
 
     private String playlistDesc;
 
     private List<Mission> missions;
+   
     private FlowerDto flower;
 
     public static PlaylistDto toDto(Playlist playlist){

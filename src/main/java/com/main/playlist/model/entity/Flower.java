@@ -13,7 +13,11 @@ import javax.persistence.Id;
 @Setter
 public class Flower {
     @Id
-    private Long id;
-    private String name;
-    private String meaning;
+    private Long flowerId;
+
+    private String saveFolder;
+
+    private String originalFile;
+
+    private String saveFile;
 }

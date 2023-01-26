@@ -15,7 +15,7 @@ import java.util.List;
 public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long missionNo;
+    private Long missionId;
 
     @Column(unique = true,nullable = false)
     private String missionName;

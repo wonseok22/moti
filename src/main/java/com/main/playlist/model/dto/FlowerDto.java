@@ -9,15 +9,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FlowerDto {
-    private Long id;
-    private String name;
-    private String meaning;
+    private Long flowerId;
+    
+    private String saveFolder;
+    
+    private String originalFile;
+    
+    private String saveFile;
 
     public static FlowerDto toDto(Flower flower){
         return new FlowerDto(
-                flower.getId(),
-                flower.getName(),
-                flower.getMeaning()
+                flower.getFlowerId(),
+                flower.getSaveFolder(),
+                flower.getOriginalFile(),
+                flower.getSaveFile()
         );
     }
 }

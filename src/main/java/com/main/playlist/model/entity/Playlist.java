@@ -14,20 +14,16 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@NamedEntityGraph(name = "playlistWithMissions", attributeNodes = @NamedAttributeNode("playlistMissions"))
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long playlistNo;
+    private Long playlistId;
     @Column(unique = true,nullable = false)
     private String playlistName;
 
     private String playlistDesc;
-
-
-//    @OneToMany(mappedBy = "playlist")
-    @OneToMany
-    @JoinColumn(name="playlistNo")
+    
+    @OneToMany(mappedBy = "playlist")
     private List<PlaylistMission> playlistMissions = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name="flowerId")

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist,Long> {
-    public Playlist findByPlaylistNo(Long playlistNo);
+    public Playlist findByPlaylistId(Long playlistId);
 }

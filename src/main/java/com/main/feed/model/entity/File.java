@@ -16,9 +16,9 @@ public class File {
 
 	@Id
 	@GeneratedValue
-	private Long fileNo;
+	private Long fileId;
 	
-	private Long feedNo;
+	private Long feedId;
 	
 	private String saveFolder;
 	

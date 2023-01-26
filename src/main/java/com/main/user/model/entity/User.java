@@ -1,6 +1,9 @@
 package com.main.user.model.entity;
 
 
+import com.main.feed.model.entity.Comment;
+import com.main.feed.model.entity.Feed;
+import com.main.feed.model.entity.Like;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.profile.model.entity.Profile;
 import lombok.*;
@@ -19,7 +22,6 @@ import java.util.List;
 @ToString
 public class User {
 
-
     @Id
     private String userId;
     private String password;
@@ -32,11 +34,19 @@ public class User {
     private String joinDate;
 
     @OneToOne
-    @JoinColumn(name="profile_id")
+    @JoinColumn(name="profileId")
     private Profile profile;
     
-    @OneToMany
-    @JoinColumn(name="userId")
+    @OneToMany(mappedBy = "user")
     private List<UserPlaylist> playlists = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Feed> feeds = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    private List<Like> likes = new ArrayList<>();
+    
 }

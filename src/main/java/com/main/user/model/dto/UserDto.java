@@ -12,16 +12,25 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+    
     private int userNo;
+    
     private String userId;
+    
     private String password;
+    
     private String email;
+    
     private String nickname;
+    
     private String type;
+    
     private int temporary;
+    
     private String joinDate;
 
     public User toEntity() {
-        return new User(userId, password, email, nickname, null, type,null,  temporary, joinDate, null,null);
+        return new User(userId, password, email, nickname, null, type, null,  temporary, joinDate, null, null, null, null);
     }
+    
 }

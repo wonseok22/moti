@@ -1,5 +1,6 @@
 package com.main.feed.model.entity;
 
+import com.main.playlist.model.entity.Category;
 import com.main.user.model.entity.User;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class Feed {
 
 	@Id
 	@GeneratedValue
-	private Long feedNo;
+	private Long feedId;
 	
 	private String userId;
 	
@@ -34,15 +35,22 @@ public class Feed {
 	
 	private Long categoryNo;
 	
-	// User 쪽에서 일대다 맵핑 필요
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "userId", insertable = false, updatable = false)
 	private User user;
 	
-	@OneToMany(mappedBy = "feed")
-	List<Comment> comments = new ArrayList<>();
+	// 카테고리에서 일대다 맵핑 필요
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "categoryId", insertable = false, updatable = false)
+	private Category category;
 	
 	@OneToMany(mappedBy = "feed")
-	List<File> files = new ArrayList<>();
-
+	private List<Comment> comments = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "feed")
+	private List<File> files = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "feed")
+	private List<Like> likes = new ArrayList<>();
+	
 }

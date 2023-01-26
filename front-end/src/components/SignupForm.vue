@@ -65,41 +65,7 @@
 </template>
 
 <script>
-// eslint-disable-next-line
-const regExp = /[^a-zA-Z0-9]/
-// eslint-disable-next-line
-const regExpEng = /[a-zA-Z]/
-// eslint-disable-next-line
-const regExpNum = /[0-9]/
-
-// 특수문자 입력 방지
-function characterCheck(str) {
-  // 지금은 띄어쓰기도 특수문자 처리
-  if ( regExp.test(str) ) {
-    str = str.substring( 0, str.length - 1 ) // 입력한 특수문자 한자리 지움
-  } 
-  return str
-}
-
-// 영어 포함 여부
-function englishCheck(str) {
-  // eslint-disable-next-line
-  if ( regExpEng.test(str) ) {
-    return true
-  } else {
-    return false
-  }
-}
-
-// 숫자 포함 여부
-function numberCheck(str) {
-  // eslint-disable-next-line
-  if ( regExpNum.test(str) ) {
-    return true
-  } else {
-    return false
-  }
-}
+import * as regex from '@/tools/regex.js'
 
 export default {
 	name: 'SignupForm',
@@ -118,13 +84,13 @@ export default {
     idInput(event) {
       this.idActive = true
       // 띄어쓰기 및 특수문자 제거
-      this.id = characterCheck(event.target.value)
+      this.id = regex.characterCheck(event.target.value)
       event.target.value = this.id
     },
     pwInput(event) {
       this.pwActive = true
       // 띄어쓰기 및 특수문자 제거
-      this.password = characterCheck(event.target.value)
+      this.password = regex.characterCheck(event.target.value)
       event.target.value = this.password
     },
     pwInput2(event) {
@@ -134,6 +100,46 @@ export default {
     // 아이디 중복 체크
     doubleCheck() {
       console.log('중복체크 실행')
+      // 아이디 조건 충족 여부 체크
+      const idConditions = this.idConditions
+
+      // 아이디 조건을 충족하지 못한 경우
+      if ( !idConditions[0].valid ) {
+        alert('아이디 형식을 지켜주세요.')
+      }
+      // 아이디 조건을 충족한 경우
+      else {
+        // 중복체크
+        this.$axios({
+          method: 'get',
+          url: `/users/check?type=id&value=${this.id}`,
+          data: {
+            id: this.id,
+          }
+        })
+          .then((response) => {
+            // 응답 예시
+            // 성공시(이미 존재할 때 ) : 200, already exists
+            // 실패시(없을 때) : 200, success 
+            // 서버 에러시 : 500, fail
+
+            // 이미 아이디가 존재할 경우
+            if ( response.data === 'already exists' ) {
+              alert('이미 사용 중인 아이디에요.')
+              this.id = null
+            } 
+            else if ( response.data === 'success' ) {
+              alert('사용할 수 있는 아이디에요.')
+              const idInputTag = document.querySelector('#input-id')
+              // 현재 아이디로 고정
+              idInputTag.setAttribute('disabled')
+            }
+            // context.commit('LIKE_ARTICLE', { 'articleId': payload.articleId, 'data': response.data })
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        }
     },
     toEmailAuth() {
       this.$router.push({ path: '/signup/auth' })
@@ -150,9 +156,11 @@ export default {
         valid: false,
       }]
       // 아이디 길이 체크
-      if (this.id.length >= 4 & this.id.length <= 16) {
+      if ( this.id ) {
+        if ( this.id.length >= 4 & this.id.length <= 16) {
         conditions[0].comment = 'O ' + conditions[0].comment.substring(1, )
         conditions[0].valid = true
+        }
       }
       return conditions
     },
@@ -178,12 +186,12 @@ export default {
         conditions[0].valid = true
       }
       // 영어 포함 여부 체크
-      if ( englishCheck(this.password) ) {
+      if ( regex.englishCheck(this.password) ) {
         conditions[1].comment = 'O ' + conditions[1].comment.substring(1, )
         conditions[1].valid = true
       }
       // 숫자 포함 여부 체크
-      if ( numberCheck(this.password) ) {
+      if ( regex.numberCheck(this.password) ) {
         conditions[2].comment = 'O ' + conditions[2].comment.substring(1, )
         conditions[2].valid = true
       }

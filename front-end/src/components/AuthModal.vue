@@ -91,6 +91,7 @@ export default {
 	background: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 0px;
+  left: 0px;
 
   display: flex;
   flex-direction: column;

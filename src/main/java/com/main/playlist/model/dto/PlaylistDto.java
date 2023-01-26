@@ -29,7 +29,7 @@ public class PlaylistDto {
         playlist.getPlaylistMissions().forEach(x->mission.add(x.getMission()));
 
         return new PlaylistDto(
-                playlist.getPlaylistNo(),
+                playlist.getPlaylistId(),
                 playlist.getPlaylistName(),
                 playlist.getPlaylistDesc(),
                 mission,

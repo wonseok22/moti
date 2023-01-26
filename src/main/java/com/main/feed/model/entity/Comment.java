@@ -5,8 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
@@ -16,21 +14,18 @@ import static javax.persistence.FetchType.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Feed {
-
+public class Comment {
+	
 	@Id
 	@GeneratedValue
-	@Column(name = "feed_no")
-	private Long feedNo;
+	@Column(name = "comment_id")
+	private Long commentId;
 	
 	@Column(name = "user_id")
 	private String userId;
 	
-	@Column(name = "playlist_id")
-	private Long playlistId;
-	
-	@Column(name = "mission_name")
-	private String missionName;
+	@Column(name = "feed_no")
+	private Long feedNo;
 	
 	@Column(name = "content")
 	private String content;
@@ -38,18 +33,13 @@ public class Feed {
 	@Column(name = "created_date")
 	private LocalDateTime createdDate;
 	
-	@Column(name = "category_no")
-	private Long categoryNo;
-	
 	// User 쪽에서 일대다 맵핑 필요
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	@OneToMany(mappedBy = "feed")
-	List<Comment> comments = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "feed")
-	List<File> files = new ArrayList<>();
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "feedNo")
+	private Feed feed;
 
 }

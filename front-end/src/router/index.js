@@ -6,6 +6,10 @@ import SignupForm from '@/components/SignupForm'
 import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import LoginForm from '@/components/LoginForm'
+import FeedPage from '@/views/FeedPage'
+import ProfileMain from '@/views/ProfileMain'
+import SearchPage from '@/views/SearchPage'
+import UserFlowerList from '@/views/UserFlowerList'
 
 Vue.use(VueRouter)
 
@@ -40,7 +44,27 @@ const routes = [
         path: 'main',
         component: LoginForm
       },
-    ]
+    ],
+  },
+  {
+    path:'/feed',
+    name:'feed',
+    component: FeedPage,
+  },
+  {
+    path:'/profile',
+    name:'profile',
+    component: ProfileMain,
+  },
+  {
+    path:'/search',
+    name:'search',
+    component:SearchPage,
+  },
+  {
+    path:'/userflowerlist',
+    name:'userflowerlist',
+    component:UserFlowerList,
   }
 ]
 

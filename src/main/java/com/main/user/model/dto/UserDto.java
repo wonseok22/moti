@@ -10,10 +10,7 @@ import javax.persistence.Id;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserDto {
-    
-    private int userNo;
     
     private String userId;
     
@@ -28,9 +25,14 @@ public class UserDto {
     private int temporary;
     
     private String joinDate;
-
+    
+    // 아이고~~
+    public static UserDto toDto (User user) {
+        return null;
+    }
+    
     public User toEntity() {
-        return new User(userId, password, email, nickname, null, type, null,  temporary, joinDate, null, null, null, null);
+        return new User(userId, password, email, nickname, null, type, null,  temporary, joinDate, null, null, null, null, null);
     }
     
 }

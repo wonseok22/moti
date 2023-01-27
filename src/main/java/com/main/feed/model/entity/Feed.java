@@ -1,6 +1,7 @@
 package com.main.feed.model.entity;
 
-import com.main.playlist.model.entity.Category;
+import com.main.playlist.model.entity.Mission;
+import com.main.playlist.model.entity.Playlist;
 import com.main.user.model.entity.User;
 import lombok.*;
 
@@ -23,26 +24,23 @@ public class Feed {
 	@GeneratedValue
 	private Long feedId;
 	
-	private String userId;
-	
-	private Long playlistId;
-	
-	private String missionName;
-	
-	private String content;
-	
-	private LocalDateTime createdDate;
-	
-	private Long categoryNo;
-	
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "userId", insertable = false, updatable = false)
 	private User user;
 	
-	// 카테고리에서 일대다 맵핑 필요
+	// 연결 필요
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "categoryId", insertable = false, updatable = false)
-	private Category category;
+	@JoinColumn(name = "playlistId", insertable = false, updatable = false)
+	private Playlist playlist;
+	
+	// 연결 필요
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "missionId", insertable = false, updatable = false)
+	private Mission mission;
+	
+	private String content;
+	
+	private LocalDateTime createdDate;
 	
 	@OneToMany(mappedBy = "feed")
 	private List<Comment> comments = new ArrayList<>();

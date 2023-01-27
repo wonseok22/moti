@@ -1,6 +1,7 @@
 package com.main.feed.model.dto;
 
 import com.main.feed.model.entity.Comment;
+import com.main.user.model.dto.UserDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,21 +10,23 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 public class CommentDto {
 
 	private Long commentId;
-	private String userId;
-	private Long feedNo;
+	private UserDto user;
 	private String content;
 	private LocalDateTime createdDate;
+	// Comment에서는 매칭된 Feed가 무엇인지 알 필요가 없다.
 	
-	public CommentDto(Comment comment) {
-		commentId = comment.getCommentId();
-		userId = comment.getUserId();
-		feedNo = comment.getFeedNo();
-		content = comment.getContent();
-		createdDate = comment.getCreatedDate();
+	public static CommentDto toDto (Comment comment) {
+		
+		return new CommentDto(
+				comment.getCommentId(),
+				UserDto.toDto(comment.getUser()),
+				comment.getContent(),
+				comment.getCreatedDate()
+		);
+	
 	}
 
 }

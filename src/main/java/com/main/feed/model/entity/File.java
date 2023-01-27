@@ -18,16 +18,10 @@ public class File {
 	@GeneratedValue
 	private Long fileId;
 	
-	private Long feedId;
-	
-	private String saveFolder;
-	
-	private String originalFile;
-	
-	private String saveFile;
-	
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "feedId")
+	@JoinColumn(name = "feedId", insertable = false, updatable = false)
 	private Feed feed;
-
+	
+	private String fileImageUrl;
+	
 }

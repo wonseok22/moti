@@ -16,7 +16,7 @@ import javax.persistence.Id;
 public class Follow {
 
     @Id
-    private Long id;
+    private Long followId;
     private String followerId;
     private String followingId;
     private String followerNickname;

@@ -22,7 +22,8 @@ public class Category {
     @Column(nullable = false,unique = true)
     private String categoryName;
     
-    @OneToMany
-    @JoinColumn(name="categoryNo")
+    private String categoryImageUrl;
+    
+    @OneToMany(mappedBy = "category")
     private List<Playlist> playlists = new ArrayList<>();
 }

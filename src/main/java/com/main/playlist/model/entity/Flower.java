@@ -15,9 +15,5 @@ public class Flower {
     @Id
     private Long flowerId;
 
-    private String saveFolder;
-
-    private String originalFile;
-
-    private String saveFile;
+    private String flowerImageUrl;
 }

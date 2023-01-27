@@ -6,23 +6,21 @@
 
 <script>
 export default {
-	name: 'SignupView',
+	name: 'LoginView',
 }
 </script>
 
 <style lang="scss">
-
-
-// input 태그와 다음 버튼에 대한 css
-.auth-layout {
+#auth-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  height: $account-height
+  // height: $login-height
 }
 
-.auth-form {
+// input 태그와 다음 버튼에 대한 css
+#auth-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,15 +45,27 @@ export default {
   height: 172px;
 }
 
-.double-check {
+#id-box {
+  position: relative;
+}
+
+.condition-valid {
+  @include condition-isvalid
+}
+
+.condition-invalid {
+  @include condition-isvalid($light-grey)
+}
+
+#double-check-id {
   $height: 26px;
 
   position: absolute;
   right: 10px;
   // inputbox height 42px
   top: (42px - $height)/2;
-  width: 63px !important;
-  height: $height !important;
+  width: 63px;
+  height: $height;
 
   font-size: $fs-7;
 }

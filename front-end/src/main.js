@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import lineClamp from 'vue-line-clamp'
+import axios from 'axios'
 
 import NavigationBar from './components/NavigationBar.vue'
 
@@ -14,8 +15,17 @@ Vue.use(lineClamp,{
   importCss: true,
 })
 
+Vue.prototype.$axios = axios
+store.$axios = axios
+
+// const baseUrl = 'http://i8a509.p.ssafy.io:8080'
+const baseUrl = 'http://moti.today/api'
+Vue.prototype.$baseUrl = baseUrl
+store.$baseUrl = baseUrl
+
 new Vue({
   store,
   router,
+  axios,
   render: h => h(App)
 }).$mount('#app')

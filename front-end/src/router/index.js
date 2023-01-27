@@ -4,10 +4,10 @@ import SignupView from '@/views/SignupView'
 import SignupForm from '@/components/SignupForm'
 import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
-import FeedPage from '@/views/FeedPage'
-import ProfileMain from '@/views/ProfileMain'
-import SearchPage from '@/views/SearchPage'
-import UserFlowerList from '@/views/UserFlowerList'
+import FeedView from '@/views/FeedView'
+import ProfileMain from '@/views/ProfileView'
+import SearchPage from '@/views/SearchView'
+import UserFlowerList from '@/views/UserFLList'
 
 Vue.use(VueRouter)
 
@@ -35,7 +35,7 @@ const routes = [
   {
     path:'/feed',
     name:'feed',
-    component: FeedPage,
+    component: FeedView,
   },
   {
     path:'/profile',

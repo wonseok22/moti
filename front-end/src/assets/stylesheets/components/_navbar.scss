@@ -6,7 +6,7 @@
     padding: 8px 22.5px;
     gap: 49px;
 
-    position: absolute;
+    position: fixed;
     width: 360px;
     height: 56px;
     left: 0px;
@@ -16,8 +16,12 @@
     border-top: 1px solid #ABABAB;
     border-bottom: 1px solid #ABABAB;
     border-radius: 10px 10px 0px 0px;
-}
 
-.material-icons.md-40 {
-    font-size: 40px;
+    .material-icons {
+        font-size: 38px;    
+    }
+
+    .material-symbols-outlined {
+        font-size: 38px;
+    }
 }

@@ -4,7 +4,7 @@
       <div class="modal-box">
         <span>이메일 주소 {{ emailMasked }}으로 전송된 링크를 눌러 인증하세요.</span>
         <p v-if="!timeCounter" class="text-active" @click="AuthRestart">메일 재전송</p>
-        <p v-else class="text-inactive">메일 재전송</p>
+        <p v-else class="text-inactive" @click="AuthRestart">메일 재전송</p>
         <p>{{ timerStr }}</p>
         <button v-if="authPossible" class="btn-green-sm" @click="authCheck">인증완료</button>
         <button v-else class="btn-green-inactive-sm">인증완료</button>
@@ -22,24 +22,33 @@ export default {
   data() {
     return {
       timer: null,
-      timeCounter: 5,
+      timeCounter: 300,
       timerStr: "05:00",
       authPossible: true,
     }
   },
-  mounted() {
-    if (this.timer) {
-      this.timerStop(this.timer)
-      this.timer = null
-    }
-    this.timer = this.timerStart()
-  },
   methods: {
     // 인증 완료 여부 확인
     authCheck() {
+      const payload = {
+        email: this.email
+      }
+      const authResult = this.$store.dispatch('authCheck', payload)
+      // 인증에 성공했을 경우
+      console.log(authResult)
+      authResult
+        .then((response) => {
+        console.log(`이메일 인증 성공/status: ${response.status}`)
+        this.$router.push({ path: '/signup/nickname'})
+        })
+        .catch((error) => {
+          console.log(`이메일 인증 실패/status: ${error.status}`)
+          console.log(error)
+        })
     },
     // 인증 메일 재발송
     AuthRestart() {
+      console.log('이메일 인증 메일을 재발송합니다.')
       this.timeCounter = 5
       this.timer = this.timerStart()
     },
@@ -71,7 +80,7 @@ export default {
   computed: {
     // 이메일 마스킹 처리 후 return
     emailMasked() {
-      return 'ab**@*****.com'
+      return this.email
     }
   },
   watch: {
@@ -80,7 +89,14 @@ export default {
         this.authPossible = false
       }
     }
-  }
+  },
+  mounted() {
+    if (this.timer) {
+      this.timerStop(this.timer)
+      this.timer = null
+    }
+    this.timer = this.timerStart()
+  },
 }
 </script>
 
@@ -91,6 +107,7 @@ export default {
 	background: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 0px;
+  left: 0px;
 
   display: flex;
   flex-direction: column;

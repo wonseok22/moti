@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @AllArgsConstructor
@@ -21,7 +23,11 @@ public class PlaylistMission {
     private Long playlistId;
 
     @ManyToOne
-    @JoinColumn(name="missionId")
+    @JoinColumn(name="missionId", updatable = false, insertable = false)
     private Mission mission;
+    
+    @ManyToOne
+    @JoinColumn(name = "playlistId", updatable = false, insertable = false)
+    private Playlist playlist;
 
 }

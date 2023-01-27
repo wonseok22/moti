@@ -23,6 +23,13 @@ public class Playlist {
 
     private String playlistDesc;
     
+    @ManyToOne
+    @JoinColumn(name="categoryId")
+    private Category category;
+    
+    @OneToMany(mappedBy = "playlist")
+    private List<UserPlaylist> userPlaylists = new ArrayList<>();
+    
     @OneToMany(mappedBy = "playlist")
     private List<PlaylistMission> playlistMissions = new ArrayList<>();
     @ManyToOne

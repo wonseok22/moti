@@ -22,15 +22,17 @@ public class UserPlaylistDto {
     private LocalDateTime startDate;
     
     private LocalDateTime endDate;
-
+    
+    private int done;
+    
     public static UserPlaylistDto toDto(UserPlaylist userPlaylist){
-        
         return new UserPlaylistDto(
                 userPlaylist.getUserPlaylistId(),
                 userPlaylist.getUser().getUserId(),
                 PlaylistDto.toDto(userPlaylist.getPlaylist()),
                 userPlaylist.getStartDate(),
-                userPlaylist.getEndDate()
+                userPlaylist.getEndDate(),
+                userPlaylist.getDone()
         );
     }
 

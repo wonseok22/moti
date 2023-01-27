@@ -16,7 +16,7 @@ import javax.persistence.OneToOne;
 @ToString
 public class Profile {
     @Id
-    private Long id;
+    private Long profileId;
     private String userDesc;
     private int follower;
     private int following;

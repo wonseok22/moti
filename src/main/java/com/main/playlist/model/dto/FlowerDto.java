@@ -11,18 +11,12 @@ import lombok.Setter;
 public class FlowerDto {
     private Long flowerId;
     
-    private String saveFolder;
-    
-    private String originalFile;
-    
-    private String saveFile;
+    private String flowerImageUrl;
 
     public static FlowerDto toDto(Flower flower){
         return new FlowerDto(
                 flower.getFlowerId(),
-                flower.getSaveFolder(),
-                flower.getOriginalFile(),
-                flower.getSaveFile()
+                flower.getFlowerImageUrl()
         );
     }
 }

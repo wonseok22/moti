@@ -59,7 +59,7 @@ public class ProfileServiceImpl implements ProfileService{
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-                profileImage.setSaveFolder(userId);
+                profileImage.setProfileImageUrl(userId);
             }
 
             // 한줄소개 변경한 경우
@@ -138,7 +138,7 @@ public class ProfileServiceImpl implements ProfileService{
         try {
             // 팔로우 요청인 경우
             if("follow".equals(type)) {
-                follow.setId(uuid);
+                follow.setFollowId(uuid);
                 follow.setFollowerId(userId);
                 follow.setFollowingId(targetId);
                 follow.setFollowerNickname(requestuser.getNickname());

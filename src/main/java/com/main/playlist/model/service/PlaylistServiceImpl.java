@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,6 @@ public class PlaylistServiceImpl implements PlaylistService{
     @Autowired
     private CategoryRepository categoryRepository;
     
-
     @Autowired
     private PlaylistRepository playlistRepository;
     
@@ -32,15 +32,18 @@ public class PlaylistServiceImpl implements PlaylistService{
     @Override
     public List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException {
         List<UserPlaylistDto> userPlaylists = new ArrayList<>();
-        userPlaylistRepository.findByUser_UserId(userId).forEach(x->userPlaylists.add(UserPlaylistDto.toDto(x)));
+        
+        userPlaylistRepository.findByUser_UserId(userId).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
+        
         return userPlaylists;
     }
 
     @Override
     public List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException {
-        Category category = categoryRepository.findByCategoryId(categoryId);
         List<PlaylistDto> playlists = new ArrayList<>();
-        category.getPlaylists().forEach(x->playlists.add(PlaylistDto.toDto(x)));
+        
+        categoryRepository.findByCategoryId(categoryId).getPlaylists().forEach(x -> playlists.add(PlaylistDto.toDto(x)));
+        
         return playlists;
     }
 
@@ -58,11 +61,17 @@ public class PlaylistServiceImpl implements PlaylistService{
 
     @Override
     public UserPlaylist registMyPlaylist(String userId, Long playlistId) throws SQLException {
+        
         User user = userRepository.findByUserId(userId);
+        
         Playlist playlist = playlistRepository.findByPlaylistId(playlistId);
+        
         UserPlaylist userPlaylist = new UserPlaylist();
+        
         userPlaylist.setPlaylist(playlist);
         userPlaylist.setUser(user);
+        userPlaylist.setStartDate(LocalDateTime.now());
+        userPlaylist.setEndDate(LocalDateTime.now().plusDays(7));
         
         userPlaylistRepository.save(userPlaylist);
 

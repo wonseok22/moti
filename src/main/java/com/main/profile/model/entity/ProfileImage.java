@@ -14,11 +14,8 @@ import javax.persistence.Table;
 @Entity(name = "profileImage")
 public class ProfileImage {
     @Id
-    private Long id;
-    private String saveFolder;
-    private String originalFile;
-    private String saveFile;
-
-
+    private Long profileImageId;
+    
+    private String profileImageUrl;
 
 }

@@ -20,14 +20,6 @@ public class Comment {
 	@GeneratedValue
 	private Long commentId;
 	
-	private String userId;
-	
-	private Long feedNo;
-	
-	private String content;
-	
-	private LocalDateTime createdDate;
-	
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "userId", insertable = false, updatable = false)
 	private User user;
@@ -35,5 +27,9 @@ public class Comment {
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "feedId", insertable = false, updatable = false)
 	private Feed feed;
-
+	
+	private String content;
+	
+	private LocalDateTime createdDate;
+	
 }

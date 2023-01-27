@@ -1,18 +1,24 @@
 package com.main.feed.model.dto;
 
+import com.main.feed.model.entity.File;
 import lombok.*;
 
 @Setter
 @Getter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 public class FileDto {
 	
-	private Long fileNo;
-	private Long feedNo;
-	private String saveFolder;
-	private String originalFile;
-	private String saveFile;
+	private Long fileId;
+	private Long feedId;
+	private String fileImageUrl;
+	
+	public static FileDto toDto (File file) {
+		return new FileDto(
+				file.getFileId(),
+				file.getFeed().getFeedId(),
+				file.getFileImageUrl()
+		);
+	}
 	
 }

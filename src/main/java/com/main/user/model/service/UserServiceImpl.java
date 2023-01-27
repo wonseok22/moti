@@ -55,12 +55,12 @@ public class UserServiceImpl implements UserService{
 
         // Profile Image Build
         ProfileImage profileImage = new ProfileImage();
-        profileImage.setId(uuid);
+        profileImage.setProfileImageId(uuid);
         profileImageRepository.save(profileImage);
 
         // Profile Build
         Profile profile = new Profile();
-        profile.setId(uuid);
+        profile.setProfileId(uuid);
         profile.setFollower(0);
         profile.setFollowing(0);
         profile.setProfileImage(profileImage);

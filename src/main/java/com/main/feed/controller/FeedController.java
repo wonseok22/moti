@@ -124,4 +124,34 @@ public class FeedController {
 		
 	}
 	
+	@ApiOperation(value = "피드 삭제", notes = "피드 삭제 API", response = Map.class)
+	@DeleteMapping("/{feedId}")
+	public ResponseEntity<?> deleteFeed (
+			@PathVariable @ApiParam(value = "삭제할 피드 ID", required = true) Long feedId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			int result = feedService.deleteFeed(feedId);
+			if (result == 1) {
+				logger.debug("피드 삭제 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("피드 삭제 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("피드 삭제 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
 }

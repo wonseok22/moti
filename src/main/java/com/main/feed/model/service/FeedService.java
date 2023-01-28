@@ -10,4 +10,5 @@ public interface FeedService {
 	Feed writeFeed(WriteFeedDto writeFeedDto) throws SQLException;
 	FeedDto viewFeed(Long feedId) throws SQLException;
 	Feed modifyFeed(Long feedId, String content) throws SQLException;
+	int deleteFeed(Long feedId) throws SQLException;
 }

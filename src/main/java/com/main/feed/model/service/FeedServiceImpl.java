@@ -14,6 +14,7 @@ import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
@@ -65,6 +66,14 @@ public class FeedServiceImpl implements FeedService {
 		feed.setContent(content);
 //		feed.setFiles();
 		return feedRepository.save(feed);
+	}
+	
+	@Override
+	@Transactional
+	public int deleteFeed(Long feedId) throws SQLException {
+//		Feed feed = feedRepository.findByFeedId(feedId);
+		// Like, Comment, File ... 처리
+		return feedRepository.deleteByFeedId(feedId);
 	}
 	
 }

@@ -19,7 +19,7 @@ public class File {
 	private Long fileId;
 	
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "feedId", insertable = false, updatable = false)
+	@JoinColumn(name = "feedId")
 	private Feed feed;
 	
 	private String fileImageUrl;

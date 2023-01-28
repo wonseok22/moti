@@ -1,7 +1,9 @@
 package com.main.feed.model.entity;
 
+import com.main.category.model.entity.Category;
 import com.main.playlist.model.entity.Mission;
 import com.main.playlist.model.entity.Playlist;
+import com.main.playlist.model.entity.UserPlaylist;
 import com.main.user.model.entity.User;
 import lombok.*;
 
@@ -21,26 +23,28 @@ import static javax.persistence.FetchType.*;
 public class Feed {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long feedId;
 	
-	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "userId", insertable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "userId")
 	private User user;
 	
-	// 연결 필요
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "playlistId", insertable = false, updatable = false)
-	private Playlist playlist;
+	@JoinColumn(name = "userPlaylistId")
+	private UserPlaylist userPlaylist;
 	
-	// 연결 필요
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "missionId", insertable = false, updatable = false)
+	@JoinColumn(name = "missionId")
 	private Mission mission;
 	
 	private String content;
 	
 	private LocalDateTime createdDate;
+	
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "categoryId")
+	private Category category;
 	
 	@OneToMany(mappedBy = "feed")
 	private List<Comment> comments = new ArrayList<>();

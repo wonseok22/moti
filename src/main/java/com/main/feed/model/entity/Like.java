@@ -20,11 +20,11 @@ public class Like {
 	private Long likeId;
 	
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "userId", insertable = false, updatable = false)
+	@JoinColumn(name = "userId")
 	private User user;
 	
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "feedId", insertable = false, updatable = false)
+	@JoinColumn(name = "feedId")
 	private Feed feed;
 
 }

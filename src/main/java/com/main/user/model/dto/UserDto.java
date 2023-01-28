@@ -26,9 +26,16 @@ public class UserDto {
     
     private String joinDate;
     
-    // 아이고~~
     public static UserDto toDto (User user) {
-        return null;
+        return new UserDto(
+                user.getUserId(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getNickname(),
+                user.getType(),
+                user.getTemporary(),
+                user.getJoinDate()
+        );
     }
     
     public User toEntity() {

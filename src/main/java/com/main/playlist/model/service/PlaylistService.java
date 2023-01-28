@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface PlaylistService {
     List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException; //내 플레이리스트 조회
-    List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException; //카테고리별 플레이리스트 조회
-    
-    UserPlaylistDto getMyPlaylist(String userId, Long playlistId) throws SQLException;  //내 플레이리스트 상세보기
-    
+
+    UserPlaylistDto getMyPlaylist(Long playlistId) throws SQLException;  //내 플레이리스트 상세보기
+
     PlaylistDto getPlaylist(Long playlistId) throws SQLException;  //플레이리스트 상세보기
-    
+
     UserPlaylist registMyPlaylist(String userId, Long playlistId) throws SQLException;  //내 플레이리스트 추가
 }
+

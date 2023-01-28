@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface UserPlaylistRepository extends JpaRepository<UserPlaylist,Long> {
-	public UserPlaylist findByUser_UserIdAndPlaylist_PlaylistId(String userId, Long playlistId);
+	public UserPlaylist findByUserPlaylistId(Long userPlaylistId);
 	public List<UserPlaylist> findByUser_UserId(String userId);
 }

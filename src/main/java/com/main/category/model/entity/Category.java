@@ -1,5 +1,6 @@
-package com.main.playlist.model.entity;
+package com.main.category.model.entity;
 
+import com.main.playlist.model.entity.Playlist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

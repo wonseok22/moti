@@ -3,7 +3,6 @@ package com.main.playlist.model.service;
 import com.main.playlist.model.dto.PlaylistDto;
 import com.main.playlist.model.dto.UserPlaylistDto;
 import com.main.playlist.model.entity.*;
-import com.main.playlist.model.respository.CategoryRepository;
 import com.main.playlist.model.respository.PlaylistRepository;
 import com.main.playlist.model.respository.UserPlaylistRepository;
 import com.main.user.model.entity.User;
@@ -20,9 +19,7 @@ import java.util.List;
 public class PlaylistServiceImpl implements PlaylistService{
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
-    
+
     @Autowired
     private PlaylistRepository playlistRepository;
     
@@ -39,18 +36,9 @@ public class PlaylistServiceImpl implements PlaylistService{
     }
 
     @Override
-    public List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException {
-        List<PlaylistDto> playlists = new ArrayList<>();
+    public UserPlaylistDto getMyPlaylist(Long userPlaylistId) throws SQLException {
         
-        categoryRepository.findByCategoryId(categoryId).getPlaylists().forEach(x -> playlists.add(PlaylistDto.toDto(x)));
-        
-        return playlists;
-    }
-
-    @Override
-    public UserPlaylistDto getMyPlaylist(String userId, Long playlistId) throws SQLException {
-        
-        return UserPlaylistDto.toDto(userPlaylistRepository.findByUser_UserIdAndPlaylist_PlaylistId(userId,playlistId));
+        return UserPlaylistDto.toDto(userPlaylistRepository.findByUserPlaylistId(userPlaylistId));
     }
 
     @Override

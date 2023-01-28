@@ -1,6 +1,7 @@
 package com.main.feed.model.service;
 
 import com.main.category.model.respository.CategoryRepository;
+import com.main.feed.model.dto.FeedDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.repository.CommentRepository;
@@ -53,4 +54,10 @@ public class FeedServiceImpl implements FeedService {
 		System.out.println("feed = " + feed.toString());
 		return feedRepository.save(feed);
 	}
+	
+	@Override
+	public FeedDto viewFeed(Long feedId) throws SQLException {
+		return FeedDto.toDto(feedRepository.findByFeedId(feedId));
+	}
+	
 }

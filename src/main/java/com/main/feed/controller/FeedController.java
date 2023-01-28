@@ -92,4 +92,36 @@ public class FeedController {
 		
 	}
 	
+	// 파일 첨부 배제됨
+	@ApiOperation(value = "피드 수정", notes = "피드 수정 API", response = Map.class)
+	@PutMapping("/{feedId}")
+	public ResponseEntity<?> modifyFeed (
+			@PathVariable @ApiParam(value = "수정할 피드 ID", required = true) Long feedId,
+			@RequestBody @ApiParam(value = "수정할 내용", required = true) String content) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			Feed feed = feedService.modifyFeed(feedId, content);
+			if(feed != null) {
+				logger.debug("피드 수정 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("피드 수정 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("피드 수정 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
 }

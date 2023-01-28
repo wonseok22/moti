@@ -10,13 +10,13 @@ import lombok.*;
 public class FileDto {
 	
 	private Long fileId;
-	private Long feedId;
+	private FeedDto feed;
 	private String fileImageUrl;
 	
 	public static FileDto toDto (File file) {
 		return new FileDto(
 				file.getFileId(),
-				file.getFeed().getFeedId(),
+				FeedDto.toDto(file.getFeed()),
 				file.getFileImageUrl()
 		);
 	}

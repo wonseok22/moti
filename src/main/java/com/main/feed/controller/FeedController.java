@@ -1,9 +1,9 @@
 package com.main.feed.controller;
 
+import com.main.feed.model.dto.FeedDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.service.FeedService;
-import com.main.feed.model.service.FileService;
 import com.main.user.model.service.JwtService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,11 +33,9 @@ public class FeedController {
 	private FeedService feedService;
 	
 	@Autowired
-	private FileService fileService;
-	
-	@Autowired
 	private JwtService jwtService;
 	
+	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
 	@PostMapping
 	public ResponseEntity<?> writeFeed (
@@ -49,8 +47,6 @@ public class FeedController {
 		try {
 			Feed feed = feedService.writeFeed(writeFeedDto);
 			if(feed != null) {
-				System.out.println("feed.id = " + feed.getFeedId());
-				System.out.println("feed.content = " + feed.getContent());
 				logger.debug("피드 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
@@ -62,6 +58,32 @@ public class FeedController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("피드 등록 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
+	// 파일 첨부 배제됨
+	@ApiOperation(value = "피드 1개 조회", notes = "피드 1개 조회 API", response = Map.class)
+	@GetMapping("/{feedId}")
+	public ResponseEntity<?> viewFeed (
+			@PathVariable @ApiParam(value = "조회할 피드 ID", required = true) Long feedId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			FeedDto feed = feedService.viewFeed(feedId);
+			logger.debug("피드 조회 결과 : {}", "성공");
+			resultMap.put("feed", feed);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("피드 조회 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

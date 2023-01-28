@@ -2,7 +2,6 @@ package com.main.feed.model.entity;
 
 import com.main.category.model.entity.Category;
 import com.main.playlist.model.entity.Mission;
-import com.main.playlist.model.entity.Playlist;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.user.model.entity.User;
 import lombok.*;
@@ -11,8 +10,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
@@ -30,11 +27,11 @@ public class Feed {
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "userPlaylistId")
 	private UserPlaylist userPlaylist;
 	
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "missionId")
 	private Mission mission;
 	
@@ -42,7 +39,7 @@ public class Feed {
 	
 	private LocalDateTime createdDate;
 	
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "categoryId")
 	private Category category;
 	

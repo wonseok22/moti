@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Setter
 @Getter
@@ -20,11 +22,11 @@ public class UserPlaylist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userPlaylistId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="userId")
     private User user;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="playlistId")
     private Playlist playlist;
 

@@ -17,17 +17,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 public class PlaylistDto {
     private Long playlistId;
-    
+
     private String playlistName;
 
     private String playlistDesc;
 
     private List<Mission> missions;
-    
+
     private int total;
-    
+
     private int current;
-    
+
     private FlowerDto flower;
 
     public static PlaylistDto toDto(Playlist playlist){
@@ -35,12 +35,12 @@ public class PlaylistDto {
         playlist.getPlaylistMissions().forEach(x -> mission.add(x.getMission()));
         AtomicInteger totalCnt = new AtomicInteger();
         AtomicInteger currentCnt = new AtomicInteger();
-        
+
         playlist.getUserPlaylists().forEach(p->{
                     if(p.getEndDate().isAfter(LocalDateTime.now()))
                         currentCnt.getAndIncrement();
                     totalCnt.getAndIncrement();
-        }
+                }
         );
         return new PlaylistDto(
                 playlist.getPlaylistId(),
@@ -53,3 +53,4 @@ public class PlaylistDto {
         );
     }
 }
+

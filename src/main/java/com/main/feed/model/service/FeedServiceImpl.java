@@ -51,13 +51,20 @@ public class FeedServiceImpl implements FeedService {
 		feed.setCategory(upl.getPlaylist().getCategory());
 		feed.setContent(writeFeedDto.getContent());
 		feed.setCreatedDate(LocalDateTime.now());
-		System.out.println("feed = " + feed.toString());
 		return feedRepository.save(feed);
 	}
 	
 	@Override
 	public FeedDto viewFeed(Long feedId) throws SQLException {
 		return FeedDto.toDto(feedRepository.findByFeedId(feedId));
+	}
+	
+	@Override
+	public Feed modifyFeed(Long feedId, String content) throws SQLException {
+		Feed feed = feedRepository.findByFeedId(feedId);
+		feed.setContent(content);
+//		feed.setFiles();
+		return feedRepository.save(feed);
 	}
 	
 }

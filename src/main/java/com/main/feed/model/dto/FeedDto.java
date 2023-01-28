@@ -17,8 +17,8 @@ import java.util.List;
 public class FeedDto {
 	
 	private Long feedId; // AI
-	private UserDto userDto; //
-	private UserPlaylistDto userPlaylistDto; // 맏냐?
+	private UserDto userDto;
+	private UserPlaylistDto userPlaylistDto;
 	private String missionName;
 	private String content;
 	private LocalDateTime createdDate;

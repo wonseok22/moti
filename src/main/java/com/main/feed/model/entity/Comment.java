@@ -20,11 +20,11 @@ public class Comment {
 	@GeneratedValue
 	private Long commentId;
 	
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "feedId")
 	private Feed feed;
 	

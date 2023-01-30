@@ -4,18 +4,21 @@
       <p>moti</p>
     </div>
     <div class="feed-lists">
-      <SingleFeed/>
+      <MainFeedHeader/>
+      <SingleFeedBody/>
     </div>
     <NavigationBar></NavigationBar>
   </div>
 </template>
 
 <script>
-import SingleFeed from '../components/SingleFeed.vue'
+import MainFeedHeader from '@/components/MainFeedHeader.vue'
+import SingleFeedBody from '../components/SingleFeedBody.vue'
 
 export default {
   components: {
-    SingleFeed
+    MainFeedHeader,
+    SingleFeedBody
   }
 }
 </script>

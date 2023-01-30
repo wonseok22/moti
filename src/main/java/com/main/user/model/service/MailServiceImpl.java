@@ -77,7 +77,8 @@ public class MailServiceImpl implements MailService {
     public boolean checkCode(String code) {
         String email = redisUtil.getData(code);
         if(email!=null){
-            redisUtil.setData(email,"validate");
+            redisUtil.deleteData(code);
+            redisUtil.setDataExpire(email,"validate",60*10L);
             return true;
         }
         else

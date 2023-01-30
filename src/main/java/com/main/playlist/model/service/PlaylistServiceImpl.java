@@ -3,8 +3,8 @@ package com.main.playlist.model.service;
 import com.main.playlist.model.dto.PlaylistDto;
 import com.main.playlist.model.dto.UserPlaylistDto;
 import com.main.playlist.model.entity.*;
-import com.main.playlist.model.respository.PlaylistRepository;
-import com.main.playlist.model.respository.UserPlaylistRepository;
+import com.main.playlist.model.repository.PlaylistRepository;
+import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class PlaylistServiceImpl implements PlaylistService{
     public List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException {
         List<UserPlaylistDto> userPlaylists = new ArrayList<>();
         
-        userPlaylistRepository.findByUser_UserId(userId).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
+        userPlaylistRepository.findByUser_UserIdAndEndDateAfter(userId, LocalDateTime.now()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
         
         return userPlaylists;
     }

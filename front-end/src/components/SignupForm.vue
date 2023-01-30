@@ -116,7 +116,7 @@ export default {
         // 중복체크
         this.$axios({
           method: 'get',
-          url: `${this.$baseUrl}/users/check?type=id&value=${this.id}/`
+          url: `${this.$baseUrl}/users/check?type=id&value=${this.id}`
         })
           .then((response) => {
             // 응답 예시

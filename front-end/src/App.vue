@@ -13,22 +13,9 @@
   text-align: center;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-
 // 컴포넌트 중앙 정렬 등
 .account-form-comp {
-  height: 800px;
+  height: $base-height;
   margin: 0px 10px;
   
   display: flex;

@@ -33,18 +33,9 @@ export default {
       const payload = {
         email: this.email
       }
-      const authResult = this.$store.dispatch('authCheck', payload)
       // 인증에 성공했을 경우
-      console.log(authResult)
-      authResult
-        .then((response) => {
-        console.log(`이메일 인증 성공/status: ${response.status}`)
-        this.$router.push({ path: '/signup/nickname'})
-        })
-        .catch((error) => {
-          console.log(`이메일 인증 실패/status: ${error.status}`)
-          console.log(error)
-        })
+      // 지금 실패해도 catch로 안 넘어감
+      this.$store.dispatch('authCheck', payload)
     },
     // 인증 메일 재발송
     AuthRestart() {

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class CommentDto {
 
 	private Long commentId;
-	private UserDto user;
+	private UserDto userDto;
 	private String content;
 	private LocalDateTime createdDate;
 	// Comment에서는 매칭된 Feed가 무엇인지 알 필요가 없다.

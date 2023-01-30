@@ -2,7 +2,9 @@ package com.main.feed.model.service;
 
 import com.main.category.model.respository.CategoryRepository;
 import com.main.feed.model.dto.FeedDto;
+import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
+import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.repository.CommentRepository;
 import com.main.feed.model.repository.FeedRepository;
@@ -74,6 +76,16 @@ public class FeedServiceImpl implements FeedService {
 //		Feed feed = feedRepository.findByFeedId(feedId);
 		// Like, Comment, File ... 처리
 		return feedRepository.deleteByFeedId(feedId);
+	}
+	
+	@Override
+	public Comment writeComment (WriteCommentDto writeCommentDto) throws SQLException {
+		Comment comment = new Comment();
+		comment.setFeed(feedRepository.findByFeedId(writeCommentDto.getFeedId()));
+		comment.setUser(userRepository.findByUserId(writeCommentDto.getUserId()));
+		comment.setContent(writeCommentDto.getContent());
+		comment.setCreatedDate(LocalDateTime.now());
+		return commentRepository.save(comment);
 	}
 	
 }

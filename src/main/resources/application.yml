@@ -28,7 +28,7 @@ spring:
           starttls:
             enable: true
   redis:
-    host: 0.0.0.0
+    host: redis
     password:
     port: 6379
 file:

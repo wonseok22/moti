@@ -8,6 +8,7 @@ import com.main.user.model.dto.UserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.service.JwtService;
 import com.main.user.model.service.UserService;
+import com.main.util.S3Upload;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -44,11 +45,16 @@ public class ProfileController {
     @ApiOperation(value = "프로필 수정", notes = "프로필 수정 API", response = Map.class)
     @PutMapping("")
     public ResponseEntity<?> modifyProfile(
-              @ApiParam(value = "수정하려는 프로필 Dto", required = true)  @RequestBody ProfileDto profileDto, HttpServletRequest request) {
+              @ApiParam(value = "수정하려는 프로필 Dto", required = true) @RequestPart(value = "profileDto") ProfileDto profileDto,
+              @RequestPart(value = "profileImage",required=false) MultipartFile profileImage,
+              HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         if(jwtService.checkToken(request.getHeader("access-token"))) {
             try {
+                if(profileImage != null) {
+                    profileDto.setImage(profileImage);
+                }
                 int result = profileService.modifyProfile(profileDto);
                 if (result == 1) {
                     // 프로필 수정 성공한 경우, 성공 메시지 반환, 200 응답 코드

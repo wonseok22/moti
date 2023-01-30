@@ -10,6 +10,7 @@ import com.main.profile.model.repository.ProfileImageRepository;
 import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
+import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,15 +33,16 @@ public class ProfileServiceImpl implements ProfileService{
     private FollowRepository followRepository;
 
 
-    @Value("${file.path}")
-    private String uploadFolder;
 
+    @Autowired
+    private S3Upload s3Upload;
 
     @Override
     public int modifyProfile(ProfileDto profileDto) throws Exception {
 
         try{
             String userId = profileDto.getUserId();
+            System.out.println(profileDto.toString());
             User user = userRepository.findByUserId(userId);
             Profile profile = user.getProfile();
             ProfileImage profileImage = profile.getProfileImage();
@@ -53,13 +55,8 @@ public class ProfileServiceImpl implements ProfileService{
             // 프로필 사진 변경한 경우
             if (profileDto.getImage() != null){
                 //이미지 저장 로직
-                Path ImageFilePath = Paths.get(uploadFolder+ userId);
-                try {
-                    Files.write(ImageFilePath, profileDto.getImage().getBytes());
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-                profileImage.setProfileImageUrl(userId);
+                String ImagePath = s3Upload.uploadFiles(profileDto.getImage(), "static");
+                profileImage.setProfileImageUrl(ImagePath);
             }
 
             // 한줄소개 변경한 경우

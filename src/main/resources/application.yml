@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -33,4 +37,15 @@ spring:
     port: 6379
 file:
   path: C:/Users/SSAFY/ideaProjects/S08P12A509/upload
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA6EDQJKQRUPDNEE4F
+      secret-key: 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
+    s3:
+      bucket : motiimages
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 

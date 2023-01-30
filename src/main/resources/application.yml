@@ -28,7 +28,7 @@ spring:
           starttls:
             enable: true
   redis:
-    host: redis
+    host: moti.today
     password:
     port: 6379
 file:

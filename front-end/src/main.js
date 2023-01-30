@@ -20,6 +20,7 @@ store.$axios = axios
 
 // const baseUrl = 'http://i8a509.p.ssafy.io:8080'
 const baseUrl = 'https://moti.today/api'
+
 Vue.prototype.$baseUrl = baseUrl
 store.$baseUrl = baseUrl
 

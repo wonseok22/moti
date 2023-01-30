@@ -10,10 +10,6 @@ import ProfileMain from '@/views/ProfileView'
 import SearchPage from '@/views/SearchView'
 import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
-import FeedPage from '@/views/FeedPage'
-import ProfileMain from '@/views/ProfileMain'
-import SearchPage from '@/views/SearchPage'
-import UserFlowerList from '@/views/UserFlowerList'
 
 Vue.use(VueRouter)
 

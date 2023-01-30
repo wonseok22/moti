@@ -17,11 +17,18 @@
     border-bottom: 1px solid #ABABAB;
     border-radius: 10px 10px 0px 0px;
 
+    .material-icons-outlined {
+        font-size: 38px;
+        color: $light-grey;    
+    }
+
     .material-icons {
-        font-size: 38px;    
+        font-size: 38px;
+        color: $light-grey;    
     }
 
     .material-symbols-outlined {
         font-size: 38px;
+        color: $light-grey;
     }
 }

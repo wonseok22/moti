@@ -88,4 +88,10 @@ public class FeedServiceImpl implements FeedService {
 		return commentRepository.save(comment);
 	}
 	
+	@Override
+	@Transactional
+	public int deleteComment (Long commentId) throws SQLException {
+		return commentRepository.deleteByCommentId(commentId);
+	}
+	
 }

@@ -10,6 +10,7 @@ import ProfileMain from '@/views/ProfileView'
 import SearchPage from '@/views/SearchView'
 import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
+import FeedComment from '@/components/FeedComment'
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,11 @@ const routes = [
     path:'/feed',
     name:'feed',
     component: FeedView,
+  },
+  {
+    path:'/comment/:feedId',
+    name:'comment',
+    component:FeedComment,
   },
   {
     path:'/profile',

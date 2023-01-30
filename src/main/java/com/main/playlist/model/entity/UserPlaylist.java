@@ -22,11 +22,11 @@ public class UserPlaylist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userPlaylistId;
     
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name="userId")
     private User user;
     
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name="playlistId")
     private Playlist playlist;
 

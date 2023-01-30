@@ -1,6 +1,6 @@
 package com.main.feed.model.service;
 
-import com.main.category.model.respository.CategoryRepository;
+import com.main.category.model.repository.CategoryRepository;
 import com.main.feed.model.dto.FeedDto;
 import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
@@ -10,8 +10,8 @@ import com.main.feed.model.repository.CommentRepository;
 import com.main.feed.model.repository.FeedRepository;
 import com.main.feed.model.repository.FileRepository;
 import com.main.playlist.model.entity.UserPlaylist;
-import com.main.playlist.model.respository.MissionRepository;
-import com.main.playlist.model.respository.UserPlaylistRepository;
+import com.main.playlist.model.repository.MissionRepository;
+import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

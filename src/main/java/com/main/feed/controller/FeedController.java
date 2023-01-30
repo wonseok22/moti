@@ -6,7 +6,6 @@ import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.service.FeedService;
-import com.main.user.model.service.JwtService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,9 +32,6 @@ public class FeedController {
 	
 	@Autowired
 	private FeedService feedService;
-	
-	@Autowired
-	private JwtService jwtService;
 	
 	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
@@ -182,6 +178,36 @@ public class FeedController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("댓글 등록 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
+	@ApiOperation(value = "댓글 삭제", notes = "댓글 삭제 API", response = Map.class)
+	@DeleteMapping("/comment/{commentId}")
+	public ResponseEntity<?> deleteComment (
+			@PathVariable @ApiParam(value = "삭제할 댓글 ID", required = true) Long commentId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			int result = feedService.deleteComment(commentId);
+			if (result == 1) {
+				logger.debug("댓글 삭제 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("댓글 삭제 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("댓글 삭제 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

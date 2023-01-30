@@ -1,8 +1,6 @@
 package com.main.feed.model.dto;
 
 import com.main.feed.model.entity.Feed;
-import com.main.playlist.model.dto.PlaylistDto;
-import com.main.playlist.model.dto.UserPlaylistDto;
 import com.main.user.model.dto.UserDto;
 import lombok.*;
 
@@ -17,8 +15,8 @@ import java.util.List;
 public class FeedDto {
 	
 	private Long feedId; // AI
-	private UserDto userDto;
-	private UserPlaylistDto userPlaylistDto;
+	private String nickname;
+	private String playlistName;
 	private String missionName;
 	private String content;
 	private LocalDateTime createdDate;
@@ -40,8 +38,8 @@ public class FeedDto {
 		
 		return new FeedDto (
 				feed.getFeedId(),
-				UserDto.toDto(feed.getUser()),
-				UserPlaylistDto.toDto((feed.getUserPlaylist())),
+				UserDto.toDto(feed.getUser()).getNickname(),
+				feed.getUserPlaylist().getPlaylist().getPlaylistName(),
 				feed.getMission().getMissionName(),
 				feed.getContent(),
 				feed.getCreatedDate(),

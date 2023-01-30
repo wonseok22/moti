@@ -221,9 +221,9 @@ public class FeedController {
 	// APIs for LIKE
 	// ------------------------------------------------------------------
 	
-	@ApiOperation(value = "좋아요 활성화", notes = "좋아요 활성화 API", response = Map.class)
+	@ApiOperation(value = "좋아요 추가", notes = "좋아요 추가 API", response = Map.class)
 	@PostMapping("/like/{userId}/{feedId}")
-	public ResponseEntity<?> hitLike (
+	public ResponseEntity<?> addLike (
 			@PathVariable @ApiParam(value = "좋아요 누른 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
@@ -231,19 +231,50 @@ public class FeedController {
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
 		try {
-			Like like = feedService.hitLike(userId, feedId);
+			Like like = feedService.addLike(userId, feedId);
 			if(like != null) {
-				logger.debug("좋아요 활성화 결과 : {}", "성공");
+				logger.debug("좋아요 추가 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			} else {
-				logger.debug("좋아요 활성화 결과 : {}", "실패");
+				logger.debug("좋아요 추가 결과 : {}", "실패");
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("좋아요 활성화 실패 : {}", e);
+			logger.error("좋아요 추가 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
+	@ApiOperation(value = "좋아요 취소", notes = "좋아요 취소 API", response = Map.class)
+	@DeleteMapping("/like/{userId}/{feedId}")
+	public ResponseEntity<?> deleteLike (
+			@PathVariable @ApiParam(value = "좋아요 누른 유저 ID", required = true) String userId,
+			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			int result = feedService.deleteLike(userId, feedId);
+			if (result == 1) {
+				logger.debug("좋아요 취소 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("좋아요 취소 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("좋아요 취소 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

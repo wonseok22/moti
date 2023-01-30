@@ -16,5 +16,6 @@ public interface FeedService {
 	int deleteFeed(Long feedId) throws SQLException;
 	Comment writeComment (WriteCommentDto writeCommentDto) throws SQLException;
 	int deleteComment (Long commentId) throws SQLException;
-	Like hitLike (String userId, Long feedId) throws SQLException;
+	Like addLike (String userId, Long feedId) throws SQLException;
+	int deleteLike (String userId, Long feedId) throws SQLException;
 }

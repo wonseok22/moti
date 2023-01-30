@@ -100,11 +100,17 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Like hitLike (String userId, Long feedId) {
+	public Like addLike (String userId, Long feedId) {
 		Like like = new Like();
 		like.setUser(userRepository.findByUserId(userId));
 		like.setFeed(feedRepository.findByFeedId(feedId));
 		return likeRepository.save(like);
+	}
+	
+	@Override
+	@Transactional
+	public int deleteLike (String userId, Long feedId) throws SQLException {
+		return likeRepository.deleteByUser_UserIdAndFeed_FeedId(userId, feedId);
 	}
 	
 }

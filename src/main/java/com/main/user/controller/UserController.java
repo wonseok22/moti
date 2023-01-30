@@ -150,6 +150,7 @@ public class UserController {
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
         }
+
         else {
             logger.error("access-token 사용 불가능, 재발급 요청");
             resultMap.put("message", FAIL);

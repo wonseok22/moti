@@ -5,8 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
-
 @Entity(name = "likes")
 @Getter
 @Setter
@@ -16,7 +14,7 @@ import static javax.persistence.FetchType.*;
 public class Like {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long likeId;
 	
 	@ManyToOne

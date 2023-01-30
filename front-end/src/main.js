@@ -4,6 +4,10 @@ import store from './store'
 import router from './router'
 import axios from 'axios'
 
+import NavigationBar from './components/NavigationBar.vue'
+
+Vue.component(NavigationBar.name, NavigationBar)
+
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios

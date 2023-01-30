@@ -4,10 +4,10 @@
     justify-content: center;
     align-items: center;
     padding: 8px 22.5px;
-    gap: 49px;
+    gap: 15%;
 
-    position: absolute;
-    width: 360px;
+    position: fixed;
+    width: 100vw;
     height: 56px;
     left: 0px;
     top: 704px;
@@ -16,8 +16,19 @@
     border-top: 1px solid #ABABAB;
     border-bottom: 1px solid #ABABAB;
     border-radius: 10px 10px 0px 0px;
-}
 
-.material-icons.md-40 {
-    font-size: 40px;
+    .material-icons-outlined {
+        font-size: 38px;
+        color: $light-grey;    
+    }
+
+    .material-icons {
+        font-size: 38px;
+        color: $light-grey;    
+    }
+
+    .material-symbols-outlined {
+        font-size: 38px;
+        color: $light-grey;
+    }
 }

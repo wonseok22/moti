@@ -1,29 +1,23 @@
 <template>
   <div>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
-      rel="stylesheet">
     <div class="navbar">
       <router-link to="feed" 
-        class="material-icons md-40"
-        style="color:#A3A3A3;">
+        class="material-icons-outlined">
         home
       </router-link>
 
       <router-link to="userflowerlist" 
-        class="material-icons md-40"
-        style="color:#A3A3A3;">
+        class="material-icons">
         history_edu
       </router-link>
 
       <router-link to="search" 
-        class="material-icons md-40"
-        style="color:#A3A3A3;">
+        class="material-icons">
         search
       </router-link>
 
       <router-link to="profile" 
-        class="material-icons md-40"
-        style="color:#A3A3A3;">
+        class="material-symbols-outlined">
         account_circle
       </router-link>
 

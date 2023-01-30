@@ -23,7 +23,6 @@ const baseUrl = 'https://moti.today/api'
 
 Vue.prototype.$baseUrl = baseUrl
 store.$baseUrl = baseUrl
-
 new Vue({
   store,
   router,

@@ -1,7 +1,9 @@
 package com.main.feed.controller;
 
 import com.main.feed.model.dto.FeedDto;
+import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
+import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.service.FeedService;
 import com.main.user.model.service.JwtService;
@@ -146,6 +148,40 @@ public class FeedController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("피드 삭제 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
+	// ------------------------------------------------------------------
+	// 댓글 관리
+	// ------------------------------------------------------------------
+	
+	@ApiOperation(value = "댓글 작성", notes = "댓글 작성 API", response = Map.class)
+	@PostMapping("/comment")
+	public ResponseEntity<?> writeComment (
+			@RequestBody @ApiParam(value = "댓글 내용", required = true)WriteCommentDto writeCommentDto) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			Comment comment = feedService.writeComment(writeCommentDto);
+			if(comment != null) {
+				logger.debug("댓글 등록 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("댓글 등록 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("댓글 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

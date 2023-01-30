@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.*;
 public class Comment {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long commentId;
 	
 	@ManyToOne

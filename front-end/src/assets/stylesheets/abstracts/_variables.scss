@@ -54,7 +54,7 @@ $text-base-color: #2D2D2D!default;
 
 /// light yellow
 /// @type Color
-$light-yellow: #F2F5F9 !default;
+$light-yellow: #FFFDF5 !default;
 
 /// @type Color
 $dark-grey: #777777 !default;
@@ -67,6 +67,8 @@ $main-green: #04C584 !default;
 
 /// @type Color
 $murky-green: #A4D1C2 !default;
+
+
 
 /// Container's maximum width
 /// @type Length
@@ -86,3 +88,9 @@ $fs-7: 0.688rem !default;
 
 /// @type Length
 $account-height: 60% !default;
+
+// HTML 기본 너비
+$base-width: 360px;
+
+// HTML 기본 높이
+$base-height: 800px;

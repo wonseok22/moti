@@ -62,7 +62,7 @@ export default {
         console.log('닉네임 중복체크 실행')
         this.$axios({
           method: 'get',
-          url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}/`
+          url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}`
         })
           .then((response) => {
             // 응답 예시

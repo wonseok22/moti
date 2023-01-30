@@ -74,7 +74,13 @@ export default {
       }
       return false
     }
-  }
+  },
+  // // 이미 로그인 상태라면 피드로 이동
+  // created() {
+  //   if (this.$store.getters.isLoggedIn) {
+  //     this.$router.push('')
+  //   }
+  // }
 }
 </script>
 

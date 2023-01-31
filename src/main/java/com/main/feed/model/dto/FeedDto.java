@@ -22,7 +22,8 @@ public class FeedDto {
 	private LocalDateTime createdDate;
 	private List<CommentDto> comments;
 	private List<FeedImageDto> feedImages;
-	private List<LikeDto> likes;
+	private Long likes;
+	private boolean hit;
 	
 	public static FeedDto toDto(Feed feed) {
 	
@@ -45,7 +46,8 @@ public class FeedDto {
 				feed.getCreatedDate(),
 				comments,
 				feedImages,
-				likes
+				(long) likes.size(),
+				false
 		);
 		
 	}

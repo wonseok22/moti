@@ -93,13 +93,10 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public FeedDto viewFeed(Long feedId) throws SQLException {
+	public FeedDto viewFeed(Long feedId, String userId) throws SQLException {
 		FeedDto feedDto = FeedDto.toDto(feedRepository.findByFeedId(feedId));
-//		List<FeedImage> feedImages = new ArrayList<>();
-//		feedImageRepository.findAllByFeedId(feedId).forEach(x -> feedImages.add(x));
-//		for (int i = 0; i < feedImages.size(); i++) {
-//			feedDto.getFeedImages().add(FeedImageDto.toDto(feedImages.get(i)));
-//		}
+		Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedId, userId);
+		if (like != null) feedDto.setHit(true);
 		return feedDto;
 	}
 	
@@ -137,6 +134,10 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public Like addLike (String userId, Long feedId) {
+		// 이미 눌린 상태면 그냥 그대로 반환
+		Like check = likeRepository.findByFeed_FeedIdAndUser_UserId(feedId, userId);
+		if (check != null) return check;
+		
 		Like like = new Like();
 		like.setUser(userRepository.findByUserId(userId));
 		like.setFeed(feedRepository.findByFeedId(feedId));

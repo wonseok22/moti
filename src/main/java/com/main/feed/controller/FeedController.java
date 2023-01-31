@@ -41,7 +41,6 @@ public class FeedController {
 	// APIs for FEED
 	// ------------------------------------------------------------------
 	
-	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
 	@PostMapping
 	public ResponseEntity<?> writeFeed (
@@ -73,17 +72,18 @@ public class FeedController {
 		
 	}
 	
-	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 1개 조회", notes = "피드 1개 조회 API", response = Map.class)
-	@GetMapping("/{feedId}")
+	@GetMapping("/{feedId}/{userId}")
 	public ResponseEntity<?> viewFeed (
-			@PathVariable @ApiParam(value = "조회할 피드 ID", required = true) Long feedId) {
+			@PathVariable @ApiParam(value = "조회할 피드 ID", required = true) Long feedId,
+			@PathVariable @ApiParam(value = "조회하는 유저 ID", required = true) String userId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
 		try {
-			FeedDto feed = feedService.viewFeed(feedId);
+			FeedDto feed = feedService.viewFeed(feedId, userId);
+			
 			logger.debug("피드 조회 결과 : {}", "성공");
 			resultMap.put("feed", feed);
 			resultMap.put("message", SUCCESS);

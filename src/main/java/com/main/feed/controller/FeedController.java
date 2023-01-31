@@ -34,6 +34,10 @@ public class FeedController {
 	@Autowired
 	private FeedService feedService;
 	
+	// ------------------------------------------------------------------
+	// APIs for FEED
+	// ------------------------------------------------------------------
+	
 	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
 	@PostMapping

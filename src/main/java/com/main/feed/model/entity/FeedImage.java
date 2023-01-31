@@ -12,16 +12,16 @@ import static javax.persistence.FetchType.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class File {
+public class FeedImage {
 
 	@Id
-	@GeneratedValue
-	private Long fileId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long feedImageId;
 	
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne
 	@JoinColumn(name = "feedId")
 	private Feed feed;
 	
-	private String fileImageUrl;
+	private String feedImageUrl;
 	
 }

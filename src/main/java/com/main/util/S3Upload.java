@@ -1,7 +1,10 @@
 package com.main.util;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +32,7 @@ public class S3Upload {
 
     public String upload(File uploadFile, String filePath) {
         String fileName = filePath + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
+        System.out.println("file name = " + fileName);
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
         removeNewFile(uploadFile);
         return uploadImageUrl;
@@ -59,5 +63,22 @@ public class S3Upload {
             return Optional.of(convertFile);
         }
         return Optional.empty();
+    }
+
+    //파일 삭제
+    public void fileDelete(String fileUrl) throws Exception {
+        try{
+            try {
+                amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileUrl));
+            } catch (AmazonServiceException e) {
+                System.err.println(e.getErrorMessage());
+                System.exit(1);
+            }
+
+            System.out.println(String.format("[%s] deletion complete", fileUrl));
+
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

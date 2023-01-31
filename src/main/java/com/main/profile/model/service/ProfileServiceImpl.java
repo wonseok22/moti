@@ -55,7 +55,10 @@ public class ProfileServiceImpl implements ProfileService{
             // 프로필 사진 변경한 경우
             if (profileDto.getImage() != null){
                 //이미지 저장 로직
-                String ImagePath = s3Upload.uploadFiles(profileDto.getImage(), "static");
+                if(profileImage.getProfileImageUrl() != null){
+                    s3Upload.fileDelete(profileImage.getProfileImageUrl().split("com/")[1]);
+                }
+                String ImagePath = s3Upload.uploadFiles(profileDto.getImage(), "profileImages");
                 profileImage.setProfileImageUrl(ImagePath);
             }
 

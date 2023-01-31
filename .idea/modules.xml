@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/babysteps.iml" filepath="$PROJECT_DIR$/.idea/modules/babysteps.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/babysteps.main.iml" filepath="$PROJECT_DIR$/.idea/modules/babysteps.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/babysteps.test.iml" filepath="$PROJECT_DIR$/.idea/modules/babysteps.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.babysteps.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.babysteps.main.iml" />
     </modules>
   </component>

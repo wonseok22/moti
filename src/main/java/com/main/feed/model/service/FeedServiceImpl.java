@@ -13,6 +13,7 @@ import com.main.feed.model.repository.CommentRepository;
 import com.main.feed.model.repository.FeedRepository;
 import com.main.feed.model.repository.FeedImageRepository;
 import com.main.feed.model.repository.LikeRepository;
+import com.main.playlist.model.entity.Mission;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
@@ -60,19 +61,21 @@ public class FeedServiceImpl implements FeedService {
 	private S3Upload s3Upload;
 	
 	@Override
-	public Feed writeFeed(WriteFeedDto writeFeedDto) throws SQLException {
+	public Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) throws SQLException {
 		Feed feed = new Feed();
-		List<MultipartFile> images = writeFeedDto.getImages();
+		Mission mission = missionRepository.findByMissionId(writeFeedDto.getMissionId());
 		UserPlaylist upl = userPlaylistRepository.findByUserPlaylistId(writeFeedDto.getUserPlaylistId());
 		feed.setUser(userRepository.findByUserId(writeFeedDto.getUserId()));
 		feed.setUserPlaylist(upl);
-		feed.setMission(missionRepository.findByMissionId(writeFeedDto.getMissionId()));
+		feed.setMission(mission);
 		feed.setCategory(upl.getPlaylist().getCategory());
+		feed.setCreatedDate(LocalDateTime.now());
 		feed.setContent(writeFeedDto.getContent());
 		feedRepository.save(feed);
 		
 		// 이미지 처리
 		if (images != null || images.size() != 0) {
+			System.out.println("size of list : " + images.size());
 			images.forEach(x -> {
 				try {
 					String imagePath = s3Upload.uploadFiles(x, "feedImages");
@@ -81,6 +84,7 @@ public class FeedServiceImpl implements FeedService {
 					feedImage.setFeedImageUrl(imagePath);
 					feedImageRepository.save(feedImage);
 				} catch (IOException e) {
+					System.out.println("피드에 사진 업로드 중 에러 발생");
 					e.printStackTrace();
 				}
 			});

@@ -14,10 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -42,13 +45,14 @@ public class FeedController {
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
 	@PostMapping
 	public ResponseEntity<?> writeFeed (
-			@RequestBody @ApiParam(value = "피드 작성 정보", required = true) WriteFeedDto writeFeedDto) {
+			@RequestPart @ApiParam(value = "피드 작성 정보", required = true) WriteFeedDto writeFeedDto,
+			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
 		try {
-			Feed feed = feedService.writeFeed(writeFeedDto);
+			Feed feed = feedService.writeFeed(writeFeedDto, images);
 			if(feed != null) {
 				logger.debug("피드 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);

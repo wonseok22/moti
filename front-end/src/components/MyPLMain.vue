@@ -36,7 +36,12 @@ export default {
   methods: {
     // 플레이리스트 선택 창으로 이동
     toPLSelect() {
+      // this.$router.push({ path: '' })
     },
+    // 내 플레이리스트 정보 state에 저장하기
+    getMyPL() {
+      this.$store.dispatch('getMyPL')
+    }
   },
   computed: {
     // 진행 중인 플레이리스트 있는지 여부
@@ -44,6 +49,9 @@ export default {
       // 없으면 true, 있으면 false
       return false
     },
+  },
+  created() {
+    this.getMyPL()
   }
 }
 

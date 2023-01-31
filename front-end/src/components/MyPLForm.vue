@@ -1,5 +1,5 @@
 <template>
-  <div @click="toPL" id="my-pl-box">
+  <div @click="toMission" id="my-pl-box">
     <p>칭찬일기 작성</p>
     <p>현재 <span>5명</span>이 함께 이 꽃을 키우는 중입니다.</p>
     <div id="pl-progress-layout">
@@ -28,8 +28,10 @@ export default {
   ],
   methods: {
     // 선택한 플레이리스트 상세 페이지로 이동
-    toPL() {
-
+    toMission() {
+      // pl 아이디 가져오기
+      // const plId = this.$store.state.~~ 
+      // this.$router.push({ path: '/my-pl/mission', param: { 'pl-id': plId } })
     }
   },
   computed: {

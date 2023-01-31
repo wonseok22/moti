@@ -87,8 +87,8 @@ const routes = [
         component: MyPLMain,
       },
       {
-        // path: 'mission/:id',
-        path: 'mission',
+        path: 'mission/:pl-id',
+        // path: 'mission',
         component: MyPLMission,
       }
     ]

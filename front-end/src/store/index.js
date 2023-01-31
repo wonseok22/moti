@@ -44,9 +44,11 @@ export default new Vuex.Store({
         }
       }
     },
-    // 회원가입 완료 후 저장된 비밀번호 삭제하기(보안)
+    // 회원가입 완료 후 저장된 일부 정보 삭제하기(보안상)
     ERASE_PASSWORD(state) {
       state.password = null
+      state.id = null
+      state.email = null
     },
     // 토큰 저장하기
     SAVE_TOKEN(state, payload) {

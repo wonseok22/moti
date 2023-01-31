@@ -1,20 +1,20 @@
 <template>
-  <div id="my-mission-layout">
+  <div id="my-pl-layout">
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MyMissionView',
-
+  name: 'MyPLView',
 }
 </script>
 
 <style lang="scss">
-#my-mission-layout {
+#my-pl-layout {
+  width: $base-width;
   height: $base-height;
-  margin: 0px 10px;
+  padding: 0px 10px;
 
   display: flex;
   flex-direction: column;

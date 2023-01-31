@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,6 +76,21 @@ public class ProfileServiceImpl implements ProfileService{
             return -1;
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void deleteProfileImage(String userId) throws Exception {
+        try{
+            User user = userRepository.findByUserId(userId);
+            Profile profile = user.getProfile();
+            ProfileImage profileImage = profile.getProfileImage();
+            s3Upload.fileDelete(profileImage.getProfileImageUrl().split("com/")[1]);
+            profileImage.setProfileImageUrl(null);
+            userRepository.save(user);
+        } catch (Exception e){
+            throw e;
+        }
     }
 
     @Override
@@ -156,6 +172,8 @@ public class ProfileServiceImpl implements ProfileService{
         }
 
     }
+
+
 
 
 }

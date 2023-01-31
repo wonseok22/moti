@@ -5,6 +5,7 @@ import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
+import com.main.feed.model.entity.Like;
 import com.main.feed.model.service.FeedService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -153,13 +154,13 @@ public class FeedController {
 	}
 	
 	// ------------------------------------------------------------------
-	// 댓글 관리
+	// APIs for COMMENT
 	// ------------------------------------------------------------------
 	
 	@ApiOperation(value = "댓글 작성", notes = "댓글 작성 API", response = Map.class)
 	@PostMapping("/comment")
 	public ResponseEntity<?> writeComment (
-			@RequestBody @ApiParam(value = "댓글 내용", required = true)WriteCommentDto writeCommentDto) {
+			@RequestBody @ApiParam(value = "댓글 내용", required = true) WriteCommentDto writeCommentDto) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
@@ -208,6 +209,72 @@ public class FeedController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("댓글 삭제 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
+	// ------------------------------------------------------------------
+	// APIs for LIKE
+	// ------------------------------------------------------------------
+	
+	@ApiOperation(value = "좋아요 추가", notes = "좋아요 추가 API", response = Map.class)
+	@PostMapping("/like/{userId}/{feedId}")
+	public ResponseEntity<?> addLike (
+			@PathVariable @ApiParam(value = "좋아요 누른 유저 ID", required = true) String userId,
+			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			Like like = feedService.addLike(userId, feedId);
+			if(like != null) {
+				logger.debug("좋아요 추가 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("좋아요 추가 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("좋아요 추가 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
+	@ApiOperation(value = "좋아요 취소", notes = "좋아요 취소 API", response = Map.class)
+	@DeleteMapping("/like/{userId}/{feedId}")
+	public ResponseEntity<?> deleteLike (
+			@PathVariable @ApiParam(value = "좋아요 누른 유저 ID", required = true) String userId,
+			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			int result = feedService.deleteLike(userId, feedId);
+			if (result == 1) {
+				logger.debug("좋아요 취소 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("좋아요 취소 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("좋아요 취소 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

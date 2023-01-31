@@ -6,9 +6,11 @@ import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
+import com.main.feed.model.entity.Like;
 import com.main.feed.model.repository.CommentRepository;
 import com.main.feed.model.repository.FeedRepository;
 import com.main.feed.model.repository.FileRepository;
+import com.main.feed.model.repository.LikeRepository;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
@@ -40,6 +42,9 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Autowired
+	private LikeRepository likeRepository;
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -92,6 +97,20 @@ public class FeedServiceImpl implements FeedService {
 	@Transactional
 	public int deleteComment (Long commentId) throws SQLException {
 		return commentRepository.deleteByCommentId(commentId);
+	}
+	
+	@Override
+	public Like addLike (String userId, Long feedId) {
+		Like like = new Like();
+		like.setUser(userRepository.findByUserId(userId));
+		like.setFeed(feedRepository.findByFeedId(feedId));
+		return likeRepository.save(like);
+	}
+	
+	@Override
+	@Transactional
+	public int deleteLike (String userId, Long feedId) throws SQLException {
+		return likeRepository.deleteByUser_UserIdAndFeed_FeedId(userId, feedId);
 	}
 	
 }

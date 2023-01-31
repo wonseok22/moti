@@ -5,6 +5,7 @@ import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
+import com.main.feed.model.entity.Like;
 
 import java.sql.SQLException;
 
@@ -15,4 +16,6 @@ public interface FeedService {
 	int deleteFeed(Long feedId) throws SQLException;
 	Comment writeComment (WriteCommentDto writeCommentDto) throws SQLException;
 	int deleteComment (Long commentId) throws SQLException;
+	Like addLike (String userId, Long feedId) throws SQLException;
+	int deleteLike (String userId, Long feedId) throws SQLException;
 }

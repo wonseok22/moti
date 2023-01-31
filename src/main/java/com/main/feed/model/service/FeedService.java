@@ -6,11 +6,13 @@ import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.entity.Like;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface FeedService {
-	Feed writeFeed(WriteFeedDto writeFeedDto) throws SQLException;
+	Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) throws SQLException;
 	FeedDto viewFeed(Long feedId) throws SQLException;
 	Feed modifyFeed(Long feedId, String content) throws SQLException;
 	int deleteFeed(Long feedId) throws SQLException;

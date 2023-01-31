@@ -10,14 +10,12 @@ import lombok.*;
 public class FeedImageDto {
 	
 	private Long feedImageId;
-	private FeedDto feed;
 	private String feedImageUrl;
 	
-	public static FeedImageDto toDto (FeedImage file) {
+	public static FeedImageDto toDto (FeedImage feedImage) {
 		return new FeedImageDto(
-				file.getFeedImageId(),
-				FeedDto.toDto(file.getFeed()),
-				file.getFeedImageUrl()
+				feedImage.getFeedImageId(),
+				feedImage.getFeedImageUrl()
 		);
 	}
 	

@@ -13,5 +13,4 @@ public class WriteFeedDto {
 	private Long userPlaylistId;
 	private Long missionId;
 	private String content;
-	private List<MultipartFile> images;
 }

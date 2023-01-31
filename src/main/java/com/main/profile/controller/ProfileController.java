@@ -106,6 +106,31 @@ public class ProfileController {
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+    @ApiOperation(value = "ㅍ로필 사진 삭제", notes = "프로필 사진 삭제 API", response = Map.class)
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteProfileImage(
+            @ApiParam(value = "프로필 사진을 삭제할 유저의 ID", required = true)  @PathVariable String userId, HttpServletRequest request) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        if(jwtService.checkToken(request.getHeader("access-token"))) {
+            try {
+                profileService.deleteProfileImage(userId);
+                resultMap.put("message", SUCCESS);
+                logger.debug("프로필사진 삭제 완료 ");
+                status = HttpStatus.OK;
+            } catch (Exception e) {
+                logger.error("프로필 사진 삭제 에러: {}", e);
+                resultMap.put("message", FAIL);
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        } else {
+            logger.error("access-token 사용 불가능, 재발급 요청");
+            resultMap.put("message", FAIL);
+            status = HttpStatus.UNAUTHORIZED;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 
     @ApiOperation(value = "팔로워, 팔로잉 조회", notes = "팔로워, 팔로잉 조회 API", response = Map.class)
     @GetMapping("/follow")

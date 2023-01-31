@@ -2,25 +2,32 @@ package com.main.feed.model.service;
 
 import com.main.category.model.repository.CategoryRepository;
 import com.main.feed.model.dto.FeedDto;
+import com.main.feed.model.dto.FeedImageDto;
 import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
+import com.main.feed.model.entity.FeedImage;
 import com.main.feed.model.entity.Like;
 import com.main.feed.model.repository.CommentRepository;
 import com.main.feed.model.repository.FeedRepository;
-import com.main.feed.model.repository.FileRepository;
+import com.main.feed.model.repository.FeedImageRepository;
 import com.main.feed.model.repository.LikeRepository;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.user.model.repository.UserRepository;
+import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FeedServiceImpl implements FeedService {
@@ -38,7 +45,7 @@ public class FeedServiceImpl implements FeedService {
 	private MissionRepository missionRepository;
 	
 	@Autowired
-	private FileRepository fileRepository;
+	private FeedImageRepository feedImageRepository;
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -49,22 +56,47 @@ public class FeedServiceImpl implements FeedService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Autowired
+	private S3Upload s3Upload;
+	
 	@Override
 	public Feed writeFeed(WriteFeedDto writeFeedDto) throws SQLException {
 		Feed feed = new Feed();
+		List<MultipartFile> images = writeFeedDto.getImages();
 		UserPlaylist upl = userPlaylistRepository.findByUserPlaylistId(writeFeedDto.getUserPlaylistId());
 		feed.setUser(userRepository.findByUserId(writeFeedDto.getUserId()));
 		feed.setUserPlaylist(upl);
 		feed.setMission(missionRepository.findByMissionId(writeFeedDto.getMissionId()));
 		feed.setCategory(upl.getPlaylist().getCategory());
 		feed.setContent(writeFeedDto.getContent());
-		feed.setCreatedDate(LocalDateTime.now());
-		return feedRepository.save(feed);
+		feedRepository.save(feed);
+		
+		// 이미지 처리
+		if (images != null || images.size() != 0) {
+			images.forEach(x -> {
+				try {
+					String imagePath = s3Upload.uploadFiles(x, "feedImages");
+					FeedImage feedImage = new FeedImage();
+					feedImage.setFeed(feed);
+					feedImage.setFeedImageUrl(imagePath);
+					feedImageRepository.save(feedImage);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+		}
+		return feed;
 	}
 	
 	@Override
 	public FeedDto viewFeed(Long feedId) throws SQLException {
-		return FeedDto.toDto(feedRepository.findByFeedId(feedId));
+		FeedDto feedDto = FeedDto.toDto(feedRepository.findByFeedId(feedId));
+//		List<FeedImage> feedImages = new ArrayList<>();
+//		feedImageRepository.findAllByFeedId(feedId).forEach(x -> feedImages.add(x));
+//		for (int i = 0; i < feedImages.size(); i++) {
+//			feedDto.getFeedImages().add(FeedImageDto.toDto(feedImages.get(i)));
+//		}
+		return feedDto;
 	}
 	
 	@Override

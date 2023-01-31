@@ -21,8 +21,7 @@ public class FeedDto {
 	private String content;
 	private LocalDateTime createdDate;
 	private List<CommentDto> comments;
-	private List<FileDto> files;
-	// 프론트에서 원소 갯수랑 내가 좋아요 눌렀는지 여부 검사해야 함
+	private List<FeedImageDto> feedImages;
 	private List<LikeDto> likes;
 	
 	public static FeedDto toDto(Feed feed) {
@@ -30,8 +29,8 @@ public class FeedDto {
 		List<CommentDto> comments = new ArrayList<>();
 		feed.getComments().forEach(x -> comments.add(CommentDto.toDto(x)));
 		
-//		List<FileDto> files = new ArrayList<>();
-//		feed.getFiles().forEach(x -> files.add(FileDto.toDto(x)));
+		List<FeedImageDto> feedImages = new ArrayList<>();
+		feed.getFeedImages().forEach(x -> feedImages.add(FeedImageDto.toDto(x)));
 		
 		List<LikeDto> likes = new ArrayList<>();
 		feed.getLikes().forEach(x -> likes.add(LikeDto.toDto(x)));
@@ -44,8 +43,7 @@ public class FeedDto {
 				feed.getContent(),
 				feed.getCreatedDate(),
 				comments,
-//				files,
-				null,
+				feedImages,
 				likes
 		);
 		

@@ -5,6 +5,7 @@ import com.main.playlist.model.entity.Mission;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.user.model.entity.User;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ public class Feed {
 	private List<Comment> comments = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "feed")
-	private List<File> files = new ArrayList<>();
+	private List<FeedImage> feedImages = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "feed")
 	private List<Like> likes = new ArrayList<>();

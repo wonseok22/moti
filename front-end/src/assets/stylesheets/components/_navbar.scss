@@ -9,13 +9,13 @@
 
     position: fixed;
     width: 100vw;
+    bottom: 0px;
     height: $navbar-height;
     left: 0px;
     top: ($base-height - $navbar-height);
 
     background: #FFFFFF;
     border-top: 1px solid #ABABAB;
-    border-bottom: 1px solid #ABABAB;
     border-radius: 10px 10px 0px 0px;
 
     .material-icons-outlined {

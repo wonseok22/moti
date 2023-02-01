@@ -205,7 +205,7 @@ public class UserController {
 
 
     @ApiOperation(value = "회원정보 조회", notes = "회원정보를 반환한다.", response = Map.class)
-    @GetMapping("/{userId}}")
+    @GetMapping("/{userId}")
     public ResponseEntity<?> getUser(
             @PathVariable @ApiParam(value = "정보가 필요한 회원의 ID", required = true) String userId, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();

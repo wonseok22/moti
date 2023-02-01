@@ -65,4 +65,9 @@ public class PlaylistServiceImpl implements PlaylistService{
 
         return userPlaylist;
     }
+    
+    @Override
+    public UserPlaylist checkUserPlaylist(String userId, Long playlistId) {
+        return userPlaylistRepository.findByUser_UserIdAndPlaylist_PlaylistIdAndEndDateAfter(userId, playlistId,LocalDateTime.now());
+    }
 }

@@ -6,6 +6,7 @@ import com.main.playlist.model.entity.Mission;
 import com.main.playlist.model.entity.Playlist;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.service.PlaylistService;
+import com.main.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -143,5 +144,29 @@ public class PlaylistController {
         
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
-    
+    @ApiOperation(value = "플레이리스트 중복 검사", notes = "해당 플레이리스트를 현재 수행하고있는지 확인", response = Map.class)
+    @GetMapping("/check/{userId}/{playlistId}")
+    public ResponseEntity<?> checkUserPlaylist(@PathVariable String userId, @PathVariable Long playlistId)
+            throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            UserPlaylist result = playlistService.checkUserPlaylist(userId, playlistId);
+            if (result != null) {
+                // 존재하는 값인 경우, 200응답코드와 중복 메시지 반환
+                resultMap.put("message", ALREADY_EXIST);
+                status = HttpStatus.OK;
+            } else {
+                // 200 응답코드와 정상 메시지 반환
+                resultMap.put("message", SUCCESS);
+                status = HttpStatus.OK;
+            }
+        } catch (Exception e) {
+            // 서버 에러 발생한 경우 실패 메시지 반환, 500 응답 코드
+            logger.error("중복 확인중 에러 발생 : {}", e);
+            resultMap.put("message", FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }

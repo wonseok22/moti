@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserPlaylistRepository extends JpaRepository<UserPlaylist,Long> {
 	public UserPlaylist findByUserPlaylistId(Long userPlaylistId);
 	public List<UserPlaylist> findByUser_UserIdAndEndDateAfter(String userId, LocalDateTime endDate);
+	
+	public UserPlaylist findByUser_UserIdAndPlaylist_PlaylistIdAndEndDateAfter(String userId, Long playlistId, LocalDateTime endDate);
 }

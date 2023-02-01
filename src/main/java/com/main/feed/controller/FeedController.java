@@ -55,6 +55,7 @@ public class FeedController {
 			if(feed != null) {
 				logger.debug("피드 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
+				resultMap.put("feedId", feed.getFeedId());
 				status = HttpStatus.OK;
 			} else {
 				logger.debug("피드 등록 결과 : {}", "실패");
@@ -83,6 +84,13 @@ public class FeedController {
 		
 		try {
 			FeedDto feed = feedService.viewFeed(feedId, userId);
+			
+			if (feed == null) {
+				logger.debug("피드 조회 결과 : {}", "피드 존재하지 않음");
+				resultMap.put("message", "존재하지 않는 피드");
+				status = HttpStatus.ACCEPTED;
+				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+			}
 			
 			logger.debug("피드 조회 결과 : {}", "성공");
 			resultMap.put("feed", feed);
@@ -115,6 +123,7 @@ public class FeedController {
 			if(feed != null) {
 				logger.debug("피드 수정 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
+				resultMap.put("feedId", feedId);
 				status = HttpStatus.OK;
 			} else {
 				logger.debug("피드 수정 결과 : {}", "실패");
@@ -145,7 +154,12 @@ public class FeedController {
 			if (result == 1) {
 				logger.debug("피드 삭제 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
+				resultMap.put("feedId", feedId);
 				status = HttpStatus.OK;
+			} else if (result == -1) {
+				logger.debug("피드 삭제 결과 : {}", "피드 존재하지 않음");
+				resultMap.put("message", "존재하지 않는 피드");
+				status = HttpStatus.ACCEPTED;
 			} else {
 				logger.debug("피드 삭제 결과 : {}", "실패");
 				resultMap.put("message", FAIL);

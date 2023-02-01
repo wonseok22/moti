@@ -91,7 +91,12 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	public FeedDto viewFeed(Long feedId, String userId) throws SQLException {
-		FeedDto feedDto = FeedDto.toDto(feedRepository.findByFeedId(feedId));
+		Feed feed = feedRepository.findByFeedId(feedId);
+		
+		// 해당 feedId의 피드가 존재하지 않으면 null 반환
+		if (feed == null) return null;
+		
+		FeedDto feedDto = FeedDto.toDto(feed);
 		Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedId, userId);
 		if (like != null) feedDto.setHit(true);
 		return feedDto;
@@ -100,6 +105,10 @@ public class FeedServiceImpl implements FeedService {
 	@Override
 	public Feed modifyFeed (Long feedId, String content, List<MultipartFile> images) throws SQLException {
 		Feed feed = feedRepository.findByFeedId(feedId);
+		
+		// 해당 feedId의 피드가 존재하지 않으면 null 반환
+		if (feed == null) return null;
+		
 		feed.setContent(content);
 		if (!images.get(0).isEmpty()) {
 			// 이미지가 새로 업로드 되면 있던 사진 모두 삭제
@@ -133,8 +142,15 @@ public class FeedServiceImpl implements FeedService {
 	@Override
 	@Transactional
 	public int deleteFeed(Long feedId) throws SQLException {
-//		Feed feed = feedRepository.findByFeedId(feedId);
-		// Like, Comment, File ... 처리
+		Feed feed = feedRepository.findByFeedId(feedId);
+		
+		// 해당 feedId의 피드가 존재하지 않으면 -1 반환
+		if (feed == null) return -1;
+		
+		// 사진, 댓글, 좋아요 모두 삭제 후 피드 삭제 해야 함
+		feedImageRepository.findAllByFeed_FeedId(feedId).forEach(x -> feedImageRepository.delete(x));
+		commentRepository.findAllByFeed_FeedId(feedId).forEach(x -> commentRepository.delete(x));
+		likeRepository.findAllByFeed_FeedId(feedId).forEach(x -> likeRepository.delete(x));
 		return feedRepository.deleteByFeedId(feedId);
 	}
 	

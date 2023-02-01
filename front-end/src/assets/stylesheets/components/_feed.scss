@@ -96,9 +96,9 @@
 .feed-text {
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-end;
     text-align: start;
-    align-items: end;
+    align-items: flex-end;
     padding: 10px 10px;
     margin-bottom: 0px;
 

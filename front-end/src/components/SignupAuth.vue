@@ -5,15 +5,18 @@
       <!-- 이메일 인증 Form -->
       <div class="auth-form">
         <div class="auth-input-form">
-          <input type="email" id="input-email" class="inputbox" name="input-email" placeholder="이메일 주소" @input="emailInput">
-          <div v-if="emailActive">
-            <p
-              v-for="(condition, idx) in emailConditions"
-              :key="idx"
-              :class="[condition.valid? 'condition-valid': 'condition-invalid']"
-            >
-              {{ condition.comment }}
-            </p>
+          <div class="account-id-box">
+            <input type="email" id="input-email" class="inputbox" name="input-email" placeholder="이메일 주소" @input="emailInput">
+            <button class="double-check btn-green" @click="doubleCheck">중복체크</button>
+            <div v-if="emailActive">
+              <p
+                v-for="(condition, idx) in emailConditions"
+                :key="idx"
+                :class="[condition.valid? 'condition-valid': 'condition-invalid']"
+              >
+                {{ condition.comment }}
+              </p>
+            </div>
           </div>
         </div>
         <button v-if="isvalid" class="btn-green" @click="authStart">다음</button>
@@ -40,6 +43,7 @@ export default {
       email: null,
       openModal: false,
       emailActive: false,
+      emailDoubleChecked: false,
     }
   },
   methods: {
@@ -57,12 +61,58 @@ export default {
     emailInput(event) {
       this.emailActive = true
       this.email = event.target.value
-    }
+    },
+    // 이메일 중복 체크
+    doubleCheck() {
+      console.log('이메일 중복체크 실행')
+      
+      // 이메일 조건을 충족하지 못한 경우
+      if ( !this.emailConditions[0].valid ) {
+        alert('이메일 형식을 지켜주세요.')
+      }
+      // 이메일 조건을 충족한 경우
+      else {
+        // 중복체크
+        this.$axios({
+          method: 'get',
+          url: `${this.$baseUrl}/users/check?type=email&value=${this.email}`
+        })
+          .then((response) => {
+            // 응답 예시
+            // 성공시(이미 존재할 때 ) : 200, already exists
+            // 실패시(없을 때) : 200, success 
+            // 서버 에러시 : 500, fail
+
+            // 이미 아이디가 존재할 경우
+            if ( response.data.message === 'already exists' ) {
+              alert('이미 사용 중인 이메일이에요.')
+              console.log(`중복체크 결과/message: ${response.data.message}`)
+              this.email = null
+              // 입력된 이메일 삭제
+              const emailTag = document.querySelector('#input-email')
+              emailTag.value = null
+            } else if ( response.data.message === 'success' ) {
+              alert('사용할 수 있는 이메일이에요.')
+              console.log(`중복체크 결과/message: ${response.data.message}`)
+              const emailInputTag = document.querySelector('#input-email')
+              // 현재 이메일로 고정
+              emailInputTag.setAttribute('disabled', true)
+              this.emailDoubleChecked = true
+            } else {
+              console.log(response.data.message)
+              alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        }
+    },
   },
   computed: {
     // 이메일 입력되었는지 여부 return
     isvalid() {
-      if (this.emailConditions[0].valid) {
+      if (this.emailDoubleChecked) {
         return true
       } else {
         return false

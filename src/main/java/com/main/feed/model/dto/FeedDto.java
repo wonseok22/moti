@@ -32,7 +32,6 @@ public class FeedDto {
 		
 		List<FeedImageDto> feedImages = new ArrayList<>();
 		feed.getFeedImages().forEach(x -> feedImages.add(FeedImageDto.toDto(x)));
-		System.out.println(feed.getFeedImages().size());
 		
 		List<LikeDto> likes = new ArrayList<>();
 		feed.getLikes().forEach(x -> likes.add(LikeDto.toDto(x)));

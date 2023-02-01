@@ -36,4 +36,6 @@ public class UserPlaylist {
 
     private int done;
     
+    private int today;
+    
 }

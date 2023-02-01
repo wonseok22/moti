@@ -18,6 +18,7 @@ import AuthCompleteView from '@/views/AuthCompleteView'
 import SearchView from '@/views/SearchView'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
+import NotFoundView from '@/views/NotFoundView'
 
 Vue.use(VueRouter)
 
@@ -100,8 +101,13 @@ const routes = [
     // 이메일 인증 성공 페이지
     path:'/authcomplete',
     name:'authcomplete',
-    component:AuthCompleteView,
+    component: AuthCompleteView,
   },
+  {
+    path: '*',
+    name: 'notfound',
+    component: NotFoundView,
+  }
 ]
 
 const router = new VueRouter({

@@ -7,14 +7,18 @@ import SignupForm from '@/components/SignupForm'
 import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
-import ProfileMain from '@/views/ProfileView'
+import ProfileView from '@/views/ProfileView'
 import SearchPage from '@/views/SearchView'
 import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
-import FeedPage from '@/views/FeedPage'
-import ProfileMain from '@/views/ProfileMain'
-import SearchPage from '@/views/SearchPage'
-import UserFlowerList from '@/views/UserFlowerList'
+import playlistMain from '@/components/CategoryMain'
+import playlistSelect from '@/components/PlaylistMain'
+import playlistDetail from '@/components/PlaylistDetail'
+import playlistView from '@/views/PlaylistView'
+// import FeedPage from '@/views/FeedPage'
+// import ProfileMain from '@/views/ProfileMain'
+// import SearchPage from '@/views/SearchPage'
+// import UserFlowerList from '@/views/UserFlowerList'
 import MyMissionMain from '@/components/MyMissionMain'
 import FeedComment from '@/components/FeedComment'
 
@@ -66,7 +70,7 @@ const routes = [
   {
     path:'/profile',
     name:'profile',
-    component: ProfileMain,
+    component: ProfileView,
   },
   {
     path:'/search',
@@ -88,6 +92,29 @@ const routes = [
         path: 'main',
         component: MyMissionMain,
       },
+    ]
+  },
+  {
+    path: '/playlist',
+    name: 'playlist',
+    component: playlistView,
+    redirect:'/playlist/main',
+    children: [
+      {
+        path:'main',
+        name:'playlistMain',
+        component: playlistMain,
+      },
+      {
+        path: 'select',
+        name: 'playlistSelect',
+        component: playlistSelect,
+      },
+      {
+        path: 'detail',
+        name: 'playlistDetail',
+        component: playlistDetail,
+      }
     ]
   }
 ]

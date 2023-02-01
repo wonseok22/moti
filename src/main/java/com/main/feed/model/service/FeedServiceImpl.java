@@ -2,7 +2,6 @@ package com.main.feed.model.service;
 
 import com.main.category.model.repository.CategoryRepository;
 import com.main.feed.model.dto.FeedDto;
-import com.main.feed.model.dto.FeedImageDto;
 import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
@@ -27,7 +26,6 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,8 +72,7 @@ public class FeedServiceImpl implements FeedService {
 		feedRepository.save(feed);
 		
 		// 이미지 처리
-		if (images != null || images.size() != 0) {
-			System.out.println("size of list : " + images.size());
+		if (!images.get(0).isEmpty()) {
 			images.forEach(x -> {
 				try {
 					String imagePath = s3Upload.uploadFiles(x, "feedImages");
@@ -84,7 +81,7 @@ public class FeedServiceImpl implements FeedService {
 					feedImage.setFeedImageUrl(imagePath);
 					feedImageRepository.save(feedImage);
 				} catch (IOException e) {
-					System.out.println("피드에 사진 업로드 중 에러 발생");
+					System.err.println("사진 업로드 중 에러 발생");
 					e.printStackTrace();
 				}
 			});
@@ -101,10 +98,35 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Feed modifyFeed(Long feedId, String content) throws SQLException {
+	public Feed modifyFeed (Long feedId, String content, List<MultipartFile> images) throws SQLException {
 		Feed feed = feedRepository.findByFeedId(feedId);
 		feed.setContent(content);
-//		feed.setFiles();
+		if (!images.get(0).isEmpty()) {
+			// 이미지가 새로 업로드 되면 있던 사진 모두 삭제
+			feedImageRepository.findAllByFeed_FeedId(feedId).forEach(x -> {
+				try {
+					s3Upload.fileDelete(x.getFeedImageUrl().split(".com/")[1]);
+				} catch (Exception e) {
+					System.err.println("사진 삭제 중 에러 발생");
+					e.printStackTrace();
+				}
+				feedImageRepository.delete(x);
+			});
+			
+			// 새 이미지 서버에 업로드 후 DB에 주소 저장
+			images.forEach(x -> {
+				try {
+					String imagePath = s3Upload.uploadFiles(x, "feedImages");
+					FeedImage feedImage = new FeedImage();
+					feedImage.setFeed(feed);
+					feedImage.setFeedImageUrl(imagePath);
+					feedImageRepository.save(feedImage);
+				} catch (IOException e) {
+					System.err.println("사진 업로드 중 에러 발생");
+					e.printStackTrace();
+				}
+			});
+		}
 		return feedRepository.save(feed);
 	}
 	

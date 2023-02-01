@@ -11,6 +11,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+
+  height: inherit;
 }
 
 // 컴포넌트 중앙 정렬 등

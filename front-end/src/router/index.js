@@ -7,16 +7,13 @@ import SignupForm from '@/components/SignupForm'
 import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
-import ProfileMain from '@/views/ProfileView'
+import ProfileView from '@/views/ProfileView'
 import SearchPage from '@/views/SearchView'
 import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
-import FeedPage from '@/views/FeedPage'
-import ProfileMain from '@/views/ProfileMain'
-import SearchPage from '@/views/SearchPage'
-import UserFlowerList from '@/views/UserFlowerList'
 import MyMissionMain from '@/components/MyMissionMain'
 import FeedComment from '@/components/FeedComment'
+import AuthCompleteView from '@/views/AuthCompleteView'
 
 Vue.use(VueRouter)
 
@@ -66,7 +63,7 @@ const routes = [
   {
     path:'/profile',
     name:'profile',
-    component: ProfileMain,
+    component: ProfileView,
   },
   {
     path:'/search',
@@ -89,7 +86,13 @@ const routes = [
         component: MyMissionMain,
       },
     ]
-  }
+  },
+  {
+    // 이메일 인증 성공 페이지
+    path:'/authcomplete',
+    name:'authcomplete',
+    component:AuthCompleteView,
+  },
 ]
 
 const router = new VueRouter({

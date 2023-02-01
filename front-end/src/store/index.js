@@ -110,6 +110,8 @@ export default new Vuex.Store({
             refreshToken: response.data['refresh-token'],
           }
           context.commit('SAVE_TOKEN', payload)
+          // 피드 페이지로 이동
+          this.$router.push({ name: 'feed' })
         })
         .catch((error) => {
           console.log(error)

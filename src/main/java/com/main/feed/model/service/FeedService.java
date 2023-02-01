@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface FeedService {
 	Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) throws SQLException;
@@ -20,4 +21,5 @@ public interface FeedService {
 	int deleteComment (Long commentId) throws SQLException;
 	Like addLike (String userId, Long feedId) throws SQLException;
 	int deleteLike (String userId, Long feedId) throws SQLException;
+	Map<String, Object> searchFeed (String userId, String content, String kind, int pageNo) throws SQLException;
 }

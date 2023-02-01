@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -91,7 +90,6 @@ public class FeedController {
 				status = HttpStatus.ACCEPTED;
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
-			
 			logger.debug("피드 조회 결과 : {}", "성공");
 			resultMap.put("feed", feed);
 			resultMap.put("message", SUCCESS);
@@ -305,5 +303,45 @@ public class FeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		
 	}
+	
+	// ------------------------------------------------------------------
+	// API for SEARCH
+	// ------------------------------------------------------------------
+	
+	@ApiOperation(value = "피드 검색", notes = "검색어 기반 피드 검색 API", response = Map.class)
+	@GetMapping("/search/{userId}/{keyword}/{kind}/{pageNo}")
+	public ResponseEntity<?> searchFeed (
+			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
+			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,
+			@PathVariable @ApiParam(value = "검색 종류(playlist, content, ...)", required = true) String kind,
+			@PathVariable @ApiParam(value = "페이지 번호", required = true) int pageNo) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, pageNo);
+			if (searchResult == null) {
+				logger.debug("피드 조회 결과 : {}", "피드 존재하지 않음");
+				resultMap.put("message", "존재하지 않는 피드");
+				status = HttpStatus.ACCEPTED;
+				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+			}
+			logger.debug("피드 조회 결과 : {}", "성공");
+			resultMap.put("feeds", searchResult.get("feeds"));
+			resultMap.put("isLast", searchResult.get("isLast"));
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("피드 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
+	
 	
 }

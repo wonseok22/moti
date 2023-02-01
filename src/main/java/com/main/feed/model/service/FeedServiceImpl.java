@@ -12,13 +12,18 @@ import com.main.feed.model.repository.CommentRepository;
 import com.main.feed.model.repository.FeedRepository;
 import com.main.feed.model.repository.FeedImageRepository;
 import com.main.feed.model.repository.LikeRepository;
+import com.main.playlist.model.dto.PlaylistDto;
+import com.main.playlist.model.dto.UserPlaylistDto;
 import com.main.playlist.model.entity.Mission;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.repository.MissionRepository;
+import com.main.playlist.model.repository.PlaylistRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +31,10 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FeedServiceImpl implements FeedService {
@@ -36,6 +44,9 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Autowired
 	private UserPlaylistRepository userPlaylistRepository;
+	
+	@Autowired
+	private PlaylistRepository playlistRepository;
 	
 	@Autowired
 	private FeedRepository feedRepository;
@@ -186,6 +197,60 @@ public class FeedServiceImpl implements FeedService {
 	@Transactional
 	public int deleteLike (String userId, Long feedId) throws SQLException {
 		return likeRepository.deleteByUser_UserIdAndFeed_FeedId(userId, feedId);
+	}
+	
+	@Override
+	public Map<String, Object> searchFeed (String userId, String keyword, String kind, int pageNo) {
+		// 검색 종류에 따른 분기
+		if ("playlist".equals(kind)) {
+			// 조회 결과 받아옴
+			Map<String, Object> searchResult = new HashMap<>();
+			PlaylistDto playlistDto = PlaylistDto.toDto(playlistRepository.findByPlaylistNameLike("%" + keyword + "%"));
+			List<UserPlaylistDto> userPlaylists = new ArrayList<>();
+			userPlaylistRepository.findByPlaylist_PlaylistId(playlistDto.getPlaylistId()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
+			List<Long> userPlaylistIds = new ArrayList<>();
+			userPlaylists.forEach(x -> userPlaylistIds.add(x.getPlaylist().getPlaylistId()));
+			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdIn(userPlaylistIds, PageRequest.of(pageNo, 10));
+			
+			// DTO에 담아서 리스트에 삽입
+			List<FeedDto> feeds = new ArrayList<>();
+			for (Feed feed : list) {
+				feeds.add(FeedDto.toDto(feed));
+			}
+			
+			// 피드마다 좋아요 눌렀는지 확인
+			for (FeedDto feedDto : feeds) {
+				Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedDto.getFeedId(), userId);
+				if (like != null) feedDto.setHit(true);
+			}
+			
+			searchResult.put("feeds", feeds);
+			searchResult.put("isLast", list.isLast()); // true or false
+			return searchResult;
+			
+		} else if ("content".equals(kind)) {
+			// 조회 결과 받아옴
+			Map<String, Object> searchResult = new HashMap<>();
+			Slice<Feed> list = feedRepository.findAllByContentLike("%" + keyword + "%", PageRequest.of(pageNo, 10));
+			
+			// DTO에 담아서 리스트에 삽입
+			List<FeedDto> feeds = new ArrayList<>();
+			for (Feed feed : list) {
+				feeds.add(FeedDto.toDto(feed));
+			}
+			
+			// 피드마다 좋아요 눌렀는지 확인
+			for (FeedDto feedDto : feeds) {
+				Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedDto.getFeedId(), userId);
+				if (like != null) feedDto.setHit(true);
+			}
+			
+			searchResult.put("feeds", feeds);
+			searchResult.put("isLast", list.isLast()); // true or false
+			return searchResult;
+		}
+		
+		return null;
 	}
 	
 }

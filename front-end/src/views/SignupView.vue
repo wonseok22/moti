@@ -11,8 +11,6 @@ export default {
 </script>
 
 <style lang="scss">
-
-
 // input 태그와 다음 버튼에 대한 css
 .auth-layout {
   display: flex;

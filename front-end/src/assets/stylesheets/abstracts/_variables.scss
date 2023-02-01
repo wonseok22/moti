@@ -66,7 +66,16 @@ $light-grey: #ABABAB !default;
 $main-green: #04C584 !default;
 
 /// @type Color
+$light-green: #10DF99 !default;
+
+/// @type Color
+$dark-green: #325C3E !default;
+
+/// @type Color
 $murky-green: #A4D1C2 !default;
+
+
+
 
 
 
@@ -90,7 +99,9 @@ $fs-7: 0.688rem !default;
 $account-height: 60% !default;
 
 // HTML 기본 너비
-$base-width: 360px;
+// $base-width: 360px;
+$base-width: 100vw;
 
 // HTML 기본 높이
+// $base-height: 800px;
 $base-height: 800px;

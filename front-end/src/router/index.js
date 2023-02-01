@@ -2,21 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SignupView from '@/views/SignupView'
 import LoginView from '@/views/LoginView'
-import MyMissionView from '@/views/MyMissionView'
+import MyPLView from '@/views/MyPLView'
 import SignupForm from '@/components/SignupForm'
 import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
-import ProfileMain from '@/views/ProfileView'
-import SearchPage from '@/views/SearchView'
+import ProfileView from '@/views/ProfileView'
 import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
-import FeedPage from '@/views/FeedPage'
-import ProfileMain from '@/views/ProfileMain'
-import SearchPage from '@/views/SearchPage'
-import UserFlowerList from '@/views/UserFlowerList'
-import MyMissionMain from '@/components/MyMissionMain'
+// import FeedPage from '@/views/FeedPage'
+import SearchView from '@/views/SearchView'
+import MyPLMain from '@/components/MyPLMain'
 import FeedComment from '@/components/FeedComment'
+import MyPLMission from '@/components/MyPLMission'
 
 Vue.use(VueRouter)
 
@@ -66,12 +64,12 @@ const routes = [
   {
     path:'/profile',
     name:'profile',
-    component: ProfileMain,
+    component: ProfileView,
   },
   {
     path:'/search',
     name:'search',
-    component:SearchPage,
+    component:SearchView,
   },
   {
     path:'/userflowerlist',
@@ -79,15 +77,20 @@ const routes = [
     component:UserFlowerList,
   },
   {
-    path: '/my-mission',
-    name: 'my-mission',
-    component: MyMissionView,
-    redirect: '/my-mission/main',
+    path: '/my-pl',
+    name: 'my-pl',
+    component: MyPLView,
+    redirect: '/my-pl/main',
     children: [
       {
         path: 'main',
-        component: MyMissionMain,
+        component: MyPLMain,
       },
+      {
+        path: 'mission/:pl-id',
+        // path: 'mission',
+        component: MyPLMission,
+      }
     ]
   }
 ]

@@ -14,6 +14,6 @@ import java.util.List;
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 	Feed findByFeedId(Long feedId);
 	int deleteByFeedId(Long feedId);
-//	List<FeedDto> findAllByFeed_ContentLike(String content);
-	Slice<Feed> findAllByContentLike (String s, PageRequest of);
+	Slice<Feed> findAllByContentLike(String s, PageRequest of);
+	Slice<Feed> findAllByUserPlaylist_UserPlaylistIdIn(List<Long> userPlaylistIds, PageRequest of);
 }

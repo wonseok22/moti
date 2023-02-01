@@ -11,6 +11,10 @@ import ProfileView from '@/views/ProfileView'
 // import SearchPage from '@/views/SearchView'
 import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
+import playlistMain from '@/components/CategoryMain'
+import playlistSelect from '@/components/PlaylistMain'
+import playlistDetail from '@/components/PlaylistDetail'
+import playlistView from '@/views/PlaylistView'
 // import MyMissionMain from '@/components/MyMissionMain'
 import FeedComment from '@/components/FeedComment'
 import AuthCompleteView from '@/views/AuthCompleteView'
@@ -94,6 +98,29 @@ const routes = [
         path: 'mission/:pl-id',
         // path: 'mission',
         component: MyPLMission,
+      }
+    ]
+  },
+  {
+    path: '/playlist',
+    name: 'playlist',
+    component: playlistView,
+    redirect:'/playlist/main',
+    children: [
+      {
+        path:'main',
+        name:'playlistMain',
+        component: playlistMain,
+      },
+      {
+        path: 'select',
+        name: 'playlistSelect',
+        component: playlistSelect,
+      },
+      {
+        path: 'detail',
+        name: 'playlistDetail',
+        component: playlistDetail,
       }
     ]
   },

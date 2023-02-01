@@ -86,8 +86,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    // 회원가입
-    GET_USER_INFO(context, payload) {
+    // 유저정보 받기(회원가입 시)
+    getUserInfo(context, payload) {
       // mutations로 전달
       context.commit('GET_USER_INFO', payload)
     },

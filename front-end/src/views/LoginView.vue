@@ -1,12 +1,18 @@
 <template>
   <div class="account-form-comp">
     <router-view/>
+    <p @click="go">임시</p>
   </div>
 </template>
 
 <script>
 export default {
 	name: 'LoginView',
+  methods: {
+    go() {
+      this.$router.push({ path: '/authcomplete' })
+    }
+   }
 }
 </script>
 

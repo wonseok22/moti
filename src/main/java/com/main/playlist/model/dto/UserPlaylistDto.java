@@ -25,6 +25,8 @@ public class UserPlaylistDto {
     
     private int done;
     
+    private boolean today;
+    
     public static UserPlaylistDto toDto(UserPlaylist userPlaylist){
         return new UserPlaylistDto(
                 userPlaylist.getUserPlaylistId(),
@@ -32,7 +34,8 @@ public class UserPlaylistDto {
                 PlaylistDto.toDto(userPlaylist.getPlaylist()),
                 userPlaylist.getStartDate(),
                 userPlaylist.getEndDate(),
-                userPlaylist.getDone()
+                userPlaylist.getDone(),
+                userPlaylist.getToday()==0?false:true
         );
     }
 

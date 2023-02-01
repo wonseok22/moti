@@ -14,7 +14,7 @@ import java.util.List;
 public interface FeedService {
 	Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) throws SQLException;
 	FeedDto viewFeed(Long feedId, String userId) throws SQLException;
-	Feed modifyFeed(Long feedId, String content) throws SQLException;
+	Feed modifyFeed (Long feedId, String content, List<MultipartFile> images) throws SQLException;
 	int deleteFeed(Long feedId) throws SQLException;
 	Comment writeComment (WriteCommentDto writeCommentDto) throws SQLException;
 	int deleteComment (Long commentId) throws SQLException;

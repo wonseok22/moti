@@ -9,14 +9,13 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
+    position: sticky;
 
-    position: fixed;
     width: 100%;
     height: 60px;
-    top: 25px;
 
     background: #FFFFFF;
-    border-radius: 5px;
+    border-radius: 0px 0px 5px 5px;
 
     p {
         font-family: 'Lily Script One';
@@ -35,8 +34,9 @@
     flex-direction: column;
     justify-content: center;
 
+    padding-top: 10px;
+
     position: relative;
-    top: 100px;
 }
 
 .single-feed {
@@ -57,7 +57,7 @@
     justify-content: center;
     align-items: center;
     padding: 7px 43px;
-    gap: 92px;
+    gap: 25%;
 
     width: 100%;
     height: 42px;
@@ -96,7 +96,7 @@
 .feed-text {
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: start;
     text-align: start;
     align-items: end;
     padding: 10px 10px;
@@ -161,9 +161,10 @@
             }
 
             button {
-                margin-left: 2px;
+                margin-left: 5px;
                 color: #00AB44;
                 border: none;
+                border-radius: 3px;
                 background-color: #FFFFFF;
                 font-weight: bolder;
             }
@@ -175,3 +176,4 @@
         margin-bottom: 5px;
     }
 }
+

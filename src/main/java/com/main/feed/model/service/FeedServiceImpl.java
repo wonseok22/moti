@@ -19,6 +19,9 @@ import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +29,8 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -186,6 +191,22 @@ public class FeedServiceImpl implements FeedService {
 	@Transactional
 	public int deleteLike (String userId, Long feedId) throws SQLException {
 		return likeRepository.deleteByUser_UserIdAndFeed_FeedId(userId, feedId);
+	}
+	
+	@Override
+	public List<FeedDto> searchFeed (String content, String kind, int pageNo) {
+		if ("playlist".equals(kind)) {
+//			Slice<FeedDto> feeds = feedRepository.find
+		} else if ("feed".equals(kind)) {
+			Slice<Feed> list = feedRepository.findAllByContentLike("%" + content + "%", PageRequest.of(pageNo, 10));
+			System.out.println(list.isLast());
+			List<FeedDto> feeds = new ArrayList<>();
+			for (Feed feed : list) {
+				feeds.add(FeedDto.toDto(feed));
+			}
+			return feeds;
+		}
+		return null;
 	}
 	
 }

@@ -16,6 +16,7 @@ export default new Vuex.Store({
     nickname: null,
     accessToken: null,
     refreshToken: null,
+    myPL: null,
   },
   getters: {
     // 로그인 여부
@@ -44,9 +45,10 @@ export default new Vuex.Store({
         }
       }
     },
-    // 회원가입 완료 후 저장된 비밀번호 삭제하기(보안)
-    ERASE_PASSWORD(state) {
+    // 회원가입 완료 후 저장된 일부 정보 삭제하기(보안상)
+    ERASE_INFO(state) {
       state.password = null
+      state.email = null
     },
     // 토큰 저장하기
     SAVE_TOKEN(state, payload) {
@@ -76,6 +78,12 @@ export default new Vuex.Store({
       state.accessToken = null
       state.refreshToken = null
     },
+    // 나의 플레이리스트 저장
+    GET_MY_PL(state, payload) {
+      state.myPL = payload.myPL
+      console.log(state.myPL)
+      console.log(`플레이리스트 출력: ${state.myPL}`)
+    }
   },
   actions: {
     // 회원가입
@@ -165,7 +173,7 @@ export default new Vuex.Store({
       })
         .then((response) => {
           console.log('회원가입 완료')
-          context.commit('ERASE_PASSWORD')
+          context.commit('ERASE_INFO')
           console.log(response.data.message)
         })
         .catch((error) => {
@@ -199,7 +207,26 @@ export default new Vuex.Store({
           }
           this.$router.push({ path: '/login/main'})
         })
-    }
+    },
+    // 나의 플레이리스트 정보 가져오기
+    getMyPL(context) {
+      console.log('유저 플레이리스트를 가져옵니다.')
+      this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/playlist/${context.state.id}}`
+      })
+        .then((response) => {
+          console.log(`유저 플레이리스트 가져오기 성공: status ${response.status}`)
+          const payload = {
+            myPL: response.data.myPlaylists,
+          }
+          console.log(response)
+          context.commit('GET_MY_PL', payload)
+        })
+        .catch((error) => {
+          console.log(`유저 플레이리스트 가져오기 실패: status ${error.response.status}`)
+        })
+    },
   },
   modules: {
   }

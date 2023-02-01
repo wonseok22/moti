@@ -19,6 +19,7 @@ import SearchView from '@/views/SearchView'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
+import FeedCreateView from '@/views/FeedCreateView'
 
 Vue.use(VueRouter)
 
@@ -56,9 +57,14 @@ const routes = [
     ],
   },
   {
-    path:'/feed',
-    name:'feed',
+    path: '/feed',
+    name: 'feed',
     component: FeedView,
+  },
+  {
+    path: '/feed/create',
+    name: 'feedcreate',
+    component: FeedCreateView,
   },
   {
     path:'/comment/:feedId',
@@ -91,8 +97,8 @@ const routes = [
         component: MyPLMain,
       },
       {
-        path: 'mission/:pl-id',
-        // path: 'mission',
+        // path: 'mission/:pl-id',
+        path: 'mission',
         component: MyPLMission,
       }
     ]

@@ -20,7 +20,7 @@
           </div>
         </div>
         <button v-if="isvalid" class="btn-green" @click="authStart">다음</button>
-        <button v-else class="btn-green-inactive">다음</button>
+        <button v-else class="btn-green-inactive">이메일 인증</button>
       </div>
     </div>
     <auth-modal

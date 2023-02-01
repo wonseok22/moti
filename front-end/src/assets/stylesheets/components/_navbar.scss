@@ -1,4 +1,5 @@
 .navbar {
+    $navbar-height: 56px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -8,13 +9,13 @@
 
     position: fixed;
     width: 100vw;
-    height: 56px;
+    bottom: 0px;
+    height: $navbar-height;
     left: 0px;
-    top: 704px;
+    top: ($base-height - $navbar-height);
 
     background: #FFFFFF;
     border-top: 1px solid #ABABAB;
-    border-bottom: 1px solid #ABABAB;
     border-radius: 10px 10px 0px 0px;
 
     .material-icons-outlined {

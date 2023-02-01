@@ -153,7 +153,7 @@ export default {
         password: this.password,
       }
       // 아이디, 비밀번호 store로 전달
-      this.$store.dispatch('signup', payload)
+      this.$store.dispatch('getUserInfo', payload)
       this.$router.push({ path: '/signup/auth' })
     },
     // 로그인 페이지로 이동

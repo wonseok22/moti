@@ -1,0 +1,131 @@
+.feed-comment {
+    display: flex;
+    flex-direction: column;
+}
+
+.single-comment {
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border-width: 0px 0px 0px 0px;
+    border-style: solid;
+    border-color: #ABABAB;
+    gap: 12px;
+    width: 100vw;
+
+    padding: 10px;
+    margin-top: 5px;
+
+
+    .more-modal {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 70px;
+        height: 30px;
+    
+        background-color: $light-yellow;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
+        border-radius: 5%;
+        right: 10px;
+
+        font-size: 12px;
+        font-weight: bolder;
+
+        gap: 3px;
+
+        > span {
+            font-size: 20px; 
+        }
+    }
+
+    > span {
+        align-self: flex-start;
+    }
+    
+
+    > div {
+        width: 85%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:flex-start;
+
+        div {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        
+        }
+
+        button {
+            position: relative;
+            border: none;
+            background-color: white;
+            font-size: 18px;
+            top: 3px;
+            color: #ABABAB;
+        }
+
+    }
+}
+
+.comment-nickname {
+    width: 80%;
+    word-wrap: break-word;
+    word-break: keep-all;
+    text-align: start;
+    font-size: 14px;
+    font-weight: bolder;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.comment-content {
+    width: 100%;
+    word-wrap: break-word;
+    word-break: keep-all;
+    text-align: start;
+    font-size: 14px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.comment-input {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    bottom: 0px;
+    width: 100%;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-top: solid 1px $light-grey;
+    justify-content: space-between;
+    form {
+        width: 73%;
+    }
+
+    textarea {
+        height: auto;
+        width: 100%;
+        border: none;
+        word-break: keep-all;
+        align-self: center;
+    }
+
+    textarea:focus {
+        outline: none;
+
+    }
+
+    button {
+        height: auto;
+        border: none;
+        background-color: white;
+        color: $main-green;
+    }
+}

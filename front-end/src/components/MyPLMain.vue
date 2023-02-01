@@ -1,20 +1,23 @@
 <template>
-  <div id="my-mission-main-layout">
+  <div id="my-pl-main-layout">
     <!-- 상단 유저명 -->
     <header>
-      <p id="my-mission-main-name">
+      <p id="my-pl-main-name">
         <span>사용자</span>
         의 꽃 목록
       </p>
     </header>
-    <main id="my-mission-main-main">
+    
+    <main id="my-pl-main-main">
+      <!-- 플레이리스트 -->
+      <MyPLForm/>
       <!-- 플레이리스트가 없을 경우 -->
       <div v-if="noList" id="no-list">
         <p>지금 성장 중인 식물이 없습니다.</p>
         <p>키우고 싶은 식물을 추가해주세요!</p>
       </div>
       <!-- 빈 플레이리스트 박스 -->
-      <div id="empty-pl">
+      <div @click="toPLSelect" id="empty-pl">
         <i class="material-symbols-outlined">add</i>
         <p>어떤 식물이 있는지 확인하러 가보기</p>
       </div>
@@ -23,28 +26,50 @@
 </template>
 
 <script>
+import MyPLForm from '@/components/MyPLForm'
+
 export default {
-  name: 'MyMissionMain',
+  name: 'MyPLMain',
+  components: {
+    MyPLForm,
+  },
+  methods: {
+    // 플레이리스트 선택 창으로 이동
+    toPLSelect() {
+      // this.$router.push({ path: '' })
+    },
+    // 내 플레이리스트 정보 state에 저장하기
+    getMyPL() {
+      this.$store.dispatch('getMyPL')
+    }
+  },
   computed: {
     // 진행 중인 플레이리스트 있는지 여부
     noList() {
       // 없으면 true, 있으면 false
-      return true
-    }
+      return false
+    },
+  },
+  created() {
+    this.getMyPL()
   }
 }
+
 </script>
 <style lang="scss">
 $header-height: 46px;
 
-#my-mission-main-layout {
-  height: $base-height;
+// 기본 레이아웃
+#my-pl-main-layout {
+  width: 100%;
+  height: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#my-mission-main-name {
+// 상단 사용자 이름 노출되는 섹션
+#my-pl-main-name {
   position: relative;
   width: $base-width;
   height: $header-height;
@@ -58,20 +83,24 @@ $header-height: 46px;
   align-items: center;
 
   border-bottom: 1px solid $light-grey;
-
+  
+  // 사용자 이름
   span {
     color: $main-green;
   }
 }
 
-#my-mission-main-main {
+// 본문 레이아웃
+#my-pl-main-main {
   height: 100%;
+  gap: 30px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+// 진행 중인 플레이리스트가 없을 경우
 #no-list {
   p:nth-child(1) {
     color: $light-grey;
@@ -83,6 +112,7 @@ $header-height: 46px;
   }
 }
 
+// + 아이콘
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -91,6 +121,7 @@ $header-height: 46px;
   'opsz' 48
 }
 
+// 플레이리스트 추가
 #empty-pl {
   width: 304px;
   height: 156px;

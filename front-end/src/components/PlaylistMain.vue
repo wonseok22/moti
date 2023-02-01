@@ -76,7 +76,7 @@
       movePlaylist(selected){
         this.$router.push({
           name: 'playlistDetail',
-          query: { pl: selected.categoryId
+          query: { pl: selected.playlistId
           },
         });
       }

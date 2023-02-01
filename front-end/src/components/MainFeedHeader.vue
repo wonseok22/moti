@@ -11,19 +11,22 @@
                 style="color:#A3A3A3">
                     workspace_premium 
                 </span>
-                <p>이상화다이상해</p>
+                <p>{{ HeaderData.nickname }}</p>
                 <button>
                     팔로우
                 </button>
             </div>
-            <p>‘초보자를 위한 운동’ 의 ‘1km 걷기’ 달성</p>
+            <p>{{ HeaderData.playlistName }}의 {{ HeaderData.missionName }}</p>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-
+    name: "MainFeedHeader",
+    props: {
+        HeaderData: Object,
+    }
 }
 </script>
 

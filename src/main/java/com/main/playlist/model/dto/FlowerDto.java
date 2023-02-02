@@ -9,14 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FlowerDto {
-    private Long flowerId;
-    
-    private String flowerImageUrl;
-
-    public static FlowerDto toDto(Flower flower){
-        return new FlowerDto(
-                flower.getFlowerId(),
-                flower.getFlowerImageUrl()
-        );
-    }
+	private Long flowerId;
+	
+	private String flowerImageUrl;
+	
+	public static FlowerDto toDto(Flower flower) {
+		return new FlowerDto(
+				flower.getFlowerId(),
+				flower.getFlowerImageUrl()
+		);
+	}
 }

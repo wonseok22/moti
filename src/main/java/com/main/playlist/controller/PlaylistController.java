@@ -148,12 +148,13 @@ public class PlaylistController {
 			if (userPlaylist != null) {
 				logger.debug("플레이리스트 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
+				resultMap.put("userPlaylistId",userPlaylist.getUserPlaylistId());
 				status = HttpStatus.OK;
 			} else {
 				logger.debug("플레이리스트 등록 결과 : {}", "실패");
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
-				// 플레이리스트 등록에 실패한 경우 실패 메시지 반환, 204 응답 코드
+				// 플레이리스트 등록에 실패한 경우 실패 메시지 반환, 202 응답 코드
 			}
 			
 		} catch (Exception e) {

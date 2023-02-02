@@ -26,7 +26,7 @@ public class FeedDto {
 	private boolean hit;
 	
 	public static FeedDto toDto(Feed feed) {
-	
+		
 		List<CommentDto> comments = new ArrayList<>();
 		feed.getComments().forEach(x -> comments.add(CommentDto.toDto(x)));
 		
@@ -36,7 +36,7 @@ public class FeedDto {
 		List<LikeDto> likes = new ArrayList<>();
 		feed.getLikes().forEach(x -> likes.add(LikeDto.toDto(x)));
 		
-		return new FeedDto (
+		return new FeedDto(
 				feed.getFeedId(),
 				UserDto.toDto(feed.getUser()).getNickname(),
 				feed.getUserPlaylist().getPlaylist().getPlaylistName(),

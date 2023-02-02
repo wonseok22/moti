@@ -17,8 +17,10 @@ public class ProfileDto {
 	private String userDesc;
 	private MultipartFile image;
 	private String nickname;
-	private int follwer;
+	private int follower;
 	private int following;
 	
+	private String profileImageUrl;
 	
+	private int playlistCompleteCnt;
 }

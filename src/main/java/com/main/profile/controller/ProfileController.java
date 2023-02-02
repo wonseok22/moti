@@ -75,7 +75,7 @@ public class ProfileController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@ApiOperation(value = "ㅍ로필 조회", notes = "프로필 조회 API", response = Map.class)
+	@ApiOperation(value = "프로필 조회", notes = "프로필 조회 API", response = Map.class)
 	@GetMapping("")
 	public ResponseEntity<?> getProfile(
 			@ApiParam(value = "프로필을 요청할 유저의 ID", required = true) @RequestParam String userId) {
@@ -152,7 +152,7 @@ public class ProfileController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@ApiOperation(value = "팔로우하기, 팔로우추소 구현", notes = "팔로우하기, 팔로우취소 API", response = Map.class)
+	@ApiOperation(value = "팔로우하기, 팔로우취소 구현", notes = "팔로우하기, 팔로우취소 API", response = Map.class)
 	@GetMapping("/follow/{userId}/{targetId}")
 	public ResponseEntity<?> doFollow(
 			@ApiParam(value = "팔로우 하는사람의 ID", required = true) @PathVariable String userId,

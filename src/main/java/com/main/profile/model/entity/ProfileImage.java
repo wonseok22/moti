@@ -6,16 +6,15 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Getter
 @Setter
 @ToString
 @Entity(name = "profileImage")
 public class ProfileImage {
-    @Id
-    private Long profileImageId;
-    
-    private String profileImageUrl;
-
+	@Id
+	private Long profileImageId;
+	
+	private String profileImageUrl;
+	
 }

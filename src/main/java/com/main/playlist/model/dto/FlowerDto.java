@@ -1,6 +1,6 @@
 package com.main.playlist.model.dto;
 
-import com.main.playlist.model.entity.Flower;
+import com.main.flower.model.entity.Flower;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

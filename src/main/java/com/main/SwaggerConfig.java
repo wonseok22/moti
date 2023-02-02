@@ -47,6 +47,7 @@ public class SwaggerConfig {
 						.or(RequestHandlerSelectors.basePackage("com.main.profile.controller"))
 						.or(RequestHandlerSelectors.basePackage("com.main.category.controller"))
 						.or(RequestHandlerSelectors.basePackage("com.main.playlist.controller"))
+						.or(RequestHandlerSelectors.basePackage("com.main.flower.controller"))
 						.or(RequestHandlerSelectors.basePackage("com.main.feed.controller")))
 				.paths(PathSelectors.any())
 				.build();

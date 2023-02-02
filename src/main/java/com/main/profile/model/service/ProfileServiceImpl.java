@@ -2,9 +2,11 @@ package com.main.profile.model.service;
 
 import com.main.profile.model.dto.FollowDto;
 import com.main.profile.model.dto.ProfileDto;
+import com.main.profile.model.entity.CurrentStat;
 import com.main.profile.model.entity.Follow;
 import com.main.profile.model.entity.Profile;
 import com.main.profile.model.entity.ProfileImage;
+import com.main.profile.model.repository.CurrentStatRepository;
 import com.main.profile.model.repository.FollowRepository;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
@@ -25,6 +27,9 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
 	private FollowRepository followRepository;
+	
+	@Autowired
+	private CurrentStatRepository currentStatRepository;
 	
 	
 	@Autowired
@@ -90,15 +95,35 @@ public class ProfileServiceImpl implements ProfileService {
 		User user = userRepository.findByUserId(userId);
 		// 존재하는 유저인 경우
 		if (user != null) {
-			
 			// 프로필을 받아와서 return
 			Profile profile = user.getProfile();
+			CurrentStat currentStat = currentStatRepository.findByUser_UserId(userId);
+			int playlistCompleteCnt = currentStat.getP1_cnt()
+					+currentStat.getP2_cnt()
+					+currentStat.getP3_cnt()
+					+currentStat.getP4_cnt()
+					+currentStat.getP5_cnt()
+					+currentStat.getP6_cnt();
+					
+			String profileImageUrl = profile.getProfileImage().getProfileImageUrl();
+			
 			ProfileDto profileDto = new ProfileDto();
 			profileDto.setNickname(user.getNickname());
 			profileDto.setFollowing(profile.getFollowing());
-			profileDto.setFollwer(profile.getFollower());
+			profileDto.setFollower(profile.getFollower());
 			profileDto.setUserDesc(profile.getUserDesc());
+			
+			if (profileImageUrl != null)
+				profileDto.setProfileImageUrl(profile.getProfileImage().getProfileImageUrl());
+			else
+				profileDto.setProfileImageUrl("@/assets/images/default_profile.jpg");
+			
+			profileDto.setFollower(currentStat.getFollower_cnt());
+			profileDto.setFollowing(currentStat.getFollowing_cnt());
+			
+			profileDto.setPlaylistCompleteCnt(playlistCompleteCnt);
 			profileDto.setUserId(userId);
+			
 			return profileDto;
 		} else {
 			return null;

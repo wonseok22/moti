@@ -66,8 +66,6 @@ public class UserServiceImpl implements UserService {
 		// Profile Build
 		Profile profile = new Profile();
 		profile.setProfileId(uuid);
-		profile.setFollower(0);
-		profile.setFollowing(0);
 		profile.setProfileImage(profileImage);
 		profileRepository.save(profile);
 		

@@ -17,30 +17,30 @@ public class CurrentStat {
 	private Long currentStatId;
 	private String userId;
 	
-	private int feed_cnt;
-	private int relation_cnt;
+	private int feedCnt;
+	private int relationCnt;
 	
-	private int health_cnt;
-	private int happy_cnt;
+	private int healthCnt;
+	private int happyCnt;
 	
-	private int my_like_cnt;
-	private int other_like_cnt;
+	private int myLikeCnt;
+	private int otherLikeCnt;
 	
-	private int replay_cnt;
-	private int replay_complete_cnt;
+	private int replayCnt;
+	private int replayCompleteCnt;
 	
-	private int comment_cnt;
-	private int p1_cnt;
-	private int p2_cnt;
-	private int p3_cnt;
-	private int p4_cnt;
-	private int p5_cnt;
-	private int p6_cnt;
+	private int commentCnt;
+	private int p1Cnt;
+	private int p2Cnt;
+	private int p3Cnt;
+	private int p4Cnt;
+	private int p5Cnt;
+	private int p6Cnt;
 	
-	private int lastday_complete_cnt;
-	private int fifthday_complete_cnt;
-	private int follower_cnt;
-	private int following_cnt;
+	private int lastdayCompleteCnt;
+	private int fifthdayCompleteCnt;
+	private int followerCnt;
+	private int followingCnt;
 	
 	
 }

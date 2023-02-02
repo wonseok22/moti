@@ -36,7 +36,7 @@ export default {
   methods: {
     // 플레이리스트 선택 창으로 이동
     toPLSelect() {
-      // this.$router.push({ path: '' })
+      this.$router.push({ name: 'playlist' })
     },
     // 내 플레이리스트 정보 state에 저장하기
     getMyPL() {

@@ -23,10 +23,8 @@
       </div>
       <div class="more-modal" 
       v-show="tabOpened" 
-      v-click-outside="onClickOutside">
-        <!-- <span class="material-icons-outlined">
-        delete
-        </span> -->
+      v-click-outside="onClickOutside"
+      @click="showFinalModal">
         <p>삭제</p>
       </div>
     </div>
@@ -42,7 +40,7 @@ export default {
       clickOutside: vClickOutside.directive
     },
     mounted() {
-      console.log(this.CommentData)
+      // console.log(this.CommentData)
     },
     props: {
         CommentData: Object,
@@ -55,6 +53,26 @@ export default {
     methods: {
       onClickOutside () {
         this.tabOpened = false
+      },
+      showFinalModal() {
+        this.$emit('deleteComment', this.CommentData.commentId)
+      //   this.$modal.show('dialog',{
+      //   text:'삭제 콜?',
+      //   buttons: [
+      //     {
+      //       title: '아뇨, 그대로 두겠습니다.',
+      //       handler: () => {
+      //         this.$modal.hide('dialog')
+      //       }
+      //     },
+      //     {
+      //       title:'네,, 삭제하겠습니다.',
+      //       handler:() => {
+      //         alert('진짜 지웠네')
+      //       }
+      //     }
+      //   ]
+      // })
       },
     }
 }

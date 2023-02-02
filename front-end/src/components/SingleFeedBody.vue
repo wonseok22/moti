@@ -27,10 +27,11 @@
 
         <span class="material-icons-outlined"
         v-show="BodyData.likes == true"
-        style="color:#FFB100;">
+        style="color:#FF5B5B;">
             favorite
         </span>
 
+    <!-- 댓글 버튼 -->
         <span 
         v-show="this.$route.params.feedId === undefined"
         v-on:click="moveToComment" 
@@ -45,7 +46,8 @@
         style="color:#04C584;">
             mode_comment
         </span>
-
+    
+    <!-- 공유 버튼 -->
         <span class="material-icons-outlined"
         style="color:#A3A3A3;">
             share
@@ -75,17 +77,8 @@ export default {
             return true
         },
         moveToComment() {
-            this.$axios({
-                method:'get',
-                url:this.$baseUrl + '/feed/1' + '/red'
-            })
-            .then((res) => {
-                const data = res.data.feed
-                this.$router.push({name:'comment', params: {feedId:1}, query:{FeedData: data}})
-            })
-            .catch((error) => {
-                console.log(error.message)
-            })
+            this.$store.dispatch("getSingleFeed", 6)
+            this.$router.push({name:"comment", params: {feedId:6}})
         },
     },
 }

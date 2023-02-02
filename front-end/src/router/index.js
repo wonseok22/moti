@@ -8,9 +8,10 @@ import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
 import ProfileView from '@/views/ProfileView'
-// import SearchPage from '@/views/SearchView'
-import UserFlowerList from '@/views/UserFLList'
+//import SearchPage from '@/views/SearchView'
 import LoginForm from '@/components/LoginForm'
+//import MyMissionMain from '@/components/MyMissionMain'
+// import SearchPage from '@/views/SearchView'
 import playlistMain from '@/components/CategoryMain'
 import playlistSelect from '@/components/PlaylistMain'
 import playlistDetail from '@/components/PlaylistDetail'
@@ -23,6 +24,7 @@ import SearchView from '@/views/SearchView'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
+import FeedCreateView from '@/views/FeedCreateView'
 
 
 Vue.use(VueRouter)
@@ -61,9 +63,14 @@ const routes = [
     ],
   },
   {
-    path:'/feed',
-    name:'feed',
+    path: '/feed',
+    name: 'feed',
     component: FeedView,
+  },
+  {
+    path: '/feed/create',
+    name: 'feedcreate',
+    component: FeedCreateView,
   },
   {
     path:'/comment/:feedId',
@@ -81,11 +88,6 @@ const routes = [
     component:SearchView,
   },
   {
-    path:'/userflowerlist',
-    name:'userflowerlist',
-    component:UserFlowerList,
-  },
-  {
     path: '/my-pl',
     name: 'my-pl',
     component: MyPLView,
@@ -96,8 +98,8 @@ const routes = [
         component: MyPLMain,
       },
       {
-        path: 'mission/:pl-id',
-        // path: 'mission',
+        // path: 'mission/:pl-id',
+        path: 'mission',
         component: MyPLMission,
       }
     ]
@@ -130,6 +132,14 @@ const routes = [
     path:'/authcomplete',
     name:'authcomplete',
     component: AuthCompleteView,
+  },
+  
+  {
+    // 랜딩페이지: 로그인 페이지
+    path: '/',
+    name: 'landing',
+    redirect: 'login',
+    component: LoginView,
   },
   {
     path: '/search',

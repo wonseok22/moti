@@ -15,6 +15,7 @@ import com.main.feed.model.repository.LikeRepository;
 import com.main.playlist.model.dto.PlaylistDto;
 import com.main.playlist.model.dto.UserPlaylistDto;
 import com.main.playlist.model.entity.Mission;
+import com.main.playlist.model.entity.Playlist;
 import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.PlaylistRepository;
@@ -206,12 +207,26 @@ public class FeedServiceImpl implements FeedService {
 			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%%", PageRequest.of(pageNo, 10));
 			return toSearchList(userId, list);
 		} else if ("playlist".equals(kind)) {
-			PlaylistDto playlistDto = PlaylistDto.toDto(playlistRepository.findByPlaylistNameLike("%" + keyword + "%"));
+			// 플레이리스트 이름으로 플레이리스트DTO들을 가져옴(Playlist ID들을 알아내기 위해)
+			List<Playlist> playlists = playlistRepository.findAllByPlaylistNameLike("%" + keyword + "%");
+			List<PlaylistDto> playlistDtos = new ArrayList<>();
+			playlists.forEach(x -> playlistDtos.add(PlaylistDto.toDto(x)));
+			
+			// 해당 Playlist ID를 가진 UserPlaylist들을 가져옴
 			List<UserPlaylistDto> userPlaylists = new ArrayList<>();
-			userPlaylistRepository.findByPlaylist_PlaylistId(playlistDto.getPlaylistId()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
+			playlistDtos.forEach(x ->
+					userPlaylistRepository.findByPlaylist_PlaylistId(x.getPlaylistId()).forEach(y ->
+							userPlaylists.add(UserPlaylistDto.toDto(y))));
+			System.out.println("userPlaylists : " + userPlaylists.size());
+			
+			// 가져온 UserPlaylist에서 ID들만 따로 꺼내서 저장함
 			List<Long> userPlaylistIds = new ArrayList<>();
-			userPlaylists.forEach(x -> userPlaylistIds.add(x.getPlaylist().getPlaylistId()));
+			userPlaylists.forEach(x -> userPlaylistIds.add(x.getUserPlaylistId()));
+			System.out.println("userPlaylistIds : " + userPlaylistIds.size());
+			
+			// UserPlaylist ID들을 가지고 DB에서 검색
 			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdInOrderByFeedIdDesc(userPlaylistIds, PageRequest.of(pageNo, 10));
+			System.out.println("list.getNumberOfElements : " + list.getNumberOfElements());
 			return toSearchList(userId, list);
 		} else if ("content".equals(kind)) {
 			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%" + keyword + "%", PageRequest.of(pageNo, 10));

@@ -202,55 +202,49 @@ public class FeedServiceImpl implements FeedService {
 	@Override
 	public Map<String, Object> searchFeed(String userId, String keyword, String kind, int pageNo) {
 		// 검색 종류에 따른 분기
-		if ("playlist".equals(kind)) {
-			// 조회 결과 받아옴
-			Map<String, Object> searchResult = new HashMap<>();
+		if ("default".equals(kind)) {
+			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%%", PageRequest.of(pageNo, 10));
+			return toSearchList(userId, list);
+		} else if ("playlist".equals(kind)) {
 			PlaylistDto playlistDto = PlaylistDto.toDto(playlistRepository.findByPlaylistNameLike("%" + keyword + "%"));
 			List<UserPlaylistDto> userPlaylists = new ArrayList<>();
 			userPlaylistRepository.findByPlaylist_PlaylistId(playlistDto.getPlaylistId()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
 			List<Long> userPlaylistIds = new ArrayList<>();
 			userPlaylists.forEach(x -> userPlaylistIds.add(x.getPlaylist().getPlaylistId()));
-			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdIn(userPlaylistIds, PageRequest.of(pageNo, 10));
-			
-			// DTO에 담아서 리스트에 삽입
-			List<FeedDto> feeds = new ArrayList<>();
-			for (Feed feed : list) {
-				feeds.add(FeedDto.toDto(feed));
-			}
-			
-			// 피드마다 좋아요 눌렀는지 확인
-			for (FeedDto feedDto : feeds) {
-				Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedDto.getFeedId(), userId);
-				if (like != null) feedDto.setHit(true);
-			}
-			
-			searchResult.put("feeds", feeds);
-			searchResult.put("isLast", list.isLast()); // true or false
-			return searchResult;
-			
+			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdInOrderByFeedIdDesc(userPlaylistIds, PageRequest.of(pageNo, 10));
+			return toSearchList(userId, list);
 		} else if ("content".equals(kind)) {
-			// 조회 결과 받아옴
-			Map<String, Object> searchResult = new HashMap<>();
-			Slice<Feed> list = feedRepository.findAllByContentLike("%" + keyword + "%", PageRequest.of(pageNo, 10));
-			
-			// DTO에 담아서 리스트에 삽입
-			List<FeedDto> feeds = new ArrayList<>();
-			for (Feed feed : list) {
-				feeds.add(FeedDto.toDto(feed));
-			}
-			
-			// 피드마다 좋아요 눌렀는지 확인
-			for (FeedDto feedDto : feeds) {
-				Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedDto.getFeedId(), userId);
-				if (like != null) feedDto.setHit(true);
-			}
-			
-			searchResult.put("feeds", feeds);
-			searchResult.put("isLast", list.isLast()); // true or false
-			return searchResult;
+			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%" + keyword + "%", PageRequest.of(pageNo, 10));
+			return toSearchList(userId, list);
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * 검색 결과를 프론트에 보내기 전에 가공하는 메서드
+	 * @param userId 검색하는 유저의 ID
+	 * @param list Slice 형태로 반환된 피드 검색 결과
+	 * @return
+	 */
+	private Map<String, Object> toSearchList(String userId, Slice<Feed> list) {
+		Map<String, Object> searchResult = new HashMap<>();
+		
+		// DTO에 담아서 리스트에 삽입
+		List<FeedDto> feeds = new ArrayList<>();
+		for (Feed feed : list) {
+			feeds.add(FeedDto.toDto(feed));
+		}
+		
+		// 피드마다 좋아요 눌렀는지 확인
+		for (FeedDto feedDto : feeds) {
+			Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedDto.getFeedId(), userId);
+			if (like != null) feedDto.setHit(true);
+		}
+		
+		searchResult.put("feeds", feeds);
+		searchResult.put("isLast", list.isLast()); // 마지막 페이지인지 아닌지를 알려준다
+		return searchResult;
 	}
 	
 }

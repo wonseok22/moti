@@ -6,8 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.FetchType.*;
-
 @Entity
 @Getter
 @Setter

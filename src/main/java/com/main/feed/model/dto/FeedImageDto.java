@@ -12,7 +12,7 @@ public class FeedImageDto {
 	private Long feedImageId;
 	private String feedImageUrl;
 	
-	public static FeedImageDto toDto (FeedImage feedImage) {
+	public static FeedImageDto toDto(FeedImage feedImage) {
 		return new FeedImageDto(
 				feedImage.getFeedImageId(),
 				feedImage.getFeedImageUrl()

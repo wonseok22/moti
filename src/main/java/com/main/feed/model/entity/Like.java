@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Like {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long likeId;
@@ -24,5 +24,5 @@ public class Like {
 	@ManyToOne
 	@JoinColumn(name = "feedId")
 	private Feed feed;
-
+	
 }

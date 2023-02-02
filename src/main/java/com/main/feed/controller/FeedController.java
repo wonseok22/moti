@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @RequestMapping("/feed")
 @Api(tags = "피드 관리 API")
@@ -42,7 +42,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
 	@PostMapping
-	public ResponseEntity<?> writeFeed (
+	public ResponseEntity<?> writeFeed(
 			@RequestPart @ApiParam(value = "피드 작성 정보", required = true) WriteFeedDto writeFeedDto,
 			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
 		
@@ -51,7 +51,7 @@ public class FeedController {
 		
 		try {
 			Feed feed = feedService.writeFeed(writeFeedDto, images);
-			if(feed != null) {
+			if (feed != null) {
 				logger.debug("피드 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				resultMap.put("feedId", feed.getFeedId());
@@ -74,7 +74,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "피드 1개 조회", notes = "피드 1개 조회 API", response = Map.class)
 	@GetMapping("/{feedId}/{userId}")
-	public ResponseEntity<?> viewFeed (
+	public ResponseEntity<?> viewFeed(
 			@PathVariable @ApiParam(value = "조회할 피드 ID", required = true) Long feedId,
 			@PathVariable @ApiParam(value = "조회하는 유저 ID", required = true) String userId) {
 		
@@ -108,7 +108,7 @@ public class FeedController {
 	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 수정", notes = "피드 수정 API", response = Map.class)
 	@PutMapping("/{feedId}")
-	public ResponseEntity<?> modifyFeed (
+	public ResponseEntity<?> modifyFeed(
 			@PathVariable @ApiParam(value = "수정할 피드 ID", required = true) Long feedId,
 			@RequestPart @ApiParam(value = "수정할 내용", required = true) String content,
 			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
@@ -118,7 +118,7 @@ public class FeedController {
 		
 		try {
 			Feed feed = feedService.modifyFeed(feedId, content, images);
-			if(feed != null) {
+			if (feed != null) {
 				logger.debug("피드 수정 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				resultMap.put("feedId", feedId);
@@ -141,7 +141,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "피드 삭제", notes = "피드 삭제 API", response = Map.class)
 	@DeleteMapping("/{feedId}")
-	public ResponseEntity<?> deleteFeed (
+	public ResponseEntity<?> deleteFeed(
 			@PathVariable @ApiParam(value = "삭제할 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -180,7 +180,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "댓글 작성", notes = "댓글 작성 API", response = Map.class)
 	@PostMapping("/comment")
-	public ResponseEntity<?> writeComment (
+	public ResponseEntity<?> writeComment(
 			@RequestBody @ApiParam(value = "댓글 내용", required = true) WriteCommentDto writeCommentDto) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -188,7 +188,7 @@ public class FeedController {
 		
 		try {
 			Comment comment = feedService.writeComment(writeCommentDto);
-			if(comment != null) {
+			if (comment != null) {
 				logger.debug("댓글 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
@@ -210,7 +210,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "댓글 삭제", notes = "댓글 삭제 API", response = Map.class)
 	@DeleteMapping("/comment/{commentId}")
-	public ResponseEntity<?> deleteComment (
+	public ResponseEntity<?> deleteComment(
 			@PathVariable @ApiParam(value = "삭제할 댓글 ID", required = true) Long commentId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
@@ -244,7 +244,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "좋아요 추가", notes = "좋아요 추가 API", response = Map.class)
 	@PostMapping("/like/{userId}/{feedId}")
-	public ResponseEntity<?> addLike (
+	public ResponseEntity<?> addLike(
 			@PathVariable @ApiParam(value = "좋아요 누른 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
@@ -253,7 +253,7 @@ public class FeedController {
 		
 		try {
 			Like like = feedService.addLike(userId, feedId);
-			if(like != null) {
+			if (like != null) {
 				logger.debug("좋아요 추가 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
@@ -275,7 +275,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "좋아요 취소", notes = "좋아요 취소 API", response = Map.class)
 	@DeleteMapping("/like/{userId}/{feedId}")
-	public ResponseEntity<?> deleteLike (
+	public ResponseEntity<?> deleteLike(
 			@PathVariable @ApiParam(value = "좋아요 누른 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
@@ -310,7 +310,7 @@ public class FeedController {
 	
 	@ApiOperation(value = "피드 검색", notes = "검색어 기반 피드 검색 API", response = Map.class)
 	@GetMapping("/search/{userId}/{keyword}/{kind}/{pageNo}")
-	public ResponseEntity<?> searchFeed (
+	public ResponseEntity<?> searchFeed(
 			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,
 			@PathVariable @ApiParam(value = "검색 종류(playlist, content, ...)", required = true) String kind,

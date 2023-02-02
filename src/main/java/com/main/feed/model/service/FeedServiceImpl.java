@@ -38,7 +38,7 @@ import java.util.Map;
 
 @Service
 public class FeedServiceImpl implements FeedService {
-
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -114,7 +114,7 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Feed modifyFeed (Long feedId, String content, List<MultipartFile> images) throws SQLException {
+	public Feed modifyFeed(Long feedId, String content, List<MultipartFile> images) throws SQLException {
 		Feed feed = feedRepository.findByFeedId(feedId);
 		
 		// 해당 feedId의 피드가 존재하지 않으면 null 반환
@@ -166,7 +166,7 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Comment writeComment (WriteCommentDto writeCommentDto) throws SQLException {
+	public Comment writeComment(WriteCommentDto writeCommentDto) throws SQLException {
 		Comment comment = new Comment();
 		comment.setFeed(feedRepository.findByFeedId(writeCommentDto.getFeedId()));
 		comment.setUser(userRepository.findByUserId(writeCommentDto.getUserId()));
@@ -177,12 +177,12 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	@Transactional
-	public int deleteComment (Long commentId) throws SQLException {
+	public int deleteComment(Long commentId) throws SQLException {
 		return commentRepository.deleteByCommentId(commentId);
 	}
 	
 	@Override
-	public Like addLike (String userId, Long feedId) {
+	public Like addLike(String userId, Long feedId) {
 		// 이미 눌린 상태면 그냥 그대로 반환
 		Like check = likeRepository.findByFeed_FeedIdAndUser_UserId(feedId, userId);
 		if (check != null) return check;
@@ -195,12 +195,12 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	@Transactional
-	public int deleteLike (String userId, Long feedId) throws SQLException {
+	public int deleteLike(String userId, Long feedId) throws SQLException {
 		return likeRepository.deleteByUser_UserIdAndFeed_FeedId(userId, feedId);
 	}
 	
 	@Override
-	public Map<String, Object> searchFeed (String userId, String keyword, String kind, int pageNo) {
+	public Map<String, Object> searchFeed(String userId, String keyword, String kind, int pageNo) {
 		// 검색 종류에 따른 분기
 		if ("playlist".equals(kind)) {
 			// 조회 결과 받아옴

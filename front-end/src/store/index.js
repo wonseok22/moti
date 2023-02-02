@@ -114,7 +114,6 @@ export default new Vuex.Store({
           console.log()
           const payloadInfo = {
             id: payload.id,
-            password: payload.password,
           }
           context.commit('SAVE_TOKEN', payloadToken)
           context.commit('GET_USER_INFO', payloadInfo)

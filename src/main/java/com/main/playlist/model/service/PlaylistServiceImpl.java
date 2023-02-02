@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 		userPlaylist.setPlaylist(playlist);
 		userPlaylist.setUser(user);
 		userPlaylist.setStartDate(LocalDateTime.now());
-		userPlaylist.setEndDate(LocalDateTime.now().plusDays(7));
+		userPlaylist.setEndDate(LocalDateTime.now().plusDays(8).minusSeconds(1).truncatedTo(ChronoUnit.DAYS));
 		
 		userPlaylistRepository.save(userPlaylist);
 		

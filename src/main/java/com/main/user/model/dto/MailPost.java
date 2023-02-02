@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class MailPost {
-    private String email;
+	private String email;
 }

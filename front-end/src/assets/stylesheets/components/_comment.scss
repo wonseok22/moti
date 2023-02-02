@@ -3,6 +3,10 @@
     flex-direction: column;
 }
 
+.comments-list {
+    margin-bottom: 55px
+}
+
 .single-comment {
     display: flex;
     align-items: center;
@@ -19,25 +23,27 @@
 
     .more-modal {
         position: absolute;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        text-align: center;
+        align-self: flex-start;
         width: 70px;
         height: 30px;
     
-        background-color: $light-yellow;
+        background-color: white;
+        border: solid 1px #D60000;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
-        border-radius: 5%;
+        border-radius: 7px;
         right: 10px;
+        margin-top: 5px;
 
         font-size: 12px;
-        font-weight: bolder;
+        font-weight: bold;
+        color: #D60000;
 
         gap: 3px;
 
-        > span {
-            font-size: 20px; 
+        p{
+            margin-left: auto;
+            margin-right: auto;
         }
     }
 
@@ -98,20 +104,29 @@
     position: fixed;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
     bottom: 0px;
     width: 100%;
     padding-left: 3px;
     padding-right: 3px;
     border-top: solid 1px $light-grey;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    background-color: white;
+    
+    span {
+        align-self: flex-end;
+        margin-bottom: 3px;
+    }
+
     form {
         width: 73%;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     textarea {
-        height: auto;
-        width: 100%;
+        width: 90%;
+        resize: none;
         border: none;
         word-break: keep-all;
         align-self: center;
@@ -119,7 +134,10 @@
 
     textarea:focus {
         outline: none;
+    }
 
+    textarea::placeholder {
+        opacity: 0.5;
     }
 
     button {
@@ -128,4 +146,15 @@
         background-color: white;
         color: $main-green;
     }
+}
+
+.letter-counts {
+    align-self: flex-end;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+.final-modal {
+    font-size: 14px;
+    font-weight: bold;
 }

@@ -17,6 +17,7 @@ export default new Vuex.Store({
     accessToken: null,
     refreshToken: null,
     myPL: null,
+    nowFeed: null,
   },
   getters: {
     // 로그인 여부
@@ -84,6 +85,10 @@ export default new Vuex.Store({
       state.myPL = payload.myPL
       console.log(state.myPL)
       console.log(`플레이리스트 출력: ${state.myPL}`)
+    },
+    GET_FEED(state, payload) {
+      state.nowFeed = payload.feedData
+      console.log(state.nowFeed)
     }
   },
   actions: {
@@ -242,6 +247,54 @@ export default new Vuex.Store({
           console.log(`유저 플레이리스트 가져오기 실패: status ${error.response.status}`)
         })
     },
+    // 피드 상세정보 저장
+    getSingleFeed(context, feedId) {
+      this.$axios({
+        method:'get',
+        url:`${this.$baseUrl}/feed/${feedId}/${context.state.id}`
+      })
+      .then((res) => {
+          const data = {
+            feedData: res.data.feed
+          }
+          context.commit('GET_FEED', data)
+      })
+      .catch((error) => {
+          console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
+      })
+    },
+    //댓글 작성
+    writeComment(context, payload) {
+      const writeCommentDto = {
+        userId: payload.userId,
+        feedId: payload.feedId,
+        content: payload.content
+      }
+      //console.log(writeCommentDto)
+      this.$axios({
+        method:'post',
+        url:`${this.$baseUrl}/feed/comment`,
+        data: writeCommentDto,
+      })
+      .then(() => {
+        this.dispatch('getSingleFeed', writeCommentDto.feedId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    deleteComment(context, payload) {
+      this.$axios({
+        method:'delete',
+        url:`${this.$baseUrl}/feed/comment/${payload.commentId}`
+      })
+      .then(() => {
+        this.dispatch('getSingleFeed', payload.feedId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
   },
   modules: {
   }

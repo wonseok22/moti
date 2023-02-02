@@ -3,6 +3,7 @@ package com.main.user.model.service;
 import com.main.user.model.entity.User;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 
 public interface UserService {
@@ -17,14 +18,14 @@ public interface UserService {
 	
 	int deleteUser(String userId) throws Exception; // 회원 삭제
 	
-	
 	User checkUser(String type, String value) throws Exception;
 	
-	public void saveRefreshToken(String userId, String refreshToken) throws Exception;
+	void saveRefreshToken(String userId, String refreshToken) throws Exception;
 	
-	public String getRefreshToken(String userId) throws Exception;
+	String getRefreshToken(String userId) throws Exception;
 	
-	public void delRefreshToken(String userId) throws Exception;
+	void delRefreshToken(String userId) throws Exception;
 	
+	Map<String, Object> searchUser(String keyword, int pageNo) throws Exception;
 }
 

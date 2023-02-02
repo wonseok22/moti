@@ -345,4 +345,37 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "회원 검색", notes = "검색어 기반 회원 검색 API", response = Map.class)
+	@GetMapping("/search/{keyword}/{pageNo}")
+	public ResponseEntity<?> searchUser(
+			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,
+			@PathVariable @ApiParam(value = "페이지 번호(0부터 시작)", required = true) int pageNo) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		try {
+			Map<String, Object> searchResult = userService.searchUser(keyword, pageNo);
+			if (searchResult == null) {
+				logger.debug("회원 검색 결과 : {}", "유저 존재하지 않음");
+				resultMap.put("users", null);
+				resultMap.put("message", "존재하지 않는 유저");
+				status = HttpStatus.ACCEPTED;
+				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+			}
+			logger.debug("회원 검색 결과 : {}", "성공");
+			resultMap.put("users", searchResult.get("users"));
+			resultMap.put("isLast", searchResult.get("isLast"));
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("회원 검색 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 }

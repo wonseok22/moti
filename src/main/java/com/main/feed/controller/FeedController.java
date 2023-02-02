@@ -44,7 +44,7 @@ public class FeedController {
 	@PostMapping
 	public ResponseEntity<?> writeFeed(
 			@RequestPart @ApiParam(value = "피드 작성 정보", required = true) WriteFeedDto writeFeedDto,
-			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
+			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
@@ -322,19 +322,20 @@ public class FeedController {
 		try {
 			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, pageNo);
 			if (searchResult == null) {
-				logger.debug("피드 조회 결과 : {}", "피드 존재하지 않음");
+				logger.debug("피드 검색 결과 : {}", "피드 존재하지 않음");
+				resultMap.put("feeds", null);
 				resultMap.put("message", "존재하지 않는 피드");
 				status = HttpStatus.ACCEPTED;
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
-			logger.debug("피드 조회 결과 : {}", "성공");
+			logger.debug("피드 검색 결과 : {}", "성공");
 			resultMap.put("feeds", searchResult.get("feeds"));
 			resultMap.put("isLast", searchResult.get("isLast"));
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("피드 조회 실패 : {}", e);
+			logger.error("피드 검색 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -342,6 +343,5 @@ public class FeedController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		
 	}
-	
 	
 }

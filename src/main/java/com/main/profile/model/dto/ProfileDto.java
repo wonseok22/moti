@@ -12,13 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @ToString
 public class ProfileDto {
-	
-	private String userId;
-	private String userDesc;
-	private MultipartFile image;
-	private String nickname;
-	private int follwer;
-	private int following;
-	
-	
+
+    private String userId;
+    private String userDesc;
+    private MultipartFile image;
+    private String nickname;
+    private int follwer;
+    private int following;
+
+    private String profileImageUrl;
+
 }

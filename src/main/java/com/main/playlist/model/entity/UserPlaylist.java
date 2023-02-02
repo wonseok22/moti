@@ -8,9 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-
-import static javax.persistence.FetchType.*;
 
 @Entity
 @Setter
@@ -18,22 +15,24 @@ import static javax.persistence.FetchType.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserPlaylist {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userPlaylistId;
-    
-    @ManyToOne
-    @JoinColumn(name="userId")
-    private User user;
-    
-    @ManyToOne
-    @JoinColumn(name="playlistId")
-    private Playlist playlist;
-
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
-
-    private int done;
-    
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long userPlaylistId;
+	
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name = "playlistId")
+	private Playlist playlist;
+	
+	private LocalDateTime startDate;
+	
+	private LocalDateTime endDate;
+	
+	private int done;
+	
+	private int today;
+	
 }

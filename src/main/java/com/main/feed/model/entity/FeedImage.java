@@ -4,24 +4,22 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
-
 @Entity
 @Setter
 @Getter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class File {
-
-	@Id
-	@GeneratedValue
-	private Long fileId;
+public class FeedImage {
 	
-	@ManyToOne(fetch = LAZY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long feedImageId;
+	
+	@ManyToOne
 	@JoinColumn(name = "feedId")
 	private Feed feed;
 	
-	private String fileImageUrl;
+	private String feedImageUrl;
 	
 }

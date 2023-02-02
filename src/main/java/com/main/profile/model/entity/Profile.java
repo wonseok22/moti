@@ -1,6 +1,5 @@
 package com.main.profile.model.entity;
 
-import com.main.user.model.entity.User;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -15,15 +14,15 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @ToString
 public class Profile {
-    @Id
-    private Long profileId;
-    private String userDesc;
-    private int follower;
-    private int following;
-
-    @OneToOne
-    @JoinColumn(name = "profileImageId")
-    private ProfileImage profileImage;
-
-
+	@Id
+	private Long profileId;
+	private String userDesc;
+	private int follower;
+	private int following;
+	
+	@OneToOne
+	@JoinColumn(name = "profileImageId")
+	private ProfileImage profileImage;
+	
+	
 }

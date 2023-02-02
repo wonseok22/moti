@@ -8,8 +8,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class MailMessage {
-
-    private String to;
-    private String subject;
-    private String message;
+	
+	private String to;
+	private String subject;
+	private String message;
 }

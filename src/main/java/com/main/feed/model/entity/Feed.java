@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Feed {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long feedId;
@@ -47,7 +47,7 @@ public class Feed {
 	private List<Comment> comments = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "feed")
-	private List<File> files = new ArrayList<>();
+	private List<FeedImage> feedImages = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "feed")
 	private List<Like> likes = new ArrayList<>();

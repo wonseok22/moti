@@ -27,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public Category registCategory(Category category, MultipartFile image) throws SQLException {
 		
 		try {
-			String ImagePath = s3Upload.uploadFiles(image, "profileImages");
+			String ImagePath = s3Upload.uploadFiles(image, "categoryImages");
 			category.setCategoryImageUrl(ImagePath);
 			return categoryRepository.save(category);
 			

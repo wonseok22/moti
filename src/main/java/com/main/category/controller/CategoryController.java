@@ -66,18 +66,18 @@ public class CategoryController {
 		try {
 			Category category = new Category();
 			category.setCategoryName(categoryName);
-			Category result = categoryService.registCategory(category,image);
+			Category result = categoryService.registCategory(category, image);
 			
 			logger.debug("카테고리 등록 : {}", result);
-			if(result!=null)
+			if (result != null)
 				resultMap.put("message", SUCCESS);
 			else
-				resultMap.put("message",FAIL);
+				resultMap.put("message", FAIL);
 			status = HttpStatus.OK;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("카테고리 조회 실패 : {}", e);
+			logger.error("카테고리 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

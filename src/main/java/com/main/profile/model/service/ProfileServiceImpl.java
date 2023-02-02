@@ -98,12 +98,12 @@ public class ProfileServiceImpl implements ProfileService {
 			// 프로필을 받아와서 return
 			Profile profile = user.getProfile();
 			CurrentStat currentStat = currentStatRepository.findByUserId(userId);
-			int playlistCompleteCnt = currentStat.getP1_cnt()
-					+currentStat.getP2_cnt()
-					+currentStat.getP3_cnt()
-					+currentStat.getP4_cnt()
-					+currentStat.getP5_cnt()
-					+currentStat.getP6_cnt();
+			int playlistCompleteCnt = currentStat.getP1Cnt()
+					+currentStat.getP2Cnt()
+					+currentStat.getP3Cnt()
+					+currentStat.getP4Cnt()
+					+currentStat.getP5Cnt()
+					+currentStat.getP6Cnt();
 					
 			String profileImageUrl = profile.getProfileImage().getProfileImageUrl();
 			
@@ -116,8 +116,8 @@ public class ProfileServiceImpl implements ProfileService {
 			else
 				profileDto.setProfileImageUrl("@/assets/images/default_profile.jpg");
 			
-			profileDto.setFollower(currentStat.getFollower_cnt());
-			profileDto.setFollowing(currentStat.getFollowing_cnt());
+			profileDto.setFollower(currentStat.getFollowerCnt());
+			profileDto.setFollowing(currentStat.getFollowingCnt());
 			
 			profileDto.setPlaylistCompleteCnt(playlistCompleteCnt);
 			profileDto.setUserId(userId);

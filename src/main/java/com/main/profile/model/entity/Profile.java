@@ -17,8 +17,6 @@ public class Profile {
 	@Id
 	private Long profileId;
 	private String userDesc;
-	private int follower;
-	private int following;
 	
 	@OneToOne
 	@JoinColumn(name = "profileImageId")

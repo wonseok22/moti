@@ -16,15 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
-    
-    @Column(nullable = false,unique = true)
-    private String categoryName;
-    
-    private String categoryImageUrl;
-    
-    @OneToMany(mappedBy = "category")
-    private List<Playlist> playlists = new ArrayList<>();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long categoryId;
+	
+	@Column(nullable = false, unique = true)
+	private String categoryName;
+	
+	private String categoryImageUrl;
+	
+	@OneToMany(mappedBy = "category")
+	private List<Playlist> playlists = new ArrayList<>();
 }

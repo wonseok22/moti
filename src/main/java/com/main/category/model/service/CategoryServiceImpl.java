@@ -13,25 +13,25 @@ import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Override
-    public List<CategoryDto> getCategories() throws SQLException {
-        List<CategoryDto> categories = new ArrayList<>();
-        
-        categoryRepository.findAll().forEach(x -> categories.add(CategoryDto.toDto(x)));
-        
-        return categories;
-    }
-
-    @Override
-    public List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException {
-        List<PlaylistDto> playlists = new ArrayList<>();
-
-        categoryRepository.findByCategoryId(categoryId).getPlaylists().forEach(x -> playlists.add(PlaylistDto.toDto(x)));
-
-        return playlists;
-    }
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	@Override
+	public List<CategoryDto> getCategories() throws SQLException {
+		List<CategoryDto> categories = new ArrayList<>();
+		
+		categoryRepository.findAll().forEach(x -> categories.add(CategoryDto.toDto(x)));
+		
+		return categories;
+	}
+	
+	@Override
+	public List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException {
+		List<PlaylistDto> playlists = new ArrayList<>();
+		
+		categoryRepository.findByCategoryId(categoryId).getPlaylists().forEach(x -> playlists.add(PlaylistDto.toDto(x)));
+		
+		return playlists;
+	}
 }

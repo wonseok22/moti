@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDto> getCategories() throws SQLException;
-
-    List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException; //카테고리별 플레이리스트 조회
-
+	List<CategoryDto> getCategories() throws SQLException;
+	
+	List<PlaylistDto> getPlaylists(Long categoryId) throws SQLException; //카테고리별 플레이리스트 조회
+	
 }
 

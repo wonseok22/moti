@@ -31,7 +31,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @ApiOperation(value = "카테고리 조회", notes = "카테고리 요청 API", response = Map.class)
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getCategory() {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;

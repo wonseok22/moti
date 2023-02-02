@@ -106,6 +106,7 @@ public class ProfileServiceImpl implements ProfileService{
             profileDto.setFollowing(profile.getFollowing());
             profileDto.setFollwer(profile.getFollower());
             profileDto.setUserDesc(profile.getUserDesc());
+            profileDto.setProfileImageUrl(profile.getProfileImage().getProfileImageUrl());
             profileDto.setUserId(userId);
             return profileDto;
         } else {

@@ -19,5 +19,6 @@ public class ProfileDto {
     private int follwer;
     private int following;
 
+    private String profileImageUrl;
 
 }

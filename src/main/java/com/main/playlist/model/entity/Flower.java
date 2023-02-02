@@ -12,8 +12,8 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class Flower {
-    @Id
-    private Long flowerId;
-
-    private String flowerImageUrl;
+	@Id
+	private Long flowerId;
+	
+	private String flowerImageUrl;
 }

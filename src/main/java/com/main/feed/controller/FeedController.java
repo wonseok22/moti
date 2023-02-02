@@ -314,7 +314,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,
 			@PathVariable @ApiParam(value = "검색 종류(default, playlist, content)", required = true) String kind,
-			@PathVariable @ApiParam(value = "페이지 번호", required = true) int pageNo) {
+			@PathVariable @ApiParam(value = "페이지 번호(0부터 시작)", required = true) int pageNo) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;

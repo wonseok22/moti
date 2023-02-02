@@ -6,19 +6,31 @@
       <p>moti 회원가입 페이지에서</p>
       <p><b>'인증완료'</b> 버튼을 눌러주세요.</p>
     </div>
-    <!-- <p id="close-tap" class="text-active" @click="closeTap">현재 창 닫기</p> -->
   </div>
 </template>
 
 <script>
 export default {
   name: 'AuthCompleteView',
-  // methods: {
-  //   // 현재 탭 닫기
-  //   closeTap() {
-  //     window.close()
-  //   }
-  // }
+  methods: {
+    // 이메일 인증 코드 발송
+    emailAuthCode() {
+      console.log(this.$route.query.code)
+      this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/users/email?code=${this.$route.query.code}`
+      })
+        .then((response) => {
+          console.log(`이메일 인증 코드 발송 완료: status ${response.status}`)
+        })
+        .catch((error) => {
+          console.log(`이메일 인증 코드 발송 실패: status ${error.response.status}`)
+        })
+    }
+  },
+  created() {
+    this.emailAuthCode()
+  }
 }
 </script>
 
@@ -47,10 +59,4 @@ export default {
     margin: 0px;
   }
 }
-
-// #close-tap {
-//   font-size: $fs-6;
-//   color: $dark-grey;
-//   text-decoration: underline;
-// }
 </style>

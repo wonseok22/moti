@@ -12,7 +12,13 @@ export default {
     go() {
       this.$router.push({ path: '/authcomplete' })
     }
-   }
+  },
+  created() {
+    // 이미 로그인되어 있을 경우 피드로 이동
+    if (this.$store.getters.isLoggedIn) {
+      this.$router.push({ name: 'feed' })
+    }
+  }
 }
 </script>
 

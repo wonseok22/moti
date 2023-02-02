@@ -3,6 +3,7 @@
     <!-- 프로필 페이지 최상단 유저이름과 메뉴바 -->
     <div class="profile-header">
       <p>이상화</p>
+      <p @click="logout">임시 로그아웃 버튼</p>
       <button class="material-icons-outlined">
         menu
       </button>
@@ -49,7 +50,12 @@
 <script>
 
 export default {
-
+  name: 'ProfileView',
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+    }
+  }
 }
 </script>
 

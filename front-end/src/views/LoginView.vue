@@ -1,7 +1,9 @@
 <template>
   <div class="account-form-comp">
+    <div class="title-box">
+      <p style="font-size:52px;">moti</p>
+    </div>
     <router-view/>
-    <p @click="go">임시</p>
   </div>
 </template>
 

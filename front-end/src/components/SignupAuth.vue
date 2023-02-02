@@ -8,7 +8,7 @@
           <div class="account-id-box">
             <input type="email" id="input-email" class="inputbox" name="input-email" placeholder="이메일 주소" @input="emailInput">
             <button class="double-check btn-green" @click="doubleCheck">중복체크</button>
-            <div v-if="emailActive">
+            <div v-if="emailActive" class="infobox">
               <p
                 v-for="(condition, idx) in emailConditions"
                 :key="idx"
@@ -19,7 +19,7 @@
             </div>
           </div>
         </div>
-        <button v-if="isvalid" class="btn-green" @click="authStart">다음</button>
+        <button v-if="isvalid" class="btn-green" @click="authStart">이메일 인증</button>
         <button v-else class="btn-green-inactive">이메일 인증</button>
       </div>
     </div>

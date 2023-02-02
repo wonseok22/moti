@@ -97,7 +97,7 @@ public class ProfileServiceImpl implements ProfileService {
 		if (user != null) {
 			// 프로필을 받아와서 return
 			Profile profile = user.getProfile();
-			CurrentStat currentStat = currentStatRepository.findByUser_UserId(userId);
+			CurrentStat currentStat = currentStatRepository.findByUserId(userId);
 			int playlistCompleteCnt = currentStat.getP1_cnt()
 					+currentStat.getP2_cnt()
 					+currentStat.getP3_cnt()
@@ -109,8 +109,6 @@ public class ProfileServiceImpl implements ProfileService {
 			
 			ProfileDto profileDto = new ProfileDto();
 			profileDto.setNickname(user.getNickname());
-			profileDto.setFollowing(profile.getFollowing());
-			profileDto.setFollower(profile.getFollower());
 			profileDto.setUserDesc(profile.getUserDesc());
 			
 			if (profileImageUrl != null)

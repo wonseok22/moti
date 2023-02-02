@@ -15,10 +15,7 @@ public class CurrentStat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long currentStatId;
-	
-	@OneToOne
-	@JoinColumn(name = "userId")
-	private User user;
+	private String userId;
 	
 	private int feed_cnt;
 	private int relation_cnt;

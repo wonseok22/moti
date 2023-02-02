@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,30 @@ public class PlaylistController {
 	@ApiOperation(value = "내 플레이리스트 조회", notes = "내 플레이리스트 요청 API", response = Map.class)
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getMyPlaylist(
+			@PathVariable @ApiParam(value = "플레이리스트 조회에 필요한 유저 아이디.", required = true) String userId) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		try {
+			List<UserPlaylistDto> myPlaylists = playlistService.getMyPlaylists(userId);
+			
+			logger.debug("내 플레이리스트 목록 : {}", myPlaylists);
+			resultMap.put("myPlaylists", myPlaylists);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("내 플레이리스트 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "플레이리스트 등록", notes = "플레이리스트 등록 API", response = Map.class)
+	@PostMapping("")
+	public ResponseEntity<?> registPlaylist(
 			@PathVariable @ApiParam(value = "플레이리스트 조회에 필요한 유저 아이디.", required = true) String userId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;

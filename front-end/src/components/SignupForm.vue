@@ -1,7 +1,19 @@
 <template>
   <div class="account-layout">
     <div>
-      <p class="guide-comment">당신의 씨앗을 키워보세요</p>
+      <p class="guide-comment">
+        <span class="fade">당</span>
+        <span class="fade">신</span>
+        <span class="fade">의 </span>
+        <span class="fade">씨</span>
+        <span class="fade">앗</span>
+        <span class="fade">을 </span>
+        <span class="fade">심</span>
+        <span class="fade">어</span>
+        <span class="fade">보</span>
+        <span class="fade">세</span>
+        <span class="fade">요</span>
+      </p>
       <!-- 회원가입 Form -->
       <div class="account-form">
         <div class="account-input-form">
@@ -9,7 +21,7 @@
           <div class="account-id-box">
             <input type="text" id="input-id" class="inputbox" name="input-id" placeholder="아이디" @input="idInput">
             <button class="double-check btn-green" @click="doubleCheck">중복체크</button>
-            <div v-if="idActive">
+            <div v-if="idActive" class="infobox">
               <p
                 v-for="(condition, idx) in idConditions"
                 :key="idx"
@@ -23,7 +35,7 @@
           <!-- 비밀번호 -->
           <div>
             <input type="password" id="input-pw" class="inputbox" name="input-pw" placeholder="비밀번호" @input="pwInput">
-            <div v-if="pwActive">
+            <div v-if="pwActive" class="infobox">
               <p
                 v-for="(condition, idx) in pwConditions"
                 :key="idx"
@@ -36,7 +48,7 @@
           <!-- 비밀번호 재입력 -->
           <div>
             <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2">
-            <div v-if="pw2Active">
+            <div v-if="pw2Active" class="infobox">
               <p
                 v-for="(condition, idx) in pw2Conditions"
                 :key="idx"
@@ -74,12 +86,22 @@ export default {
       id: null,
       password: null,
       password2: null,
-
       idDoubleChecked: false,
       idActive: false,
       pwActive: false,
       pw2Active: false,
     }
+  },
+  mounted() {
+    const introText = document.querySelectorAll(".fade");
+    let timer = 300;
+    introText.forEach((item) => {
+      console.log(item)
+      item.style.animation = `fade 500ms ${(timer += 80)}ms forwards`;
+    });
+  },
+  created(){
+
   },
   methods: {
     // id 입력 받기
@@ -242,4 +264,17 @@ export default {
 </script>
 
 <style lang="scss">
+.infobox {
+  margin-top: 10px;
+  padding-left: 10px;
+}
+.fade {
+	opacity: 0;
+}
+
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
 </style>

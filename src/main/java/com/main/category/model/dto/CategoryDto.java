@@ -20,6 +20,11 @@ public class CategoryDto {
 	
 	private int current;
 	
+	public static Category toEntity(CategoryDto categoryDto) {
+		Category category = new Category();
+		category.setCategoryName(categoryDto.getCategoryName());
+		return category;
+	}
 	
 	public static CategoryDto toDto(Category category) {
 		AtomicInteger currentCnt = new AtomicInteger();

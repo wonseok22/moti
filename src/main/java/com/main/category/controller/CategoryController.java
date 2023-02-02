@@ -1,7 +1,9 @@
 package com.main.category.controller;
 
 import com.main.category.model.dto.CategoryDto;
+import com.main.category.model.entity.Category;
 import com.main.category.model.service.CategoryService;
+import com.main.feed.model.dto.WriteFeedDto;
 import com.main.playlist.model.dto.PlaylistDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,35 @@ public class CategoryController {
 			logger.debug("카테고리 목록 : {}", categories);
 			resultMap.put("categories", categories);
 			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("카테고리 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "카테고리 등록", notes = "카테고리 생성 API", response = Map.class)
+	@PostMapping("")
+	public ResponseEntity<?> registCategory(
+			@RequestPart @ApiParam(value = "카테고리 정보", required = true) String categoryName,
+			@RequestPart @ApiParam(value = "이미지 정보", required = true) MultipartFile image) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		try {
+			Category category = new Category();
+			category.setCategoryName(categoryName);
+			Category result = categoryService.registCategory(category,image);
+			
+			logger.debug("카테고리 등록 : {}", result);
+			if(result!=null)
+				resultMap.put("message", SUCCESS);
+			else
+				resultMap.put("message",FAIL);
 			status = HttpStatus.OK;
 			
 		} catch (Exception e) {

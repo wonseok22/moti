@@ -9,9 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class FollowDto {
-    private String followerNickname;
-    private String followingNickname;
-    private String followerId;
-    private String followingId;
-
+	private String followerNickname;
+	private String followingNickname;
+	private String followerId;
+	private String followingId;
+	
 }

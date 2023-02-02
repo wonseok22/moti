@@ -14,11 +14,11 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Follow {
-
-    @Id
-    private Long followId;
-    private String followerId;
-    private String followingId;
-    private String followerNickname;
-    private String followingNickname;
+	
+	@Id
+	private Long followId;
+	private String followerId;
+	private String followingId;
+	private String followerNickname;
+	private String followingNickname;
 }

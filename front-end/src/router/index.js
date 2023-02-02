@@ -24,6 +24,7 @@ import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -129,6 +130,11 @@ const routes = [
     path:'/authcomplete',
     name:'authcomplete',
     component: AuthCompleteView,
+  },
+  {
+    path: '/search',
+    name: 'searchView',
+    component: SearchView,
   },
   {
     path: '*',

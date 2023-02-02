@@ -44,6 +44,7 @@ export default new Vuex.Store({
           console.log(`알 수 없는 회원 정보가 입력되었습니다: ${key}`)
         }
       }
+      console.log(state)
     },
     // 회원가입 완료 후 저장된 일부 정보 삭제하기(보안상)
     ERASE_INFO(state) {
@@ -104,22 +105,33 @@ export default new Vuex.Store({
         data: UserDto,
       })
         .then((response) => {
+          console.log(response)
           console.log(`로그인 응답 status: ${response.status}`)
-          const payload = {
+          const payloadToken = {
             accessToken: response.data['access-token'],
             refreshToken: response.data['refresh-token'],
           }
-          context.commit('SAVE_TOKEN', payload)
+          console.log()
+          const payloadInfo = {
+            id: payload.id,
+            password: payload.password,
+          }
+          context.commit('SAVE_TOKEN', payloadToken)
+          context.commit('GET_USER_INFO', payloadInfo)
+
           // 피드 페이지로 이동
           this.$router.push({ name: 'feed' })
         })
         .catch((error) => {
-          console.log(error)
+          alert('아이디 또는 비밀번호를 확인해주세요.')
+          console.log(`로그인 실패: status ${error.response.status}`)
         })
     },
     // 로그아웃
     logout(context) {
       context.commit('LOGOUT')
+      alert('로그아웃 되었습니다.')
+      this.$router.push({ name: 'login' })
     },
     // 이메일 인증 요청
     authStart(context, payload) {
@@ -213,6 +225,8 @@ export default new Vuex.Store({
     // 나의 플레이리스트 정보 가져오기
     getMyPL(context) {
       console.log('유저 플레이리스트를 가져옵니다.')
+      console.log('여기봐')
+      console.log(context.state.id)
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/playlist/${context.state.id}}`

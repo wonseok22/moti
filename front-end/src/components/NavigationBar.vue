@@ -5,7 +5,7 @@
       home
     </router-link>
 
-    <router-link to="userflowerlist" 
+    <router-link to="my-pl" 
       class="material-icons">
       history_edu
     </router-link>
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-    name:'NavigationBar',
+  name:'NavigationBar',
 }
 </script>
 

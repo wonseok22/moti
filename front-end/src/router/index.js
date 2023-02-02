@@ -9,7 +9,6 @@ import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
 import ProfileView from '@/views/ProfileView'
 // import SearchPage from '@/views/SearchView'
-import UserFlowerList from '@/views/UserFLList'
 import LoginForm from '@/components/LoginForm'
 import playlistMain from '@/components/CategoryMain'
 import playlistSelect from '@/components/PlaylistMain'
@@ -86,11 +85,6 @@ const routes = [
     component:SearchView,
   },
   {
-    path:'/userflowerlist',
-    name:'userflowerlist',
-    component:UserFlowerList,
-  },
-  {
     path: '/my-pl',
     name: 'my-pl',
     component: MyPLView,
@@ -135,6 +129,14 @@ const routes = [
     path:'/authcomplete',
     name:'authcomplete',
     component: AuthCompleteView,
+  },
+  
+  {
+    // 랜딩페이지: 로그인 페이지
+    path: '/',
+    name: 'landing',
+    redirect: 'login',
+    component: LoginView,
   },
   {
     path: '*',

@@ -1,21 +1,21 @@
 <template>
   <div class="navbar">
-    <router-link to="feed" 
+    <router-link to="/feed" 
       class="material-icons-outlined">
       home
     </router-link>
 
-    <router-link to="my-pl" 
+    <router-link to="/my-pl" 
       class="material-icons">
       history_edu
     </router-link>
 
-    <router-link to="search" 
+    <router-link to="/search" 
       class="material-icons">
       search
     </router-link>
 
-    <router-link to="profile" 
+    <router-link to="/profile" 
       class="material-symbols-outlined">
       account_circle
     </router-link>

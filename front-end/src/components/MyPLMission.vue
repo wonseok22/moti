@@ -1,21 +1,20 @@
 <template>
   <div id="my-pl-mission-layout">
-    <div id="pl-info-layout">
+    <div id="my-pl-info-layout">
       <!-- PL 설명 -->
-      <div id="pl-info">
+      <div id="my-pl-info">
         <!-- 꽃 사진 -->
-        <div id="pl-info-img">
-          <img src="https://cdn-icons-png.flaticon.com/512/4139/4139434.png" alt="pl-info-img">
+        <div id="my-pl-info-img">
+          <img src="https://cdn-icons-png.flaticon.com/512/4139/4139434.png" alt="my-pl-info-img">
         </div>
         <!-- PL 상세 -->
-        <div id="pl-info-text">
-          <p>칭찬일기 작성</p>
-          <span>{{ plInfoDetail }}</span>
+        <div id="my-pl-info-text">
+          <p>{{ missions.playlist.playlistName }}</p>
+          <span>{{ missions.playlist.playlistDesc }}</span>
         </div>
       </div>
 
       <!-- 진행도 -->
-      <p id="guide">{{ guide }}</p>
       <!-- 완료 표시 -->
       <div id="mission-progress-layout">
         <!-- 완료 -->
@@ -23,7 +22,7 @@
           :key="idx"
           class="mission-progress-box"
           >
-          <img :src="img" alt="pl-info-img">
+          <img :src="img" alt="my-pl-info-img">
         </div>
       </div>
     </div>
@@ -31,19 +30,19 @@
     <div id="mission-info-layout">
       <!-- 미션 리스트 -->
       <article id="mission-list-layout">
-        <div v-for="(mission, idx) in missions"
+        <div v-for="(mission, idx) in missions.playlist.missions"
           :key="idx"
           class="mission-list-detail"
           :id="`mission-${idx+1}`"
           @click="select(idx)"
         >
-        {{ mission }}
+        {{ mission.missionName }}
         </div>
-        <!-- 미션 후기 작성 -->
-        <button v-if="isvalid" class="btn-green" @click="toCreateFeed">미션 후기 작성</button>
-        <button v-else class="btn-green-inactive">미션 후기 작성</button>
       </article>
     </div>
+    <!-- 미션 후기 작성 -->
+    <button v-if="isvalid" class="btn-green" @click="toCreateFeed">미션 후기 작성</button>
+    <button v-else class="btn-green-inactive">미션 후기 작성</button>
 
     <!-- nav 바 -->
     <NavigationBar/>
@@ -88,26 +87,42 @@ export default {
     },
     // 인증할 미션 선택
     select(idx) {
-      const targetIdx = idx + 1
       // 선택한 태그
+      const missionTagBefore = document.querySelector(`#mission-${this.selected}`)
+      const targetIdx = idx + 1
       const missionTag = document.querySelector(`#mission-${targetIdx}`)
-      // 이미 선택된 미션이 있을 경우
+
       if (this.selected) {
-        // 선택된 미션을 다시 눌렀을 경우
-        if (this.selected === targetIdx) {
-          // 선택 취소
+        missionTagBefore.classList.remove('mission-selected')
+
+        if (this.selected !== targetIdx) {
+          this.selected = targetIdx
+          missionTag.classList.add('mission-selected')
+        } else {
           this.selected = null
-          missionTag.classList.remove('mission-selected')
-        } 
+        }
       } else {
-        // 선택된 미션이 없을 경우
         this.selected = targetIdx
         missionTag.classList.add('mission-selected')
       }
     },
     // 피드 작성 페이지로 이동
     toCreateFeed() {
+      const missionIdx = this.selected - 1
+      const params = {
+        playlistName: this.missions.playlist.playlistName,
+        userPlaylistId: this.missions.userPlaylistId,
+        missionName: this.missions.playlist.missions[missionIdx].missionName,
+        missionId: this.missions.playlist.missions[missionIdx].missionId
+      }
+      this.$router.push({ name: 'feedcreate', params: params })
     },
+    getNowPL() {
+      const params = {
+        userPlaylistId: this.$route.query.plId
+      }
+      this.$store.dispatch('getNowPL', params)
+    }
   },
   computed: {
     // 미션이 선택되었는지 여부
@@ -122,11 +137,6 @@ export default {
     plInfoDetail() {
       const detail = '분홍색 튤립의 꽃말은 애정이에요. 하루하루 자신에 대한 칭찬 일기를 작성하여 스스로에 대한 애정을 키워봅시다!'
       return detail
-    },
-    // 미션 수행 가이드
-    guide() {
-      const guide = '원하는 미션을 달성하신 뒤 미션에 대한 후기나 감상을 남들과 공유해보세요! 사진이나 영상을 이용하면 더 좋아요!'
-      return guide
     },
     // 미션 진행도에 따른 아이콘 매칭 결과 return
     progressFinal() {
@@ -144,14 +154,18 @@ export default {
     },
     // 미션 리스트
     missions() {
-      const missions = ['미션1', '미션2','미션3','미션4','미션5']
-      return missions
-    }
+      return this.$store.state.nowPL
+    },
+    myMissionUpdated() {
+      return this.$store.state.myMission
+    },
   },
   created() {
+    // 현재 선택 플레이리스트 state에 저장하기
+    this.getNowPL()
     // 미션 진행도 업데이트
     this.progressCheck()
-  }
+  },
 }
 </script>
 
@@ -163,23 +177,30 @@ export default {
 
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 // 플레이리스트 정보 레이아웃
-#pl-info-layout {
-  height: 40%;
+#my-pl-info-layout {
+  width: 100%;
+  height: 25%;
   padding-top: 30px;
+  margin-bottom: 30px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 // 플레이리스트 정보
-#pl-info {
+#my-pl-info {
   display: flex;
   width: 100%;
   // height: 96px;
 }
 
 // 플레이리스트 이미지
-#pl-info-img {
+#my-pl-info-img {
   width: 25%;
 
   display: flex;
@@ -191,7 +212,7 @@ export default {
 }
 
 // 플레이리스트 상세 정보
-#pl-info-text {
+#my-pl-info-text {
   width: 75%;
   text-align: start;
 
@@ -233,7 +254,7 @@ export default {
   align-items: center;
   justify-content: center;
 
-  border: 1px solid;
+  border: none;
 
   img {
     height: 100%;
@@ -242,12 +263,11 @@ export default {
 
 // 미션 리스트 레이아웃
 #mission-list-layout {
-  height: 100%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
 }
 
 // 미션 디테일
@@ -256,6 +276,7 @@ export default {
   border-radius: 8.6px;
   background-color: $light-yellow;
   width: 100%;
+  height: auto;
 }
 
 // 선택된 미션

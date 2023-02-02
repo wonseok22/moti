@@ -8,26 +8,6 @@ import axios from 'axios'
 import NavigationBar from './components/NavigationBar.vue'
 
 
-// 202 응답 에러 처리
-axios.interceptors.response.use(
-  function(response) {
-    if (response.status == 202) {
-      const response = {
-        status: 202
-      }
-      const error = {
-        response
-      }
-      return Promise.reject(error)
-    }
-    return response
-  },
-  function(error) {
-    return Promise.reject(error)
-  }
-)
-
-
 Vue.component(NavigationBar.name, NavigationBar)
 
 Vue.config.productionTip = false

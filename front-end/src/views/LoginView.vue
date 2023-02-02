@@ -1,7 +1,6 @@
 <template>
   <div class="account-form-comp">
     <router-view/>
-    <p @click="go">임시</p>
   </div>
 </template>
 

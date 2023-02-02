@@ -1,12 +1,20 @@
 package com.main.user.model.service;
 
+import com.main.feed.model.entity.Feed;
+import com.main.playlist.model.dto.PlaylistDto;
+import com.main.playlist.model.dto.UserPlaylistDto;
+import com.main.playlist.model.entity.Playlist;
 import com.main.profile.model.entity.Profile;
 import com.main.profile.model.entity.ProfileImage;
 import com.main.profile.model.repository.ProfileImageRepository;
 import com.main.profile.model.repository.ProfileRepository;
+import com.main.user.model.dto.SearchUserDto;
+import com.main.user.model.dto.UserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,8 +22,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.sql.SQLException;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -177,6 +184,17 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUserId(userId);
 		user.setRefreshToken(null);
 		userRepository.save(user);
+	}
+	
+	@Override
+	public Map<String, Object> searchUser (String keyword, int pageNo) throws Exception {
+		Map<String, Object> searchResult = new HashMap<>();
+		Slice<User> slice = userRepository.findAllByNicknameLike("%" + keyword + "%", PageRequest.of(pageNo, 20));
+		List<SearchUserDto> list = new ArrayList<>();
+		slice.forEach(x -> list.add(SearchUserDto.toDto(x)));
+		searchResult.put("users", list);
+		searchResult.put("isLast", slice.isLast());
+		return searchResult;
 	}
 	
 }

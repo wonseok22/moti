@@ -15,7 +15,7 @@
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
         <p>좋아요 {{ BodyData.likes }}개</p>
-        <p>댓글 {{ BodyData.commentNum }}개</p>
+        <p>댓글 {{ BodyData.comments ? BodyData.comments.length : 0 }}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">

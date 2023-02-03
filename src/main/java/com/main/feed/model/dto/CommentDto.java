@@ -2,7 +2,6 @@ package com.main.feed.model.dto;
 
 import com.main.feed.model.entity.Comment;
 import com.main.profile.model.entity.Profile;
-import com.main.profile.model.entity.ProfileImage;
 import com.main.user.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,12 +27,11 @@ public class CommentDto {
 	public static CommentDto toDto(Comment comment) {
 		User user = comment.getUser();
 		Profile profile = user.getProfile();
-		ProfileImage profileImage = profile.getProfileImage();
 		return new CommentDto(
 				comment.getCommentId(),
 				user.getUserId(),
 				user.getNickname(),
-				profileImage.getProfileImageUrl(),
+				profile.getProfileImageUrl(),
 				comment.getContent(),
 				comment.getCreatedDate()
 		);

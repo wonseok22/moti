@@ -1,8 +1,6 @@
 package com.main.user.model.service;
 
 import com.main.profile.model.entity.Profile;
-import com.main.profile.model.entity.ProfileImage;
-import com.main.profile.model.repository.ProfileImageRepository;
 import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.dto.SearchUserDto;
 import com.main.user.model.entity.User;
@@ -28,9 +26,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	ProfileRepository profileRepository;
 	
-	@Autowired
-	ProfileImageRepository profileImageRepository;
-	
 	@Override
 	public User getUser(String userId) throws SQLException {
 		return userRepository.findByUserId(userId);
@@ -48,14 +43,8 @@ public class UserServiceImpl implements UserService {
 //            return null;
 //        }'
 		
-		// Profile Image Build
-		ProfileImage profileImage = new ProfileImage();
-		profileImageRepository.save(profileImage);
-		
 		// Profile Build
 		Profile profile = new Profile();
-		profile.setProfileId(profileImage.getProfileImageId());
-		profile.setProfileImage(profileImage);
 		profileRepository.save(profile);
 		
 		// Password Encoding
@@ -127,9 +116,7 @@ public class UserServiceImpl implements UserService {
 	public int deleteUser(String userId) throws Exception {
 		User user = userRepository.findByUserId(userId);
 		Profile profile = user.getProfile();
-		ProfileImage profileImage = profile.getProfileImage();
 		profileRepository.delete(profile);
-		profileImageRepository.delete(profileImage);
 		return userRepository.deleteByUserId(userId);
 	}
 	

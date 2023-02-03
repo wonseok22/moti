@@ -5,7 +5,6 @@ import com.main.profile.model.dto.ProfileDto;
 import com.main.profile.model.entity.CurrentStat;
 import com.main.profile.model.entity.Follow;
 import com.main.profile.model.entity.Profile;
-import com.main.profile.model.entity.ProfileImage;
 import com.main.profile.model.repository.CurrentStatRepository;
 import com.main.profile.model.repository.FollowRepository;
 import com.main.user.model.entity.User;
@@ -40,7 +39,6 @@ public class ProfileServiceImpl implements ProfileService {
 			String userId = profileDto.getUserId();
 			User user = userRepository.findByUserId(userId);
 			Profile profile = user.getProfile();
-			ProfileImage profileImage = profile.getProfileImage();
 			
 			// 닉네임 변경한 경우
 			if (profileDto.getNickname() != null) {
@@ -50,11 +48,11 @@ public class ProfileServiceImpl implements ProfileService {
 			// 프로필 사진 변경한 경우
 			if (profileDto.getImage() != null) {
 				//이미지 저장 로직
-				if (profileImage.getProfileImageUrl() != null) {
-					s3Upload.fileDelete(profileImage.getProfileImageUrl().split("com/")[1]);
+				if (profile.getProfileImageUrl() != null) {
+					s3Upload.fileDelete(profile.getProfileImageUrl().split("com/")[1]);
 				}
 				String ImagePath = s3Upload.uploadFiles(profileDto.getImage(), "profileImages");
-				profileImage.setProfileImageUrl(ImagePath);
+				profile.setProfileImageUrl(ImagePath);
 			}
 			
 			// 한줄소개 변경한 경우
@@ -78,9 +76,8 @@ public class ProfileServiceImpl implements ProfileService {
 		try {
 			User user = userRepository.findByUserId(userId);
 			Profile profile = user.getProfile();
-			ProfileImage profileImage = profile.getProfileImage();
-			s3Upload.fileDelete(profileImage.getProfileImageUrl().split("com/")[1]);
-			profileImage.setProfileImageUrl(null);
+			s3Upload.fileDelete(profile.getProfileImageUrl().split("com/")[1]);
+			profile.setProfileImageUrl(null);
 			userRepository.save(user);
 		} catch (Exception e) {
 			throw e;
@@ -103,14 +100,14 @@ public class ProfileServiceImpl implements ProfileService {
 					+currentStat.getP5_cnt()
 					+currentStat.getP6_cnt();
 					
-			String profileImageUrl = profile.getProfileImage().getProfileImageUrl();
+			String profileImageUrl = profile.getProfileImageUrl();
 			
 			ProfileDto profileDto = new ProfileDto();
 			profileDto.setNickname(user.getNickname());
 			profileDto.setUserDesc(profile.getUserDesc());
 			
 			if (profileImageUrl != null)
-				profileDto.setProfileImageUrl(profile.getProfileImage().getProfileImageUrl());
+				profileDto.setProfileImageUrl(profile.getProfileImageUrl());
 			
 			profileDto.setFollower(currentStat.getFollowerCnt());
 			profileDto.setFollowing(currentStat.getFollowingCnt());

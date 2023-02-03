@@ -42,7 +42,7 @@
 
     methods : {
         openModal(achievement) {
-            this.$emit("openModal", achievement);
+            this.$it("openModal", achievement);
         }
 
     }
@@ -51,16 +51,13 @@
   <style lang="scss">
     .flex {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-around;
         flex-wrap: wrap; // 복수의 행
     }
     .achieve-lists{
         width: 90px;
         height: 90px;
-        margin-top: 40px;
-        // margin-right: 5.2%;
-        margin-left: 7px;
-        margin-right: 7px;
+        margin: 7px 7px;
         img {
             width: 70px;
             height: 70px;

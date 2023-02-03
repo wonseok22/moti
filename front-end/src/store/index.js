@@ -18,6 +18,7 @@ export default new Vuex.Store({
     refreshToken: null,
     myPL: null,
     nowFeed: null,
+    profileTargetId:null,
   },
   getters: {
     // 로그인 여부
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    UPDATE_PROFILE_TARGET_ID(state, data) {
+      state.profileTargetId = data;
+    },
     // 유저 정보 저장하기
     GET_USER_INFO(state, payload) {
       for (let [key, value] of Object.entries(payload)) {

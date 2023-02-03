@@ -35,7 +35,6 @@ export default {
   },
   methods : {
     movePlaylist(selected){
-      console.log(this.categoryTitleList)
       this.$router.push({
         name: 'playlistSelect',
         query: { categoryId: selected.categoryId,

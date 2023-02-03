@@ -30,12 +30,12 @@ public class CurrentStat {
 	private int replayCompleteCnt;
 	
 	private int commentCnt;
-	private int p1Cnt;
-	private int p2Cnt;
-	private int p3Cnt;
-	private int p4Cnt;
-	private int p5Cnt;
-	private int p6Cnt;
+	private int p1_cnt;
+	private int p2_cnt;
+	private int p3_cnt;
+	private int p4_cnt;
+	private int p5_cnt;
+	private int p6_cnt;
 	
 	private int lastdayCompleteCnt;
 	private int fifthdayCompleteCnt;

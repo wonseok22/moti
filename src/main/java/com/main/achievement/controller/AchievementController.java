@@ -59,15 +59,16 @@ public class AchievementController {
 	
 	@ApiOperation(value = "업적 등록", notes = "업적 생성 API", response = Map.class)
 	@PostMapping("")
-	public ResponseEntity<?> registAchievement(
-			@RequestPart @ApiParam(value = "업적 정보", required = true) AchievementDto achievementDto,
+	public ResponseEntity<?> registerAchievement(
+			@RequestPart @ApiParam(value = "업적 이름", required = true) String achievementName,
+			@RequestPart @ApiParam(value = "업적 설명", required = true) String achievementDesc,
 			@RequestPart @ApiParam(value = "이미지 정보", required = true) MultipartFile image) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		try {
 			Achievement achievement = new Achievement();
-			achievement.setAchievementName(achievementDto.getAchievementName());
-			achievement.setAchievementDesc(achievementDto.getAchievementDesc());
+			achievement.setAchievementName(achievementName);
+			achievement.setAchievementDesc(achievementDesc);
 			Achievement result = achievementService.registAchievement(achievement, image);
 			
 			logger.debug("업적 등록 : {}", result);

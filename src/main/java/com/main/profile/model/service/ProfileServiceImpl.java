@@ -98,12 +98,13 @@ public class ProfileServiceImpl implements ProfileService {
 			// 프로필을 받아와서 return
 			Profile profile = user.getProfile();
 			CurrentStat currentStat = currentStatRepository.findByUserId(userId);
-			int playlistCompleteCnt = currentStat.getP1Cnt()
-					+currentStat.getP2Cnt()
-					+currentStat.getP3Cnt()
-					+currentStat.getP4Cnt()
-					+currentStat.getP5Cnt()
-					+currentStat.getP6Cnt();
+			
+			int playlistCompleteCnt = currentStat.getP1_cnt()
+					+currentStat.getP2_cnt()
+					+currentStat.getP3_cnt()
+					+currentStat.getP4_cnt()
+					+currentStat.getP5_cnt()
+					+currentStat.getP6_cnt();
 					
 			String profileImageUrl = profile.getProfileImage().getProfileImageUrl();
 			

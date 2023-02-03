@@ -26,6 +26,7 @@ import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -97,8 +98,8 @@ const routes = [
         component: MyPLMain,
       },
       {
-        // path: 'mission/:pl-id',
         path: 'mission',
+        // path: 'mission',
         component: MyPLMission,
       }
     ]
@@ -139,6 +140,11 @@ const routes = [
     name: 'landing',
     redirect: 'login',
     component: LoginView,
+  },
+  {
+    path: '/search',
+    name: 'searchView',
+    component: SearchView,
   },
   {
     path: '*',

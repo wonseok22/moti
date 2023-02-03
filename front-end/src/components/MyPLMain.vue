@@ -10,7 +10,12 @@
     
     <main id="my-pl-main-main">
       <!-- 플레이리스트 -->
-      <MyPLForm/>
+      <my-pl-form
+        v-for="(myPL, idx) in myPLArray"
+        :key="idx"
+        :myPL="myPL"
+      >
+      </my-pl-form>
       <!-- 플레이리스트가 없을 경우 -->
       <div v-if="noList" id="no-list">
         <p>지금 성장 중인 식물이 없습니다.</p>
@@ -22,26 +27,25 @@
         <p>어떤 식물이 있는지 확인하러 가보기</p>
       </div>
     </main>
+    <NavigationBar/>
   </div>
 </template>
 
 <script>
-import MyPLForm from '@/components/MyPLForm'
+import MyPlForm from '@/components/MyPLForm'
+import NavigationBar from '@/components/NavigationBar'
 
 export default {
   name: 'MyPLMain',
   components: {
-    MyPLForm,
+    MyPlForm,
+    NavigationBar,
   },
   methods: {
     // 플레이리스트 선택 창으로 이동
     toPLSelect() {
       this.$router.push({ name: 'playlist' })
     },
-    // 내 플레이리스트 정보 state에 저장하기
-    getMyPL() {
-      this.$store.dispatch('getMyPL')
-    }
   },
   computed: {
     // 진행 중인 플레이리스트 있는지 여부
@@ -49,9 +53,14 @@ export default {
       // 없으면 true, 있으면 false
       return false
     },
+    // 나의 플레이리스트
+    myPLArray() {
+      return this.$store.state.myPL
+    }
   },
   created() {
-    this.getMyPL()
+    // 내 플레이리스트 정보 state에 저장하기
+    this.$store.dispatch('getMyPL')
   }
 }
 

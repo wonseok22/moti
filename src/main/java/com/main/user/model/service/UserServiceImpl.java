@@ -1,15 +1,10 @@
 package com.main.user.model.service;
 
-import com.main.feed.model.entity.Feed;
-import com.main.playlist.model.dto.PlaylistDto;
-import com.main.playlist.model.dto.UserPlaylistDto;
-import com.main.playlist.model.entity.Playlist;
 import com.main.profile.model.entity.Profile;
 import com.main.profile.model.entity.ProfileImage;
 import com.main.profile.model.repository.ProfileImageRepository;
 import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.dto.SearchUserDto;
-import com.main.user.model.dto.UserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +40,6 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public User registUser(User user) throws Exception {
 
-
 //        Duilicate Check
 //        User userFindById = userRepository.findByUserId(user.getUserId());
 //        User userFindByNickname = userRepository.findByEmail(user.getEmail());
@@ -54,18 +48,13 @@ public class UserServiceImpl implements UserService {
 //            return null;
 //        }'
 		
-		
-		// Create (Positive Long type) UUID
-		Long uuid = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-		
 		// Profile Image Build
 		ProfileImage profileImage = new ProfileImage();
-		profileImage.setProfileImageId(uuid);
 		profileImageRepository.save(profileImage);
 		
 		// Profile Build
 		Profile profile = new Profile();
-		profile.setProfileId(uuid);
+		profile.setProfileId(profileImage.getProfileImageId());
 		profile.setProfileImage(profileImage);
 		profileRepository.save(profile);
 		

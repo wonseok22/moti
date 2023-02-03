@@ -247,16 +247,17 @@ export default new Vuex.Store({
           console.log(`유저 플레이리스트 가져오기 실패: status ${error.response.status}`)
         })
     },
-    // 피드 상세정보 저장
+    // 피드 상세정보 api호출하여 불러오기
     getSingleFeed(context, feedId) {
       this.$axios({
         method:'get',
-        url:`${this.$baseUrl}/feed/${feedId}/${context.state.id}`
+        url:`${this.$baseUrl}/feed/${feedId}/red`
       })
       .then((res) => {
           const data = {
             feedData: res.data.feed
           }
+          console.log(data)
           context.commit('GET_FEED', data)
       })
       .catch((error) => {
@@ -270,6 +271,7 @@ export default new Vuex.Store({
         feedId: payload.feedId,
         content: payload.content
       }
+      console.log(writeCommentDto)
       //console.log(writeCommentDto)
       this.$axios({
         method:'post',
@@ -283,6 +285,7 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    //댓글 삭제
     deleteComment(context, payload) {
       this.$axios({
         method:'delete',
@@ -290,6 +293,32 @@ export default new Vuex.Store({
       })
       .then(() => {
         this.dispatch('getSingleFeed', payload.feedId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    //좋아요 등록
+    makeLike(context, feedId) {
+      this.$axios({
+        method:'post',
+        url:`${this.$baseUrl}/feed/like/red/${feedId}`
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    //좋아요 해제
+    deleteLike(context, feedId) {
+      this.$axios({
+        method:'delete',
+        url:`${this.$baseUrl}/feed/like/red/${feedId}`
+      })
+      .then(() => {
+        
       })
       .catch((error) => {
         console.log(error)

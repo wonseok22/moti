@@ -10,23 +10,25 @@
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
     <div class="feed-image">
-        
+        <img v-for="image in BodyData.feedImages" :src="image.feedImageUrl" alt="feedImage" :key="image">
     </div>
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
-        <p>좋아요 {{ BodyData.likes }}개</p>
-        <p>댓글 {{ BodyData.commentNum }}개</p>
+        <p>좋아요 {{ this.likeCnt }}개</p>
+        <p>댓글 {{ BodyData.comments ? BodyData.comments.length : 0}}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">
         <span class="material-symbols-outlined"
-        v-show="BodyData.likes == false"
+        v-show="!this.isLike"
+        @click="makeLike"
         style="color:#A3A3A3;">
             favorite
         </span>
 
         <span class="material-icons-outlined"
-        v-show="BodyData.likes == true"
+        v-show="this.isLike"
+        @click="deleteLike"
         style="color:#FF5B5B;">
             favorite
         </span>
@@ -42,7 +44,7 @@
 
         <span 
         v-show="this.$route.params.feedId !== undefined"
-        class="material-icons-outlined"
+        class="material-symbols-outlined"
         style="color:#04C584;">
             mode_comment
         </span>
@@ -65,8 +67,8 @@ export default {
     },  
     data() {
         return{
-            text: '이건 테스트를 위해 적어놓은 아무말이며, 나는 이것을 위한 노력을 1도 사용하지 않았다. 아무리 그래도 3줄은 넘어야하기 때문에 계속해서 적는것이 좋을거 같다.',
-            text2: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in nunc sit amet libero semper blandit semper id eros. Praesent consequat tincidunt congue. Sed elit justo, blandit vitae arcu id, rhoncus laoreet urna. Quisque volutpat magna bibendum, mattis dolor vel, interdum massa. Suspendisse eleifend a nibh ut euismod. Sed efficitur justo in mi consequat, quis porttitor dui imperdiet. Aliquam nec condimentum nunc. Pellentesque non orci orci. Aenean consequat porta velit eu malesuada. Sed feugiat dapibus commodo. Cras dolor lacus, pharetra scelerisque ullamcorper sed, tincidunt et purus.',
+            isLike: this.BodyData.hit,
+            likeCnt: this.BodyData.likes
         }
     },
     methods: {
@@ -76,11 +78,24 @@ export default {
         isThereImg2() {
             return true
         },
-        moveToComment() {
-            this.$store.dispatch("getSingleFeed", 6)
-            this.$router.push({name:"comment", params: {feedId:6}})
+        async moveToComment() {
+            this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
+            this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}})
         },
+        makeLike() {
+            this.$store.dispatch("makeLike", this.BodyData.feedId)
+            this.isLike = true
+            this.likeCnt += 1
+        },
+        deleteLike() {
+            this.$store.dispatch("deleteLike", this.BodyData.feedId)
+            this.isLike = false
+            this.likeCnt -= 1
+        }
     },
+    created( ) {
+        console.log(this.BodyData)
+    }
 }
 
 </script>

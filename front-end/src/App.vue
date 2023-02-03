@@ -102,9 +102,6 @@ export default {
   gap: 23px;
 
   width: 332px;
-  .inputbox {
-    padding-left: 10px;
-  }
 }
 
 .account-sub {

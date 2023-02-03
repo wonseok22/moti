@@ -133,11 +133,6 @@ export default {
         return false
       }
     },
-    // 플레이리스트 디테일 설명
-    plInfoDetail() {
-      const detail = '분홍색 튤립의 꽃말은 애정이에요. 하루하루 자신에 대한 칭찬 일기를 작성하여 스스로에 대한 애정을 키워봅시다!'
-      return detail
-    },
     // 미션 진행도에 따른 아이콘 매칭 결과 return
     progressFinal() {
       const finalImg = []
@@ -154,6 +149,7 @@ export default {
     },
     // 미션 리스트
     missions() {
+      console.log(this.$store.state.nowPL)
       return this.$store.state.nowPL
     },
     myMissionUpdated() {

@@ -19,7 +19,7 @@
         >
       </div>
     </div>
-    <p>남은 시간 <span>n일</span></p>
+    <p>남은 시간 <span>7일</span></p>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     complete() {
-      return 4
+      return 0
     },
     incomplete() {
       return 5 - this.complete

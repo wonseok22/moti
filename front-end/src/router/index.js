@@ -32,12 +32,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/signup',
-    name: 'signup',
     component: SignupView,
-    redirect: '/signup/main',
     children: [
       {
-        path: 'main',
+        path: '',
+        name: 'signup',
         component: SignupForm
       },
       {
@@ -52,12 +51,11 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
     component: LoginView,
-    redirect: '/login/main',
     children: [
       {
-        path: 'main',
+        path: '',
+        name: 'login',
         component: LoginForm
       },
     ],
@@ -89,30 +87,26 @@ const routes = [
   },
   {
     path: '/my-pl',
-    name: 'my-pl',
     component: MyPLView,
-    redirect: '/my-pl/main',
     children: [
       {
-        path: 'main',
+        path: '',
+        name: 'my-pl',
         component: MyPLMain,
       },
       {
         path: 'mission',
-        // path: 'mission',
         component: MyPLMission,
       }
     ]
   },
   {
     path: '/playlist',
-    name: 'playlist',
     component: playlistView,
-    redirect:'/playlist/main',
     children: [
       {
-        path:'main',
-        name:'playlistMain',
+        path: '',
+        name: 'playlist',
         component: playlistMain,
       },
       {

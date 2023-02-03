@@ -78,6 +78,8 @@ export default {
 
       // 선택된 미션
       selected: null,
+
+      imgSrc: null,
     }
   },
   methods: {

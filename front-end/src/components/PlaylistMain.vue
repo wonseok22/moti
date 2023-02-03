@@ -15,7 +15,7 @@
       
     <div v-for="(pl, idx) in plList" v-bind:key="idx" class="pl-list">
       <div id="pl" @click="movePlaylist(pl)">
-        <img :src="pl.flower.flowerImageUrl" alt="플레이리스트 로고" class="pl-logo"/>
+        <!-- <img :src="pl.flower.flowerImageUrl" alt="플레이리스트 로고" class="pl-logo"/> -->
         <div class="pl-name">{{ pl.playlistName }}</div>
         <div class="pl-curr">현재 {{ pl.current }}명이 키우는 중입니다.</div>
         <p class="pl-total">누적 참여자 수 : {{ pl.total }}명</p>

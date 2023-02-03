@@ -1,7 +1,10 @@
 <template>
   <div @click="toMission" id="my-pl-box">
-    <p>칭찬일기 작성</p>
-    <p>현재 <span>5명</span>이 함께 이 꽃을 키우는 중입니다.</p>
+    <div id="my-pl-title">
+      <img :src="pl.playlist.flower.flowerImageUrl" alt="pl-flower-img" />
+      <div>{{ pl.playlist.playlistName }}</div>
+    </div>
+    <p>현재 <span>{{ pl.playlist.current }}명</span>이 함께 이 꽃을 키우는 중입니다.</p>
     <div id="pl-progress-layout">
       <!-- 완료 -->
       <div v-for="n in complete"
@@ -16,33 +19,49 @@
         >
       </div>
     </div>
-    <p>남은 시간 <span>5일</span></p>
+    <p>남은 시간 <span>7일</span></p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'MyPLForm',
-  props: [
-
-  ],
+  props: {
+    myPL: Object,
+  },
   methods: {
     // 선택한 플레이리스트 상세 페이지로 이동
     toMission() {
-      // pl 아이디 가져오기
-      // const plId = this.$store.state.~~ 
-      // this.$router.push({ path: '/my-pl/mission', param: { 'pl-id': plId } })
+      console.log(this.myPL.playlist.playlistId)
+      this.$router.push({ path: '/my-pl/mission', query: { plId: `${this.myPL.playlist.playlistId}` } })
     }
   },
   computed: {
     complete() {
-      return 4
+      return 0
     },
     incomplete() {
       return 5 - this.complete
-    }
-  }
+    },
+    // 플레이리스트
+    pl() {
+      console.log()
+      return this.myPL
+    },
+    // 남은 일수 계산
+    // remainDays() {
+    //   const now = new Date()
+    //   const end = new Date(this.myPL.endDate)
 
+    //   const remain_ms = end.getTime() - now.getTime()
+    //   const remain_day = remain_ms / (1000*60*60*24)
+
+    //   console.log(remain_day)
+    //   return null
+    // }
+  },
+  created() {
+  }
 }
 </script>
 
@@ -101,5 +120,21 @@ export default {
   border-radius: 5px 0px 0px 5px;
   border: 1px solid $light-grey;
 }
+}
+
+#my-pl-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: $fs-1;
+
+  img {
+    height: 100%;
+  }
+  div {
+    font-weight: bold;
+    font-size: $fs-2;
+  }
+  display: flex;
 }
 </style>

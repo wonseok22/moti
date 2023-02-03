@@ -10,9 +10,9 @@
       <!-- 카테고리 이름 -->
       <p>행복</p>
       <!-- 플레이리스트 이름 -->
-      <p>칭찬 일기 작성</p>
+      <p>{{ missionInfo.playlistName }}</p>
       <!-- 미션 이름 -->
-      <p>계단 다섯 층 올라가기</p>
+      <p>{{ missionInfo.missionName }}</p>
     </section>
     <div>
       <hr>
@@ -35,12 +35,12 @@
         type="file" id="image-input" style="visibility:hidden;"
       >
       <!-- 피드 비공개 -->
-      <div>
+      <div id="feed-create-footer-private">
         <input 
           @click="isprivateCheck"
           type="checkbox" id="feed-create-footer-checkbox" name="feed-create-footer-checkbox"
         >
-        <label for="feed-create-footer-checkbox" class="text-active-normal">피드 비공개</label>
+        <span><label for="feed-create-footer-checkbox" class="text-active-normal">피드 비공개</label></span>
       </div>
     </footer>
   </div>
@@ -63,25 +63,29 @@ export default {
     },
     // 피드 등록
     create() {
-      // const writeFeedDto = {
-      //   userId: this.$store.state.id,
-      //   userPlaylistId: 아직 모름,
-      //   missionId: 아직 모름,
-      //   content: this.content,
-      // }
-      // const writeFileDto = {
-      //   images: 아직 모름,
-      // }
+      const writeFeedDto = {
+        userId: this.$store.state.id,
+        userPlaylistId: this.missionInfo.userPlaylistId,
+        missionId: this.missionInfo.missionId,
+        content: this.content,
+      }
+      console.log(writeFeedDto)
       const writeFileDto = new FormData()
       writeFileDto.append('images', this.images)
       
       this.$axios({
         method: 'post',
-        url: `${this.$baseUrl}/feed`
-        // data: {
-        //   writeFeedDto, writeFileDto
-        // }
+        url: `${this.$baseUrl}/feed`,
+        data: {
+          writeFeedDto, writeFileDto
+        }
       })
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     // 작성 내용 저장하기
     inputContent(event) {
@@ -97,6 +101,11 @@ export default {
       console.log(this.isprivate)
     }
   },
+  computed: {
+    missionInfo() {
+      return this.$route.params
+    }
+  }
 }
 </script>
 
@@ -181,6 +190,12 @@ $feed-create-footer-height: 5%;
   align-items: center;
   
   margin-bottom: 10px;
+}
+
+#feed-create-footer-private {
+  display: flex;
+  justify-content: center;
+  white-space:nowrap;
 }
 
 .material-symbols-outlined {

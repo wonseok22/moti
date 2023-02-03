@@ -9,7 +9,7 @@
         :key="idx" 
         class="category-list"
       >
-        <div @click="movePlaylist(category)" id="pl">
+        <div @click="movePlaylist(category)" class="pl">
           <div class="pl-title">
             <img :src="category.categoryImageUrl" alt="카테고리 로고" />
             <div>{{ category.categoryName }}</div>
@@ -98,7 +98,7 @@ $header-height: 46px;
 }
 
 
-#pl {
+.pl {
   width: 304px;
   height: 156px;
   
@@ -113,13 +113,23 @@ $header-height: 46px;
   gap: 20px;
   font-weight: 300;
 
+  cursor: pointer;
+
   span {
     font-weight: bold ; 
   }
   .pl-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: $fs-0;
+
+    img {
+      height: 100%;
+    }
     div {
       font-weight: bold;
-      font-size: 24px;
+      font-size: $fs-1;
     }
     display: flex;
   }

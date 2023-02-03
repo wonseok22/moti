@@ -38,7 +38,6 @@ public class ProfileServiceImpl implements ProfileService {
 		
 		try {
 			String userId = profileDto.getUserId();
-			System.out.println(profileDto.toString());
 			User user = userRepository.findByUserId(userId);
 			Profile profile = user.getProfile();
 			ProfileImage profileImage = profile.getProfileImage();

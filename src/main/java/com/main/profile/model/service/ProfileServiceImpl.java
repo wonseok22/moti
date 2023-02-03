@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -30,7 +29,6 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
 	private CurrentStatRepository currentStatRepository;
-	
 	
 	@Autowired
 	private S3Upload s3Upload;
@@ -162,13 +160,9 @@ public class ProfileServiceImpl implements ProfileService {
 		User requestuser = userRepository.findByUserId(userId);
 		User targetUser = userRepository.findByUserId(targetId);
 		
-		// Follow 테이블의 PK값 생성
-		Long uuid = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-		
 		try {
 			// 팔로우 요청인 경우
 			if ("follow".equals(type)) {
-				follow.setFollowId(uuid);
 				follow.setFollowerId(userId);
 				follow.setFollowingId(targetId);
 				follow.setFollowerNickname(requestuser.getNickname());
@@ -187,5 +181,9 @@ public class ProfileServiceImpl implements ProfileService {
 		
 	}
 	
+	@Override
+	public boolean checkFollow (String userId, String targetId) {
+		return followRepository.findByFollowerIdAndFollowingId(userId, targetId) == null ? false : true;
+	}
 	
 }

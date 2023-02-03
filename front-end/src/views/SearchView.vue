@@ -135,30 +135,30 @@ export default {
   }
 
   }
-  .SearchResult {
-    margin-top: 20px;
-    width: $base-width;
-    height: 600px;
-    position: relative;
-    overflow: hidden;
+.SearchResult {
+  margin-top: 20px;
+  width: $base_width;
+  height: 600px;
+  position: relative;
+  overflow: hidden;
 
-    .SearchResult-slide{
-      transition : 0.5s;
-      left:0;
-      position: absolute;
-      width: 300vw;
+  .SearchResult-slide{
+    transition : 0.5s;
+    left:0;
+    position: absolute;
+    width: 300vw;
+    height: 100%;
+    display: flex;
+    main{
+      width: $base_width;
       height: 100%;
-      display: flex;
-      main{
-        width: $base_width;
+      .result-box {
+        width: 100%;
         height: 100%;
-        .result-box {
-          width: 100%;
-          height: 100%;
-          margin: 0 auto;
-          // background-color: #bbb;
-        }
+        margin: 0 auto;
+        // background-color: #bbb;
       }
     }
   }
+}
 </style>

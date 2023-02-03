@@ -31,6 +31,15 @@ public class PlaylistServiceImpl implements PlaylistService {
 	public List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException {
 		List<UserPlaylistDto> userPlaylists = new ArrayList<>();
 		
+		userPlaylistRepository.findByUser_UserId(userId).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
+		
+		return userPlaylists;
+	}
+	
+	@Override
+	public List<UserPlaylistDto> getCurrentPlaylists(String userId) throws SQLException {
+		List<UserPlaylistDto> userPlaylists = new ArrayList<>();
+		
 		userPlaylistRepository.findByUser_UserIdAndEndDateAfter(userId, LocalDateTime.now()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
 		
 		return userPlaylists;

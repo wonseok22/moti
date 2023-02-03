@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface PlaylistService {
-	List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException; //내 플레이리스트 조회
+	List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException; //내 모든 플레이리스트 조회
+	
+	List<UserPlaylistDto> getCurrentPlaylists(String userId) throws SQLException; //내가 수행중인 플레이리스트 조회
 	
 	UserPlaylistDto getMyPlaylist(Long playlistId) throws SQLException;  //내 플레이리스트 상세보기
 	

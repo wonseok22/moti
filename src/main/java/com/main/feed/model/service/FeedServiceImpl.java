@@ -231,6 +231,9 @@ public class FeedServiceImpl implements FeedService {
 		} else if ("content".equals(kind)) {
 			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%" + keyword + "%", PageRequest.of(pageNo, 10));
 			return toSearchList(userId, list);
+		} else if ("userId".equals(kind)) {
+			Slice<Feed> list = feedRepository.findAllByUser_UserIdOrderByFeedIdDesc(keyword, PageRequest.of(pageNo, 10));
+			return toSearchList(userId, list);
 		}
 		
 		return null;
@@ -240,7 +243,7 @@ public class FeedServiceImpl implements FeedService {
 	 * 검색 결과를 프론트에 보내기 전에 가공하는 메서드
 	 * @param userId 검색하는 유저의 ID
 	 * @param list Slice 형태로 반환된 피드 검색 결과
-	 * @return
+	 * @return feeds: 피드Dto들, isLast: 마지막페이지인가.
 	 */
 	private Map<String, Object> toSearchList(String userId, Slice<Feed> list) {
 		Map<String, Object> searchResult = new HashMap<>();

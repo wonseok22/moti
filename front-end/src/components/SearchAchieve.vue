@@ -2,7 +2,8 @@
     <main>
         <div class="result-box flex">
             <div v-for="(achievement,idx) in achievements" :key="idx" class="achieve-lists">
-                <img src="@/assets/images/default_profile.jpg" alt="업적 이미지">
+                <img :src="achievement.achievementImageUrl" alt="업적 이미지" :class="achievement.achieved ? `` : 'grayscale'"
+                @click="openModal(achievement)">
             </div>
         </div>
     </main>
@@ -40,7 +41,9 @@
     },
 
     methods : {
-
+        openModal(achievement) {
+            this.$emit("openModal", achievement);
+        }
 
     }
   }
@@ -48,16 +51,22 @@
   <style lang="scss">
     .flex {
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
         flex-wrap: wrap; // 복수의 행
     }
     .achieve-lists{
         width: 90px;
         height: 90px;
         margin-top: 40px;
+        // margin-right: 5.2%;
+        margin-left: 7px;
+        margin-right: 7px;
         img {
             width: 70px;
             height: 70px;
         }
+    }
+    .grayscale{
+        filter: grayscale(100%);
     }
   </style>

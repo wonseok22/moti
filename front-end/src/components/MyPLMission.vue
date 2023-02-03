@@ -109,13 +109,13 @@ export default {
     // 피드 작성 페이지로 이동
     toCreateFeed() {
       const missionIdx = this.selected - 1
-      const params = {
+      const query = {
         playlistName: this.missions.playlist.playlistName,
         userPlaylistId: this.missions.userPlaylistId,
         missionName: this.missions.playlist.missions[missionIdx].missionName,
         missionId: this.missions.playlist.missions[missionIdx].missionId
       }
-      this.$router.push({ name: 'feedcreate', params: params })
+      this.$router.push({ name: 'feedcreate', query: query })
     },
     getNowPL() {
       const params = {

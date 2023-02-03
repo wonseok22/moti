@@ -65,10 +65,11 @@ export default {
         content: this.$store.state.nowFeed.content,
         likes: this.$store.state.nowFeed.likes,
         hit: this.$store.state.nowFeed.hit,
+        feedImages: this.$store.state.nowFeed.feedImages,
         feedId: this.$route.params.feedId,
       },
       writeCommentData: {
-        userId: 'red',
+        userId: this.$store.state.id,
         feedId: this.$route.params.feedId,
         content: null
       },

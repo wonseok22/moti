@@ -2,15 +2,15 @@
   <div class="single-feed">
     <!-- 피드의 글본문에 해당되는 부분 -->
     <div class="feed-text">
-        <p v-show="isThereImg()" v-line-clamp:20="2">{{ BodyData.content }}</p>
-        <p v-show="isThereImg2()">{{ BodyData.content }}</p>
-        <button v-if="isThereImg()">
+        <p v-show="isThereImage !== 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
+        <p v-show="isThereImage === 0">{{ BodyData.content }}</p>
+        <button v-if="isThereImage === 0">
             <p>더보기</p>
         </button>
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
     <div class="feed-image">
-        <img v-for="image in BodyData.feedImages" :src="image.feedImageUrl" alt="feedImage" :key="image">
+        <img v-for="(image,idx) in BodyData.feedImages" :src="image.feedImageUrl" alt="feedImage" :key="idx">
     </div>
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
@@ -68,16 +68,11 @@ export default {
     data() {
         return{
             isLike: this.BodyData.hit,
-            likeCnt: this.BodyData.likes
+            likeCnt: this.BodyData.likes,
+            isThereImage: this.BodyData.feedImages
         }
     },
     methods: {
-        isThereImg() {
-            return false
-        },
-        isThereImg2() {
-            return true
-        },
         async moveToComment() {
             this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}})

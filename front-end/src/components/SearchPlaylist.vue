@@ -34,7 +34,7 @@
             if (this.keyword != "") {
                 this.$axios({
                     method: 'get',
-                    url: `${this.$baseUrl}/feed/search/red/${this.keyword}/playlist/0`
+                    url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.keyword}/playlist/0`
                     }).then((response) => {
                     this.feeds = response.data.feeds;
                     console.log("피드 받아오기 성공");

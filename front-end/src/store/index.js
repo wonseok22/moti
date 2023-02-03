@@ -291,7 +291,7 @@ export default new Vuex.Store({
     getSingleFeed(context, feedId) {
       this.$axios({
         method:'get',
-        url:`${this.$baseUrl}/feed/${feedId}/red`
+        url:`${this.$baseUrl}/feed/${feedId}/${this.state.id}`
       })
       .then((res) => {
           const data = {
@@ -342,7 +342,7 @@ export default new Vuex.Store({
     makeLike(context, feedId) {
       this.$axios({
         method:'post',
-        url:`${this.$baseUrl}/feed/like/red/${feedId}`
+        url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
       })
       .then((res) => {
         console.log(res)
@@ -355,7 +355,7 @@ export default new Vuex.Store({
     deleteLike(context, feedId) {
       this.$axios({
         method:'delete',
-        url:`${this.$baseUrl}/feed/like/red/${feedId}`
+        url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
       })
       .then(() => {
         

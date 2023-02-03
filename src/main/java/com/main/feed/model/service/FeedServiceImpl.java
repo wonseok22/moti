@@ -84,7 +84,7 @@ public class FeedServiceImpl implements FeedService {
 		feedRepository.save(feed);
 		
 		// 이미지 처리
-		if (!images.get(0).isEmpty()) {
+		if (1024 < images.get(0).getSize()) {
 			images.forEach(x -> {
 				try {
 					String imagePath = s3Upload.uploadFiles(x, "feedImages");

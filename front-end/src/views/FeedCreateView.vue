@@ -3,7 +3,7 @@
     <header id="feed-create-header">
       <!-- 취소 -->
       <span @click="goBack" class="text-active">취소</span>
-      <span @click="create" class="text-active">등록</span>
+      <span @click="createFeed" class="text-active">등록</span>
       <!-- 등록 -->
     </header>
     <section id="feed-create-section">
@@ -32,16 +32,16 @@
       <label for="image-input"><i class="material-symbols-outlined text-active" id="photo-camera">photo_camera</i></label>
       <input 
         @change="inputImage"  
-        type="file" id="image-input" style="visibility:hidden;"
+        type="file" multiple id="image-input" style="visibility:hidden;"
       >
       <!-- 피드 비공개 -->
-      <div id="feed-create-footer-private">
+      <!-- <div id="feed-create-footer-private">
         <input 
           @click="isprivateCheck"
           type="checkbox" id="feed-create-footer-checkbox" name="feed-create-footer-checkbox"
         >
         <span><label for="feed-create-footer-checkbox" class="text-active-normal">피드 비공개</label></span>
-      </div>
+      </div> -->
     </footer>
   </div>
 </template>
@@ -62,26 +62,40 @@ export default {
       this.$router.go(-1)
     },
     // 피드 등록
-    create() {
+    createFeed() {
+      const formData = new FormData()
       const writeFeedDto = {
         userId: this.$store.state.id,
         userPlaylistId: this.missionInfo.userPlaylistId,
         missionId: this.missionInfo.missionId,
         content: this.content,
       }
-      console.log(writeFeedDto)
-      const writeFileDto = new FormData()
-      writeFileDto.append('images', this.images)
+
+      const writeFeedDtoJson = new Blob([JSON.stringify(writeFeedDto)], { type: "application/json" })
+      
+      formData.append('writeFeedDto', writeFeedDtoJson)
+      
+      // 이미지
+      if (this.images) {
+        for (const img of this.images) {
+          formData.append('images', img)
+        }
+      } else {
+        const dump = {}
+        formData.append('images', new Blob([JSON.stringify(dump)], { type: "application/json" }))
+      }
       
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/feed`,
-        data: {
-          writeFeedDto, writeFileDto
-        }
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
       })
         .then((response) => {
           console.log(response)
+          this.$router.push({ name: 'feed' })
         })
         .catch((error) => {
           console.log(error)
@@ -103,8 +117,10 @@ export default {
   },
   computed: {
     missionInfo() {
-      return this.$route.params
+      return this.$route.query
     }
+  },
+  created() {
   }
 }
 </script>

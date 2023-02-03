@@ -130,35 +130,52 @@ export default {
 
   // 플레이리스트 정보 레이아웃
   #pl-info-layout {
-      width: 100vw;
-      height: 30%;
-      padding-top: 30px;
+      // width: 100vw;
+      // height: 30%;
+      // padding-top: 30px;
+    width: 100%;
+    height: 25%;
+    padding-top: 30px;
+    margin-bottom: 30px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   // 플레이리스트 정보
   #pl-info {
   display: flex;
   width: 100%;
-  height: 100px;
+  // height: 100px;
   // height: 96px;
   }
 
   // 플레이리스트 이미지
   #pl-info-img {
-  width: 50% !important;
-  height: 100%;
-  align-items: center;
+  // width: 50% !important;
+  // height: 100%;
+  // align-items: center;
 
-  img {
-      width: 70% !important;
-      height: 100% !important;
-      object-fit: cover;
-  }
+  // img {
+  //     width: 70% !important;
+  //     height: 100% !important;
+  //     object-fit: cover;
+  // }
+
+   width: 25%;
+
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 100%;
+    }
   }
 
   // 플레이리스트 상세 정보
   #pl-info-text {
-      width: 50%;
+      width: 75%;
       height: 100%;
       text-align: start;
 

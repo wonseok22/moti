@@ -1,6 +1,6 @@
 <template>
   <main>
-      <div class="result-box">
+      <div class="result-box" style="padding-left : 20px; gap:0px;">
           <div v-for="(user,idx) in users" :key="idx" >
               <div class="user-info" @click="moveProfile(user.userId)">
                 <img :src="user.profileImageUrl ? user.profileImageUrl : defaultImage" alt="유저 프로필사진" class="user-info-image">

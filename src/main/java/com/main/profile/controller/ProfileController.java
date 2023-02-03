@@ -99,11 +99,10 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@ApiOperation(value = "ㅍ로필 사진 삭제", notes = "프로필 사진 삭제 API", response = Map.class)
+	@ApiOperation(value = "프로필 사진 삭제", notes = "프로필 사진 삭제 API", response = Map.class)
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> deleteProfileImage(
 			@ApiParam(value = "프로필 사진을 삭제할 유저의 ID", required = true) @PathVariable String userId, HttpServletRequest request) {
@@ -113,7 +112,7 @@ public class ProfileController {
 			try {
 				profileService.deleteProfileImage(userId);
 				resultMap.put("message", SUCCESS);
-				logger.debug("프로필사진 삭제 완료 ");
+				logger.debug("프로필 사진 삭제 완료 ");
 				status = HttpStatus.OK;
 			} catch (Exception e) {
 				logger.error("프로필 사진 삭제 에러: {}", e);
@@ -125,7 +124,6 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
@@ -137,7 +135,6 @@ public class ProfileController {
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		try {
 			List<FollowDto> followList = profileService.getFollow(type, userId);
-			
 			// 유저 팔로워 요청 처리
 			resultMap.put("message", SUCCESS);
 			resultMap.put("followerList", followList);
@@ -148,7 +145,6 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
@@ -161,25 +157,45 @@ public class ProfileController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		try {
-			
 			int result = profileService.doFollow(type, userId, targetId);
 			if (result == 1) {
-				
 				// 유저 팔로우, 팔로우 취소
 				logger.info("팔로우 요청 성공");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			} else {
-				logger.info("팔로우 요청 씰패");
+				logger.info("팔로우 요청 실패");
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
-			logger.error("팔로우쵸청, 팔로우 취소중 에러: {}", e);
+			logger.error("팔로우 요청, 팔로우 취소 중 에러: {}", e);
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "내가 상대를 팔로우하는지 조회", notes = "팔로우 여부 조회 API", response = Map.class)
+	@GetMapping("/follow/check/{userId}/{targetId}")
+	public ResponseEntity<?> checkFollow(
+			@ApiParam(value = "내 ID", required = true) @PathVariable String userId,
+			@ApiParam(value = "상대 ID", required = true) @PathVariable String targetId) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		try {
+			boolean result = profileService.checkFollow(userId, targetId);
+			logger.info("팔로우 여부 조회 성공");
+			resultMap.put("check", result);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			logger.error("팔로우 여부 조회 중 에러: {}", e);
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 }

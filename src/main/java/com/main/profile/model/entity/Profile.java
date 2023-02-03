@@ -16,9 +16,6 @@ public class Profile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long profileId;
 	private String userDesc;
-	
-	@OneToOne
-	@JoinColumn(name = "profileImageId")
-	private ProfileImage profileImage;
+	private String profileImageUrl;
 	
 }

@@ -157,7 +157,7 @@ public class ProfileController {
 	public ResponseEntity<?> doFollow(
 			@ApiParam(value = "팔로우 하는사람의 ID", required = true) @PathVariable String userId,
 			@ApiParam(value = "팔로우 당하는사람의 ID", required = true) @PathVariable String targetId,
-			@ApiParam(value = "팔로우 당하는사람의 ID", required = true) @RequestParam String type) {
+			@ApiParam(value = "follow/unfollow", required = true) @RequestParam String type) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		try {

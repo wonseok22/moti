@@ -1,5 +1,8 @@
 <template>
   <div class="account-form-comp">
+    <div class="title-box">
+      <p style="font-size:52px;">moti</p>
+    </div>
     <router-view/>
   </div>
 </template>

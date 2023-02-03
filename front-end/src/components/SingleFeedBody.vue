@@ -15,7 +15,7 @@
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
         <p>좋아요 {{ BodyData.likes }}개</p>
-        <p>댓글 {{ BodyData.commentNum }}개</p>
+        <p>댓글 {{ BodyData.comments ? BodyData.comments.length : 0 }}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">
@@ -27,10 +27,11 @@
 
         <span class="material-icons-outlined"
         v-show="BodyData.likes == true"
-        style="color:#FFB100;">
+        style="color:#FF5B5B;">
             favorite
         </span>
 
+    <!-- 댓글 버튼 -->
         <span 
         v-show="this.$route.params.feedId === undefined"
         v-on:click="moveToComment" 
@@ -45,7 +46,8 @@
         style="color:#04C584;">
             mode_comment
         </span>
-
+    
+    <!-- 공유 버튼 -->
         <span class="material-icons-outlined"
         style="color:#A3A3A3;">
             share
@@ -75,17 +77,8 @@ export default {
             return true
         },
         moveToComment() {
-            this.$axios({
-                method:'get',
-                url:this.$baseUrl + '/feed/1' + '/red'
-            })
-            .then((res) => {
-                const data = res.data.feed
-                this.$router.push({name:'comment', params: {feedId:1}, query:{FeedData: data}})
-            })
-            .catch((error) => {
-                console.log(error.message)
-            })
+            this.$store.dispatch("getSingleFeed", 6)
+            this.$router.push({name:"comment", params: {feedId:6}})
         },
     },
 }

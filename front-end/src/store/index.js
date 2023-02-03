@@ -19,6 +19,7 @@ export default new Vuex.Store({
     myPL: null,
     myMission: null,
     nowPL: null,
+    nowFeed: null,
   },
   getters: {
     // 로그인 여부
@@ -84,7 +85,6 @@ export default new Vuex.Store({
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
       state.myPL = payload.myPL
-      
     },
     // 나의 미션 저장
     GET_MY_MISSION(state, payload) {
@@ -93,7 +93,13 @@ export default new Vuex.Store({
     },
     GET_NOW_PL(state, payload) {
       state.nowPL = state.myMission[payload.userPlaylistId]
+      console.log(state.myPL)
+      console.log(`플레이리스트 출력: ${state.myPL}`)
     },
+    GET_FEED(state, payload) {
+      state.nowFeed = payload.feedData
+      console.log(state.nowFeed)
+    }
   },
   actions: {
     // 유저정보 받기(회원가입 시)
@@ -280,6 +286,54 @@ export default new Vuex.Store({
     },
     getNowPL(context, payload) {
       context.commit('GET_NOW_PL', payload)
+    },
+    // 피드 상세정보 저장
+    getSingleFeed(context, feedId) {
+      this.$axios({
+        method:'get',
+        url:`${this.$baseUrl}/feed/${feedId}/${context.state.id}`
+      })
+      .then((res) => {
+          const data = {
+            feedData: res.data.feed
+          }
+          context.commit('GET_FEED', data)
+      })
+      .catch((error) => {
+          console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
+      })
+    },
+    //댓글 작성
+    writeComment(context, payload) {
+      const writeCommentDto = {
+        userId: payload.userId,
+        feedId: payload.feedId,
+        content: payload.content
+      }
+      //console.log(writeCommentDto)
+      this.$axios({
+        method:'post',
+        url:`${this.$baseUrl}/feed/comment`,
+        data: writeCommentDto,
+      })
+      .then(() => {
+        this.dispatch('getSingleFeed', writeCommentDto.feedId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    deleteComment(context, payload) {
+      this.$axios({
+        method:'delete',
+        url:`${this.$baseUrl}/feed/comment/${payload.commentId}`
+      })
+      .then(() => {
+        this.dispatch('getSingleFeed', payload.feedId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     }
   },
   modules: {

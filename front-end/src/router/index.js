@@ -8,8 +8,10 @@ import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
 import ProfileView from '@/views/ProfileView'
-// import SearchPage from '@/views/SearchView'
+//import SearchPage from '@/views/SearchView'
 import LoginForm from '@/components/LoginForm'
+//import MyMissionMain from '@/components/MyMissionMain'
+// import SearchPage from '@/views/SearchView'
 import playlistMain from '@/components/CategoryMain'
 import playlistSelect from '@/components/PlaylistMain'
 import playlistDetail from '@/components/PlaylistDetail'
@@ -23,6 +25,7 @@ import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
+
 
 Vue.use(VueRouter)
 
@@ -137,6 +140,11 @@ const routes = [
     name: 'landing',
     redirect: 'login',
     component: LoginView,
+  },
+  {
+    path: '/search',
+    name: 'searchView',
+    component: SearchView,
   },
   {
     path: '*',

@@ -1,7 +1,7 @@
 <template>
   <div class="account-layout">
     <div>
-      <p class="guide-comment">로그인</p>
+      <!-- <p class="guide-comment">로그인</p> -->
       <!-- 로그인 Form -->
       <div class="account-form">
         <div class="account-input-form">
@@ -21,7 +21,7 @@
     <div class="account-sub">
       <div class="login-signup">
         <span>아직 계정이 없으신가요?</span>
-        <span class="hl text-active" @click="toSignup">회원가입</span>
+        <span class="hl text-active" style="font-weight:bold;" @click="toSignup">회원가입</span>
       </div>
       <div class="to-kakao">
         <p>또는</p>

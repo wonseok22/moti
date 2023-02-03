@@ -42,6 +42,7 @@
   align-items: center;
   padding: 0px;
   margin: 20px;
+  margin-top: 100px;
   gap: 26px;
 
   // position: absolute;
@@ -61,9 +62,13 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
+  // padding-left: ;
   gap: 23px;
 
   width: 332px;
+  .inputbox {
+    padding-left: 10px;
+  }
 }
 
 .account-sub {

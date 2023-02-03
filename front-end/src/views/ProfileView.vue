@@ -4,10 +4,11 @@
     <div class="profile-header">
       <div class="profile-nickname">
         <p>{{profile.nickname}}</p>
-          <button v-if="isMyProfile" class="follow" @click="follow">팔로우</button>
+        <button v-if="!isMyProfile && !isFollow" class="follow" @click="follow">팔로우</button>
+        <button v-if="!isMyProfile && isFollow" class="unfollow" @click="unfollow">팔로우 취소</button>
       </div>
       <!-- <img :src=""></img> -->
-      <!-- <p @click="logout">임시 로그아웃 버튼</p> -->
+      <p @click="logout">임시 로그아웃 버튼</p>
       <button class="material-icons-outlined">
         menu
       </button>
@@ -16,9 +17,9 @@
     <div class="profile-info">
       <div class="profile-info-title">
         <!-- <img :src="profile.profileImageUrl ? profile.profileImageUrl : defaultImage" alt="프로필 사진"/> -->
-        <img src="@/assets/images/default_profile.jpg" alt="프로필 사진"/>
+        <img :src="profileImageUrl" alt="프로필 사진"/>
         <div>
-          <div>{{profile.follower}}</div>
+          <div>{{profile.playlistCompleteCnt}}</div>
           <div>키운식물</div>
         </div>
         <div>
@@ -77,19 +78,28 @@ export default {
   data() {
     return {
       profile:null,
-      defaultImage : '@/assets/images/default_profile.jpg',
-      isMyProfile:true,
+      isMyProfile:false,
+      profileImageUrl:require(`@/assets/images/default_profile.jpg`),
+      isFollow:false,
     }
   },
   created() {
+    console.log(this.$store.state.profileTargetId)
     this.$axios({
       method: 'get',
-      url: `${this.$baseUrl}/profile?userId=${this.$store.state.id}`
+      url: `${this.$baseUrl}/profile?userId=${this.$store.state.profileTargetId}`
     }).then((response) => {
       this.profile=response.data.profile
-      if (this.profile.userId === this.$store.state.id){
-        this.isMyProfile = false;
+      if (this.profile.profileImageUrl){
+        this.profileImageUrl = this.profile.profileImageUrl
       }
+      if (this.profile.userId === this.$store.state.id){
+        this.isMyProfile = true;
+      } else {
+        this.isFollow = this.isFollowing()
+      } 
+      // 내가 아닌 경우 팔로우인지 팔로우 취소인지 체크하는 요청
+
         console.log("프로필 받아오기 성공")
       }).catch((error) =>{
         console.log(error)
@@ -109,17 +119,62 @@ export default {
     playlist() {
       const bar = document.getElementById("bar");
       // const slide = document.querySelector(".SearchResult-slide")
-      // slide.style.left = "-360px";
+      // slide.style.left = "-100vw";
       bar.className = "bar2";
       
     },
     achive() {
       const bar = document.getElementById("bar");
       // const slide = document.querySelector(".SearchResult-slide")
-      // slide.style.left = "-720px";
+      // slide.style.left = "-200vw";
       bar.className = "bar3";
 
-   }
+   }, 
+   isFollowing(){
+    const targetId = this.profile.userId;
+    const loginId = this.$store.state.id;
+    this.$axios({
+      method: 'get',
+      url: `${this.$baseUrl}/profile/follow/check/${loginId}/${targetId}`
+    }).then((response) => {
+      if (response.data.message ==="success"){
+        this.isFollow = response.data.check;
+      } 
+      }).catch((error) =>{
+        console.log(error)
+      })
+    return false;
+   },
+   follow() {
+    this.$axios({
+      method: 'get',
+      url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${this.profile.userId}?type=follow`
+    }).then((response) => {
+      if (response.data.message ==="success"){
+        this.isFollow = true;
+        console.log("팔로우 성공")
+      } else {
+        console.log("팔로우 실패")
+      }
+      }).catch((error) =>{
+        console.log(error)
+      })
+   },
+   unfollow() {
+    this.$axios({
+      method: 'get',
+      url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${this.profile.userId}?type=unfollow`
+    }).then((response) => {
+      if (response.data.message ==="success"){
+        this.isFollow = false;
+        console.log("팔로우 취소 성공")
+      } else {
+        console.log("팔로우 취소 실패")
+      }
+      }).catch((error) =>{
+        console.log(error)
+      })
+   },
 
   }
 }

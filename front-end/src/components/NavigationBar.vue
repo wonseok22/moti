@@ -15,16 +15,25 @@
       search
     </router-link>
 
-    <router-link to="/profile" 
+    <div  @click="change()"
       class="material-symbols-outlined">
       account_circle
-    </router-link>
+    </div>
   </div>    
 </template>
 
 <script>
 export default {
   name:'NavigationBar',
+  methods:{
+    change() {
+     this.$store.commit("UPDATE_PROFILE_TARGET_ID",this.$store.state.id);
+      console.log( this.$store.state.profileTargetId + "프로필 조회할 id")
+      this.$router.push({
+        name: 'profile',
+      });
+    }
+  }
 }
 </script>
 

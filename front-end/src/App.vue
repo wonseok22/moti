@@ -1,8 +1,44 @@
 <template>
   <div id="app">
     <router-view/>
+    <width-warning-view
+      v-if="tooWide"
+    >
+    </width-warning-view>
   </div>
 </template>
+
+<script>
+import WidthWarningView from '@/views/WidthWarningView'
+
+export default {
+  name: 'App',
+  components: {
+    WidthWarningView
+  },
+  data() {
+    return {
+      nowWidth: null,
+    }
+  },
+  computed: {
+    tooWide() {
+      window.addEventListener("resize", () => {
+        this.nowWidth = screen.width
+      })
+      if (this.nowWidth > 450) {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  mounted() {
+    this.nowWidth = screen.width
+  }
+}
+
+</script>
 
 
 <style lang="scss">

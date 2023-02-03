@@ -114,8 +114,6 @@ public class ProfileServiceImpl implements ProfileService {
 			
 			if (profileImageUrl != null)
 				profileDto.setProfileImageUrl(profile.getProfileImage().getProfileImageUrl());
-			else
-				profileDto.setProfileImageUrl("@/assets/images/default_profile.jpg");
 			
 			profileDto.setFollower(currentStat.getFollowerCnt());
 			profileDto.setFollowing(currentStat.getFollowingCnt());

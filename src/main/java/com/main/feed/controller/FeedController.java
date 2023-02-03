@@ -41,7 +41,7 @@ public class FeedController {
 	// ------------------------------------------------------------------
 	
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
-	@PostMapping
+	@PostMapping("")
 	public ResponseEntity<?> writeFeed(
 			@RequestPart @ApiParam(value = "피드 작성 정보", required = true) WriteFeedDto writeFeedDto,
 			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {

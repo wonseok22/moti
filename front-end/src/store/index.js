@@ -124,15 +124,19 @@ export default new Vuex.Store({
         data: UserDto,
       })
         .then((response) => {
+          if (response.status == '202') {
+            alert('아이디 또는 비밀번호를 확인해주세요.')
+            console.log(`로그인 실패: status ${response.status}`)
+          }
           console.log(response)
           console.log(`로그인 응답 status: ${response.status}`)
           const payloadToken = {
             accessToken: response.data['access-token'],
             refreshToken: response.data['refresh-token'],
           }
-          console.log()
           const payloadInfo = {
-            id: payload.id,
+            id: response.data.userId,
+            nickname: response.data.nickname,
           }
           context.commit('SAVE_TOKEN', payloadToken)
           context.commit('GET_USER_INFO', payloadInfo)
@@ -141,7 +145,7 @@ export default new Vuex.Store({
           this.$router.push({ name: 'feed' })
         })
         .catch((error) => {
-          alert('아이디 또는 비밀번호를 확인해주세요.')
+          alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
           console.log(`로그인 실패: status ${error.response.status}`)
         })
     },

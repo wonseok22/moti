@@ -62,9 +62,9 @@
 
     <div class="profile-detail">
       <div class="profile-detail-slide">
-        <!-- <SearchPlaylist :keyword="keyword"></SearchPlaylist> -->
-        <!-- <SearchFeed :keyword="keyword"></SearchFeed> -->
-        <!-- <SearchNickname :keyword="keyword"></SearchNickname> -->
+        <SearchUserId :keyword="`${profile.userId}`"></SearchUserId>
+        <SearchMyPl :keyword="`${profile.userId}`"></SearchMyPl>
+        <SearchAchieve :keyword="`${profile.userId}`"></SearchAchieve>
       </div>
     </div>
     <NavigationBar></NavigationBar>
@@ -72,7 +72,9 @@
 </template>
 
 <script>
-
+import SearchUserId from '@/components/SearchUserId.vue'
+import SearchMyPl from '@/components/SearchMyPl.vue'
+import SearchAchieve from '@/components/SearchAchieve.vue'
 export default {
   name: 'ProfileView',
   data() {
@@ -82,6 +84,11 @@ export default {
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       isFollow:false,
     }
+  },
+  components: {
+    SearchUserId,
+    SearchMyPl,
+    SearchAchieve,
   },
   created() {
     console.log(this.$store.state.profileTargetId)
@@ -111,22 +118,22 @@ export default {
     },
     feed () {
       const bar = document.getElementById("bar");
-      // const slide = document.querySelector(".SearchResult-slide")
-      // slide.style.left = 0;
+      const slide = document.querySelector(".profile-detail-slide")
+      slide.style.left = 0;
       bar.className = "bar1"; 
       
     },
     playlist() {
       const bar = document.getElementById("bar");
-      // const slide = document.querySelector(".SearchResult-slide")
-      // slide.style.left = "-100vw";
+      const slide = document.querySelector(".profile-detail-slide")
+      slide.style.left = "-100vw";
       bar.className = "bar2";
       
     },
     achive() {
       const bar = document.getElementById("bar");
-      // const slide = document.querySelector(".SearchResult-slide")
-      // slide.style.left = "-200vw";
+      const slide = document.querySelector(".profile-detail-slide")
+      slide.style.left = "-200vw";
       bar.className = "bar3";
 
    }, 

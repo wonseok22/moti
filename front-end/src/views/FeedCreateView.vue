@@ -69,15 +69,18 @@ export default {
         missionId: this.missionInfo.missionId,
         content: this.content,
       }
-      console.log(writeFeedDto)
       const writeFileDto = new FormData()
       writeFileDto.append('images', this.images)
       
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/feed`,
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // },
         data: {
-          writeFeedDto, writeFileDto
+          writeFeedDto, 
+          writeFileDto,
         }
       })
         .then((response) => {
@@ -103,7 +106,7 @@ export default {
   },
   computed: {
     missionInfo() {
-      return this.$route.params
+      return this.$route.query
     }
   }
 }

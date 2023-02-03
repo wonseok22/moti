@@ -3,7 +3,7 @@
     <!-- 상단 유저명 -->
     <header>
       <p id="my-pl-main-name">
-        <span>사용자</span>
+        <span>{{ nickname }}</span>
         의 꽃 목록
       </p>
     </header>
@@ -56,6 +56,10 @@ export default {
     // 나의 플레이리스트
     myPLArray() {
       return this.$store.state.myPL
+    },
+    // 유저 닉네임
+    nickname() {
+      return this.$store.state.nickname
     }
   },
   created() {

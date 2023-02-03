@@ -127,22 +127,22 @@ export default new Vuex.Store({
           if (response.status == '202') {
             alert('아이디 또는 비밀번호를 확인해주세요.')
             console.log(`로그인 실패: status ${response.status}`)
-          }
-          console.log(response)
-          console.log(`로그인 응답 status: ${response.status}`)
-          const payloadToken = {
-            accessToken: response.data['access-token'],
-            refreshToken: response.data['refresh-token'],
-          }
-          const payloadInfo = {
-            id: response.data.userId,
-            nickname: response.data.nickname,
-          }
-          context.commit('SAVE_TOKEN', payloadToken)
-          context.commit('GET_USER_INFO', payloadInfo)
+          } else {
+            console.log(`로그인 응답 status: ${response.status}`)
+            const payloadToken = {
+              accessToken: response.data['access-token'],
+              refreshToken: response.data['refresh-token'],
+            }
+            const payloadInfo = {
+              id: response.data.userId,
+              nickname: response.data.nickname,
+            }
+            context.commit('SAVE_TOKEN', payloadToken)
+            context.commit('GET_USER_INFO', payloadInfo)
 
-          // 피드 페이지로 이동
-          this.$router.push({ name: 'feed' })
+            // 피드 페이지로 이동
+            this.$router.push({ name: 'feed' })
+            }
         })
         .catch((error) => {
           alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
@@ -202,6 +202,7 @@ export default new Vuex.Store({
         email: context.state.email,
         nickname: context.state.nickname,
       }
+      console.log(UserDto)
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/users`,
@@ -211,6 +212,7 @@ export default new Vuex.Store({
           console.log('회원가입 완료')
           context.commit('ERASE_INFO')
           console.log(response.data.message)
+          this.$router.push({ name: 'login' })
         })
         .catch((error) => {
           console.log(error)

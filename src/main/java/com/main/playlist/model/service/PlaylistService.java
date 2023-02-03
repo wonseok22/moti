@@ -17,6 +17,7 @@ public interface PlaylistService {
 	PlaylistDto getPlaylist(Long playlistId) throws SQLException;  //플레이리스트 상세보기
 	
 	UserPlaylist registMyPlaylist(String userId, Long playlistId) throws SQLException;  //내 플레이리스트 추가
+	UserPlaylist replayPlaylist(Long userPlaylistId) throws SQLException;  //내 플레이리스트 추가
 	
 	UserPlaylist checkUserPlaylist(String userId, Long playlistId);
 }

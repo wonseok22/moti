@@ -172,7 +172,7 @@ public class PlaylistController {
 			if (userPlaylist != null) {
 				logger.debug("플레이리스트 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
-				resultMap.put("userPlaylistId",userPlaylist.getUserPlaylistId());
+				resultMap.put("userPlaylistId", userPlaylist.getUserPlaylistId());
 				status = HttpStatus.OK;
 			} else {
 				logger.debug("플레이리스트 등록 결과 : {}", "실패");
@@ -184,6 +184,40 @@ public class PlaylistController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("내 플레이리스트에 등록 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	
+	@ApiOperation(value = "내 플레이리스트 재시작", notes = "해당 플레이리스트를 재시작한다.", response = Map.class)
+	@PutMapping("/{userPlaylistId}")
+	public ResponseEntity<?> replayPlaylist(
+			@PathVariable @ApiParam(value = "재시작할 유저의 플레이리스트 번호", required = true) Long userPlaylistId) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		//내 플레이리스트에 등록하기
+		try {
+			UserPlaylist userPlaylist = playlistService.replayPlaylist(userPlaylistId);
+			
+			if (userPlaylist != null) {
+				logger.debug("플레이리스트 수정 결과 : {}", "성공");
+				resultMap.put("message", SUCCESS);
+				resultMap.put("userPlaylistId", userPlaylist.getUserPlaylistId());
+				status = HttpStatus.OK;
+			} else {
+				logger.debug("플레이리스트 수정 결과 : {}", "실패");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+				// 플레이리스트 수정에 실패한 경우 실패 메시지 반환, 202 응답 코드
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("내 플레이리스트에 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

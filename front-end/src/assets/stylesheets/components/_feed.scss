@@ -36,6 +36,8 @@
 
     padding-top: 10px;
 
+    gap: 15px;
+
     position: relative;
 }
 
@@ -90,7 +92,16 @@
 }
 
 .feed-image {
-
+    width: 100vw;
+    height: auto;
+    background-color: white;
+    padding-bottom: 5px;
+    
+    img {
+        max-width: 360px;
+        width: 100%;
+        height: auto;
+    }
 }
 
 .feed-text {

@@ -1,5 +1,11 @@
 <template>
+
+
+
+
   <div class="profile-main" v-if="profile">
+  
+
     <!-- 프로필 페이지 최상단 유저이름과 메뉴바 -->
     <div class="profile-header">
       <div class="profile-nickname">
@@ -34,8 +40,9 @@
       <div class="profile-info-desc">
         {{ profile.userDesc }}
       </div>
-
     </div>
+
+  
 
     <div class="profile-menu">
       <nav id="CategoryNav">
@@ -64,10 +71,20 @@
       <div class="profile-detail-slide">
         <SearchUserId :keyword="`${profile.userId}`"></SearchUserId>
         <SearchMyPl :keyword="`${profile.userId}`"></SearchMyPl>
-        <SearchAchieve :keyword="`${profile.userId}`"></SearchAchieve>
+        <SearchAchieve :keyword="`${profile.userId}`" @openModal="openModal"></SearchAchieve>
       </div>
     </div>
     <NavigationBar></NavigationBar>
+    <div class="modal" v-if="modal">
+      <div class="white-bg">
+        <h3>{{ achievement.achievementName }}</h3>
+        <img :src="achievement.achievementImageUrl" alt="업적 이미지">
+        <p>{{ achievement.achievementDesc }}</p>
+        <button @click="modal = false" class="modal-close">
+          닫기
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -83,6 +100,8 @@ export default {
       isMyProfile:false,
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       isFollow:false,
+      modal: false,
+
     }
   },
   components: {
@@ -182,11 +201,41 @@ export default {
         console.log(error)
       })
    },
-
+   openModal(achievement) {
+      this.achievement = achievement;
+      this.modal=true;
+   }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  .white-bg{
+    padding-top: 3px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    background-color: #fff;
+    top: 50%;
+    width: 300px;
+    height: 250px;
+    margin: 300px auto;
+    img {
+      width: 70px;
+      height: 70px;
+    }
+    .modal-close{
+      background-color: #325C3E;
+      font-weight: bold;
+      color:white;
+      border-radius: 7px;
+      padding: 8px 15px;
+      border: 0 solid #000;
+    }
+  }
+}
 </style>

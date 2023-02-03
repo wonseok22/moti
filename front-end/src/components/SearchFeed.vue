@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="result-box">
+        <div class="result-box"> 
             <div v-for="(feed,idx) in feeds" :key="idx" >
                 <MainFeedHeader
                 :HeaderData="feed"/>
@@ -47,11 +47,9 @@ import SingleFeedBody from '../components/SingleFeedBody.vue'
             if (this.keyword != "") {
                 this.$axios({
                     method: 'get',
-                    url: `${this.$baseUrl}/feed/search/red/${this.keyword}/content/0`
+                    url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.keyword}/content/0`
                     }).then((response) => {
                     this.feeds = response.data.feeds;
-                    console.log("피드 받아오기 성공")
-                    console.log(this.feeds)
                     }).catch((error) =>{
                     console.log(error)
                 })

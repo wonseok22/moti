@@ -20,7 +20,7 @@ export default new Vuex.Store({
     myMission: null,
     nowPL: null,
     nowFeed: null,
-    temp: null,
+    profileTargetId:null,
   },
   getters: {
     // 로그인 여부
@@ -33,6 +33,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    UPDATE_PROFILE_TARGET_ID(state, data) {
+      state.profileTargetId = data;
+    },
     // 유저 정보 저장하기
     GET_USER_INFO(state, payload) {
       for (let [key, value] of Object.entries(payload)) {
@@ -296,12 +299,13 @@ export default new Vuex.Store({
     getSingleFeed(context, feedId) {
       this.$axios({
         method:'get',
-        url:`${this.$baseUrl}/feed/${feedId}/${context.state.id}`
+        url:`${this.$baseUrl}/feed/${feedId}/${this.state.id}`
       })
       .then((res) => {
           const data = {
             feedData: res.data.feed
           }
+          console.log(data)
           context.commit('GET_FEED', data)
       })
       .catch((error) => {
@@ -315,6 +319,7 @@ export default new Vuex.Store({
         feedId: payload.feedId,
         content: payload.content
       }
+      console.log(writeCommentDto)
       //console.log(writeCommentDto)
       this.$axios({
         method:'post',
@@ -328,6 +333,7 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    //댓글 삭제
     deleteComment(context, payload) {
       this.$axios({
         method:'delete',
@@ -335,6 +341,32 @@ export default new Vuex.Store({
       })
       .then(() => {
         this.dispatch('getSingleFeed', payload.feedId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    //좋아요 등록
+    makeLike(context, feedId) {
+      this.$axios({
+        method:'post',
+        url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    //좋아요 해제
+    deleteLike(context, feedId) {
+      this.$axios({
+        method:'delete',
+        url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
+      })
+      .then(() => {
+        
       })
       .catch((error) => {
         console.log(error)

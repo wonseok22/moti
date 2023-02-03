@@ -64,12 +64,13 @@ export default {
       feedBodyData: {
         content: this.$store.state.nowFeed.content,
         likes: this.$store.state.nowFeed.likes,
-        commentNum: 0,
+        hit: this.$store.state.nowFeed.hit,
+        feedImages: this.$store.state.nowFeed.feedImages,
         feedId: this.$route.params.feedId,
       },
       writeCommentData: {
-        userId: 'red',
-        feedId: 6,
+        userId: this.$store.state.id,
+        feedId: this.$route.params.feedId,
         content: null
       },
     }
@@ -83,8 +84,9 @@ export default {
       textarea.style.height = 'auto'
       textarea.style.height = textarea.scrollHeight + 'px'
     },
-    async writeComment() {
+    writeComment() {
       this.$store.dispatch("writeComment", this.writeCommentData)
+      this.$refs.commentTextarea.value = ""
     },
     showModal(commentId) {
       const payload = {
@@ -92,25 +94,11 @@ export default {
         feedId: this.$route.params.feedId,
       }
       this.$store.dispatch('deleteComment', payload)
-      // this.$modal.show('dialog',{
-      //   text:'삭제 콜?',
-      //   buttons: [
-      //     {
-      //       title: '아뇨, 그대로 두겠습니다.',
-      //       handler: () => {
-      //         this.$modal.hide('dialog')
-      //       }
-      //     },
-      //     {
-      //       title:'네,, 삭제하겠습니다.',
-      //       handler:() => {
-      //         alert('진짜 지웠네')
-      //       }
-      //     }
-      //   ]
-      // })
     }
   },
+  created() {
+    console.log(this.$store.state.nowFeed)
+  },  
   components: {
     MainFeedHeader,
     SingleFeedBody,

@@ -77,6 +77,20 @@ public class PlaylistServiceImpl implements PlaylistService {
 	}
 	
 	@Override
+	public UserPlaylist replayPlaylist(Long userPlaylistId) throws SQLException {
+		
+		
+		UserPlaylist userPlaylist = userPlaylistRepository.findByUserPlaylistId(userPlaylistId);
+		
+		
+		userPlaylist.setEndDate(LocalDateTime.now().plusDays(8).minusSeconds(1).truncatedTo(ChronoUnit.DAYS));
+		
+		userPlaylistRepository.save(userPlaylist);
+		
+		return userPlaylist;
+	}
+	
+	@Override
 	public UserPlaylist checkUserPlaylist(String userId, Long playlistId) {
 		return userPlaylistRepository.findByUser_UserIdAndPlaylist_PlaylistIdAndEndDateAfter(userId, playlistId, LocalDateTime.now());
 	}

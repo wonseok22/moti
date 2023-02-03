@@ -98,8 +98,8 @@ const routes = [
         component: MyPLMain,
       },
       {
-        // path: 'mission/:pl-id',
         path: 'mission',
+        // path: 'mission',
         component: MyPLMission,
       }
     ]

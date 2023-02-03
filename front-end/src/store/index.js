@@ -17,6 +17,8 @@ export default new Vuex.Store({
     accessToken: null,
     refreshToken: null,
     myPL: null,
+    myMission: null,
+    nowPL: null,
     nowFeed: null,
   },
   getters: {
@@ -83,6 +85,14 @@ export default new Vuex.Store({
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
       state.myPL = payload.myPL
+    },
+    // 나의 미션 저장
+    GET_MY_MISSION(state, payload) {
+      state.myMission = null
+      state.myMission = payload
+    },
+    GET_NOW_PL(state, payload) {
+      state.nowPL = state.myMission[payload.userPlaylistId]
       console.log(state.myPL)
       console.log(`플레이리스트 출력: ${state.myPL}`)
     },
@@ -228,12 +238,9 @@ export default new Vuex.Store({
     },
     // 나의 플레이리스트 정보 가져오기
     getMyPL(context) {
-      console.log('유저 플레이리스트를 가져옵니다.')
-      console.log('여기봐')
-      console.log(context.state.id)
       this.$axios({
         method: 'get',
-        url: `${this.$baseUrl}/playlist/${context.state.id}}`
+        url: `${this.$baseUrl}/playlist/${context.state.id}`
       })
         .then((response) => {
           console.log(`유저 플레이리스트 가져오기 성공: status ${response.status}`)
@@ -242,10 +249,43 @@ export default new Vuex.Store({
           }
           console.log(response)
           context.commit('GET_MY_PL', payload)
+          const payloadMission = {}
+          context.state.myPL.forEach((pl) => {
+            payloadMission[pl.playlist.playlistId] = pl.userPlaylistId 
+          })
+          context.dispatch('getMyMission', payloadMission)
         })
         .catch((error) => {
           console.log(`유저 플레이리스트 가져오기 실패: status ${error.response.status}`)
         })
+    },
+    // 내 플레이리스트별 미션 정보 가져오기
+    getMyMission(context, payload) {
+      console.log('플레이리스트별 미션 가져오기 실행')
+      // 내 플레이리스트별 미션 모아둘 리스트
+      const payloadMission = {}
+
+      for (let [key, value] of Object.entries(payload)) {
+        this.$axios({
+          method: 'get',
+          url: `${this.$baseUrl}/playlist/detail/${context.state.id}/${value}`
+        })
+          .then((response) => {
+            console.log(`플레이리스트별 미션 가져오기 성공(${key}): status ${response.status}`)
+            // const missions = {
+            //   [key]: response.data.myPlaylist
+            // }
+            payloadMission[key] = response.data.myPlaylist
+          })
+          .catch((error) => {
+            console.log(`플레이리스트별 미션 가져오기 실패: status ${error.response.status}`)
+          })
+      }
+      // 시간 차이가 발생한다.
+      context.commit('GET_MY_MISSION', payloadMission)
+    },
+    getNowPL(context, payload) {
+      context.commit('GET_NOW_PL', payload)
     },
     // 피드 상세정보 저장
     getSingleFeed(context, feedId) {

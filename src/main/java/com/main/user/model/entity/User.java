@@ -1,6 +1,7 @@
 package com.main.user.model.entity;
 
 
+import com.main.achievement.model.entity.UserAchievement;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.entity.Like;
@@ -35,7 +36,8 @@ public class User {
 	@OneToOne
 	@JoinColumn(name = "profileId")
 	private Profile profile;
-	
+	@OneToMany(mappedBy = "user")
+	private List<UserAchievement> userAchievements = new ArrayList<>();
 	@OneToMany(mappedBy = "user")
 	private List<UserPlaylist> playlists = new ArrayList<>();
 	

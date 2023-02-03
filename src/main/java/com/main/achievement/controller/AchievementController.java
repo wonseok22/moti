@@ -43,7 +43,7 @@ public class AchievementController {
 			List<AchievementDto> achievements = achievementService.getAchievements(userId);
 			
 			logger.debug("업적 목록 : {}", achievements);
-			resultMap.put("categories", achievements);
+			resultMap.put("achievements", achievements);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 			

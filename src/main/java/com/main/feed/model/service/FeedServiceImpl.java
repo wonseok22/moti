@@ -1,6 +1,5 @@
 package com.main.feed.model.service;
 
-import com.main.category.model.repository.CategoryRepository;
 import com.main.feed.model.dto.FeedDto;
 import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
@@ -20,6 +19,8 @@ import com.main.playlist.model.entity.UserPlaylist;
 import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.PlaylistRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
+import com.main.profile.model.repository.FollowRepository;
+import com.main.user.model.dto.UserDto;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class FeedServiceImpl implements FeedService {
 	private LikeRepository likeRepository;
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private FollowRepository followRepository;
 	
 	@Autowired
 	private S3Upload s3Upload;
@@ -204,8 +205,40 @@ public class FeedServiceImpl implements FeedService {
 	public Map<String, Object> searchFeed(String userId, String keyword, String kind, int pageNo) {
 		// 검색 종류에 따른 분기
 		if ("default".equals(kind)) {
-			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%%", PageRequest.of(pageNo, 10));
-			return toSearchList(userId, list);
+			if ("following".equals(keyword)) {
+				// 현재 유저의 팔로잉 목록을 가져옴
+				List<String> followingList = new ArrayList<>();
+				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
+				
+				// 일단 팔로잉 유저들의 피드들을 가져온다
+				Slice<Feed> followingFeedList = feedRepository.findAllByUser_UserIdInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
+				Map<String, Object> firstMap = toSearchList(userId, followingFeedList);
+				firstMap.put("keyword", "following");
+				
+				// 마지막 페이지가 아니면 그대로 리턴
+				if (followingFeedList.getNumberOfElements() != 0 && !followingFeedList.isLast()) return firstMap;
+				
+				// 마지막 페이지라면 전체 유저의 피드 첫 페이지도 받아와야 한다
+				followingList.add(userId);
+				List<FeedDto> newList = new ArrayList<>();
+				followingFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
+				Slice<Feed> allFeedList = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));
+				allFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
+				
+				// 리턴
+				Map<String, Object> result = new HashMap<>();
+				result.put("keyword", "all");
+				result.put("feeds", newList);
+				result.put("isLast", allFeedList.isLast());
+				return result;
+			} else if ("all".equals(keyword)) {
+				// 현재 유저의 팔로잉 목록에 없는 유저들의 피드만 리턴함
+				List<String> followingList = new ArrayList<>();
+				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
+				followingList.add(userId);
+				Slice<Feed> list = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
+				return toSearchList(userId, list);
+			}
 		} else if ("playlist".equals(kind)) {
 			// 플레이리스트 이름으로 플레이리스트DTO들을 가져옴(Playlist ID들을 알아내기 위해)
 			List<Playlist> playlists = playlistRepository.findAllByPlaylistNameLike("%" + keyword + "%");
@@ -217,16 +250,13 @@ public class FeedServiceImpl implements FeedService {
 			playlistDtos.forEach(x ->
 					userPlaylistRepository.findByPlaylist_PlaylistId(x.getPlaylistId()).forEach(y ->
 							userPlaylists.add(UserPlaylistDto.toDto(y))));
-			System.out.println("userPlaylists : " + userPlaylists.size());
 			
 			// 가져온 UserPlaylist에서 ID들만 따로 꺼내서 저장함
 			List<Long> userPlaylistIds = new ArrayList<>();
 			userPlaylists.forEach(x -> userPlaylistIds.add(x.getUserPlaylistId()));
-			System.out.println("userPlaylistIds : " + userPlaylistIds.size());
 			
 			// UserPlaylist ID들을 가지고 DB에서 검색
 			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdInOrderByFeedIdDesc(userPlaylistIds, PageRequest.of(pageNo, 10));
-			System.out.println("list.getNumberOfElements : " + list.getNumberOfElements());
 			return toSearchList(userId, list);
 		} else if ("content".equals(kind)) {
 			Slice<Feed> list = feedRepository.findAllByContentLikeOrderByFeedIdDesc("%" + keyword + "%", PageRequest.of(pageNo, 10));

@@ -321,7 +321,7 @@ public class FeedController {
 		
 		try {
 			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, pageNo);
-			if (searchResult == null) {
+			if (searchResult.get("feeds") == null) {
 				logger.debug("피드 검색 결과 : {}", "피드 존재하지 않음");
 				resultMap.put("feeds", null);
 				resultMap.put("message", "존재하지 않는 피드");
@@ -329,6 +329,7 @@ public class FeedController {
 				return new ResponseEntity<Map<String, Object>>(resultMap, status);
 			}
 			logger.debug("피드 검색 결과 : {}", "성공");
+			resultMap.put("keyword", searchResult.get("keyword"));
 			resultMap.put("feeds", searchResult.get("feeds"));
 			resultMap.put("isLast", searchResult.get("isLast"));
 			resultMap.put("message", SUCCESS);

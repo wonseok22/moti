@@ -16,7 +16,10 @@
                     팔로우
                 </button>
             </div>
-            <p>{{ HeaderData.playlistName }}의 {{ HeaderData.missionName }}</p>
+            <p>
+                <span class="playlist-name">{{ HeaderData.playlistName }}</span>의 
+                <span class="mission-name">{{ HeaderData.missionName }}</span>
+            </p>
         </div>
     </div>
 </template>
@@ -24,9 +27,13 @@
 <script>
 export default {
     name: "MainFeedHeader",
+    // created() {
+    //     const res = this.$store.dispatch("followCheck", this.HeaderData.feedId)
+    //     console.log(res)
+    // },
     props: {
         HeaderData: Object,
-    }
+    },
 }
 </script>
 

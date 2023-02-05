@@ -97,12 +97,12 @@ export default new Vuex.Store({
     },
     GET_NOW_PL(state, payload) {
       state.nowPL = state.myMission[payload.userPlaylistId]
-      console.log(state.myPL)
+      //console.log(state.myPL)
       console.log(`플레이리스트 출력: ${state.myPL}`)
     },
     GET_FEED(state, payload) {
       state.nowFeed = payload.feedData
-      console.log(state.nowFeed)
+      //console.log(state.nowFeed)
     }
   },
   actions: {
@@ -297,22 +297,29 @@ export default new Vuex.Store({
     getNowPL(context, payload) {
       context.commit('GET_NOW_PL', payload)
     },
-    // 피드 상세정보 저장
-    getSingleFeed(context, feedId) {
-      this.$axios({
+    // 피드 상세정보 호출
+    async getSingleFeed(context, feedId) {
+      return this.$axios({
         method:'get',
         url:`${this.$baseUrl}/feed/${feedId}/${this.state.id}`
       })
-      .then((res) => {
-          const data = {
-            feedData: res.data.feed
-          }
-          console.log(data)
-          context.commit('GET_FEED', data)
-      })
-      .catch((error) => {
-          console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
-      })
+      // .then((res) => {
+      //     const data = {
+      //       feedData: res.data.feed
+      //     }
+      //     console.log(data)
+      //     context.commit('GET_FEED', data)
+      // })
+      // .catch((error) => {
+      //     console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
+      // })
+    },
+    //피드 상세정보 저장
+    putSingleFeed(context, payload) {
+      const data = {
+        feedData: payload
+      }
+      context.commit('GET_FEED', data)
     },
     //댓글 작성
     writeComment(context, payload) {
@@ -321,7 +328,6 @@ export default new Vuex.Store({
         feedId: payload.feedId,
         content: payload.content
       }
-      console.log(writeCommentDto)
       //console.log(writeCommentDto)
       this.$axios({
         method:'post',
@@ -329,7 +335,14 @@ export default new Vuex.Store({
         data: writeCommentDto,
       })
       .then(() => {
-        this.dispatch('getSingleFeed', writeCommentDto.feedId)
+        return this.dispatch('getSingleFeed', writeCommentDto.feedId)
+      })
+      .then((res) => {
+        console.log(res)
+        const data = {
+          feedData: res.data.feed
+        }
+        context.commit('GET_FEED', data)
       })
       .catch((error) => {
         console.log(error)
@@ -342,7 +355,14 @@ export default new Vuex.Store({
         url:`${this.$baseUrl}/feed/comment/${payload.commentId}`
       })
       .then(() => {
-        this.dispatch('getSingleFeed', payload.feedId)
+        return this.dispatch('getSingleFeed', payload.feedId)
+      })
+      .then((res) => {
+        console.log(res)
+        const data = {
+          feedData: res.data.feed
+        }
+        context.commit('GET_FEED', data)
       })
       .catch((error) => {
         console.log(error)

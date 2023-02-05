@@ -66,6 +66,7 @@ export default {
         likes: this.$store.state.nowFeed.likes,
         hit: this.$store.state.nowFeed.hit,
         feedImages: this.$store.state.nowFeed.feedImages,
+        comments: this.$store.state.nowFeed.comments,
         feedId: this.$route.params.feedId,
       },
       writeCommentData: {

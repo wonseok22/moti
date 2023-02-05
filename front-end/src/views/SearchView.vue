@@ -51,14 +51,14 @@ export default {
     feed() {
       const bar = document.getElementById("bar");
       const slide = document.querySelector(".SearchResult-slide")
-      slide.style.left = "-360px";
+      slide.style.left = "-100vw";
       bar.className = "bar2";
       
     },
     nickname() {
       const bar = document.getElementById("bar");
       const slide = document.querySelector(".SearchResult-slide")
-      slide.style.left = "-720px";
+      slide.style.left = "-200vw";
       bar.className = "bar3";
 
    }
@@ -135,30 +135,36 @@ export default {
   }
 
   }
-.SearchResult {
-  margin-top: 20px;
-  width: $base_width;
-  height: 600px;
-  position: relative;
-  overflow: hidden;
+  .SearchResult {
+    margin-top: 20px;
+    width: $base-width;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
 
-  .SearchResult-slide{
-    transition : 0.5s;
-    left:0;
-    position: absolute;
-    width: 300vw;
-    height: 100%;
-    display: flex;
-    main{
-      width: $base_width;
+    .SearchResult-slide{
+      transition : 0.5s;
+      left:0;
+      position: absolute;
+      width: 300vw;
       height: 100%;
-      .result-box {
-        width: 100%;
+      display: flex;
+      main{
+        width: $base-width;
         height: 100%;
-        margin: 0 auto;
-        // background-color: #bbb;
+        .result-box {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+          padding-left: 0;
+          overflow-y:scroll;
+          padding-bottom: 30px;
+          // background-color: #bbb;
+        }
       }
     }
   }
-}
 </style>

@@ -11,7 +11,7 @@
           </div>
           <!-- 비밀번호 -->
           <div>
-            <input type="password" id="input-pw" class="inputbox" name="input-pw" placeholder="비밀번호" @input="pwInput">
+            <input type="password" id="input-pw" class="inputbox" name="input-pw" placeholder="비밀번호" @input="pwInput" @keyup.enter="login">
           </div>
         </div>
         <button v-if="isvalid" class="btn-green" @click="login">로그인</button>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import * as regex from '@/tools/regex.js'
 
 export default {
 	name: 'loginForm',
@@ -44,20 +45,24 @@ export default {
   methods: {
     // id 입력 받기
     idInput(event) {
-      this.id = event.target.value
+      this.id = regex.characterCheck(event.target.value)
+      event.target.value = this.id
     },
     // 비밀번호 입력 받기
     pwInput(event) {
-      this.password = event.target.value
+      this.password = regex.characterCheck(event.target.value)
+      event.target.value = this.password
     },
     // 로그인
     login() {
-      console.log('로그인 실행')
-      const payload = {
-        id: this.id,
-        password: this.password,
+      if (this.isvalid) {
+        console.log('로그인 실행')
+        const payload = {
+          id: this.id,
+          password: this.password,
+        }
+        this.$store.dispatch('login', payload)
       }
-      this.$store.dispatch('login', payload)
     },
     // 회원가입 페이지로 이동
     toSignup() {
@@ -75,12 +80,6 @@ export default {
       return false
     }
   },
-  // // 이미 로그인 상태라면 피드로 이동
-  // created() {
-  //   if (this.$store.getters.isLoggedIn) {
-  //     this.$router.push('')
-  //   }
-  // }
 }
 </script>
 

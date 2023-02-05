@@ -24,7 +24,7 @@ export default {
     // 전체 피드 조회
     this.$axios({
       method:'get',
-      url:`${this.$baseUrl}/feed/search/${this.$store.state.id}/a/default/${this.pageNum}`
+      url:`${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.kind}/default/${this.pageNum}`
     })
     .then((res) => {
       this.feeds = res.data.feeds
@@ -41,6 +41,7 @@ export default {
     return {
       pageNum: 0,
       feeds: null,
+      kind: "following",
     }
   }
 }

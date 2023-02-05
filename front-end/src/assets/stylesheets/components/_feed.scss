@@ -1,3 +1,4 @@
+
 .feed-page {
     background: #E9E9E9;
     height: 100vh;
@@ -178,8 +179,10 @@
             }
 
             button {
-                margin-left: 5px;
-                color: #00AB44;
+                margin-left: 0px;
+                position: absolute;
+                right: 20%;
+                color: #049CF1;
                 border: none;
                 border-radius: 3px;
                 background-color: #FFFFFF;
@@ -193,6 +196,15 @@
         margin-bottom: 5px;
         text-align: start;
         word-break: keep-all;
+
+        .playlist-name {
+            color: #00AB44;
+            font-weight: bold;
+        }
+
+        .mission-name {
+            color: #2C5C3F;
+        }
     }
 }
 

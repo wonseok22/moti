@@ -7,7 +7,7 @@
     <div class="comments-list">
       <SingleComment 
       v-for="(item,index) in this.$store.state.nowFeed.comments" 
-      v-bind:CommentData="item" 
+      :CommentData="item"
       @deleteComment="showModal"
       :key="index"/>
     </div>
@@ -74,6 +74,7 @@ export default {
         feedId: this.$route.params.feedId,
         content: null
       },
+      feedNickname: this.$store.state.nowFeed.nickname
     }
   },
   methods: {
@@ -88,6 +89,12 @@ export default {
     writeComment() {
       this.$store.dispatch("writeComment", this.writeCommentData)
       this.$refs.commentTextarea.value = ""
+      const doc = document.querySelector(".comments-list") 
+      window.scrollBy({
+        top:doc.scrollHeight,
+        left:0,
+        behavior:'smooth'
+      })
     },
     showModal(commentId) {
       const payload = {
@@ -98,8 +105,12 @@ export default {
     }
   },
   created() {
-    console.log(this.$store.state.nowFeed)
+    console.log(this.$store.state.nowFeed.nickname)
+    console.log(this.$store.state.id)
   },  
+  mounted() {
+    window.scrollTo(0,0);
+  },
   components: {
     MainFeedHeader,
     SingleFeedBody,

@@ -395,6 +395,15 @@ export default new Vuex.Store({
       })
     }
   },
+  //팔로우 했는지 체크
+  followCheck(context, targetId) {
+    return this.$axios({
+      method:'get',
+      url: `${this.baseUrl}/profile/follow/${this.state.id}/${targetId}`
+    })
+  },
+  // 프로필을 체크
+  
   modules: {
   }
 })

@@ -25,7 +25,7 @@
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
         <p>좋아요 {{ this.likeCnt }}개</p>
-        <p>댓글 {{  BodyData.comments.length }}개</p>
+        <p @click="moveToComment">댓글 {{  BodyData.comments.length }}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">
@@ -46,7 +46,7 @@
     <!-- 댓글 버튼 -->
         <span 
         v-show="this.$route.params.feedId === undefined"
-        v-on:click="moveToComment" 
+        @click="moveToComment" 
         class="material-symbols-outlined"
         style="color:#A3A3A3;">
             mode_comment
@@ -61,7 +61,8 @@
     
     <!-- 공유 버튼 -->
         <span class="material-icons-outlined"
-        style="color:#A3A3A3;">
+        style="color:#A3A3A3;"
+        @click="shareViaWebShare">
             share
         </span>
     </div>
@@ -92,7 +93,8 @@ export default {
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
-            await this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}})
+            await this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}}).catch(() => {})
+            
         },
         makeLike() {
             this.$store.dispatch("makeLike", this.BodyData.feedId)
@@ -104,10 +106,22 @@ export default {
             this.isLike = false
             this.likeCnt -= 1
         },
+        shareViaWebShare() {
+            navigator.share({
+                title: this.$store.state.nowFeed.missionName,
+                text: this.BodyData.content,
+                url: window.location.href
+            })
+        }
+    },
+    computed: {
+        webShareApiSupported() {
+            return navigator.share
+        }
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
-        //console.log(this.BodyData)
+        console.log(this.BodyData)
     }
 }
 

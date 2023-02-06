@@ -35,7 +35,6 @@
                   url: `${this.$baseUrl}/users/search/${this.keyword}/0`
                   }).then((response) => {
                   this.users = response.data. users;
-                  console.log("유저 리스트 받아오기 성공");
                   }).catch((error) =>{
                   console.log(error);
               })

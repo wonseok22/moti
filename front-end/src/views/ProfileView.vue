@@ -1,8 +1,5 @@
 <template>
 
-
-
-
   <div class="profile-main" v-if="profile">
   
 
@@ -14,8 +11,8 @@
         <button v-if="!isMyProfile && isFollow" class="unfollow" @click="unfollow">팔로우 취소</button>
       </div>
       <!-- <img :src=""></img> -->
-      <p @click="logout">임시 로그아웃 버튼</p>
-      <button class="material-icons-outlined">
+
+      <button class="material-icons-outlined" @click="menu">
         menu
       </button>
     </div>
@@ -75,6 +72,8 @@
       </div>
     </div>
     <NavigationBar></NavigationBar>
+
+
     <div class="modal" v-if="modal">
       <div class="white-bg">
         <h3>{{ achievement.achievementName }}</h3>
@@ -85,6 +84,39 @@
         </button>
       </div>
     </div>
+
+    <div class="menu-modal" v-if="menuModal" @click="menuModal=false">
+      <div class="menu-white-bg">
+        <ul>
+          <li @click="moveProfileModify">
+            <div class="menu-items" >
+              <span class="material-symbols-outlined">
+                person
+              </span>
+              <div>프로필 설정</div>
+            </div>
+          </li>
+          <li>
+            <div class="menu-items">
+              <span class="material-symbols-outlined">
+              settings_suggest
+              </span>
+              <div>개인정보 설정</div>
+            </div>
+          </li>
+          <li @click="logout">
+            <div class="menu-items">
+              <span class="material-symbols-outlined">
+              settings_power
+              </span>
+              <div>로그아웃</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -101,6 +133,7 @@ export default {
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       isFollow:false,
       modal: false,
+      menuModal:false,
 
     }
   },
@@ -110,7 +143,6 @@ export default {
     SearchAchieve,
   },
   created() {
-    console.log(this.$store.state.profileTargetId)
     this.$axios({
       method: 'get',
       url: `${this.$baseUrl}/profile?userId=${this.$store.state.profileTargetId}`
@@ -126,7 +158,6 @@ export default {
       } 
       // 내가 아닌 경우 팔로우인지 팔로우 취소인지 체크하는 요청
 
-        console.log("프로필 받아오기 성공")
       }).catch((error) =>{
         console.log(error)
       })
@@ -178,10 +209,7 @@ export default {
     }).then((response) => {
       if (response.data.message ==="success"){
         this.isFollow = true;
-        console.log("팔로우 성공")
-      } else {
-        console.log("팔로우 실패")
-      }
+      } 
       }).catch((error) =>{
         console.log(error)
       })
@@ -193,10 +221,7 @@ export default {
     }).then((response) => {
       if (response.data.message ==="success"){
         this.isFollow = false;
-        console.log("팔로우 취소 성공")
-      } else {
-        console.log("팔로우 취소 실패")
-      }
+      } 
       }).catch((error) =>{
         console.log(error)
       })
@@ -204,7 +229,15 @@ export default {
    openModal(achievement) {
       this.achievement = achievement;
       this.modal=true;
-   }
+   },
+   menu(){
+    this.menuModal = true;
+  },
+  moveProfileModify(){
+      this.$router.push({
+        name: 'profileModifyView',
+      });
+  }
   }
 }
 </script>
@@ -237,5 +270,51 @@ export default {
       border: 0 solid #000;
     }
   }
+}
+
+.menu-modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  .menu-white-bg{
+    animation-name: slidein;
+    animation-fill-mode: forwards;
+    animation-duration: 0.7s;
+    position: fixed;
+    border-radius: 15px 15px 0 0;
+    background-color: #fff;
+    width: 100%;
+    height: 60%;
+    margin: 0 auto;
+    ul {
+      text-align: left;
+      text-decoration: none;
+      list-style: none;
+      padding: 5px 0 0 5px;
+      li {
+        .menu-items{
+
+          font-size: 18px;
+          font-weight: bold;
+          margin: 20px 0;
+          padding: 0 10px;
+          display: flex;
+          span{
+            margin: 0 15px;
+          }
+        }
+      }
+    }
+  }
+  @keyframes slidein {
+  from {
+    top: 100%;
+  }
+
+  to {
+    top: 40%;
+  }
+}
 }
 </style>

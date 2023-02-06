@@ -28,13 +28,11 @@
 
     },
     created() {
-        console.log(this.keyword)
         this.$axios({
             method: 'get',
             url: `${this.$baseUrl}/achievement/${this.keyword}`
             }).then((response) => {
             this.achievements = response.data.achievements;
-            console.log(this.achivements)
             }).catch((error) =>{
             console.log(error);
         })
@@ -42,7 +40,7 @@
 
     methods : {
         openModal(achievement) {
-            this.$it("openModal", achievement);
+            this.$emit("openModal", achievement);
         }
 
     }

@@ -8,6 +8,7 @@ import SignupAuth from '@/components/SignupAuth'
 import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
 import ProfileView from '@/views/ProfileView'
+import ProfileModifyView from "@/views/ProfileModifyView"
 //import SearchPage from '@/views/SearchView'
 import LoginForm from '@/components/LoginForm'
 //import MyMissionMain from '@/components/MyMissionMain'
@@ -41,10 +42,12 @@ const routes = [
       },
       {
         path: 'auth',
+        name: 'auth',
         component: SignupAuth
       },
       {
         path: 'nickname',
+        name: 'nickname',
         component: SignupNickname
       },
     ]
@@ -79,6 +82,12 @@ const routes = [
     path:'/profile',
     name:'profile',
     component: ProfileView,
+  },
+  {
+    path:"/profile/modify",
+    name:"profileModifyView",
+    component:ProfileModifyView,
+
   },
   {
     path:'/search',

@@ -15,6 +15,7 @@
           </button> -->
           <button 
           class="material-icons-outlined"
+          v-show="(CommentData.nickname === this.$store.state.nickname) || (this.$store.state.nickname === CommentData.nickname )"
           v-on:click="tabOpened = true">
             more_horiz
           </button>
@@ -44,7 +45,7 @@ export default {
     },
     props: {
         CommentData: Object,
-    },
+    },  
     data() {
       return {
         tabOpened: false,
@@ -56,6 +57,7 @@ export default {
       },
       showFinalModal() {
         this.$emit('deleteComment', this.CommentData.commentId)
+        this.tabOpened = false
       //   this.$modal.show('dialog',{
       //   text:'삭제 콜?',
       //   buttons: [

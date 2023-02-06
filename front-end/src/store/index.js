@@ -97,12 +97,12 @@ export default new Vuex.Store({
     },
     GET_NOW_PL(state, payload) {
       state.nowPL = state.myMission[payload.userPlaylistId]
-      console.log(state.myPL)
+      //console.log(state.myPL)
       console.log(`플레이리스트 출력: ${state.myPL}`)
     },
     GET_FEED(state, payload) {
       state.nowFeed = payload.feedData
-      console.log(state.nowFeed)
+      //console.log(state.nowFeed)
     }
   },
   actions: {
@@ -127,22 +127,22 @@ export default new Vuex.Store({
           if (response.status == '202') {
             alert('아이디 또는 비밀번호를 확인해주세요.')
             console.log(`로그인 실패: status ${response.status}`)
-          }
-          console.log(response)
-          console.log(`로그인 응답 status: ${response.status}`)
-          const payloadToken = {
-            accessToken: response.data['access-token'],
-            refreshToken: response.data['refresh-token'],
-          }
-          const payloadInfo = {
-            id: response.data.userId,
-            nickname: response.data.nickname,
-          }
-          context.commit('SAVE_TOKEN', payloadToken)
-          context.commit('GET_USER_INFO', payloadInfo)
+          } else {
+            console.log(`로그인 응답 status: ${response.status}`)
+            const payloadToken = {
+              accessToken: response.data['access-token'],
+              refreshToken: response.data['refresh-token'],
+            }
+            const payloadInfo = {
+              id: response.data.userId,
+              nickname: response.data.nickname,
+            }
+            context.commit('SAVE_TOKEN', payloadToken)
+            context.commit('GET_USER_INFO', payloadInfo)
 
-          // 피드 페이지로 이동
-          this.$router.push({ name: 'feed' })
+            // 피드 페이지로 이동
+            this.$router.push({ name: 'feed' })
+            }
         })
         .catch((error) => {
           alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
@@ -202,6 +202,7 @@ export default new Vuex.Store({
         email: context.state.email,
         nickname: context.state.nickname,
       }
+      console.log(UserDto)
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/users`,
@@ -211,6 +212,7 @@ export default new Vuex.Store({
           console.log('회원가입 완료')
           context.commit('ERASE_INFO')
           console.log(response.data.message)
+          this.$router.push({ name: 'login' })
         })
         .catch((error) => {
           console.log(error)
@@ -295,22 +297,29 @@ export default new Vuex.Store({
     getNowPL(context, payload) {
       context.commit('GET_NOW_PL', payload)
     },
-    // 피드 상세정보 저장
-    getSingleFeed(context, feedId) {
-      this.$axios({
+    // 피드 상세정보 호출
+    async getSingleFeed(context, feedId) {
+      return this.$axios({
         method:'get',
         url:`${this.$baseUrl}/feed/${feedId}/${this.state.id}`
       })
-      .then((res) => {
-          const data = {
-            feedData: res.data.feed
-          }
-          console.log(data)
-          context.commit('GET_FEED', data)
-      })
-      .catch((error) => {
-          console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
-      })
+      // .then((res) => {
+      //     const data = {
+      //       feedData: res.data.feed
+      //     }
+      //     console.log(data)
+      //     context.commit('GET_FEED', data)
+      // })
+      // .catch((error) => {
+      //     console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
+      // })
+    },
+    //피드 상세정보 저장
+    putSingleFeed(context, payload) {
+      const data = {
+        feedData: payload
+      }
+      context.commit('GET_FEED', data)
     },
     //댓글 작성
     writeComment(context, payload) {
@@ -319,7 +328,6 @@ export default new Vuex.Store({
         feedId: payload.feedId,
         content: payload.content
       }
-      console.log(writeCommentDto)
       //console.log(writeCommentDto)
       this.$axios({
         method:'post',
@@ -327,7 +335,14 @@ export default new Vuex.Store({
         data: writeCommentDto,
       })
       .then(() => {
-        this.dispatch('getSingleFeed', writeCommentDto.feedId)
+        return this.dispatch('getSingleFeed', writeCommentDto.feedId)
+      })
+      .then((res) => {
+        console.log(res)
+        const data = {
+          feedData: res.data.feed
+        }
+        context.commit('GET_FEED', data)
       })
       .catch((error) => {
         console.log(error)
@@ -340,7 +355,14 @@ export default new Vuex.Store({
         url:`${this.$baseUrl}/feed/comment/${payload.commentId}`
       })
       .then(() => {
-        this.dispatch('getSingleFeed', payload.feedId)
+        return this.dispatch('getSingleFeed', payload.feedId)
+      })
+      .then((res) => {
+        console.log(res)
+        const data = {
+          feedData: res.data.feed
+        }
+        context.commit('GET_FEED', data)
       })
       .catch((error) => {
         console.log(error)
@@ -373,6 +395,15 @@ export default new Vuex.Store({
       })
     }
   },
+  //팔로우 했는지 체크
+  followCheck(context, targetId) {
+    return this.$axios({
+      method:'get',
+      url: `${this.baseUrl}/profile/follow/${this.state.id}/${targetId}`
+    })
+  },
+  // 프로필을 체크
+  
   modules: {
   }
 })

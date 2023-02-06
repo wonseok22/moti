@@ -47,7 +47,7 @@
           </div>
           <!-- 비밀번호 재입력 -->
           <div>
-            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2">
+            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2" @keyup.enter="toEmailAuth">
             <div v-if="pw2Active" class="infobox">
               <p
                 v-for="(condition, idx) in pw2Conditions"
@@ -121,7 +121,9 @@ export default {
     // 비밀번호 재입력 받기
     pwInput2(event) {
       this.pw2Active = true
-      this.password2 = event.target.value
+      // 띄어쓰기 및 특수문자 제거
+      this.password2 = regex.characterCheck(event.target.value)
+      event.target.value = this.password2
     },
     // 아이디 중복 체크
     doubleCheck() {
@@ -170,13 +172,15 @@ export default {
     },
     // 이메일 인증으로 넘어가기
     toEmailAuth() {
-      const payload = {
+      if (this.isvalid) {
+        const payload = {
         id: this.id,
         password: this.password,
       }
       // 아이디, 비밀번호 store로 전달
       this.$store.dispatch('getUserInfo', payload)
       this.$router.push({ path: '/signup/auth' })
+      }
     },
     // 로그인 페이지로 이동
     toLogin() {

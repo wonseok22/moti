@@ -2,20 +2,30 @@
   <div class="single-feed">
     <!-- 피드의 글본문에 해당되는 부분 -->
     <div class="feed-text">
-        <p v-show="isThereImage !== 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
-        <p v-show="isThereImage === 0">{{ BodyData.content }}</p>
-        <button v-if="isThereImage === 0">
+        <p v-show="isThereImage === 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
+        <p v-show="isThereImage !== 0">{{ BodyData.content }}</p>
+        <button v-if="isThereImage !== 0">
             <p>더보기</p>
         </button>
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
-    <div class="feed-image">
-        <img v-for="(image,idx) in BodyData.feedImages" :src="image.feedImageUrl" alt="feedImage" :key="idx">
-    </div>
+    <carousel
+     class="carousel" 
+     :per-page="1"
+     :paginationPadding="2"
+     paginationActiveColor="#04C584"
+     paginationColor="#ffff"
+     paginationPosition="bottom-overlay"
+     :paginationSize="7"
+     >
+        <slide class="single-slide" v-for="(feed, idx) of this.BodyData.feedImages" :key="idx">
+            <img :src="feed.feedImageUrl" alt="motiImage">
+        </slide>
+    </carousel>
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
         <p>좋아요 {{ this.likeCnt }}개</p>
-        <p>댓글 {{ BodyData.comments ? BodyData.comments.length : 0}}개</p>
+        <p @click="moveToComment">댓글 {{  BodyData.comments.length }}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">
@@ -36,7 +46,7 @@
     <!-- 댓글 버튼 -->
         <span 
         v-show="this.$route.params.feedId === undefined"
-        v-on:click="moveToComment" 
+        @click="moveToComment" 
         class="material-symbols-outlined"
         style="color:#A3A3A3;">
             mode_comment
@@ -51,7 +61,8 @@
     
     <!-- 공유 버튼 -->
         <span class="material-icons-outlined"
-        style="color:#A3A3A3;">
+        style="color:#A3A3A3;"
+        @click="shareViaWebShare">
             share
         </span>
     </div>
@@ -59,23 +70,31 @@
 </template>
 
 <script>
+import { Carousel, Slide } from 'vue-carousel'
 
 export default {
     name: 'SingleFeed',
     props: {
         BodyData: Object,
     },  
+    components: {
+        Carousel,
+        Slide,
+    },
     data() {
         return{
             isLike: this.BodyData.hit,
             likeCnt: this.BodyData.likes,
-            isThereImage: this.BodyData.feedImages
+            isThereImage: 0,
         }
     },
     methods: {
         async moveToComment() {
-            this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
-            this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}})
+            const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
+            const result = await resp 
+            await this.$store.dispatch("putSingleFeed", result.data.feed)
+            await this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}}).catch(() => {})
+            
         },
         makeLike() {
             this.$store.dispatch("makeLike", this.BodyData.feedId)
@@ -86,9 +105,22 @@ export default {
             this.$store.dispatch("deleteLike", this.BodyData.feedId)
             this.isLike = false
             this.likeCnt -= 1
+        },
+        shareViaWebShare() {
+            navigator.share({
+                title: this.$store.state.nowFeed.missionName,
+                text: this.BodyData.content,
+                url: window.location.href
+            })
+        }
+    },
+    computed: {
+        webShareApiSupported() {
+            return navigator.share
         }
     },
     created( ) {
+        this.isThereImage = this.BodyData.feedImages.length
         console.log(this.BodyData)
     }
 }

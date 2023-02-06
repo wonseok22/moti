@@ -66,7 +66,6 @@
       // 닉네임 조건을 충족한 경우
       else {
         // 중복체크
-        console.log('닉네임 중복체크 실행')
         this.$axios({
           method: 'get',
           url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}`
@@ -103,19 +102,17 @@
     }
       const formData = new FormData()
       const profileDto = {
-        userId: this.$store.state.id,
-        userDesc: this.content,
-        nickname : this.nickname,
-      }
-
+          userId: this.$store.state.id,
+          userDesc: this.content,
+          nickname : this.nickname,
+        }
+        
       const profileDtoJson = new Blob([JSON.stringify(profileDto)], { type: "application/json" })
-      
       formData.append('profileDto', profileDtoJson)
-      
       // 이미지
       if (this.images) {
-        formData.append('profileImage', this.images)
-      } 
+        formData.append('profileImage', this.images[0])
+    } 
 
       this.$axios({
         method: 'put',
@@ -126,8 +123,8 @@
         },
         data: formData,
       })
-        .then((response) => {
-          console.log(response)
+        .then(() => {
+            // 성공, 실패 로직
           this.$router.push({ name: 'profile' })
         })
         .catch((error) => {
@@ -189,7 +186,6 @@
       } 
       // 내가 아닌 경우 팔로우인지 팔로우 취소인지 체크하는 요청
 
-        console.log("프로필 받아오기 성공")
       }).catch((error) =>{
         console.log(error)
       })

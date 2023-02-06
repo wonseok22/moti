@@ -439,6 +439,34 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    //피드 검색
+    async FeedSearch(context, payload) {
+      return this.$axios({
+        method:'get',
+        url:`${this.$baseUrl}/feed/search/${this.state.id}/${payload.kind}/default/${payload.pageNum}`
+      })
+    },
+    //팔로우 언팔로우
+    FollowUnfollow(context, payload) {
+      this.$axios.get(`${this.$baseUrl}/profile/follow/${this.state.id}/${payload.targetId}`, {
+        params: {
+          type: payload.type
+        }})
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    //팔로우 했는지 체크
+    async followCheck(context, targetId) {
+      return this.$axios({
+        method:'get',
+        url: `${this.$baseUrl}/profile/follow/check/${this.state.id}/${targetId}`
+      })
+    },
+    // 프로필을 체크
     // 모달 닫기
     modalClose(context) {
       context.commit('MODAL_CLOSE')
@@ -447,14 +475,6 @@ export default new Vuex.Store({
       context.commit('MODAL_OPEN', payload)
     }
   },
-  //팔로우 했는지 체크
-  followCheck(context, targetId) {
-    return this.$axios({
-      method:'get',
-      url: `${this.baseUrl}/profile/follow/${this.state.id}/${targetId}`
-    })
-  },
-  // 프로필을 체크
   
   modules: {
   }

@@ -34,7 +34,7 @@ public class ProfileServiceImpl implements ProfileService {
 	private S3Upload s3Upload;
 	
 	@Override
-	public int modifyProfile(ProfileDto profileDto) throws Exception {
+	public int modifyProfile(ProfileDto profileDto) {
 		
 		try {
 			String userId = profileDto.getUserId();
@@ -61,7 +61,6 @@ public class ProfileServiceImpl implements ProfileService {
 				profile.setUserDesc(profileDto.getUserDesc());
 			}
 			
-			
 			userRepository.save(user);
 			return 1;
 		} catch (Exception e) {
@@ -73,7 +72,7 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	@Override
 	@Transactional
-	public void deleteProfileImage(String userId) throws Exception {
+	public void deleteProfileImage(String userId) {
 		try {
 			User user = userRepository.findByUserId(userId);
 			Profile profile = user.getProfile();
@@ -81,12 +80,13 @@ public class ProfileServiceImpl implements ProfileService {
 			profile.setProfileImageUrl(null);
 			userRepository.save(user);
 		} catch (Exception e) {
-			throw e;
+			System.err.println("프로필 이미지 삭제 중 에러 발생");
+			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public ProfileDto getProfile(String userId) throws Exception {
+	public ProfileDto getProfile(String userId) {
 		User user = userRepository.findByUserId(userId);
 		// 존재하는 유저인 경우
 		if (user != null) {
@@ -135,26 +135,21 @@ public class ProfileServiceImpl implements ProfileService {
 			profileDto.setFollowing(currentStat.getFollowingCnt());
 			
 			return profileDto;
-		} else {
-			return null;
 		}
 		
+		return null;
 	}
 	
 	@Override
-	public List<FollowDto> getFollow(String type, String userId) throws Exception {
-		User user = userRepository.findByUserId(userId);
-		List<Follow> follows = null;
+	public List<FollowDto> getFollow(String type, String userId) {
+		List<Follow> follows;
 		
 		// 팔로워 목록 요청인지 팔로잉 목록 요청인지
-		if ("Follower".equals(type)) {
-			follows = followRepository.findAllByFollowingId(userId);
-		} else {
-			follows = followRepository.findAllByFollowerId(userId);
-		}
+		if ("Follower".equals(type)) follows = followRepository.findAllByFollowingId(userId);
+		else follows = followRepository.findAllByFollowerId(userId);
 		
 		// Dto로 전달하기 위해 DtoList 생성
-		List<FollowDto> followList = new ArrayList();
+		List<FollowDto> followList = new ArrayList<>();
 		
 		//모든 Follower 또는 Following 목록에 대해 Dto 생성
 		for (Follow f : follows) {
@@ -170,9 +165,9 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 	
 	@Override
-	public int doFollow(String type, String userId, String targetId) throws Exception {
+	public int doFollow(String type, String userId, String targetId) {
 		Follow follow = new Follow();
-		User requestuser = userRepository.findByUserId(userId);
+		User requestUser = userRepository.findByUserId(userId);
 		User targetUser = userRepository.findByUserId(targetId);
 		
 		try {
@@ -180,25 +175,24 @@ public class ProfileServiceImpl implements ProfileService {
 			if ("follow".equals(type)) {
 				follow.setFollowerId(userId);
 				follow.setFollowingId(targetId);
-				follow.setFollowerNickname(requestuser.getNickname());
+				follow.setFollowerNickname(requestUser.getNickname());
 				follow.setFollowingNickname(targetUser.getNickname());
 				followRepository.save(follow);
 				
 				// 팔로우 취소 요청인 경우
 			} else {
-				follow = followRepository.findByFollowerIdAndFollowingId(requestuser.getUserId(), targetUser.getUserId());
+				follow = followRepository.findByFollowerIdAndFollowingId(requestUser.getUserId(), targetUser.getUserId());
 				followRepository.delete(follow);
 			}
 			return 1;
 		} catch (Exception e) {
 			return -1;
 		}
-		
 	}
 	
 	@Override
 	public boolean checkFollow(String userId, String targetId) {
-		return followRepository.findByFollowerIdAndFollowingId(userId, targetId) == null ? false : true;
+		return followRepository.findByFollowerIdAndFollowingId(userId, targetId) != null;
 	}
 	
 }

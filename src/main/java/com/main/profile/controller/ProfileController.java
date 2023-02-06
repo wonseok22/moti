@@ -45,7 +45,7 @@ public class ProfileController {
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
 			try {
 				if (profileImage != null) {
@@ -72,7 +72,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 	
 	@ApiOperation(value = "프로필 조회", notes = "프로필 조회 API", response = Map.class)
@@ -80,14 +80,14 @@ public class ProfileController {
 	public ResponseEntity<?> getProfile(
 			@ApiParam(value = "프로필을 요청할 유저의 ID", required = true) @RequestParam String userId) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		try {
 			ProfileDto profileDto = profileService.getProfile(userId);
 			if (profileDto != null) {
 				// 유저 프로필 요청 성공한 경우
 				resultMap.put("message", SUCCESS);
 				resultMap.put("profile", profileDto);
-				logger.debug("수정된 프로필 정보 : {}", profileDto.toString());
+				logger.debug("수정된 프로필 정보 : {}", profileDto);
 				status = HttpStatus.OK;
 			} else {
 				//유저 프로필 요청 실패한 경우, 실패 메시지 반환, 회원 정보 유효 X,  202 응답 코드
@@ -99,7 +99,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 	
 	@ApiOperation(value = "프로필 사진 삭제", notes = "프로필 사진 삭제 API", response = Map.class)
@@ -107,7 +107,7 @@ public class ProfileController {
 	public ResponseEntity<?> deleteProfileImage(
 			@ApiParam(value = "프로필 사진을 삭제할 유저의 ID", required = true) @PathVariable String userId, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
 			try {
 				profileService.deleteProfileImage(userId);
@@ -124,7 +124,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 	
 	@ApiOperation(value = "팔로워, 팔로잉 조회", notes = "팔로워, 팔로잉 조회 API", response = Map.class)
@@ -132,7 +132,7 @@ public class ProfileController {
 	public ResponseEntity<?> getFollow(
 			@ApiParam(value = "팔로워, 팔로잉 목록을 요청할 유저의 ID", required = true) @RequestParam String userId, @RequestParam String type) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		try {
 			List<FollowDto> followList = profileService.getFollow(type, userId);
 			// 유저 팔로워 요청 처리
@@ -145,7 +145,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 	
 	@ApiOperation(value = "팔로우하기, 팔로우취소 구현", notes = "팔로우하기, 팔로우취소 API", response = Map.class)
@@ -155,7 +155,7 @@ public class ProfileController {
 			@ApiParam(value = "팔로우 당하는사람의 ID", required = true) @PathVariable String targetId,
 			@ApiParam(value = "follow/unfollow", required = true) @RequestParam String type) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		try {
 			int result = profileService.doFollow(type, userId, targetId);
 			if (result == 1) {
@@ -174,7 +174,7 @@ public class ProfileController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 	
 	@ApiOperation(value = "내가 상대를 팔로우하는지 조회", notes = "팔로우 여부 조회 API", response = Map.class)
@@ -183,7 +183,7 @@ public class ProfileController {
 			@ApiParam(value = "내 ID", required = true) @PathVariable String userId,
 			@ApiParam(value = "상대 ID", required = true) @PathVariable String targetId) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		try {
 			boolean result = profileService.checkFollow(userId, targetId);
 			logger.info("팔로우 여부 조회 성공");
@@ -195,7 +195,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 	
 }

@@ -6,15 +6,15 @@ import com.main.profile.model.dto.ProfileDto;
 import java.util.List;
 
 public interface ProfileService {
-	int modifyProfile(ProfileDto profileDto) throws Exception;
+	int modifyProfile(ProfileDto profileDto);
 	
-	ProfileDto getProfile(String userId) throws Exception;
+	ProfileDto getProfile(String userId);
 	
-	List<FollowDto> getFollow(String type, String userId) throws Exception;
+	List<FollowDto> getFollow(String type, String userId);
 	
-	int doFollow(String type, String userId, String targetId) throws Exception;
+	int doFollow(String type, String userId, String targetId);
 	
-	void deleteProfileImage(String userId) throws Exception;
+	void deleteProfileImage(String userId);
 	
 	boolean checkFollow(String userId, String targetId);
 }

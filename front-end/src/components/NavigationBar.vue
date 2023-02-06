@@ -28,10 +28,9 @@ export default {
   methods:{
     change() {
      this.$store.commit("UPDATE_PROFILE_TARGET_ID",this.$store.state.id);
-      console.log( this.$store.state.profileTargetId + "프로필 조회할 id")
       this.$router.push({
         name: 'profile',
-      });
+      }).catch(() => {location.reload();});
     }
   }
 }

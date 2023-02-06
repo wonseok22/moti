@@ -96,12 +96,12 @@
               <div>프로필 설정</div>
             </div>
           </li>
-          <li>
+          <li @click="moveUserModify">
             <div class="menu-items">
               <span class="material-symbols-outlined">
               settings_suggest
               </span>
-              <div>개인정보 설정</div>
+              <div>비밀번호 변경</div>
             </div>
           </li>
           <li @click="logout">
@@ -236,6 +236,11 @@ export default {
   moveProfileModify(){
       this.$router.push({
         name: 'profileModifyView',
+      });
+  },
+  moveUserModify(){
+      this.$router.push({
+        name: 'userModifyView',
       });
   }
   }

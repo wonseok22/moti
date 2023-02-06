@@ -1,7 +1,7 @@
 <template>
     <main>
-        <div class="result-box">
-            <div v-for="(feed,idx) in feeds" :key="idx" >
+        <div class="result-box feed" >
+            <div v-for="(feed,idx) in feeds" :key="idx" style="margin-bottom:10px">
                 <MainFeedHeader
                 :HeaderData="feed"/>
                 <SingleFeedBody

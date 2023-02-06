@@ -100,8 +100,8 @@ $account-height: 60% !default;
 
 // HTML 기본 너비
 // $base-width: 360px;
-$base-width: 100vw;
+$base-width: 100vw !default;
 
 // HTML 기본 높이
 // $base-height: 800px;
-$base-height: 800px;
+$base-height: 100vh !default;

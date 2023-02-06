@@ -47,7 +47,7 @@
           </div>
           <!-- 비밀번호 재입력 -->
           <div>
-            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2" @keyup.enter="toEmailAuth">
+            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2" @keyup.enter="confirm">
             <div v-if="pw2Active" class="infobox">
               <p
                 v-for="(condition, idx) in pw2Conditions"
@@ -59,7 +59,7 @@
             </div>
           </div>
         </div>
-        <button v-if="isvalid" class="btn-green" @click="toEmailAuth">다음</button>
+        <button v-if="isvalid" class="btn-green" @click="confirm">다음</button>
         <button v-else class="btn-green-inactive">다음</button>
       </div>
     </div>
@@ -73,14 +73,28 @@
         <img class="kakao-login-img hl" src="@/assets/images/kakao_login.png" alt="kakao-login">
       </div>
     </div>
+    <basic-modal
+      v-if="openModal"
+      :content="modalContent"
+      @close="modalClose"
+    >
+    </basic-modal>
   </div>
 </template>
 
 <script>
 import * as regex from '@/tools/regex.js'
+import BasicModal from '@/components/BasicModal'
+import { basicModalMixin } from '@/tools/basicModalMixin.js'
 
 export default {
 	name: 'SignupForm',
+  components: {
+    BasicModal,
+  },
+  mixins: [
+    basicModalMixin,
+  ],
   data() {
     return {
       id: null,
@@ -100,29 +114,41 @@ export default {
       item.style.animation = `fade 500ms ${(timer += 80)}ms forwards`;
     });
   },
-  created(){
-
-  },
   methods: {
     // id 입력 받기
     idInput(event) {
       this.idActive = true
       // 띄어쓰기 및 특수문자 제거
-      this.id = regex.characterCheck(event.target.value)
+      const regexResult = regex.characterCheck(event.target.value)
+      this.id = regexResult[0]
+      if (regexResult[1]) {
+        this.modalContent = regexResult[1]
+        this.openModal = true
+      }
       event.target.value = this.id
     },
     // 비밀번호 입력 받기
     pwInput(event) {
       this.pwActive = true
       // 띄어쓰기 및 특수문자 제거
-      this.password = regex.characterCheck(event.target.value)
+      const regexResult = regex.characterCheck(event.target.value)
+      this.password = regexResult[0]
+      if (regexResult[1]) {
+        this.modalContent = regexResult[1]
+        this.openModal = true
+      }
       event.target.value = this.password
     },
     // 비밀번호 재입력 받기
     pwInput2(event) {
       this.pw2Active = true
       // 띄어쓰기 및 특수문자 제거
-      this.password2 = regex.characterCheck(event.target.value)
+      const regexResult = regex.characterCheck(event.target.value)
+      this.password2 = regexResult[0]
+      if (regexResult[1]) {
+        this.modalContent = regexResult[1]
+        this.openModal = true
+      }
       event.target.value = this.password2
     },
     // 아이디 중복 체크
@@ -133,7 +159,8 @@ export default {
       
       // 아이디 조건을 충족하지 못한 경우
       if ( !this.idConditions[0].valid ) {
-        alert('아이디 형식을 지켜주세요.')
+        this.openModal = true
+        this.modalContent = '아이디 형식을 지켜주세요.'
       }
       // 아이디 조건을 충족한 경우
       else {
@@ -150,11 +177,13 @@ export default {
 
             // 이미 아이디가 존재할 경우
             if ( response.data.message === 'already exists' ) {
-              alert('이미 사용 중인 아이디에요.')
+              this.openModal = true
+              this.modalContent = '이미 사용 중인 아이디에요.'
               console.log(`중복체크 결과/message: ${response.data.message}`)
               this.id = null
             } else if ( response.data.message === 'success' ) {
-              alert('사용할 수 있는 아이디에요.')
+              this.openModal = true
+              this.modalContent = '사용할 수 있는 아이디에요.'
               console.log(`중복체크 결과/message: ${response.data.message}`)
               const idInputTag = document.querySelector('#input-id')
               // 현재 아이디로 고정
@@ -162,7 +191,8 @@ export default {
               this.idDoubleChecked = true
             } else {
               console.log(response.data.message)
-              alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
+              this.openModal = true
+              this.modalContent = '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
             }
           })
           .catch((error) => {
@@ -171,21 +201,22 @@ export default {
         }
     },
     // 이메일 인증으로 넘어가기
-    toEmailAuth() {
+    confirm() {
+      // 모달창이 열려 있을 경우
       if (this.isvalid) {
-        const payload = {
-        id: this.id,
-        password: this.password,
-      }
-      // 아이디, 비밀번호 store로 전달
-      this.$store.dispatch('getUserInfo', payload)
-      this.$router.push({ path: '/signup/auth' })
-      }
+          const payload = {
+          id: this.id,
+          password: this.password,
+        }
+        // 아이디, 비밀번호 store로 전달
+        this.$store.dispatch('getUserInfo', payload)
+        this.$router.push({ path: '/signup/auth' })
+        }
     },
     // 로그인 페이지로 이동
     toLogin() {
       this.$router.push({ name: 'login' })
-    }
+    },
   },
   computed: {
     // input이 제대로 입력되었는지 여부 return

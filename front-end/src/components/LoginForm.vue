@@ -28,14 +28,24 @@
         <img class="kakao-login-img hl" src="@/assets/images/kakao_login.png" alt="kakao-login">
       </div>
     </div>
+    <basic-modal
+      v-if="openModal"
+      :content="modalContent"
+      @close="modalClose"
+    >
+    </basic-modal>
   </div>
 </template>
 
 <script>
 import * as regex from '@/tools/regex.js'
+import BasicModal from '@/components/BasicModal'
 
 export default {
 	name: 'loginForm',
+  components: {
+    BasicModal,
+  },
   data() {
     return {
       id: null,
@@ -45,12 +55,28 @@ export default {
   methods: {
     // id 입력 받기
     idInput(event) {
-      this.id = regex.characterCheck(event.target.value)
+      const regexResult = regex.characterCheck(event.target.value)
+      this.id = regexResult[0]
+      if (regexResult[1]) {
+        const payload = {
+          content: regexResult[1]
+        }
+        this.$store.dispatch('modalOpen', payload)
+      }
       event.target.value = this.id
     },
     // 비밀번호 입력 받기
     pwInput(event) {
-      this.password = regex.characterCheck(event.target.value)
+      const regexResult = regex.characterCheck(event.target.value)
+      this.password = regexResult[0]
+      if (regexResult[1]) {
+        if (regexResult[1]) {
+        const payload = {
+          content: regexResult[1]
+        }
+        this.$store.dispatch('modalOpen', payload)
+      }
+      }
       event.target.value = this.password
     },
     // 로그인
@@ -67,8 +93,12 @@ export default {
     // 회원가입 페이지로 이동
     toSignup() {
       this.$router.push({ name: 'signup' })
-    }
-  },
+    },
+    // 모달 닫기
+    modalClose() {
+      this.$store.dispatch('modalClose')
+    },
+	},
   computed: {
     // 아이디 비밀번호 입력 여부
     isvalid() {
@@ -78,6 +108,12 @@ export default {
         }
       }
       return false
+    },
+    openModal() {
+      return this.$store.state.openModal
+    },
+    modalContent() {
+      return this.$store.state.modalContent
     }
   },
 }

@@ -21,6 +21,11 @@ export default new Vuex.Store({
     nowPL: null,
     nowFeed: null,
     profileTargetId:null,
+    
+    // 로그인에서 사용하는 모달 관련 데이터
+    openModal: false,
+    modalContent: null,
+    modalReload: false,
   },
   getters: {
     // 로그인 여부
@@ -73,7 +78,8 @@ export default new Vuex.Store({
       } else {
         // 로그인에 실패했을 경우
         if (payload.length == 2) {
-          alert('아이디 또는 비밀번호를 확인해주세요.')
+          state.modalOpen = true
+          state.modalContent = '아이디 또는 비밀번호를 확인해주세요.'
         }
         console.log('토큰 저장에 실패했습니다.')
       }
@@ -103,7 +109,21 @@ export default new Vuex.Store({
     GET_FEED(state, payload) {
       state.nowFeed = payload.feedData
       //console.log(state.nowFeed)
-    }
+    },
+    // 모달 열기
+    MODAL_OPEN(state, payload) {
+      state.modalContent = payload.content
+      state.openModal = true
+      if (Object.keys(payload).length == 2) {
+        state.modalReload = true
+      }
+    },
+    // 모달 닫기
+    MODAL_CLOSE(state) {
+      state.modalContent = null
+      state.openModal = false
+      state.modalReload = false
+    },
   },
   actions: {
     // 유저정보 받기(회원가입 시)
@@ -125,7 +145,10 @@ export default new Vuex.Store({
       })
         .then((response) => {
           if (response.status == '202') {
-            alert('아이디 또는 비밀번호를 확인해주세요.')
+            const payload = {
+              content: '아이디 또는 비밀번호를 확인해주세요.'
+            }
+            context.commit('MODAL_OPEN', payload)
             console.log(`로그인 실패: status ${response.status}`)
           } else {
             console.log(`로그인 응답 status: ${response.status}`)
@@ -145,14 +168,20 @@ export default new Vuex.Store({
             }
         })
         .catch((error) => {
-          alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
+          const payload = {
+              content: '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
+            }
+            context.commit('MODAL_OPEN', payload)
           console.log(`로그인 실패: status ${error.response.status}`)
         })
     },
     // 로그아웃
     logout(context) {
       context.commit('LOGOUT')
-      alert('로그아웃 되었습니다.')
+      const payload = {
+        content: '로그아웃 되었습니다.'
+      }
+      context.commit('MODAL_OPEN', payload)
       this.$router.push({ name: 'login' })
     },
     // 이메일 인증 요청
@@ -170,6 +199,19 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           console.log(`인증 메일 전송 실패: ${error}`)
+          if (error.response.status == 500)  {
+            const payload = {
+              content: '이메일 발송에 실패했어요. 고객센터에 문의해주세요 :(',
+              reload: true,
+            }
+            context.commit('MODAL_OPEN', payload)
+          } else {
+            const payload = {
+              content: '이메일 발송에 실패했어요. 이메일을 정확히 입력해주세요.',
+              reload: true,
+            }
+            context.commit('MODAL_OPEN', payload)
+          }
         })
     },
     // 이메일 인증 확인
@@ -186,8 +228,11 @@ export default new Vuex.Store({
         })
         .catch((error) => {
           console.log('이메일 인증 실패')
-          alert('이메일 인증에 실패했어요. 다시 시도해주세요.')
-          this.$router.go()
+          const payload = {
+            content: '이메일 인증에 실패했어요. 다시 시도해주세요.',
+            reload: true,
+          }
+          context.commit('MODAL_OPEN', payload)
           console.log(error)
         })
     },
@@ -243,7 +288,7 @@ export default new Vuex.Store({
           } else {
             alert(`에러가 발생했습니다. 고객센터에 문의해주세요. 에러: ${error.response.status}`)  
           }
-          this.$router.push({ path: '/login/main'})
+          this.$router.push({ name: 'login' })
         })
     },
     // 나의 플레이리스트 정보 가져오기
@@ -393,6 +438,13 @@ export default new Vuex.Store({
       .catch((error) => {
         console.log(error)
       })
+    },
+    // 모달 닫기
+    modalClose(context) {
+      context.commit('MODAL_CLOSE')
+    },
+    modalOpen(context, payload) {
+      context.commit('MODAL_OPEN', payload)
     }
   },
   modules: {

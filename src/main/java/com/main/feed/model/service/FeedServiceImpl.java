@@ -186,28 +186,28 @@ public class FeedServiceImpl implements FeedService {
 				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
 				
 				// 일단 팔로잉 유저들의 피드들을 가져온다
-				Slice<Feed> followingFeeds = feedRepository.findAllByUser_UserIdInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
-				Map<String, Object> firstMap = toSearchList(userId, followingFeeds);
-				firstMap.put("keyword", "following");
+				Slice<Feed> followingFeedsSlice = feedRepository.findAllByUser_UserIdInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
+				Map<String, Object> result = toSearchList(userId, followingFeedsSlice);
+				result.put("keyword", "following");
 				
 				// 마지막 페이지가 아니면 그대로 리턴
-				if (followingFeeds.getNumberOfElements() != 0 && !followingFeeds.isLast()) return firstMap;
+				if (followingFeedsSlice.getNumberOfElements() != 0 && !followingFeedsSlice.isLast()) return result;
 				
 				// 마지막 페이지라면 전체 유저의 피드 첫 페이지도 받아와야 한다
+				List<FeedDto> followingFeeds = (List<FeedDto>) result.get("feeds");
 				followingList.add(userId);
 				List<FeedDto> followingAndAllFeeds = new ArrayList<>();
-				followingFeeds.forEach(x -> followingAndAllFeeds.add(FeedDto.toDto(x)));
-				Slice<Feed> allFeeds = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));
+				followingFeeds.forEach(x -> followingAndAllFeeds.add(x));
+				Slice<Feed> allFeedsSlice = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));
 				
-				Map<String, Object> secondMap = toSearchList(userId, allFeeds);
+				Map<String, Object> secondMap = toSearchList(userId, allFeedsSlice);
 				List<FeedDto> temp = (List<FeedDto>) secondMap.get("feeds");
 				followingAndAllFeeds.addAll(temp);
 				
 				// 리턴
-				Map<String, Object> result = new HashMap<>();
 				result.put("keyword", "all");
 				result.put("feeds", followingAndAllFeeds);
-				result.put("isLast", allFeeds.isLast());
+				result.put("isLast", allFeedsSlice.isLast());
 				return result;
 			} else if ("all".equals(keyword)) {
 				// 현재 유저의 팔로잉 목록에 없는 유저들의 피드만 리턴함

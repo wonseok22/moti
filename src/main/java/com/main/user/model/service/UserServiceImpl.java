@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.util.*;
 
 @Service
@@ -27,13 +26,13 @@ public class UserServiceImpl implements UserService {
 	ProfileRepository profileRepository;
 	
 	@Override
-	public User getUser(String userId) throws SQLException {
+	public User getUser(String userId) {
 		return userRepository.findByUserId(userId);
 	}
 	
 	@Override
 	@Transactional
-	public User registUser(User user) throws Exception {
+	public User registerUser (User user) throws Exception {
 
 //        Duilicate Check
 //        User userFindById = userRepository.findByUserId(user.getUserId());
@@ -113,7 +112,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public int deleteUser(String userId) throws Exception {
+	public int deleteUser(String userId) {
 		User user = userRepository.findByUserId(userId);
 		Profile profile = user.getProfile();
 		profileRepository.delete(profile);
@@ -121,7 +120,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User checkUser(String type, String value) throws Exception {
+	public User checkUser(String type, String value) {
 		User user = null;
 		if ("id".equals(type)) {
 			user = userRepository.findByUserId(value);
@@ -138,14 +137,14 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+	public void saveRefreshToken(String userId, String refreshToken) {
 		User user = userRepository.findByUserId(userId);
 		user.setRefreshToken(refreshToken);
 		userRepository.save(user);
 	}
 	
 	@Override
-	public String getRefreshToken(String userId) throws Exception {
+	public String getRefreshToken(String userId) {
 		User user = userRepository.findByUserId(userId);
 		if (user == null) {
 			return null;
@@ -154,14 +153,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void delRefreshToken(String userId) throws Exception {
+	public void delRefreshToken(String userId) {
 		User user = userRepository.findByUserId(userId);
 		user.setRefreshToken(null);
 		userRepository.save(user);
 	}
 	
 	@Override
-	public Map<String, Object> searchUser (String keyword, int pageNo) throws Exception {
+	public Map<String, Object> searchUser (String keyword, int pageNo) {
 		Map<String, Object> searchResult = new HashMap<>();
 		Slice<User> slice = userRepository.findAllByNicknameLike("%" + keyword + "%", PageRequest.of(pageNo, 20));
 		List<SearchUserDto> list = new ArrayList<>();

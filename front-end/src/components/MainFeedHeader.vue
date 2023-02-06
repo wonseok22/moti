@@ -12,13 +12,21 @@
                     workspace_premium 
                 </span>
                 <p>{{ HeaderData.nickname }}</p>
-                <button>
+                <button 
+                v-show="!this.Following"
+                @click="FollowOrUnfollow">
                     팔로우
+                </button>
+                <button
+                v-show="this.Following" 
+                style="color:#ababab;"
+                @click="FollowOrUnfollow">
+                    팔로잉
                 </button>
             </div>
             <p>
-                <span class="playlist-name">{{ HeaderData.playlistName }}</span>의 
-                <span class="mission-name">{{ HeaderData.missionName }}</span>
+                <span class="playlist-name">"{{ HeaderData.playlistName }}"</span>의 
+                <span class="mission-name">'{{ HeaderData.missionName }}'</span>
             </p>
         </div>
     </div>
@@ -27,13 +35,37 @@
 <script>
 export default {
     name: "MainFeedHeader",
-    // created() {
-    //     const res = this.$store.dispatch("followCheck", this.HeaderData.feedId)
-    //     console.log(res)
-    // },
+    async created() {
+        const check_res = this.$store.dispatch("followCheck", this.HeaderData.userId)
+        const check_result = await check_res
+        this.Following = check_result.data.check
+    },
     props: {
         HeaderData: Object,
     },
+    data() {
+        return {
+            Following: null,
+            payload: {
+                targetId: null,
+                type: null,
+            }
+        }
+    },
+    methods: {
+        FollowOrUnfollow() {
+            this.payload.targetId = this.HeaderData.userId
+            if(this.Following){
+                this.payload.type = "unfollow"    
+                this.Following = false
+            }else{
+                this.payload.type = "follow"
+                this.Following = true
+            }
+            console.log(this.payload)
+            this.$store.dispatch("FollowUnfollow", this.payload)
+        }
+    }
 }
 </script>
 

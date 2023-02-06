@@ -35,7 +35,7 @@ public class UserDto {
 				user.getType(),
 				user.getTemporary(),
 				user.getJoinDate(),
-				user.getAchievement().getAchievementImageUrl()
+				user.getAchievement()==null?null:user.getAchievement().getAchievementImageUrl()
 		);
 	}
 	

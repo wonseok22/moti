@@ -25,13 +25,21 @@ public class User {
 	
 	@Id
 	private String userId;
+	
 	private String password;
+	
 	private String email;
+	
 	private String nickname;
+	
 	private String refreshToken;
+	
 	private String type;
+	
 	private String salt;
+	
 	private int temporary;
+	
 	private String joinDate;
 	
 	@OneToOne
@@ -44,6 +52,7 @@ public class User {
 	
 	@OneToMany(mappedBy = "user")
 	private List<UserAchievement> userAchievements = new ArrayList<>();
+	
 	@OneToMany(mappedBy = "user")
 	private List<UserPlaylist> playlists = new ArrayList<>();
 	

@@ -15,6 +15,7 @@ import java.util.List;
 public class FeedDto {
 	
 	private Long feedId; // AI
+	private String userId;
 	private String nickname;
 	private String playlistName;
 	private String missionName;
@@ -36,9 +37,12 @@ public class FeedDto {
 		List<LikeDto> likes = new ArrayList<>();
 		feed.getLikes().forEach(x -> likes.add(LikeDto.toDto(x)));
 		
+		UserDto userDto = UserDto.toDto(feed.getUser());
+		
 		return new FeedDto(
 				feed.getFeedId(),
-				UserDto.toDto(feed.getUser()).getNickname(),
+				userDto.getUserId(),
+				userDto.getNickname(),
 				feed.getUserPlaylist().getPlaylist().getPlaylistName(),
 				feed.getMission().getMissionName(),
 				feed.getContent(),

@@ -158,7 +158,6 @@ export default {
       } 
       // 내가 아닌 경우 팔로우인지 팔로우 취소인지 체크하는 요청
 
-        console.log("프로필 받아오기 성공")
       }).catch((error) =>{
         console.log(error)
       })
@@ -210,10 +209,7 @@ export default {
     }).then((response) => {
       if (response.data.message ==="success"){
         this.isFollow = true;
-        console.log("팔로우 성공")
-      } else {
-        console.log("팔로우 실패")
-      }
+      } 
       }).catch((error) =>{
         console.log(error)
       })
@@ -225,10 +221,7 @@ export default {
     }).then((response) => {
       if (response.data.message ==="success"){
         this.isFollow = false;
-        console.log("팔로우 취소 성공")
-      } else {
-        console.log("팔로우 취소 실패")
-      }
+      } 
       }).catch((error) =>{
         console.log(error)
       })

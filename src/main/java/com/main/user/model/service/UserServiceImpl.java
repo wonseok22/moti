@@ -71,11 +71,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User loginUser(User user) throws Exception {
 		User findUser = userRepository.findByUserId(user.getUserId());
-		if (findUser == null) {
-			return null;
-		}
+		if (findUser == null) return null;
+		
+		String salt = findUser.getSalt();
 		String userPwd = user.getPassword();
-		userPwd += findUser.getSalt();
+		userPwd += salt;
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		
@@ -83,28 +83,25 @@ public class UserServiceImpl implements UserService {
 		md.update(userPwd.getBytes());
 		userPwd = String.format("%064x", new BigInteger(1, md.digest()));
 		
-		if (userPwd.equals(findUser.getPassword())) {
-			return findUser;
-		} else {
-			return null;
-		}
+		if (userPwd.equals(findUser.getPassword())) return findUser;
+		else return null;
 	}
 	
 	@Override
 	public User modifyUser(User user) throws Exception {
 		User findUser = userRepository.findByUserId(user.getUserId());
-		if (findUser == null) {
-			return null;
-		}
+		if (findUser == null) return null;
+		
+		String salt = findUser.getSalt();
 		String userPwd = user.getPassword();
-		userPwd += findUser.getSalt();
+		userPwd += salt;
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		
 		// 평문+salt 암호화
 		md.update(userPwd.getBytes());
 		userPwd = String.format("%064x", new BigInteger(1, md.digest()));
-		user.setSalt(findUser.getSalt());
+		user.setSalt(salt);
 		user.setPassword(userPwd);
 		user.setType("default");
 		return userRepository.save(user);
@@ -121,18 +118,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User checkUser(String type, String value) {
-		User user = null;
-		if ("id".equals(type)) {
-			user = userRepository.findByUserId(value);
-		} else if ("nickname".equals(type)) {
-			user = userRepository.findByNickname(value);
-		} else if ("email".equals(type)) {
-			user = userRepository.findByEmail(value);
-		} else {
-			// 타입 잘못된경우
-			return null;
-		}
-		return user;
+		if ("id".equals(type)) return userRepository.findByUserId(value);
+		else if ("nickname".equals(type)) return userRepository.findByNickname(value);
+		else if ("email".equals(type)) return userRepository.findByEmail(value);
+		return null;
 	}
 	
 	
@@ -146,10 +135,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String getRefreshToken(String userId) {
 		User user = userRepository.findByUserId(userId);
-		if (user == null) {
-			return null;
-		}
-		return user.getRefreshToken();
+		return user != null ? user.getRefreshToken() : null;
 	}
 	
 	@Override

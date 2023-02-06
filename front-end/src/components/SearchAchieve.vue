@@ -42,7 +42,7 @@
 
     methods : {
         openModal(achievement) {
-            this.$it("openModal", achievement);
+            this.$emit("openModal", achievement);
         }
 
     }

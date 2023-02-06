@@ -223,7 +223,11 @@ public class FeedServiceImpl implements FeedService {
 				List<FeedDto> newList = new ArrayList<>();
 				followingFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
 				Slice<Feed> allFeedList = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));
-				allFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
+//				allFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
+				
+				Map<String, Object> secondMap = toSearchList(userId, allFeedList);
+				List<FeedDto> temp = (List<FeedDto>) secondMap.get("feeds");
+				temp.forEach(x -> newList.add(x));
 				
 				// 리턴
 				Map<String, Object> result = new HashMap<>();

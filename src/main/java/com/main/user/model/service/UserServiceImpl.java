@@ -104,10 +104,10 @@ public class UserServiceImpl implements UserService {
 		// 평문+salt 암호화
 		md.update(userPwd.getBytes());
 		userPwd = String.format("%064x", new BigInteger(1, md.digest()));
-		user.setSalt(findUser.getSalt());
-		user.setPassword(userPwd);
-		user.setType("default");
-		return userRepository.save(user);
+		findUser.setSalt(findUser.getSalt());
+		findUser.setPassword(userPwd);
+		findUser.setType("default");
+		return userRepository.save(findUser);
 	}
 	
 	@Override

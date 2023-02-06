@@ -1,12 +1,12 @@
 <template>
 
-    <div id="profile-modify-layout">
-        <header id="profile-modify-header">
+    <div id="user-modify-layout">
+        <header id="user-modify-header">
     
-          <div class="profile-modify-title">비밀번호 변경</div>
+          <div class="user-modify-title">비밀번호 변경</div>
         </header>
     
-        <main class="profile-modify-main">
+        <main class="user-modify-main">
         <!-- 비밀번호 -->
         <div class="pwd">
             <input type="password" id="input-pw" class="inputbox" name="input-pw" placeholder="비밀번호" @input="pwInput">
@@ -36,16 +36,25 @@
         </main>
 
 
-        <div class="profile-modify-btn">
+        <div class="user-modify-btn">
             <button class="modify-btn" @click="submit">변경하기</button>
         </div>
         
         <NavigationBar></NavigationBar>
+        <basic-modal
+        v-if="openModal"
+        :content="modalContent"
+        @close="modalClose"
+        >
+        </basic-modal>
       </div>
       </template>
       
       <script>
       import * as regex from '@/tools/regex.js'
+      import BasicModal from '@/components/BasicModal'
+import { basicModalMixin } from '@/tools/basicModalMixin.js'
+
       export default {
         name: 'UserModifyView',
         data() {
@@ -55,7 +64,13 @@
             pwActive: false,
             pw2Active: false,
         }
-      },
+    },    
+    components: {
+    BasicModal,
+  },
+  mixins: [
+    basicModalMixin,
+  ],
       methods: {
         submit() {
         if(!this.isvalid){
@@ -85,18 +100,28 @@
                 console.log(error)
             })
         },
-         // 비밀번호 입력 받기
+        // 비밀번호 입력 받기
         pwInput(event) {
         this.pwActive = true
         // 띄어쓰기 및 특수문자 제거
-        this.password = regex.characterCheck(event.target.value)
+        const regexResult = regex.characterCheck(event.target.value)
+        this.password = regexResult[0]
+        if (regexResult[1]) {
+            this.modalContent = regexResult[1]
+            this.openModal = true
+        }
         event.target.value = this.password
         },
         // 비밀번호 재입력 받기
         pwInput2(event) {
         this.pw2Active = true
         // 띄어쓰기 및 특수문자 제거
-        this.password2 = regex.characterCheck(event.target.value)
+        const regexResult = regex.characterCheck(event.target.value)
+        this.password2 = regexResult[0]
+        if (regexResult[1]) {
+            this.modalContent = regexResult[1]
+            this.openModal = true
+        }
         event.target.value = this.password2
         },
         
@@ -173,7 +198,7 @@
     $feed-create-footer-height: 5%;
     
     // 기본 레이아웃
-    #profile-modify-layout {
+    #user-modify-layout {
       height: inherit;
       display: flex;
       flex-direction: column;
@@ -182,7 +207,7 @@
     }
     
     // header 레이아웃
-    #profile-modify-header {
+    #user-modify-header {
     
     
         padding-top: 100px;
@@ -195,15 +220,15 @@
       // 취소
     }
     
-    .profile-modify-main {
+    .user-modify-main {
     
         margin-top: 50px;
         height: 250px;
-        .profile-modify-img{
+        .user-modify-img{
             label {
                 position: relative;
             }
-            .profile-logo{
+            .user-logo{
                 position: absolute;
                 font-size: 20px;
                 font-weight: bold;
@@ -223,7 +248,7 @@
     }
     
     
-    .profile-modify-nickname{
+    .user-modify-nickname{
         display: flex;
         width: 80%;
         height: 42px;
@@ -243,12 +268,12 @@
         }
     }
     
-    .profile-modify-desc{
+    .user-modify-desc{
         height: 150px;
         width: 80%;
         margin: 0 auto;
         margin-top: 30px;
-        .profile-desc{
+        .user-desc{
             width: 100%;
             height: 100px;
             border-radius: 5px;
@@ -262,7 +287,7 @@
         }
     }
     
-    .profile-modify-btn {
+    .user-modify-btn {
     
         .modify-btn{
             width: 226px;

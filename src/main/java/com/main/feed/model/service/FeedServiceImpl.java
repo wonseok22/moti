@@ -20,7 +20,6 @@ import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.PlaylistRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.profile.model.repository.FollowRepository;
-import com.main.user.model.dto.UserDto;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +70,7 @@ public class FeedServiceImpl implements FeedService {
 	private S3Upload s3Upload;
 	
 	@Override
-	public Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) throws SQLException {
+	public Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) {
 		Feed feed = new Feed();
 		Mission mission = missionRepository.findByMissionId(writeFeedDto.getMissionId());
 		UserPlaylist upl = userPlaylistRepository.findByUserPlaylistId(writeFeedDto.getUserPlaylistId());
@@ -85,25 +83,13 @@ public class FeedServiceImpl implements FeedService {
 		feedRepository.save(feed);
 		
 		// 이미지 처리
-		if (1024 < images.get(0).getSize()) {
-			images.forEach(x -> {
-				try {
-					String imagePath = s3Upload.uploadFiles(x, "feedImages");
-					FeedImage feedImage = new FeedImage();
-					feedImage.setFeed(feed);
-					feedImage.setFeedImageUrl(imagePath);
-					feedImageRepository.save(feedImage);
-				} catch (IOException e) {
-					System.err.println("사진 업로드 중 에러 발생");
-					e.printStackTrace();
-				}
-			});
-		}
+		if (1024 < images.get(0).getSize()) imageUpload(feed, images);
+		
 		return feed;
 	}
 	
 	@Override
-	public FeedDto viewFeed(Long feedId, String userId) throws SQLException {
+	public FeedDto viewFeed(Long feedId, String userId) {
 		Feed feed = feedRepository.findByFeedId(feedId);
 		
 		// 해당 feedId의 피드가 존재하지 않으면 null 반환
@@ -116,14 +102,14 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Feed modifyFeed(Long feedId, String content, List<MultipartFile> images) throws SQLException {
+	public Feed modifyFeed(Long feedId, String content, List<MultipartFile> images) {
 		Feed feed = feedRepository.findByFeedId(feedId);
 		
 		// 해당 feedId의 피드가 존재하지 않으면 null 반환
 		if (feed == null) return null;
 		
 		feed.setContent(content);
-		if (!images.get(0).isEmpty()) {
+		if (1024 < images.get(0).getSize()) {
 			// 이미지가 새로 업로드 되면 있던 사진 모두 삭제
 			feedImageRepository.findAllByFeed_FeedId(feedId).forEach(x -> {
 				try {
@@ -136,39 +122,28 @@ public class FeedServiceImpl implements FeedService {
 			});
 			
 			// 새 이미지 서버에 업로드 후 DB에 주소 저장
-			images.forEach(x -> {
-				try {
-					String imagePath = s3Upload.uploadFiles(x, "feedImages");
-					FeedImage feedImage = new FeedImage();
-					feedImage.setFeed(feed);
-					feedImage.setFeedImageUrl(imagePath);
-					feedImageRepository.save(feedImage);
-				} catch (IOException e) {
-					System.err.println("사진 업로드 중 에러 발생");
-					e.printStackTrace();
-				}
-			});
+			imageUpload(feed, images);
 		}
 		return feedRepository.save(feed);
 	}
 	
 	@Override
 	@Transactional
-	public int deleteFeed(Long feedId) throws SQLException {
+	public int deleteFeed(Long feedId) {
 		Feed feed = feedRepository.findByFeedId(feedId);
 		
 		// 해당 feedId의 피드가 존재하지 않으면 -1 반환
 		if (feed == null) return -1;
 		
 		// 사진, 댓글, 좋아요 모두 삭제 후 피드 삭제 해야 함
-		feedImageRepository.findAllByFeed_FeedId(feedId).forEach(x -> feedImageRepository.delete(x));
-		commentRepository.findAllByFeed_FeedId(feedId).forEach(x -> commentRepository.delete(x));
-		likeRepository.findAllByFeed_FeedId(feedId).forEach(x -> likeRepository.delete(x));
+		feedImageRepository.deleteAllByFeed_FeedId(feedId);
+		commentRepository.deleteAllByFeed_FeedId(feedId);
+		likeRepository.deleteAllByFeed_FeedId(feedId);
 		return feedRepository.deleteByFeedId(feedId);
 	}
 	
 	@Override
-	public Comment writeComment(WriteCommentDto writeCommentDto) throws SQLException {
+	public Comment writeComment(WriteCommentDto writeCommentDto) {
 		Comment comment = new Comment();
 		comment.setFeed(feedRepository.findByFeedId(writeCommentDto.getFeedId()));
 		comment.setUser(userRepository.findByUserId(writeCommentDto.getUserId()));
@@ -179,7 +154,7 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	@Transactional
-	public int deleteComment(Long commentId) throws SQLException {
+	public int deleteComment(Long commentId) {
 		return commentRepository.deleteByCommentId(commentId);
 	}
 	
@@ -197,7 +172,7 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Override
 	@Transactional
-	public int deleteLike(String userId, Long feedId) throws SQLException {
+	public int deleteLike(String userId, Long feedId) {
 		return likeRepository.deleteByUser_UserIdAndFeed_FeedId(userId, feedId);
 	}
 	
@@ -211,29 +186,28 @@ public class FeedServiceImpl implements FeedService {
 				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
 				
 				// 일단 팔로잉 유저들의 피드들을 가져온다
-				Slice<Feed> followingFeedList = feedRepository.findAllByUser_UserIdInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
-				Map<String, Object> firstMap = toSearchList(userId, followingFeedList);
+				Slice<Feed> followingFeeds = feedRepository.findAllByUser_UserIdInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
+				Map<String, Object> firstMap = toSearchList(userId, followingFeeds);
 				firstMap.put("keyword", "following");
 				
 				// 마지막 페이지가 아니면 그대로 리턴
-				if (followingFeedList.getNumberOfElements() != 0 && !followingFeedList.isLast()) return firstMap;
+				if (followingFeeds.getNumberOfElements() != 0 && !followingFeeds.isLast()) return firstMap;
 				
 				// 마지막 페이지라면 전체 유저의 피드 첫 페이지도 받아와야 한다
 				followingList.add(userId);
-				List<FeedDto> newList = new ArrayList<>();
-				followingFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
-				Slice<Feed> allFeedList = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));
-//				allFeedList.forEach(x -> newList.add(FeedDto.toDto(x)));
+				List<FeedDto> followingAndAllFeeds = new ArrayList<>();
+				followingFeeds.forEach(x -> followingAndAllFeeds.add(FeedDto.toDto(x)));
+				Slice<Feed> allFeeds = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));
 				
-				Map<String, Object> secondMap = toSearchList(userId, allFeedList);
+				Map<String, Object> secondMap = toSearchList(userId, allFeeds);
 				List<FeedDto> temp = (List<FeedDto>) secondMap.get("feeds");
-				temp.forEach(x -> newList.add(x));
+				followingAndAllFeeds.addAll(temp);
 				
 				// 리턴
 				Map<String, Object> result = new HashMap<>();
 				result.put("keyword", "all");
-				result.put("feeds", newList);
-				result.put("isLast", allFeedList.isLast());
+				result.put("feeds", followingAndAllFeeds);
+				result.put("isLast", allFeeds.isLast());
 				return result;
 			} else if ("all".equals(keyword)) {
 				// 현재 유저의 팔로잉 목록에 없는 유저들의 피드만 리턴함
@@ -253,7 +227,9 @@ public class FeedServiceImpl implements FeedService {
 			List<UserPlaylistDto> userPlaylists = new ArrayList<>();
 			playlistDtos.forEach(x ->
 					userPlaylistRepository.findByPlaylist_PlaylistId(x.getPlaylistId()).forEach(y ->
-							userPlaylists.add(UserPlaylistDto.toDto(y))));
+							userPlaylists.add(UserPlaylistDto.toDto(y))
+					)
+			);
 			
 			// 가져온 UserPlaylist에서 ID들만 따로 꺼내서 저장함
 			List<Long> userPlaylistIds = new ArrayList<>();
@@ -284,9 +260,7 @@ public class FeedServiceImpl implements FeedService {
 		
 		// DTO에 담아서 리스트에 삽입
 		List<FeedDto> feeds = new ArrayList<>();
-		for (Feed feed : list) {
-			feeds.add(FeedDto.toDto(feed));
-		}
+		list.forEach(x -> feeds.add(FeedDto.toDto(x)));
 		
 		// 피드마다 좋아요 눌렀는지 확인
 		for (FeedDto feedDto : feeds) {
@@ -297,6 +271,21 @@ public class FeedServiceImpl implements FeedService {
 		searchResult.put("feeds", feeds);
 		searchResult.put("isLast", list.isLast()); // 마지막 페이지인지 아닌지를 알려준다
 		return searchResult;
+	}
+	
+	private void imageUpload(Feed feed, List<MultipartFile> images) {
+		images.forEach(x -> {
+			try {
+				String imagePath = s3Upload.uploadFiles(x, "feedImages");
+				FeedImage feedImage = new FeedImage();
+				feedImage.setFeed(feed);
+				feedImage.setFeedImageUrl(imagePath);
+				feedImageRepository.save(feedImage);
+			} catch (IOException e) {
+				System.err.println("사진 업로드 중 에러 발생");
+				e.printStackTrace();
+			}
+		});
 	}
 	
 }

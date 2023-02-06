@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface FeedImageRepository extends JpaRepository<FeedImage, Long> {
 	List<FeedImage> findAllByFeed_FeedId(Long feedId);
+	
+	int deleteAllByFeed_FeedId (Long feedId);
 }

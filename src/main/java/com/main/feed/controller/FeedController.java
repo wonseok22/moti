@@ -47,7 +47,7 @@ public class FeedController {
 			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Feed feed = feedService.writeFeed(writeFeedDto, images);
@@ -68,7 +68,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -79,7 +79,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "조회하는 유저 ID", required = true) String userId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			FeedDto feed = feedService.viewFeed(feedId, userId);
@@ -88,7 +88,7 @@ public class FeedController {
 				logger.debug("피드 조회 결과 : {}", "피드 존재하지 않음");
 				resultMap.put("message", "존재하지 않는 피드");
 				status = HttpStatus.ACCEPTED;
-				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+				return new ResponseEntity<>(resultMap, status);
 			}
 			logger.debug("피드 조회 결과 : {}", "성공");
 			resultMap.put("feed", feed);
@@ -101,7 +101,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -111,10 +111,10 @@ public class FeedController {
 	public ResponseEntity<?> modifyFeed(
 			@PathVariable @ApiParam(value = "수정할 피드 ID", required = true) Long feedId,
 			@RequestPart @ApiParam(value = "수정할 내용", required = true) String content,
-			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
+			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Feed feed = feedService.modifyFeed(feedId, content, images);
@@ -135,7 +135,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -145,7 +145,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "삭제할 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			int result = feedService.deleteFeed(feedId);
@@ -170,7 +170,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -184,7 +184,7 @@ public class FeedController {
 			@RequestBody @ApiParam(value = "댓글 내용", required = true) WriteCommentDto writeCommentDto) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Comment comment = feedService.writeComment(writeCommentDto);
@@ -204,7 +204,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -214,7 +214,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "삭제할 댓글 ID", required = true) Long commentId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			int result = feedService.deleteComment(commentId);
@@ -234,7 +234,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -249,7 +249,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Like like = feedService.addLike(userId, feedId);
@@ -269,7 +269,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -280,7 +280,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			int result = feedService.deleteLike(userId, feedId);
@@ -300,7 +300,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -317,7 +317,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "페이지 번호(0부터 시작)", required = true) int pageNo) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, pageNo);
@@ -326,7 +326,7 @@ public class FeedController {
 				resultMap.put("feeds", null);
 				resultMap.put("message", "존재하지 않는 피드");
 				status = HttpStatus.ACCEPTED;
-				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+				return new ResponseEntity<>(resultMap, status);
 			}
 			logger.debug("피드 검색 결과 : {}", "성공");
 			resultMap.put("keyword", searchResult.get("keyword"));
@@ -341,7 +341,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	

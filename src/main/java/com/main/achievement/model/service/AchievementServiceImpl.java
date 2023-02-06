@@ -2,10 +2,13 @@ package com.main.achievement.model.service;
 
 
 import com.main.achievement.model.dto.AchievementDto;
+import com.main.achievement.model.dto.MainAchievementDto;
 import com.main.achievement.model.dto.UserAchievementDto;
 import com.main.achievement.model.entity.Achievement;
 import com.main.achievement.model.repository.AchievementRepository;
 import com.main.achievement.model.repository.UserAchievementRepository;
+import com.main.user.model.entity.User;
+import com.main.user.model.repository.UserRepository;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,9 @@ public class AchievementServiceImpl implements AchievementService {
 	
 	@Autowired
 	private UserAchievementRepository userAchievementRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired
 	private S3Upload s3Upload;
@@ -56,5 +62,21 @@ public class AchievementServiceImpl implements AchievementService {
 			achievements.get((int) (userAchievementDto.getAchievementId() - 1)).setAchievedDate(userAchievementDto.getAchievedDate());
 		}
 		return achievements;
+	}
+	
+	@Override
+	public User setMainAchievement(MainAchievementDto mainAchievementDto) throws SQLException {
+		User user = userRepository.findByUserId(mainAchievementDto.getUserId());
+		
+		
+		if(mainAchievementDto.getAchievementId()==0){
+			user.setAchievement(null);
+		}
+		else{
+			Achievement achievement = achievementRepository.findByAchievementId(mainAchievementDto.getAchievementId());
+			user.setAchievement(achievement);
+		}
+		
+		return userRepository.save(user);
 	}
 }

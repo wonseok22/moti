@@ -18,6 +18,7 @@ public class ProfileDto {
 	private int following;
 	
 	private String profileImageUrl;
+	private String achievementImageUrl;
 	
 	private int playlistCompleteCnt;
 }

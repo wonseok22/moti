@@ -1,6 +1,7 @@
 package com.main.user.model.entity;
 
 
+import com.main.achievement.model.entity.Achievement;
 import com.main.achievement.model.entity.UserAchievement;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
@@ -36,6 +37,11 @@ public class User {
 	@OneToOne
 	@JoinColumn(name = "profileId")
 	private Profile profile;
+	
+	@ManyToOne
+	@JoinColumn(name = "achievementId")
+	private Achievement achievement;
+	
 	@OneToMany(mappedBy = "user")
 	private List<UserAchievement> userAchievements = new ArrayList<>();
 	@OneToMany(mappedBy = "user")

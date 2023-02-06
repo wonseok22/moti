@@ -1,9 +1,11 @@
 package com.main.achievement.controller;
 
 import com.main.achievement.model.dto.AchievementDto;
+import com.main.achievement.model.dto.MainAchievementDto;
 import com.main.achievement.model.entity.Achievement;
 import com.main.achievement.model.service.AchievementService;
 import com.main.playlist.model.dto.PlaylistDto;
+import com.main.user.model.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -81,6 +83,32 @@ public class AchievementController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("업적 등록 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "대표 업적 등록", notes = "대표 업적 등록 API", response = Map.class)
+	@PutMapping("")
+	public ResponseEntity<?> setMainAchievement(
+			@RequestBody @ApiParam(value = "유저 아이디와 업적번호", required = true) MainAchievementDto mainAchievementDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		try {
+			User user = achievementService.setMainAchievement(mainAchievementDto);
+			
+			logger.debug("대표 업적 등록 : {}", user);
+			if (user != null)
+				resultMap.put("message", SUCCESS);
+			else
+				resultMap.put("message", FAIL);
+			status = HttpStatus.OK;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("대표 업적 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

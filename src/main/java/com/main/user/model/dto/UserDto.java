@@ -24,6 +24,8 @@ public class UserDto {
 	
 	private String joinDate;
 	
+	private String achievementImageUrl;
+	
 	public static UserDto toDto(User user) {
 		return new UserDto(
 				user.getUserId(),
@@ -32,12 +34,13 @@ public class UserDto {
 				user.getNickname(),
 				user.getType(),
 				user.getTemporary(),
-				user.getJoinDate()
+				user.getJoinDate(),
+				user.getAchievement().getAchievementImageUrl()
 		);
 	}
 	
 	public User toEntity() {
-		return new User(userId, password, email, nickname, null, type, null, temporary, joinDate, null, null, null, null, null, null);
+		return new User(userId, password, email, nickname, null, type, null, temporary, joinDate, null, null, null, null, null, null,null);
 	}
 	
 }

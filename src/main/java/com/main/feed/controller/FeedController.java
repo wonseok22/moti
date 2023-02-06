@@ -105,7 +105,6 @@ public class FeedController {
 		
 	}
 	
-	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 수정", notes = "피드 수정 API", response = Map.class)
 	@PutMapping("/{feedId}")
 	public ResponseEntity<?> modifyFeed(

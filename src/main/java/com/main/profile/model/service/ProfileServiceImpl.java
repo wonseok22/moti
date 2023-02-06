@@ -1,5 +1,6 @@
 package com.main.profile.model.service;
 
+import com.main.achievement.model.entity.Achievement;
 import com.main.profile.model.dto.FollowDto;
 import com.main.profile.model.dto.ProfileDto;
 import com.main.profile.model.entity.CurrentStat;
@@ -91,29 +92,47 @@ public class ProfileServiceImpl implements ProfileService {
 		if (user != null) {
 			// 프로필을 받아와서 return
 			Profile profile = user.getProfile();
-			CurrentStat currentStat = currentStatRepository.findByUserId(userId);
 			
-			int playlistCompleteCnt = currentStat.getP1_cnt()
-					+currentStat.getP2_cnt()
-					+currentStat.getP3_cnt()
-					+currentStat.getP4_cnt()
-					+currentStat.getP5_cnt()
-					+currentStat.getP6_cnt();
-					
-			String profileImageUrl = profile.getProfileImageUrl();
-			
+			//반환용
 			ProfileDto profileDto = new ProfileDto();
+			
+			// 유저아이디
+			profileDto.setUserId(userId);
+			
+			// 닉네임
 			profileDto.setNickname(user.getNickname());
+			
+			// 프로필 자기소개
 			profileDto.setUserDesc(profile.getUserDesc());
 			
+			// 프로필 이미지
+			String profileImageUrl = profile.getProfileImageUrl();
 			if (profileImageUrl != null)
 				profileDto.setProfileImageUrl(profile.getProfileImageUrl());
 			
-			profileDto.setFollower(currentStat.getFollowerCnt());
-			profileDto.setFollowing(currentStat.getFollowingCnt());
+			// 대표 업적
+			Achievement achievement = user.getAchievement();
+			if (achievement != null)
+				profileDto.setAchievementImageUrl(achievement.getAchievementImageUrl());
+			
+			//통계자료
+			CurrentStat currentStat = currentStatRepository.findByUserId(userId);
+			
+			// 플레이리스트 성공 개수
+			int playlistCompleteCnt = currentStat.getP1_cnt()
+					+ currentStat.getP2_cnt()
+					+ currentStat.getP3_cnt()
+					+ currentStat.getP4_cnt()
+					+ currentStat.getP5_cnt()
+					+ currentStat.getP6_cnt();
 			
 			profileDto.setPlaylistCompleteCnt(playlistCompleteCnt);
-			profileDto.setUserId(userId);
+			
+			// 팔로우
+			profileDto.setFollower(currentStat.getFollowerCnt());
+			
+			//팔로잉
+			profileDto.setFollowing(currentStat.getFollowingCnt());
 			
 			return profileDto;
 		} else {
@@ -178,7 +197,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 	
 	@Override
-	public boolean checkFollow (String userId, String targetId) {
+	public boolean checkFollow(String userId, String targetId) {
 		return followRepository.findByFollowerIdAndFollowingId(userId, targetId) == null ? false : true;
 	}
 	

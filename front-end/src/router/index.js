@@ -9,6 +9,7 @@ import SignupNickname from '@/components/SignupNickname'
 import FeedView from '@/views/FeedView'
 import ProfileView from '@/views/ProfileView'
 import ProfileModifyView from "@/views/ProfileModifyView"
+import UserModifyView from "@/views/UserModifyView"
 //import SearchPage from '@/views/SearchView'
 import LoginForm from '@/components/LoginForm'
 //import MyMissionMain from '@/components/MyMissionMain'
@@ -85,7 +86,11 @@ const routes = [
     path:"/profile/modify",
     name:"profileModifyView",
     component:ProfileModifyView,
-
+  },
+  {
+    path:"/user/modify",
+    name:"userModifyView",
+    component:UserModifyView,
   },
   {
     path:'/search',

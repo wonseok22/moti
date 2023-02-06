@@ -3,7 +3,7 @@
 <div id="profile-modify-layout" v-if="profile">
     <header id="profile-modify-header">
 
-      <div class="profile-modify-title">프로필 편집</div>
+      <div class="profile-modify-title">내 프로필 설정</div>
     </header>
 
     <main class="profile-modify-main">
@@ -38,7 +38,7 @@
   <script>
   import * as regex from '@/tools/regex.js'
   export default {
-    name: 'ProfileNodifyView',
+    name: 'ProfileModifyView',
     data() {
     return {
       profile:null,   
@@ -173,7 +173,7 @@
   created() {
     this.$axios({
       method: 'get',
-      url: `${this.$baseUrl}/profile?userId=${this.$store.state.profileTargetId}`
+      url: `${this.$baseUrl}/profile?userId=${this.$store.state.id}`
     }).then((response) => {
       this.profile=response.data.profile
       if (this.profile.profileImageUrl){

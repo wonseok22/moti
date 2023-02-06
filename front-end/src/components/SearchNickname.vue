@@ -50,7 +50,7 @@
       this.$store.commit("UPDATE_PROFILE_TARGET_ID",userId);
       this.$router.push({
         name: 'profile',
-      });
+      }).catch(() => {});
     }
 
   }

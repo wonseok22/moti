@@ -248,7 +248,7 @@ export default new Vuex.Store({
     getMyPL(context) {
       this.$axios({
         method: 'get',
-        url: `${this.$baseUrl}/playlist/${context.state.id}`
+        url: `${this.$baseUrl}/playlist/current/${context.state.id}`
       })
         .then((response) => {
           console.log(`유저 플레이리스트 가져오기 성공: status ${response.status}`)

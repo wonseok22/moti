@@ -15,28 +15,32 @@ const regExpNum = /[0-9]/
 // 특수문자, 띄어쓰기, 한글 입력 방지
 function characterCheck(str) {
   let adjustedStr = str
+  let content = null
   if ( regExp.test(str) ) {
-    alert('영어 대소문자와 숫자만 입력해주세요.')
+    // alert('영어 대소문자와 숫자만 입력해주세요.')
+    content = '영어 대소문자와 숫자만 입력해주세요.'
     adjustedStr = str.substring( 0, str.length - 1 ) // 입력한 특수문자 한자리 지움
   }
   if (!adjustedStr.length) {
-    return null
+    return [null, content]
   } else {
-    return adjustedStr
+    return [adjustedStr, content]
   }
 }
 
 // 위에서 한글은 포함
 function characterCheckNickname(str) {
   let adjustedStr = str
+  let content = null
   if ( regExp2.test(str) ) {
-    alert('영어 대소문자, 한글, 숫자만 입력해주세요.')
+    // alert('영어 대소문자, 한글, 숫자만 입력해주세요.')
+    content = '영어 대소문자, 한글, 숫자만 입력해주세요.'
     adjustedStr = str.substring( 0, str.length - 1 ) // 입력한 특수문자 한자리 지움
   } 
   if (!adjustedStr.length) {
-    return null
+    return [adjustedStr, content]
   } else {
-    return adjustedStr
+    return [adjustedStr, content]
   }
 }
 

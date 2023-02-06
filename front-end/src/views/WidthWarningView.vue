@@ -1,7 +1,7 @@
 <template>
   <div id="width-warning-layout">
-    <p id="width-warning-title">화면이 폭이 너무 커요! :(</p>
-    <p id="width-warning-subtitle">moti는 가로 사이즈 <span>450px</span> 이하에서 작동해요!</p>
+    <p id="width-warning-title">화면이 너무 커요! :(</p>
+    <p id="width-warning-subtitle">moti는 가로 <span>450px</span> 이하에서 작동해요!</p>
     <p id="width-warning-aside">(권장 가로 사이즈 360px)</p>
   </div>
 </template>

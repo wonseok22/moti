@@ -43,10 +43,12 @@ const routes = [
       },
       {
         path: 'auth',
+        name: 'auth',
         component: SignupAuth
       },
       {
         path: 'nickname',
+        name: 'nickname',
         component: SignupNickname
       },
     ]

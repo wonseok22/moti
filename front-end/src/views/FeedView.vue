@@ -20,18 +20,9 @@ import MainFeedHeader from '@/components/MainFeedHeader.vue'
 import SingleFeedBody from '../components/SingleFeedBody.vue'
 
 export default {
-  created() {
+  async created() {
+    this.getFeeds()
     // 전체 피드 조회
-    this.$axios({
-      method:'get',
-      url:`${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.kind}/default/${this.pageNum}`
-    })
-    .then((res) => {
-      this.feeds = res.data.feeds
-    })
-    .catch((error) => {
-      console.log(error)
-    })
   },
   components: {
     MainFeedHeader,
@@ -39,10 +30,54 @@ export default {
   },
   data() {
     return {
-      pageNum: 0,
-      feeds: null,
-      kind: "following",
+      payload: {
+        pageNum: 0,
+        kind: "following",
+      },
+      feeds: [],
+      isMorePage: true,
+
     }
+  },
+  methods: {
+    handleNotificationListScroll() {
+      const html = document.querySelector("html")
+      const isAtTheBottom = (html.scrollHeight === html.scrollTop + html.clientHeight);
+      // 일정 이상 밑으로 내려오면 함수 실행 / 반복된 호출을 막기위해 1초마다 스크롤 감지 후 실행
+      if(isAtTheBottom) {
+        setTimeout(() => this.handleLoadMore(), 1000)
+      }
+    },
+    handleLoadMore() {
+      // console.log('리스트 추가')
+      if(this.isMorePage) {
+        this.getFeeds()
+      }else{
+        console.log('더이상 게시물이 없스비낟.')
+      }
+    },
+    async getFeeds() {
+      const res = this.$store.dispatch("FeedSearch", this.payload)
+      const result = await res
+      // console.log(result)
+      this.feeds = this.feeds.concat(result.data.feeds) 
+      this.checkNextPage(result)
+    },
+    checkNextPage(res) {
+      if(res.data.isLast) {
+        this.isMorePage = false
+      }
+      else if(res.data.keyword === "all") {
+        this.payload.kind = "all"
+        this.payload.pageNum += 1
+      }
+      else{
+        this.pageNum += 1
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleNotificationListScroll)
   }
 }
 </script>

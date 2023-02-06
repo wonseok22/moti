@@ -27,6 +27,11 @@ export default {
         this.nowWidth = screen.width
       })
       if (this.nowWidth > 450) {
+        // 이메일 인증 완료 페이지일 경우
+        const authcompTag = document.querySelector('#authcomp-layout')
+        if (authcompTag) {
+          return false
+        }
         return true
       } else {
         return false

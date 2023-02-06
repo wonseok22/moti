@@ -95,6 +95,7 @@ export default new Vuex.Store({
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
       state.myPL = payload.myPL
+      console.log(state.myPL)
     },
     // 나의 미션 저장
     GET_MY_MISSION(state, payload) {
@@ -298,17 +299,20 @@ export default new Vuex.Store({
         url: `${this.$baseUrl}/playlist/current/${context.state.id}`
       })
         .then((response) => {
-          console.log(`유저 플레이리스트 가져오기 성공: status ${response.status}`)
-          const payload = {
-            myPL: response.data.myPlaylists,
+          // console.log(`유저 플레이리스트 가져오기 성공: status ${response.status}`)
+          const myPLList = response.data.currentPlaylists
+          // 진행 중인 플레이리스트가 있을 경우 플레이리스트 저장 및 미션 가져오기
+          if (myPLList) {
+            const payload = {
+              myPL: myPLList,
+            }
+            context.commit('GET_MY_PL', payload)
+            const payloadMission = {}
+            context.state.myPL.forEach((pl) => {
+              payloadMission[pl.playlist.playlistId] = pl.userPlaylistId 
+            })
+            context.dispatch('getMyMission', payloadMission)
           }
-          console.log(response)
-          context.commit('GET_MY_PL', payload)
-          const payloadMission = {}
-          context.state.myPL.forEach((pl) => {
-            payloadMission[pl.playlist.playlistId] = pl.userPlaylistId 
-          })
-          context.dispatch('getMyMission', payloadMission)
         })
         .catch((error) => {
           console.log(`유저 플레이리스트 가져오기 실패: status ${error.response.status}`)

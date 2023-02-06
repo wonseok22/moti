@@ -5,7 +5,7 @@
       <div id="my-pl-info">
         <!-- 꽃 사진 -->
         <div id="my-pl-info-img">
-          <img src="https://cdn-icons-png.flaticon.com/512/4139/4139434.png" alt="my-pl-info-img">
+          <img :src="missions.playlist.flower.flowerImageUrl" alt="my-pl-info-img">
         </div>
         <!-- PL 상세 -->
         <div id="my-pl-info-text">

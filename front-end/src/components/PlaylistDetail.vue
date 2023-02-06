@@ -1,22 +1,25 @@
 <template>
   <div v-if="plDetail"
-    id="my-pl-mission-layout">
+    id="my-pl-mission-layout"
+  >
     <div id="pl-info-layout">
       <!-- PL 설명 -->
       <div id="pl-info">
         <!-- 꽃 사진 -->
         <div id="pl-info-img">
-          <img src="https://cdn-icons-png.flaticon.com/512/4139/4139434.png" alt="pl-info-img" >
+          <img :src="plDetail.flower.flowerImageUrl" alt="pl-info-img">
         </div>
         <!-- PL 상세 -->
         <div id="pl-info-text">
           <p class="pl-info-title">{{plDetail.playlistName}}</p>
-          <span>{{ plDetail.playlistDesc }}</span>
+          <!-- <span>{{ plDetail.playlistDesc }}</span> -->
+          <p class="pl-info-content"> 현재 <span class="strong">{{ plDetail.current }}명</span>이 키우는 중입니다.</p>
           </div>
       </div>
-      <p>현재 <span class="strong">{{ plDetail.current }}명</span>이 키우는 중입니다.</p>
+      <p>일주일 중 5일 미션을 완수하면 [플리] 완수에요. 당일 미션은 자정까지만 수행 가능해요 </p>
     </div>
 
+    
     <div id="mission-info-layout">
       <!-- 미션 리스트 -->
       <article id="mission-list-layout">
@@ -27,10 +30,11 @@
         {{ mission.missionName }}
         </div>
         <!-- 미션 후기 작성 -->
-        <button v-if="isValid" class="btn-green" @click="addPlaylist">꽃 키우러 가기</button>
-        <button v-else class="btn-green-inactive">이미 키우고 있는 꽃이에요.</button>
       </article>
     </div>
+
+    <button v-if="isValid" class="btn-green" @click="addPlaylist">꽃 키우러 가기</button>
+    <button v-else class="btn-green-inactive">이미 키우고 있는 꽃이에요.</button>
 
     <!-- nav 바 -->
     <NavigationBar/>
@@ -58,8 +62,8 @@ export default {
     this.pl = this.$route.query.pl;
     this.getPlaylist()
     this.isValid()
+    
   },
-
   methods: {
     getPlaylist() {
       console.log('플레이리스트를 가져옵니다.')
@@ -68,7 +72,8 @@ export default {
         url: `${this.$baseUrl}/playlist/detail/${this.pl}`
       }).then((response) => {
           console.log(`플레이리스트 가져오기 성공: status ${response.status}`)
-          this.plDetail = response.data.playlist;
+          this.plDetail = response.data.playlist
+          console.log(this.plDetail)
       }).catch((error) =>{
         console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
       })
@@ -135,7 +140,7 @@ export default {
       // padding-top: 30px;
     width: 100%;
     height: 25%;
-    padding-top: 30px;
+    padding-top: 50px;
     margin-bottom: 30px;
     
     display: flex;
@@ -147,6 +152,7 @@ export default {
   #pl-info {
   display: flex;
   width: 100%;
+  gap: 20px;
   // height: 100px;
   // height: 96px;
   }
@@ -175,22 +181,28 @@ export default {
 
   // 플레이리스트 상세 정보
   #pl-info-text {
-      width: 75%;
-      height: 100%;
-      text-align: start;
+    width: 75%;
+    height: 100%;
+    text-align: start;
 
-      .pl-info-title {
-          font-size: $fs-4;
-          font-weight: bold;
-          margin: 0px;
-          
-      }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-
+    .pl-info-title {
+        font-size: $fs-4;
+        font-weight: bold;
+        margin: 0px;
+    }
+    .pl-info-content {
+      font-size: $fs-6;
+      color: $dark-grey;
+      margin-bottom: 0px;
       span {
-          // font-size: $fs-6;
-          color: $dark-grey;
+        color: $text-base-color;
+        font-weight: bold;
       }
+    }
   }
   .strong {
       font-weight: bold;
@@ -245,7 +257,7 @@ export default {
       background-color: $light-yellow;
       width: 100%;
       height: 36px;
-      font-size: 18px;
+      // font-size: 18px;
       line-height: 2;
   }
 

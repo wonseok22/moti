@@ -73,6 +73,14 @@
     border-top: 1px solid #ABABAB;
     border-radius: 0px 0px 5px 5px;
 
+    .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+    }
+
     span {
         font-size: 28px;
     }

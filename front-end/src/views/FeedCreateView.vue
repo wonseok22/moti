@@ -27,6 +27,12 @@
       <hr>
     </div>
     
+    <!-- 이미지 -->
+    <aside 
+      v-show="this.images"
+      id="preview-img-layout">
+    </aside>
+
     <footer id="feed-create-footer">
       <!-- 사진 등록 -->
       <label for="image-input"><i class="material-symbols-outlined text-active" id="photo-camera">photo_camera</i></label>
@@ -47,6 +53,9 @@
 </template>
 
 <script>
+
+
+
 export default {
   name: 'FeedCreateView',
   data() {
@@ -107,17 +116,70 @@ export default {
     },
     // 이미지 받기
     inputImage(event) {
-      this.images = event.target.files
+      if (event) {
+        this.images = event.target.files
+      }
+      
+      if (this.images) {
+        let idx = 0
+        const parentTag = document.querySelector('aside')
+        // 이미지 미리보기 태그 초기화
+        while (parentTag.hasChildNodes()){
+          parentTag.removeChild( parentTag.firstChild );       
+        }
+        
+        for (const img of this.images) {
+          const divTag = document.createElement('div')
+          divTag.setAttribute('class', 'preview-img-div')
+          divTag.setAttribute('id', `preview-img-div-${idx}`)
+          // 화살표 함수로 안 쓰면 에러남
+          divTag.addEventListener('click', (event) => {
+            this.deleteImage(event.target)
+          })
+          const spanTag = document.createElement('span')
+          spanTag.innerText = 'x'
+          spanTag.setAttribute('class', 'preview-img-span')
+          spanTag.setAttribute('id', `preview-img-span-${idx}`)
+          // 태그 만들기
+          const imgTag = document.createElement('img')
+          const imgReader = new FileReader()
+          imgReader.onload = () => {
+            imgTag.src = imgReader.result
+            imgTag.setAttribute('class', 'preview-img')
+          }
+          imgReader.readAsDataURL(img)
+          
+          divTag.append(imgTag)
+          divTag.append(spanTag)
+          parentTag.append(divTag)
+
+          idx += 1
+        }
+      }
     },
     // 비공개 여부
-    isprivateCheck() {
-      this.isprivate = !this.isprivate
-      console.log(this.isprivate)
+    // isprivateCheck() {
+    //   this.isprivate = !this.isprivate
+    //   console.log(this.isprivate)
+    // },
+    // 이미지 삭제
+    deleteImage(target) {
+      // data에서 제거
+      const targetIdx = target.id.substring(17, )
+      const dataTransfer = new DataTransfer()
+      let fileArray = Array.from(this.images)	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
+      fileArray.splice(targetIdx, 1)	//해당하는 index의 파일을 배열에서 제거
+      fileArray.forEach(file => { dataTransfer.items.add(file) })
+      this.images = dataTransfer.files	//제거 처리된 FileList를 돌려줌
+      this.inputImage()
     }
   },
   computed: {
     missionInfo() {
       return this.$route.query
+    },
+    nowImages() {
+      return false
     }
   },
   created() {
@@ -130,7 +192,7 @@ $feed-create-footer-height: 5%;
 
 // 기본 레이아웃
 #feed-create-layout {
-  height: inherit;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 
@@ -167,17 +229,18 @@ $feed-create-footer-height: 5%;
   }
   // 카테고리
   p:nth-child(1) {
-    font-size: $fs-7
+    font-size: $fs-7;
   }
 
   // 플레이리스트
   p:nth-child(2) {
-    font-size: $fs-6
+    font-size: $fs-6;
   }
 
   // 미션명
   p:nth-child(3) {
-    font-size: $fs-4
+    text-align: start;
+    font-weight: bold;
   }
 }
 
@@ -196,6 +259,38 @@ $feed-create-footer-height: 5%;
   &:focus {
     outline: none;
   }
+}
+
+// 이미지 프리뷰 레이아웃
+#preview-img-layout {
+  height: 15vh;
+  display: flex;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+  display: none;
+}
+}
+
+.preview-img-div {
+  position: relative;
+}
+
+.preview-img {
+  height: 90%;
+  max-width: 85px;
+}
+
+.preview-img-span {
+  font-size: $fs-6;
+  width: $fs-5;
+  height: $fs-5;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  background-color: $light-grey;
+  border-radius: 50%;
+  text-align: center;
 }
 
 // footer

@@ -178,9 +178,7 @@
             }
 
             button {
-                margin-left: 0px;
-                position: absolute;
-                right: 20%;
+                margin-left: 10px;
                 color: #049CF1;
                 border: none;
                 border-radius: 3px;
@@ -207,3 +205,21 @@
     }
 }
 
+.moving-notification {
+    width: 100%;
+    height: auto;
+    background-color: $main-green;
+    color: #FFFFFF;
+    position: fixed;
+    word-break: keep-all;
+    bottom: -84px;
+    border-radius: 10px 10px 0px 0px;
+    line-height: 160%;
+    transition: transform 1s ease-in-out;
+    font-weight: bold;
+    z-index: 999;
+}
+
+.moving-notification.show {
+    transform: translateY(-84px)
+}

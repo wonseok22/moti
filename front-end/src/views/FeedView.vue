@@ -12,6 +12,9 @@
       </div>
     </div>
     <NavigationBar></NavigationBar>
+    <div class="moving-notification">
+      <p>피드를 전부 감상하셨습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
+    </div>
   </div>
 </template>
 
@@ -45,7 +48,7 @@ export default {
       const isAtTheBottom = (html.scrollHeight === html.scrollTop + html.clientHeight);
       // 일정 이상 밑으로 내려오면 함수 실행 / 반복된 호출을 막기위해 1초마다 스크롤 감지 후 실행
       if(isAtTheBottom) {
-        setTimeout(() => this.handleLoadMore(), 1000)
+        setTimeout(() => this.handleLoadMore(), 500)
       }
     },
     handleLoadMore() {
@@ -53,7 +56,12 @@ export default {
       if(this.isMorePage) {
         this.getFeeds()
       }else{
-        console.log('더이상 게시물이 없스비낟.')
+        console.log('마지막')
+        const notification = document.querySelector(".moving-notification")
+        notification.classList.add('show')
+        setTimeout(() => {
+          notification.classList.remove('show')
+        }, 2000)
       }
     },
     async getFeeds() {

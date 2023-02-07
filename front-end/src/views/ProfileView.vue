@@ -19,8 +19,9 @@
 
     <div class="profile-info">
       <div class="profile-info-title">
-        <!-- <img :src="profile.profileImageUrl ? profile.profileImageUrl : defaultImage" alt="프로필 사진"/> -->
-        <img :src="profileImageUrl" alt="프로필 사진"/>
+        <div class="profile-img-wrap">
+          <img :src="profileImageUrl" alt="프로필 사진"/>
+        </div>
         <div>
           <div>{{profile.playlistCompleteCnt}}</div>
           <div>키운식물</div>

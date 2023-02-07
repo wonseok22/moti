@@ -215,7 +215,9 @@ public class FeedServiceImpl implements FeedService {
 				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
 				followingList.add(userId);
 				Slice<Feed> list = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(pageNo, 10));
-				return toSearchList(userId, list);
+				Map<String, Object> result = toSearchList(userId, list);
+				result.put("keyword", "all");
+				return result;
 			}
 		} else if ("playlist".equals(kind)) {
 			// 플레이리스트 이름으로 플레이리스트DTO들을 가져옴(Playlist ID들을 알아내기 위해)

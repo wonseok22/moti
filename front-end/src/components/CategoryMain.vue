@@ -16,14 +16,19 @@
           <p>현재 <span>{{category.current }}명</span>이 이 꽃을 키우고 있습니다.</p>
         </div>
       </div>
-      
     </main>
+    <NavigationBar/>
   </div>
 </template>
   
 <script>
+import NavigationBar from '@/components/NavigationBar'
+
 export default {
   name: 'playlistMain',
+  components: {
+    NavigationBar,
+  },
   data() {
     return {
       categoryList: null,

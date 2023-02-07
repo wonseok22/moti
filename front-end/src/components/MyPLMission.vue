@@ -22,7 +22,10 @@
           :key="idx"
           class="mission-progress-box"
           >
-          <img :src="img" alt="my-pl-info-img">
+          <img 
+            :src="img[0]"
+            :class="{ 'uncompleted': !img[1] }"
+            alt="my-pl-info-img">
         </div>
       </div>
     </div>
@@ -53,14 +56,6 @@
 import NavigationBar from '@/components/NavigationBar'
 
 // 진행상황 표시하는 이미지
-const progressImg = {
-    lv1: ['https://cdn-icons-png.flaticon.com/512/2771/2771094.png', 'https://cdn-icons-png.flaticon.com/512/2771/2771111.png'],
-    lv2: ['https://cdn-icons-png.flaticon.com/512/1269/1269251.png', 'https://cdn-icons-png.flaticon.com/512/1269/1269325.png'],
-    lv3: ['https://cdn-icons-png.flaticon.com/512/628/628379.png', 'https://cdn-icons-png.flaticon.com/512/628/628297.png'],
-    lv4: ['https://cdn-icons-png.flaticon.com/512/119/119311.png', 'https://cdn-icons-png.flaticon.com/512/186/186135.png'],
-    lv5: ['https://cdn-icons-png.flaticon.com/512/4139/4139436.png', 'https://cdn-icons-png.flaticon.com/512/4139/4139434.png']
-  }
-
 export default {
   name: 'MyPLMission',
   components: {
@@ -68,12 +63,19 @@ export default {
   },
   data() {
     return {
+      progressImg: {
+        1: require('./../assets/images/1_soil.png'),
+        2: require('./../assets/images/2_watering_can.png'),
+        3: require('./../assets/images/3_sprout.png'),
+        4: require('./../assets/images/4_sun.png'),
+        5: null,
+      },
       progress: {
-        lv1: false,
-        lv2: false,
-        lv3: false,
-        lv4: false,
-        lv5: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
       },
 
       // 선택된 미션
@@ -86,6 +88,11 @@ export default {
     // 미션 진행 상황 업데이트
     progressCheck() {
       // data의 progress 업데이트
+      let i = 1
+      for (i; i <= this.missions.done; i += 1) {
+        this.progress[i] = true
+      }
+      console.log(this.progress)
     },
     // 인증할 미션 선택
     select(idx) {
@@ -139,12 +146,11 @@ export default {
     progressFinal() {
       const finalImg = []
       for (let [key, value] of Object.entries(this.progress)) {
+        // 배열의 bool 원소를 통해 유/무채색 조정
         if (!value) {
-          console.log(progressImg[key][0])
-          finalImg.push(progressImg[key][0])
+          finalImg.push([this.progressImg[key], false])
         } else {
-          console.log(progressImg[key][0])
-          finalImg.push(progressImg[key][1])
+          finalImg.push([this.progressImg[key], true])
         }
       }
       return finalImg
@@ -161,9 +167,17 @@ export default {
   created() {
     // 현재 선택 플레이리스트 state에 저장하기
     this.getNowPL()
-    // 미션 진행도 업데이트
-    this.progressCheck()
+    
   },
+  mounted() {
+    // 미션 진행도 업데이트
+    this.progressImg[5] = this.missions.playlist.flower.flowerImageUrl
+  },
+  watch: {
+    missions() {
+      this.progressCheck()
+    }
+  }
 }
 </script>
 
@@ -182,18 +196,19 @@ export default {
 #my-pl-info-layout {
   width: 100%;
   height: 25%;
-  padding-top: 30px;
+  margin-top: 50px;
   margin-bottom: 30px;
   
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  // justify-content: space-between;
 }
 
 // 플레이리스트 정보
 #my-pl-info {
   display: flex;
   width: 100%;
+  gap: 15px;
   // height: 96px;
 }
 
@@ -234,13 +249,15 @@ export default {
 
 // 미션 정보 레이아웃
 #mission-info-layout {
-  height: 50%;
+  height: 45%;
 }
 
 // 미션 진행상황 레이아웃
 #mission-progress-layout {
   display: flex;
   justify-content: space-evenly;
+
+  margin-top: 20px;
 }
 
 // 미션 진행상황 박스
@@ -281,5 +298,9 @@ export default {
 .mission-selected {
   background-color: $dark-green;
   color: white;
+}
+
+.uncompleted {
+  filter: grayscale(100%);
 }
 </style>

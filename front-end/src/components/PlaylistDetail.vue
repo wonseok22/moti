@@ -50,19 +50,13 @@ export default {
   },
   data() {
     return{
-        // 선택된 플레이리스트
-        pl: null,
-        plDetail: null,
-        inValid: true,
+      // 선택된 플레이리스트
+      pl: null,
+      plDetail: null,
+      isValid: false,
     }
   },
   computed: {
-  },
-  created() {
-    this.pl = this.$route.query.pl;
-    this.getPlaylist()
-    this.isValid()
-    
   },
   methods: {
     getPlaylist() {
@@ -105,32 +99,36 @@ export default {
         console.log(error)
       })
     },
-    isValid(){
+    validCheck(){
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/playlist/check/${this.$store.state.id}/${this.pl}`
       })
         .then((response) => {
-          if (response.data.message === 'already exists') {
-            this.isValid = false
+          if (response.data.message == 'success') {
+            this.isValid = true
           }
       })
         .catch((error) =>{
           console.log(error)
       })
     }
-
-  }
+  },
+  created() {
+    this.pl = this.$route.query.pl;
+    this.getPlaylist()
+    this.validCheck()
+  },
 }
 </script>
 <style lang="scss">
   // 기본 레이아웃
   #my-pl-mission-layout {
-      width: $base-width;
-      height: $base-height;
+    width: $base-width;
+    height: $base-height;
 
-      display: flex;
-      flex-direction: column;
+    display: flex;
+    flex-direction: column;
   }
 
   // 플레이리스트 정보 레이아웃
@@ -152,7 +150,7 @@ export default {
   #pl-info {
   display: flex;
   width: 100%;
-  gap: 20px;
+  gap: 15px;
   // height: 100px;
   // height: 96px;
   }

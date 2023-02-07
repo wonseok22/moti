@@ -25,21 +25,26 @@
         <div class="pl-total">누적 참여자 수 : {{ pl.total }}명</div>
       </div>
     </div>
+    <NavigationBar/>
   </div>
 </template>
 
 <script>
+import NavigationBar from '@/components/NavigationBar'
 
 export default {
   name: 'playlistSelect',
+  components: {
+    NavigationBar,
+  },
   data() {
-      return{
-          plList:null,
-          categoryList: null,
-          selectedName:'',
-          selectedId: '',
+    return{
+        plList:null,
+        categoryList: null,
+        selectedName:'',
+        selectedId: '',
 
-      }
+    }
   },
   computed: {
   },

@@ -30,18 +30,22 @@
       }
   },
   watch: {
-      keyword : function() {
-          if (this.keyword != "") {
-              this.$axios({
-                  method: 'get',
-                  url: `${this.$baseUrl}/users/search/${this.keyword}/0`
-                  }).then((response) => {
-                  this.users = response.data. users;
-                  }).catch((error) =>{
-                  console.log(error);
-              })
-          }
-      },
+    keyword : function() {
+      if (this.keyword != "") {
+        this.$axios({
+          method: 'get',
+          url: `${this.$baseUrl}/users/search/${this.keyword}/0`
+          }).then((response) => {
+            if (response.status == 202) {
+              alert('202 응답')
+            } else {
+              this.users = response.data. users;
+            }
+          }).catch((error) =>{
+          console.log(error);
+        })
+      }
+    },
   },
   created() {
 

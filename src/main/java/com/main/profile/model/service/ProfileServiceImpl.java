@@ -1,7 +1,7 @@
 package com.main.profile.model.service;
 
 import com.main.achievement.model.entity.Achievement;
-import com.main.profile.model.dto.FollowDto;
+import com.main.profile.model.dto.GetFollowDto;
 import com.main.profile.model.dto.ProfileDto;
 import com.main.profile.model.entity.CurrentStat;
 import com.main.profile.model.entity.Follow;
@@ -141,26 +141,39 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 	
 	@Override
-	public List<FollowDto> getFollow(String type, String userId) {
+	public List<GetFollowDto> getFollow(String type, String userId) {
 		List<Follow> follows;
 		
-		// 팔로워 목록 요청인지 팔로잉 목록 요청인지
-		if ("Follower".equals(type)) follows = followRepository.findAllByFollowingId(userId);
-		else follows = followRepository.findAllByFollowerId(userId);
-		
 		// Dto로 전달하기 위해 DtoList 생성
-		List<FollowDto> followList = new ArrayList<>();
+		List<GetFollowDto> followList = new ArrayList<>();
 		
-		//모든 Follower 또는 Following 목록에 대해 Dto 생성
-		for (Follow f : follows) {
-			followList.add(
-					new FollowDto(
-							f.getFollowerNickname(),
-							f.getFollowingNickname(),
-							f.getFollowerId(),
-							f.getFollowingId()
-					));
+		// 팔로워 목록 요청인지 팔로잉 목록 요청인지
+		if ("follower".equals(type)) {
+			follows = followRepository.findAllByFollowingId(userId);
+			
+			follows.forEach(x ->
+					followList.add(
+							new GetFollowDto(
+									x.getFollowerId(),
+									x.getFollowerNickname(),
+									userRepository.findByUserId(userId).getProfile().getProfileImageUrl()
+							)
+					)
+			);
+		} else {
+			follows = followRepository.findAllByFollowerId(userId);
+			
+			follows.forEach(x ->
+					followList.add(
+							new GetFollowDto(
+									x.getFollowingId(),
+									x.getFollowingNickname(),
+									userRepository.findByUserId(x.getFollowingId()).getProfile().getProfileImageUrl()
+							)
+					)
+			);
 		}
+		
 		return followList;
 	}
 	

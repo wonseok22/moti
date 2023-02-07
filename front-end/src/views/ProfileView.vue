@@ -82,10 +82,10 @@
         <h3>{{ achievement.achievementName }}</h3>
         <img :src="achievement.achievementImageUrl" alt="업적 이미지">
         <p>{{ achievement.achievementDesc }}</p>
-        <button v-if="isMyProfile && (achievement.achievementImageUrl === profile.achievementImageUrl)" @click="deleteAchieve()" class="modal-close" style="margin-right:5px;">
+        <button v-if="achievement.achieved && isMyProfile && (achievement.achievementImageUrl === profile.achievementImageUrl)" @click="deleteAchieve()" class="modal-close" style="margin-right:5px;">
           대표뱃지 삭제
         </button>
-        <button v-if="isMyProfile && (achievement.achievementImageUrl !== profile.achievementImageUrl)" @click="registAchieve(achievement.achievementId)" class="modal-close" style="margin-right:5px;">
+        <button v-if="achieved && isMyProfile && (achievement.achievementImageUrl !== profile.achievementImageUrl)" @click="registAchieve(achievement.achievementId)" class="modal-close" style="margin-right:5px;">
           대표뱃지 등록
         </button>
         <button @click="modal = false" class="modal-close">

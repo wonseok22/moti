@@ -23,10 +23,6 @@ import MainFeedHeader from '@/components/MainFeedHeader.vue'
 import SingleFeedBody from '../components/SingleFeedBody.vue'
 
 export default {
-  async created() {
-    this.getFeeds()
-    // 전체 피드 조회
-  },
   components: {
     MainFeedHeader,
     SingleFeedBody
@@ -42,6 +38,11 @@ export default {
 
     }
   },
+  async created() {
+    //시작할때 최초 피드 요청 
+    this.getFeeds()
+    // 전체 피드 조회
+  },
   methods: {
     handleNotificationListScroll() {
       const html = document.querySelector("html")
@@ -56,7 +57,6 @@ export default {
       if(this.isMorePage) {
         this.getFeeds()
       }else{
-        console.log('마지막')
         const notification = document.querySelector(".moving-notification")
         notification.classList.add('show')
         setTimeout(() => {
@@ -64,13 +64,18 @@ export default {
         }, 2000)
       }
     },
+    // 피드 요청 메소드
     async getFeeds() {
       const res = this.$store.dispatch("FeedSearch", this.payload)
       const result = await res
       // console.log(result)
-      this.feeds = this.feeds.concat(result.data.feeds) 
+      console.log(result)
+      // 새로 받아온 피드를 기존 피드에 연결
+      this.feeds = this.feeds.concat(result.data.feeds)
+      // API 요청에 따른 결과에 따라 상황 변경 
       this.checkNextPage(result)
     },
+    // 다음 페이지를 어쩔 것인가
     checkNextPage(res) {
       if(res.data.isLast) {
         this.isMorePage = false
@@ -80,7 +85,7 @@ export default {
         this.payload.pageNum += 1
       }
       else{
-        this.pageNum += 1
+        this.payload.pageNum += 1
       }
     },
   },

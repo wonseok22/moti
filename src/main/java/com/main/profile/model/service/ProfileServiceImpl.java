@@ -151,27 +151,31 @@ public class ProfileServiceImpl implements ProfileService {
 		if ("follower".equals(type)) {
 			follows = followRepository.findAllByFollowingId(userId);
 			
-			follows.forEach(x ->
-					followList.add(
-							new GetFollowDto(
-									x.getFollowerId(),
-									x.getFollowerNickname(),
-									userRepository.findByUserId(userId).getProfile().getProfileImageUrl()
-							)
-					)
-			);
+			follows.forEach(x -> {
+				User user = userRepository.findByUserId(x.getFollowerId());
+		
+				followList.add(
+						new GetFollowDto(
+								x.getFollowerId(),
+								user.getNickname(),
+								user.getProfile().getProfileImageUrl()
+						)
+				);
+			});
 		} else {
 			follows = followRepository.findAllByFollowerId(userId);
 			
-			follows.forEach(x ->
-					followList.add(
-							new GetFollowDto(
-									x.getFollowingId(),
-									x.getFollowingNickname(),
-									userRepository.findByUserId(x.getFollowingId()).getProfile().getProfileImageUrl()
-							)
-					)
-			);
+			follows.forEach(x -> {
+				User user = userRepository.findByUserId(x.getFollowingId());
+				
+				followList.add(
+						new GetFollowDto(
+								x.getFollowingId(),
+								user.getNickname(),
+								user.getProfile().getProfileImageUrl()
+						)
+				);
+			});
 		}
 		
 		return followList;

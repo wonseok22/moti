@@ -183,6 +183,7 @@ public class FeedServiceImpl implements FeedService {
 			if ("following".equals(keyword)) {
 				// 현재 유저의 팔로잉 목록을 가져옴
 				List<String> followingList = new ArrayList<>();
+				followingList.add(userId);
 				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
 				
 				// 일단 팔로잉 유저들의 피드들을 가져온다
@@ -195,7 +196,6 @@ public class FeedServiceImpl implements FeedService {
 				
 				// 마지막 페이지라면 전체 유저의 피드 첫 페이지도 받아와야 한다
 				List<FeedDto> followingFeeds = (List<FeedDto>) result.get("feeds");
-				followingList.add(userId);
 				List<FeedDto> followingAndAllFeeds = new ArrayList<>();
 				followingFeeds.forEach(x -> followingAndAllFeeds.add(x));
 				Slice<Feed> allFeedsSlice = feedRepository.findAllByUser_UserIdNotInOrderByFeedIdDesc(followingList, PageRequest.of(0, 10));

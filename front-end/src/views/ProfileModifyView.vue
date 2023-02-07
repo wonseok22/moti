@@ -13,7 +13,6 @@
                 @change="inputImage"  
                 type="file" multiple id="image-input" style="visibility:hidden;"
             >
-            <div v-if="images" style="font-size:11px;">사진 선택완료</div>
         </div>
         <!-- <h4>닉네임</h4> -->
         <div class="profile-modify-nickname">
@@ -24,7 +23,7 @@
         
         <!-- <h4>자기소개</h4> -->
         <div class="profile-modify-desc">
-            <textarea placeholder="자기소개 입력 (50자 이내)" @input="inputContent" class="profile-desc" name="feed-create-input" ></textarea>    
+            <textarea placeholder="자기소개 입력 (50자 이내)" @input="inputContent" class="profile-desc" name="feed-create-input" maxlength="50"></textarea>    
         </div>
     </main>
     <div class="profile-modify-btn">
@@ -32,11 +31,20 @@
     </div>
     
     <NavigationBar></NavigationBar>
+    <basic-modal
+        v-if="openModal"
+        :content="modalContent"
+        @close="modalClose"
+        >
+    </basic-modal>
   </div>
   </template>
   
   <script>
   import * as regex from '@/tools/regex.js'
+  import BasicModal from '@/components/BasicModal'
+  import { basicModalMixin } from '@/tools/basicModalMixin.js'
+
   export default {
     name: 'ProfileModifyView',
     data() {
@@ -49,10 +57,23 @@
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
     }
   },
+  components: {
+    BasicModal,
+  },
+  mixins: [
+    basicModalMixin,
+  ],
   methods: {
     nicknameInput(event) {
-      this.nickname = regex.characterCheckNickname(event.target.value);
-      event.target.value = this.nickname;
+      this.nicknameActive = true
+      // 띄어쓰기 및 특수문자 제거
+      const regexResult = regex.characterCheckNickname(event.target.value)
+      this.nickname = regexResult[0]
+      if (regexResult[1]) {
+        this.modalContent = regexResult[1]
+        this.openModal = true
+      }
+      event.target.value = this.nickname
     },
     // 닉네임 중복 체크
     doubleCheck() {
@@ -61,11 +82,13 @@
       
       // 닉네임 조건을 충족하지 못한 경우
       if ( !this.nicknameConditions[0].valid ) {
-        alert('닉네임 형식을 지켜주세요.')
+        this.openModal = true
+        this.modalContent = '닉네임 형식을 지켜주세요.'
       }
       // 닉네임 조건을 충족한 경우
       else {
         // 중복체크
+        console.log('닉네임 중복체크 실행')
         this.$axios({
           method: 'get',
           url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}`
@@ -78,13 +101,17 @@
 
             // 이미 아이디가 존재할 경우
             if ( response.data.message === 'already exists' ) {
-              alert('이미 사용 중인 닉네임이에요.')
+              this.openModal = true
+              this.modalContent = '이미 사용 중인 닉네임이에요.'
               this.id = null
             } else if ( response.data.message === 'success' ) {
-              alert('사용할 수 있는 닉네임이에요.')
+              this.openModal = true
+              this.modalContent = '사용할 수 있는 닉네임이에요.'
               this.nicknameDoubleChecked = true
             } else {
-              alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
+              console.log(response.data.message)
+              this.openModal = true
+              this.modalContent = '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
             }
           })
           .catch((error) => {
@@ -92,7 +119,6 @@
           })
         }
     },
-
     // 프로필 수정
     submit() {
 
@@ -144,6 +170,7 @@
         } else {
             this.images = event.target.files 
         }
+        this.profileImageUrl = URL.createObjectURL(this.images[0])
     },
 
   },
@@ -224,25 +251,34 @@ $feed-create-footer-height: 5%;
     margin-top: 50px;
     height: 350px;
     .profile-modify-img{
+      // position: relative;
+        margin: 0 auto;
+        width: 90px;
+        height: 90px;
+        border-radius: 70%;
+        overflow: hidden;
+        // border: 1px solid rgb(223, 223, 223);
         label {
             position: relative;
         }
-        .profile-logo{
-            position: absolute;
-            font-size: 20px;
-            font-weight: bold;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            left: 65px;
-            top: -65px;
-            background-color: rgb(133, 235, 147);
-        }
         img{
+          object-fit: cover;
             width: 80px;
             height: 80px;
         }
 
+    }
+    .profile-modify-img::before{
+      content: "+";
+      z-index: 9999;
+      position: absolute;
+      font-size: 20px;
+      font-weight: bold;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      left: 57%;
+      background-color: rgb(133, 235, 147);
     }
 }
 

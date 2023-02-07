@@ -21,7 +21,7 @@
     </div>
 
     <div v-if="isNotProfile()"
-    @click="change()
+    @click="change()"
       class="material-symbols-outlined"
       style="color:#04C584;">
       account_circle

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class UserDto {
 	
 	private int temporary;
 	
-	private String joinDate;
+	private LocalDateTime joinDate;
 	
 	private String achievementImageUrl;
 	

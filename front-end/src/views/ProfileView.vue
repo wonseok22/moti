@@ -6,6 +6,8 @@
     <!-- 프로필 페이지 최상단 유저이름과 메뉴바 -->
     <div class="profile-header">
       <div class="profile-nickname">
+        <img v-if="profile.achievementImageUrl" :src="profile.achievementImageUrl" alt="대표업적 뱃지" class="profile-achieve">
+
         <p>{{profile.nickname}}</p>
         <button v-if="!isMyProfile && !isFollow" class="follow" @click="follow">팔로우</button>
         <button v-if="!isMyProfile && isFollow" class="unfollow" @click="unfollow">팔로우 취소</button>
@@ -26,11 +28,11 @@
           <div>{{profile.playlistCompleteCnt}}</div>
           <div>키운식물</div>
         </div>
-        <div>
+        <div @click="followModal=true">
           <div>{{profile.following}}</div>
           <div>팔로우</div>
         </div>
-        <div>
+        <div @click="followModal=true">
           <div>{{profile.follower}}</div>
           <div>팔로워</div>
         </div>
@@ -80,6 +82,12 @@
         <h3>{{ achievement.achievementName }}</h3>
         <img :src="achievement.achievementImageUrl" alt="업적 이미지">
         <p>{{ achievement.achievementDesc }}</p>
+        <button v-if="isMyProfile && (achievement.achievementImageUrl === profile.achievementImageUrl)" @click="deleteAchieve()" class="modal-close" style="margin-right:5px;">
+          대표뱃지 삭제
+        </button>
+        <button v-if="isMyProfile && (achievement.achievementImageUrl !== profile.achievementImageUrl)" @click="registAchieve(achievement.achievementId)" class="modal-close" style="margin-right:5px;">
+          대표뱃지 등록
+        </button>
         <button @click="modal = false" class="modal-close">
           닫기
         </button>
@@ -117,6 +125,34 @@
       </div>
     </div>
 
+    <div class="follow-modal" v-if="followModal">
+    <!-- <div class="follow-modal" > -->
+      <div class="follow-modal-close" @click="followModal=false"></div>
+      <div class="follow-white-bg">
+        <div class="follow-menu">
+          <nav id="CategoryNav">
+            <div class="following" @click="moveFollowing()">
+              팔로우
+            </div>
+            <div class="follower" @click="moveFollower()">
+              팔로워
+            </div>
+          </nav>
+          <div class="follow-underbar">
+            <div id="followBar" class="bar1"></div>
+          </div>
+        </div>
+
+        
+        <div class="follow-detail">
+          <div class="follow-detail-slide">
+            <FollowingList :keyword="`${profile.userId}`"></FollowingList>
+            <FollowerList :keyword="`${profile.userId}`"></FollowerList>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </div>
 </template>
@@ -125,6 +161,8 @@
 import SearchUserId from '@/components/SearchUserId.vue'
 import SearchMyPl from '@/components/SearchMyPl.vue'
 import SearchAchieve from '@/components/SearchAchieve.vue'
+import FollowerList from "@/components/FollowerList.vue"
+import FollowingList from "@/components/FollowingList.vue"
 export default {
   name: 'ProfileView',
   data() {
@@ -135,6 +173,7 @@ export default {
       isFollow:false,
       modal: false,
       menuModal:false,
+      followModal:false,
 
     }
   },
@@ -142,6 +181,8 @@ export default {
     SearchUserId,
     SearchMyPl,
     SearchAchieve,
+    FollowerList,
+    FollowingList,
   },
   created() {
     this.$axios({
@@ -209,18 +250,20 @@ export default {
       url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${this.profile.userId}?type=follow`
     }).then((response) => {
       if (response.data.message ==="success"){
+        this.profile.follower += 1;
         this.isFollow = true;
       } 
-      }).catch((error) =>{
-        console.log(error)
-      })
-   },
-   unfollow() {
+    }).catch((error) =>{
+      console.log(error)
+    })
+  },
+  unfollow() {
     this.$axios({
       method: 'get',
       url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${this.profile.userId}?type=unfollow`
     }).then((response) => {
       if (response.data.message ==="success"){
+        this.profile.follower -= 1;
         this.isFollow = false;
       } 
       }).catch((error) =>{
@@ -243,7 +286,59 @@ export default {
       this.$router.push({
         name: 'userModifyView',
       });
-  }
+  },
+  moveFollower(){
+    const bar = document.getElementById("followBar");
+    const slide = document.querySelector(".follow-detail-slide")
+    
+
+    slide.style.left = "-100vw";
+    bar.className = "bar2"; 
+  },
+  moveFollowing(){
+    const bar = document.getElementById("followBar");
+    const slide = document.querySelector(".follow-detail-slide")
+
+    slide.style.left = 0;
+    bar.className = "bar1"; 
+  },
+  registAchieve(achievementId){
+    this.$axios({
+      method: 'put',
+      url: `${this.$baseUrl}/achievement`,
+      data : {
+        "userId" : this.$store.state.id,
+        "achievementId" : achievementId
+      }
+    }).then(() => {
+      alert("대표업적 등록 성공")
+      location.reload();
+    }).catch((error) =>{
+        console.log(error)
+      })
+  },
+  deleteAchieve(){
+    this.$axios({
+      method: 'put',
+      url: `${this.$baseUrl}/achievement`,
+      data : {
+        "userId" : this.$store.state.id,
+        "achievementId" : 0
+      }
+    }).then(() => {
+      alert("대표업적 삭제 성공")
+      location.reload();
+      
+    }).catch((error) =>{
+        console.log(error)
+      })
+  },
+  moveProfile(targetId){
+      this.$store.commit("UPDATE_PROFILE_TARGET_ID",targetId);
+      this.$router.push({
+        name: 'profile',
+      }).catch(() => {location.reload();});
+    }
   }
 }
 </script>
@@ -284,27 +379,27 @@ export default {
   width: 100%;
   height: 100%;
   .menu-white-bg{
-    animation-name: slidein;
+    animation-name: menuSlidein;
     animation-fill-mode: forwards;
     animation-duration: 0.7s;
     position: fixed;
-    border-radius: 15px 15px 0 0;
+    // border-radius: 15px 15px 0 0;
     background-color: #fff;
     width: 100%;
-    height: 60%;
-    margin: 0 auto;
+    height: 100%;
+    // left:100%;
     ul {
       text-align: left;
       text-decoration: none;
       list-style: none;
-      padding: 5px 0 0 5px;
+      padding: 5px 0 0 0;
       li {
         .menu-items{
 
-          font-size: 18px;
+          font-size: 14px;
           font-weight: bold;
           margin: 20px 0;
-          padding: 0 10px;
+          padding: 0 5px;
           display: flex;
           span{
             margin: 0 15px;
@@ -313,14 +408,71 @@ export default {
       }
     }
   }
-  @keyframes slidein {
+  @keyframes menuSlidein {
+    from {
+      left: 100%;
+    }
+
+    to {
+      left: 50%;
+    }
+  }
+}
+
+.follow-modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  .follow-modal-close{
+    width: 100%;
+    height: 18%;
+  }
+  .follow-white-bg{
+    animation-name: followSlidein;
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    position: fixed;
+    border-radius: 15px 15px 0 0;
+    background-color: #fff;
+    width: 100%;
+    height: 80%;
+    margin: 0 auto;
+  }
+  @keyframes followSlidein {
   from {
     top: 100%;
   }
 
   to {
-    top: 40%;
+    top: 20%;
   }
 }
 }
+
+
+.result-box{
+    padding-left: 30px;
+    .follow-info {
+      height: 50px;
+      margin-bottom: 10px;
+     display: flex;
+     .follow-info-img-wrap {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+        overflow: hidden;
+       .follow-info-image {
+         width: 50px;
+         height: 50px;
+       }
+     }
+     .follow-info-nickname {
+      padding-left: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 2.8;
+     }
+    }
+  }
 </style>

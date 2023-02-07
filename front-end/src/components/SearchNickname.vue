@@ -3,7 +3,9 @@
       <div class="result-box" style="padding-left : 20px; gap:0px;">
           <div v-for="(user,idx) in users" :key="idx" >
               <div class="user-info" @click="moveProfile(user.userId)">
-                <img :src="user.profileImageUrl ? user.profileImageUrl : defaultImage" alt="유저 프로필사진" class="user-info-image">
+                <div class="user-info-img-wrap">
+                  <img :src="user.profileImageUrl ? user.profileImageUrl : defaultImage" alt="유저 프로필사진" class="user-info-image">
+                </div>
                 <div class="user-info-nickname">{{ user.nickname }}</div>
               </div>
           </div>
@@ -63,9 +65,15 @@
     height: 50px;
     margin-bottom: 10px;
    display: flex;
-   .user-info-image {
-     width: 50px;
-     height: 50px;
+   .user-info-img-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      overflow: hidden;
+     .user-info-image {
+       width: 50px;
+       height: 50px;
+     }
    }
    .user-info-nickname {
     padding-left: 10px;

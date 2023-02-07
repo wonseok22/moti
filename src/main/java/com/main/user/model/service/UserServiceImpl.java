@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
 		user.setProfile(profile);
 		user.setSalt(salt);
 		user.setPassword(hex);
+		user.setJoinDate(LocalDateTime.now());
 		user.setType("default");
 		
 		return userRepository.save(user);

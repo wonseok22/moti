@@ -94,6 +94,11 @@ $fs-5: 1rem !default;
 $fs-6: 0.812rem !default;
 $fs-7: 0.688rem !default;
 
+$bold-3: 900; 
+$bold-4: 800; 
+$bold-5: 700; 
+$bold-6: 650; 
+$bold-7: 550; 
 
 /// @type Length
 $account-height: 60% !default;
@@ -105,3 +110,6 @@ $base-width: 100vw !default;
 // HTML 기본 높이
 // $base-height: 800px;
 $base-height: 100vh !default;
+
+// navbar 높이
+$navbar-height: 56px;

@@ -13,29 +13,38 @@
       </select>
     </div>
       
-    <div v-for="(pl, idx) in plList" v-bind:key="idx" class="pl-list">
-      <div id="pl" @click="movePlaylist(pl)">
-        <!-- <img :src="pl.flower.flowerImageUrl" alt="플레이리스트 로고" class="pl-logo"/> -->
+    <div id="pl-list">
+      <div 
+        v-for="(pl, idx) in plList"
+        v-bind:key="idx"
+        class="pl"
+        @click="movePlaylist(pl)">
+        <img :src="pl.flower.flowerImageUrl" alt="playlist-logo" class="pl-logo">
         <div class="pl-name">{{ pl.playlistName }}</div>
-        <div class="pl-curr">현재 {{ pl.current }}명이 키우는 중입니다.</div>
-        <p class="pl-total">누적 참여자 수 : {{ pl.total }}명</p>
+        <div class="pl-curr">현재 <span>{{ pl.current }}명</span>이 키우는 중입니다.</div>
+        <div class="pl-total">누적 참여자 수 : {{ pl.total }}명</div>
       </div>
     </div>
+    <NavigationBar/>
   </div>
 </template>
 
 <script>
+import NavigationBar from '@/components/NavigationBar'
 
 export default {
   name: 'playlistSelect',
+  components: {
+    NavigationBar,
+  },
   data() {
-      return{
-          plList:null,
-          categoryList: null,
-          selectedName:'',
-          selectedId: '',
+    return{
+        plList:null,
+        categoryList: null,
+        selectedName:'',
+        selectedId: '',
 
-      }
+    }
   },
   computed: {
   },
@@ -104,7 +113,7 @@ $header-height: 46px;
   
 }
 .pl-main-select{
-  margin: 200px 0 70px 0;
+  margin: 100px 0 70px 0;
   width: $base_width;
 }
 
@@ -117,8 +126,13 @@ $header-height: 46px;
   }
 }
 
+#pl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
 
-#pl {
+.pl {
   width: 304px;
   height: 210px;
   
@@ -127,25 +141,31 @@ $header-height: 46px;
   border-radius: 43px;
   margin: 0 auto;
 
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
   font-weight: 300;
+
   .pl-logo {
-    width: 40px;
-    height: 40px;
-    margin-top: 25px;
-    margin-bottom: 10px;
+    height: 45%;
+    padding-bottom: 10px;
   }
   .pl-name {
-
     font-weight: bold;
-    font-size: 24px;
+    font-size: $fs-3;
+    margin-bottom: 15px;
   }
   .pl-curr {
-
-    font-size: 14px;
+    // font-weight: $bold-7;
+    // font-size: $fs-6;
+    span {
+      font-weight: $bold-7;
+    }
   }
   .pl-total {
-    color: #aaa;
-    font-size: 10px;
+    color: $dark-grey;
+    font-size: $fs-6;
   }
 }
 </style>

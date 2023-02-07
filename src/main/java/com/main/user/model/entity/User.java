@@ -11,6 +11,7 @@ import com.main.profile.model.entity.Profile;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class User {
 	
 	private int temporary;
 	
-	private String joinDate;
+	private LocalDateTime joinDate;
 	
 	@OneToOne
 	@JoinColumn(name = "profileId")

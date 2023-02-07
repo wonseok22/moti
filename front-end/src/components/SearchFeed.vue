@@ -28,18 +28,6 @@ import SingleFeedBody from '../components/SingleFeedBody.vue'
     data() {
       return {
         feeds:null,
-        feedHeaderData : {
-            missionName: "이게나야",
-            nickname: "이상화",
-            playlistName: "어쩔",
-            feedId: 2,
-        },
-        feedBodyData: {
-            content: "지각 해버렸다 ㅠ",
-            likes: 0,
-            commentNum: 3,
-            feedId: 2,
-        },
       }
     },
     watch: {

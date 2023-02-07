@@ -7,7 +7,7 @@
       </span>
       <div>
         <div>
-          <p class="comment-nickname">{{ CommentData.nickname }}</p>
+          <p class="comment-nickname">{{ CommentData.comment.nickname }}</p>
           <!-- <button 
           v-show="this.$store.state.nickname == CommentData.nickname"
           class="material-icons-outlined">
@@ -15,12 +15,12 @@
           </button> -->
           <button 
           class="material-icons-outlined"
-          v-show="(CommentData.nickname === this.$store.state.nickname) || (this.$store.state.nickname === CommentData.nickname )"
+          v-show="(CommentData.comment.nickname === this.$store.state.nickname) || (CommentData.feed.nickname === this.$store.state.nickname) "
           v-on:click="tabOpened = true">
             more_horiz
           </button>
         </div>
-          <p class="comment-content">{{ CommentData.content }}</p>
+          <p class="comment-content">{{ CommentData.comment.content }}</p>
       </div>
       <div class="more-modal" 
       v-show="tabOpened" 

@@ -5,11 +5,16 @@
     <SingleFeedBody
     v-bind:BodyData="feedBodyData"/>
     <div class="comments-list">
-      <SingleComment 
-      v-for="(item,index) in this.$store.state.nowFeed.comments" 
-      :CommentData="item"
-      @deleteComment="showModal"
-      :key="index"/>
+      <div 
+      v-for="(item) in this.$store.state.nowFeed.comments"
+      :key="item.commentId">
+        <SingleComment 
+        :CommentData="{
+          comment: item,
+          feed: feed,
+        }"
+        @deleteComment="showModal"/>
+      </div>
     </div>
     <div ref="commentInput" class="comment-input">
       <span class="material-symbols-outlined"
@@ -74,7 +79,7 @@ export default {
         feedId: this.$route.params.feedId,
         content: null
       },
-      feedNickname: this.$store.state.nowFeed.nickname
+      feed: this.$store.state.nowFeed
     }
   },
   methods: {

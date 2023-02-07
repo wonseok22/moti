@@ -55,6 +55,7 @@ export default {
     },
     // 나의 플레이리스트
     myPLArray() {
+      console.log(this.$store.state.myPL)
       return this.$store.state.myPL
     },
     // 유저 닉네임
@@ -79,6 +80,12 @@ $header-height: 46px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 // 상단 사용자 이름 노출되는 섹션
@@ -86,7 +93,7 @@ $header-height: 46px;
   position: relative;
   width: $base-width;
   height: $header-height;
-  left: 5px;
+  padding-left: 10px;
   // top: 25px;
   
   margin: 0px;
@@ -105,8 +112,10 @@ $header-height: 46px;
 
 // 본문 레이아웃
 #my-pl-main-main {
-  height: 100%;
   gap: 30px;
+  margin-top: 30px;
+  // margin-top: $header-height;
+  // margin-bottom: $navbar-height;
 
   display: flex;
   flex-direction: column;
@@ -142,6 +151,8 @@ $header-height: 46px;
   background: $light-yellow;
   box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.17);
   border-radius: 43px;
+
+  margin-bottom: $navbar-height + 30px;
 
   display: flex;
   flex-direction: column;

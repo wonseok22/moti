@@ -4,12 +4,11 @@
       <p id="category-main-name">
         마음속에 들어있는 <span>동기</span> 는 무엇인가요?
       </p>
-      <div 
-        v-for="(category, idx) in categoryList" 
-        :key="idx" 
-        class="category-list"
-      >
-        <div @click="movePlaylist(category)" class="pl">
+      <div id="category-list">
+        <div 
+          v-for="(category, idx) in categoryList" 
+          :key="idx" 
+          @click="movePlaylist(category)" class="pl">
           <div class="pl-title">
             <img :src="category.categoryImageUrl" alt="카테고리 로고" />
             <div>{{ category.categoryName }}</div>
@@ -17,14 +16,19 @@
           <p>현재 <span>{{category.current }}명</span>이 이 꽃을 키우고 있습니다.</p>
         </div>
       </div>
-      
     </main>
+    <NavigationBar/>
   </div>
 </template>
   
 <script>
+import NavigationBar from '@/components/NavigationBar'
+
 export default {
   name: 'playlistMain',
+  components: {
+    NavigationBar,
+  },
   data() {
     return {
       categoryList: null,
@@ -92,9 +96,14 @@ $header-height: 46px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  .category-list{
-    margin: 30px auto;
-  }
+}
+
+#category-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 70%;
+  gap: 30px;
 }
 
 
@@ -110,7 +119,6 @@ $header-height: 46px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   font-weight: 300;
 
   cursor: pointer;
@@ -123,6 +131,8 @@ $header-height: 46px;
     align-items: center;
     gap: 10px;
     height: $fs-0;
+
+    margin-bottom: 10px;
 
     img {
       height: 100%;

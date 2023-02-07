@@ -44,8 +44,8 @@
       </article>
     </div>
     <!-- 미션 후기 작성 -->
-    <button v-if="isvalid" class="btn-green" @click="toCreateFeed">미션 후기 작성</button>
-    <button v-else class="btn-green-inactive">미션 후기 작성</button>
+    <button v-if="missions.today" class="btn-green-inactive">미션 인증 완료!</button>
+    <button v-else :class="[ isvalid ? 'btn-green': 'btn-green-inactive' ]" @click="toCreateFeed">미션 후기 작성</button>
 
     <!-- nav 바 -->
     <NavigationBar/>

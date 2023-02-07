@@ -451,17 +451,11 @@ export default new Vuex.Store({
       })
     },
     //팔로우 언팔로우
-    FollowUnfollow(context, payload) {
-      this.$axios.get(`${this.$baseUrl}/profile/follow/${this.state.id}/${payload.targetId}`, {
+    async FollowUnfollow(context, payload) {
+      return this.$axios.get(`${this.$baseUrl}/profile/follow/${this.state.id}/${payload.targetId}`, {
         params: {
           type: payload.type
         }})
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
     },
     //팔로우 했는지 체크
     async followCheck(context, targetId) {
@@ -471,6 +465,13 @@ export default new Vuex.Store({
       })
     },
     // 프로필을 체크
+    // async profileCheck(contetx, targetId) {
+    //   return this.$axios.get(`${this.$baseUrl}/profile`, {
+    //     params: {
+    //       userId: targetId,
+    //     }
+    //   })
+    // },
     // 모달 닫기
     modalClose(context) {
       context.commit('MODAL_CLOSE')

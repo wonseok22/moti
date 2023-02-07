@@ -18,7 +18,6 @@ export default {
   },
   methods: {
     comfirm() {
-      console.log(this.reload)
       if (this.reload) {
         console.log('새로고침')
         location.reload()

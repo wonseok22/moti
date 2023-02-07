@@ -51,32 +51,32 @@ export default {
   created() {
     this.selectedName = this.$route.query.categoryName;
     this.selectedId = this.$route.query.categoryId;
-    console.log(this.selectedName)
-    console.log(this.selectedId)
+    // console.log(this.selectedName)
+    // console.log(this.selectedId)
     this.change()
     this.$axios({
       method: 'get',
       url: `${this.$baseUrl}/category/`
     }).then((response) => {
       this.categoryList = response.data.categories;
-      console.log("카테고리 성공")
+      // console.log("카테고리 성공")
     }).catch((error) =>{
       console.log(error)
     })
-    console.log(this.plList) 
+    // console.log(this.plList) 
   },
 
   methods : {
     change() {
-      console.log(this.selectedId + "선택된 아이디")
-      console.log(this.selectedName + "선택된 카테고리")
+      // console.log(this.selectedId + "선택된 아이디")
+      // console.log(this.selectedName + "선택된 카테고리")
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/category/${this.selectedId}`
       }).then((response) => {
           this.plList = response.data.playlist
-          console.log("플레이리스트 받아오기 성공")
-          console.log("바뀐 pl" + this.plList)
+          // console.log("플레이리스트 받아오기 성공")
+          // console.log("바뀐 pl" + this.plList)
           
       }).catch((error) =>{
         console.log(error)

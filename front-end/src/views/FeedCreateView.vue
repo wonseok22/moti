@@ -272,6 +272,7 @@ $feed-create-footer-height: 5%;
   height: 15vh;
   display: flex;
   overflow-x: scroll;
+  gap: 10px;
 
   &::-webkit-scrollbar {
   display: none;
@@ -280,11 +281,13 @@ $feed-create-footer-height: 5%;
 
 .preview-img-div {
   position: relative;
+  
 }
 
 .preview-img {
   height: 90%;
   max-width: 85px;
+  min-width: 40px;
 }
 
 .preview-img-span {

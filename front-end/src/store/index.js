@@ -255,10 +255,14 @@ export default new Vuex.Store({
         data: UserDto,
       })
         .then((response) => {
-          console.log('회원가입 완료')
-          context.commit('ERASE_INFO')
-          console.log(response.data.message)
-          this.$router.push({ name: 'login' })
+          if (response.status == 202) {
+            alert('202 응답')
+          } else {
+            console.log('회원가입 완료')
+            context.commit('ERASE_INFO')
+            console.log(response.data.message)
+            this.$router.push({ name: 'login' })
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -289,6 +293,8 @@ export default new Vuex.Store({
           } else {
             alert(`에러가 발생했습니다. 고객센터에 문의해주세요. 에러: ${error.response.status}`)  
           }
+          // 로그아웃처리
+          context.dispatch('logout')
           this.$router.push({ name: 'login' })
         })
     },

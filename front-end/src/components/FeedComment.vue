@@ -1,5 +1,13 @@
 <template>
   <div class="feed-comment">
+    <div class="comment-header">
+      <span class="material-symbols-outlined">
+      arrow_back
+      </span>
+      <p>
+        댓글
+      </p>
+    </div>
     <MainFeedHeader
     v-bind:HeaderData="feedHeaderData"/>
     <SingleFeedBody

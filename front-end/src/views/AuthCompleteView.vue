@@ -36,7 +36,7 @@ export default {
 
 <style lang="scss">
 #authcomp-layout {
-  height: inherit;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -20,7 +20,7 @@
           </div>
         </div>
         <button v-if="isvalid" id="register-btn" class="btn-green" @click="register">완료</button>
-        <button v-else class="btn-green-inactive">완료</button>
+        <button v-else id="register-btn" class="btn-green-inactive">완료</button>
       </div>
     </div>
     <basic-modal
@@ -72,46 +72,48 @@ export default {
       // this.idDoubleChecked = true
       
       // 닉네임 조건을 충족하지 못한 경우
-      if ( !this.nicknameConditions[0].valid ) {
-        this.openModal = true
-        this.modalContent = '닉네임 형식을 지켜주세요.'
-      }
-      // 닉네임 조건을 충족한 경우
-      else {
-        // 중복체크
-        console.log('닉네임 중복체크 실행')
-        this.$axios({
-          method: 'get',
-          url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}`
-        })
-          .then((response) => {
-            // 응답 예시
-            // 성공시(이미 존재할 때 ) : 200, already exists
-            // 실패시(없을 때) : 200, success 
-            // 서버 에러시 : 500, fail
-
-            // 이미 아이디가 존재할 경우
-            if ( response.data.message === 'already exists' ) {
-              this.openModal = true
-              this.modalContent = '이미 사용 중인 닉네임이에요.'
-              this.id = null
-            } else if ( response.data.message === 'success' ) {
-              this.openModal = true
-              this.modalContent = '사용할 수 있는 닉네임이에요.'
-              const idInputTag = document.querySelector('#input-nickname')
-              // 현재 닉네임으로 고정
-              idInputTag.setAttribute('disabled', true)
-              this.nicknameDoubleChecked = true
-            } else {
-              console.log(response.data.message)
-              this.openModal = true
-              this.modalContent = '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+      if (!this.nicknameDoubleChecked) {
+        if ( !this.nicknameConditions[0].valid ) {
+          this.openModal = true
+          this.modalContent = '닉네임 형식을 지켜주세요.'
         }
+        // 닉네임 조건을 충족한 경우
+        else {
+          // 중복체크
+          console.log('닉네임 중복체크 실행')
+          this.$axios({
+            method: 'get',
+            url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}`
+          })
+            .then((response) => {
+              // 응답 예시
+              // 성공시(이미 존재할 때 ) : 200, already exists
+              // 실패시(없을 때) : 200, success 
+              // 서버 에러시 : 500, fail
+
+              // 이미 아이디가 존재할 경우
+              if ( response.data.message === 'already exists' ) {
+                this.openModal = true
+                this.modalContent = '이미 사용 중인 닉네임이에요.'
+                this.id = null
+              } else if ( response.data.message === 'success' ) {
+                this.openModal = true
+                this.modalContent = '사용할 수 있는 닉네임이에요.'
+                const idInputTag = document.querySelector('#input-nickname')
+                // 현재 닉네임으로 고정
+                idInputTag.setAttribute('disabled', true)
+                this.nicknameDoubleChecked = true
+              } else {
+                console.log(response.data.message)
+                this.openModal = true
+                this.modalContent = '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          }
+      }
     },
     register() {
       const payload = {

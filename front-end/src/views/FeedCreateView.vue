@@ -20,7 +20,13 @@
 
     <article id="feed-create-article">
       <!-- 피드 작성 -->
-      <textarea @input="inputContent" name="feed-create-input" id="feed-create-input"></textarea>
+      <textarea 
+        @input="inputContent" 
+        name="feed-create-input" 
+        id="feed-create-input"
+        maxlength="500"
+      >
+        </textarea>
     </article>
 
     <div>
@@ -130,7 +136,7 @@ $feed-create-footer-height: 5%;
 
 // 기본 레이아웃
 #feed-create-layout {
-  height: inherit;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 

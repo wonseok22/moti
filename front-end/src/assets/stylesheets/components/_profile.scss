@@ -12,12 +12,18 @@
     padding: 7px 8px;
     height: 44px;
     .profile-nickname{
+
         display: flex;
         font-size: 18px;
         padding-left: 10px;
         font-weight: bold;
         justify-content: space-between;
         align-items: center;
+        .profile-achieve{
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
         .follow{
             margin-left: 8px;
             top: 10px;
@@ -62,14 +68,18 @@
         line-height: 1.4;
         align-items: center;
         font-weight: bold;
+        
         .profile-img-wrap{
             width: 90px;
             height: 90px;
-            border-radius: 70%;
+            border-radius: 100%;
             overflow: hidden;
+            vertical-align: middle;
+            align-items: center;
             img {
-                width: 80px;
-                height: 80px;
+                object-fit:contain;
+                width: 90px;
+                height: 90px;
             }
         }
     }
@@ -163,4 +173,71 @@
       }
     }
   }
+  .follow-detail {
+    margin-top: 5px;
+    width: $base-width;
+    height: 530px;
+    position: relative;
+    overflow: hidden;
 
+    .follow-detail-slide{
+      transition : 0.5s;
+      left:0;
+      position: absolute;
+      width: 300vw;
+      height: 100%;
+      display: flex;
+      main{
+        width: $base_width;
+        height: 100%;
+        .result-box {
+        padding-bottom: 50px;
+          width: 100%;
+          height:90%;
+          margin: 0 auto;
+          padding: 0 20px;
+          overflow-y: scroll;
+          // background-color: #bbb;
+        }
+      }
+    }
+  }
+
+.follow-menu {
+    margin: 15px auto;
+    width: 100%;
+    justify-content:  space-between;
+    #CategoryNav{
+        
+        justify-content: space-around;
+        width: 90%;
+        .follower {
+            width: 50%; 
+        }
+        .following{
+            width: 50%;
+        }
+
+    }
+} 
+.follow-underbar {
+    margin: 0 auto;
+    width: 90%;
+    border-bottom: 1px solid #ddd;
+    div {
+        position: relative;
+        border-bottom: 2px solid #000;
+        transition-property:left;
+      }
+      
+    .bar1 {
+        width: 50%;
+        left:0;
+        transition:0.3s;
+    }
+    .bar2 {
+        width: 50%;
+        left: 50%;
+        transition: 0.3s;
+    }
+}

@@ -17,13 +17,13 @@
         <!-- <h4>닉네임</h4> -->
         <div class="profile-modify-nickname">
             <input type="text" id="input-box" class="inputbox" name="input-nickname" 
-            placeholder="닉네임 입력" @input="nicknameInput">
+            placeholder="닉네임 입력" @input="nicknameInput" :value="nickname">
             <button class="btn-green" @click="doubleCheck">중복체크</button>
         </div>
         
         <!-- <h4>자기소개</h4> -->
         <div class="profile-modify-desc">
-            <textarea placeholder="자기소개 입력 (50자 이내)" @input="inputContent" class="profile-desc" name="feed-create-input" maxlength="50"></textarea>    
+            <textarea placeholder="자기소개 입력 (50자 이내)" :value="content" @input="inputContent" class="profile-desc" name="feed-create-input" maxlength="50"></textarea>    
         </div>
     </main>
     <div class="profile-modify-btn">
@@ -122,7 +122,7 @@
     // 프로필 수정
     submit() {
 
-    if(!this.nicknameDoubleChecked && this.nickname) {
+    if(!this.nicknameDoubleChecked && (this.nickname !== this.profile.nickname)) {
         alert("닉네임 중복체크를 완료해주세요")
         return 
     }
@@ -203,6 +203,8 @@
       url: `${this.$baseUrl}/profile?userId=${this.$store.state.id}`
     }).then((response) => {
       this.profile=response.data.profile
+      this.nickname = this.profile.nickname
+      this.content = this.profile.userDesc
       if (this.profile.profileImageUrl){
         this.profileImageUrl = this.profile.profileImageUrl
       }
@@ -255,16 +257,19 @@ $feed-create-footer-height: 5%;
         margin: 0 auto;
         width: 90px;
         height: 90px;
-        border-radius: 70%;
+        border-radius: 100%;
         overflow: hidden;
+        align-items: center;
+        vertical-align: middle;
         // border: 1px solid rgb(223, 223, 223);
         label {
             position: relative;
         }
         img{
+
           object-fit: cover;
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
         }
 
     }

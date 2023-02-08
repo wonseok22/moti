@@ -70,7 +70,9 @@
       </div>
       <div class="to-kakao">
         <p>또는</p>
-        <img class="kakao-login-img hl" src="@/assets/images/kakao_login.png" alt="kakao-login">
+        <div>
+          <login-kakao></login-kakao>          
+        </div>
       </div>
     </div>
     <basic-modal
@@ -86,11 +88,12 @@
 import * as regex from '@/tools/regex.js'
 import BasicModal from '@/components/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
-
+import LoginKakao from '@/components/LoginKakao'
 export default {
 	name: 'SignupForm',
   components: {
     BasicModal,
+    LoginKakao
   },
   mixins: [
     basicModalMixin,

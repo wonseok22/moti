@@ -26,8 +26,12 @@ Vue.prototype.$EventBus = new Vue();
 
 // const baseUrl = 'http://i8a509.p.ssafy.io:8080'
 const baseUrl = 'https://moti.today/api'
+
 Vue.prototype.$baseUrl = baseUrl
 store.$baseUrl = baseUrl
+
+window.Kakao.init("332addc510b9cc23dc54269380c84107");
+
 
 // store에서 router 사용하기
 store.$router = router

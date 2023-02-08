@@ -197,6 +197,9 @@ export default {
       method: 'get',
       url: `${this.$baseUrl}/profile?userId=${this.$store.state.profileTargetId}`
     }).then((response) => {
+      if (response.status == 202) {
+        alert('202 응답')
+      }
       this.profile=response.data.profile
       if (this.profile.profileImageUrl){
         this.profileImageUrl = this.profile.profileImageUrl

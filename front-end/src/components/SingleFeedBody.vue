@@ -17,7 +17,7 @@
      paginationColor="#ffff"
      paginationPosition="bottom-overlay"
      :paginationSize="7"
-     :minSwipeDistance="200"
+     :minSwipeDistance="130"
      >
         <slide class="single-slide" v-for="(feed, idx) of this.BodyData.feedImages" :key="idx">
             <img :src="feed.feedImageUrl" alt="motiImage">
@@ -61,7 +61,7 @@
         </span>
     
     <!-- 공유 버튼 -->
-        <span class="material-icons-outlined"
+        <span class="material-symbols-outlined"
         style="color:#A3A3A3;"
         @click="shareViaWebShare">
             share

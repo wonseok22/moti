@@ -15,10 +15,18 @@
       search
     </router-link>
 
-    <div  @click="change()"
+    <div v-if="!isNotProfile()"  @click="change()"
       class="material-symbols-outlined">
       account_circle
     </div>
+
+    <div v-if="isNotProfile()"
+    @click="change()"
+      class="material-symbols-outlined"
+      style="color:#04C584;">
+      account_circle
+    </div>
+
   </div>    
 </template>
 
@@ -31,11 +39,15 @@ export default {
       this.$router.push({
         name: 'profile',
       }).catch(() => {location.reload();});
+    },
+    isNotProfile() {
+      return this.$router.history.current["path"] === "/profile"
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  
   a {text-decoration: none;}
 </style>

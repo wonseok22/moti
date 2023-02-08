@@ -1,7 +1,24 @@
 <template>
   <div class="account-form-comp">
+    <!-- <p class="guide-comment">
+        <span class="fade">당</span>
+        <span class="fade">신</span>
+        <span class="fade">의 </span>
+        <span class="fade">씨</span>
+        <span class="fade">앗</span>
+        <span class="fade">을 </span>
+        <span class="fade">심</span>
+        <span class="fade">어</span>
+        <span class="fade">보</span>
+        <span class="fade">세</span>
+        <span class="fade">요</span>
+      </p> -->
     <div class="title-box">
-      <p style="font-size:52px;">moti</p>
+      <span class="fade">m</span>
+      <span class="fade">o</span>
+      <span class="fade">t</span>
+      <span class="fade">i</span>
+      <!-- <p style="font-size:52px;">moti</p> -->
     </div>
     <router-view/>
   </div>
@@ -15,6 +32,13 @@ export default {
       this.$router.push({ path: '/authcomplete' })
     }
   },
+  mounted() {
+    const introText = document.querySelectorAll(".fade");
+    let timer = 300;
+    introText.forEach((item) => {
+      item.style.animation = `fade 500ms ${(timer += 90)}ms forwards`;
+    });
+  }
   // created() {
   //   // 이미 로그인되어 있을 경우 피드로 이동
   //   if (this.$store.getters.isLoggedIn) {

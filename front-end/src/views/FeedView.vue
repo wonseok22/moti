@@ -99,6 +99,28 @@ export default {
         }, 2000)
       }
     },
+<<<<<<< HEAD
+    async getFeeds() {
+      console.log(this.payload.pageNum)
+      const res = this.$store.dispatch("FeedSearch", this.payload)
+      const result = await res
+      this.feeds = this.feeds.concat(result.data.feeds) 
+      this.checkNextPage(result)
+    },
+    checkNextPage(res) {
+      if(res.data.isLast) {
+        this.isMorePage = false
+      }
+      else if(res.data.keyword === "all") {
+        this.payload.kind = "all"
+        this.payload.pageNum += 1
+      }
+      else{
+        this.payload.pageNum += 1
+      }
+    },
+=======
+>>>>>>> 243e4bae738b4e69b119b677e8beb66100d296e3
   },
 }
 </script>

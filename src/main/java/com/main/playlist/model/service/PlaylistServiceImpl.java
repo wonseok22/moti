@@ -31,6 +31,15 @@ public class PlaylistServiceImpl implements PlaylistService {
 	public List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException {
 		List<UserPlaylistDto> userPlaylists = new ArrayList<>();
 		
+		userPlaylistRepository.findByUser_UserId(userId).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
+		
+		return userPlaylists;
+	}
+	
+	@Override
+	public List<UserPlaylistDto> getCurrentPlaylists(String userId) throws SQLException {
+		List<UserPlaylistDto> userPlaylists = new ArrayList<>();
+		
 		userPlaylistRepository.findByUser_UserIdAndEndDateAfter(userId, LocalDateTime.now()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
 		
 		return userPlaylists;
@@ -60,6 +69,20 @@ public class PlaylistServiceImpl implements PlaylistService {
 		userPlaylist.setPlaylist(playlist);
 		userPlaylist.setUser(user);
 		userPlaylist.setStartDate(LocalDateTime.now());
+		userPlaylist.setEndDate(LocalDateTime.now().plusDays(8).minusSeconds(1).truncatedTo(ChronoUnit.DAYS));
+		
+		userPlaylistRepository.save(userPlaylist);
+		
+		return userPlaylist;
+	}
+	
+	@Override
+	public UserPlaylist replayPlaylist(Long userPlaylistId) throws SQLException {
+		
+		
+		UserPlaylist userPlaylist = userPlaylistRepository.findByUserPlaylistId(userPlaylistId);
+		
+		
 		userPlaylist.setEndDate(LocalDateTime.now().plusDays(8).minusSeconds(1).truncatedTo(ChronoUnit.DAYS));
 		
 		userPlaylistRepository.save(userPlaylist);

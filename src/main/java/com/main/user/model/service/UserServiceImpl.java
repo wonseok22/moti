@@ -1,21 +1,21 @@
 package com.main.user.model.service;
 
 import com.main.profile.model.entity.Profile;
-import com.main.profile.model.entity.ProfileImage;
-import com.main.profile.model.repository.ProfileImageRepository;
 import com.main.profile.model.repository.ProfileRepository;
+import com.main.user.model.dto.SearchUserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.sql.SQLException;
-import java.util.Base64;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,18 +26,14 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	ProfileRepository profileRepository;
 	
-	@Autowired
-	ProfileImageRepository profileImageRepository;
-	
 	@Override
-	public User getUser(String userId) throws SQLException {
+	public User getUser(String userId) {
 		return userRepository.findByUserId(userId);
 	}
 	
 	@Override
 	@Transactional
-	public User registUser(User user) throws Exception {
-
+	public User registerUser (User user) throws Exception {
 
 //        Duilicate Check
 //        User userFindById = userRepository.findByUserId(user.getUserId());
@@ -47,21 +43,8 @@ public class UserServiceImpl implements UserService {
 //            return null;
 //        }'
 		
-		
-		// Create (Positive Long type) UUID
-		Long uuid = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
-		
-		// Profile Image Build
-		ProfileImage profileImage = new ProfileImage();
-		profileImage.setProfileImageId(uuid);
-		profileImageRepository.save(profileImage);
-		
 		// Profile Build
 		Profile profile = new Profile();
-		profile.setProfileId(uuid);
-		profile.setFollower(0);
-		profile.setFollowing(0);
-		profile.setProfileImage(profileImage);
 		profileRepository.save(profile);
 		
 		// Password Encoding
@@ -80,6 +63,7 @@ public class UserServiceImpl implements UserService {
 		user.setProfile(profile);
 		user.setSalt(salt);
 		user.setPassword(hex);
+		user.setJoinDate(LocalDateTime.now());
 		user.setType("default");
 		
 		return userRepository.save(user);
@@ -89,11 +73,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User loginUser(User user) throws Exception {
 		User findUser = userRepository.findByUserId(user.getUserId());
-		if (findUser == null) {
-			return null;
-		}
+		if (findUser == null) return null;
+		
+		String salt = findUser.getSalt();
 		String userPwd = user.getPassword();
-		userPwd += findUser.getSalt();
+		userPwd += salt;
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		
@@ -101,82 +85,104 @@ public class UserServiceImpl implements UserService {
 		md.update(userPwd.getBytes());
 		userPwd = String.format("%064x", new BigInteger(1, md.digest()));
 		
-		if (userPwd.equals(findUser.getPassword())) {
-			return findUser;
-		} else {
-			return null;
-		}
+		if (userPwd.equals(findUser.getPassword())) return findUser;
+		else return null;
 	}
 	
 	@Override
 	public User modifyUser(User user) throws Exception {
 		User findUser = userRepository.findByUserId(user.getUserId());
-		if (findUser == null) {
-			return null;
-		}
+		if (findUser == null) return null;
+		
+		String salt = findUser.getSalt();
 		String userPwd = user.getPassword();
-		userPwd += findUser.getSalt();
+		userPwd += salt;
 		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		
 		// 평문+salt 암호화
 		md.update(userPwd.getBytes());
 		userPwd = String.format("%064x", new BigInteger(1, md.digest()));
-		user.setSalt(findUser.getSalt());
-		user.setPassword(userPwd);
-		user.setType("default");
-		return userRepository.save(user);
+		findUser.setSalt(salt);
+		findUser.setPassword(userPwd);
+		findUser.setType("default");
+		return userRepository.save(findUser);
 	}
 	
 	@Override
 	@Transactional
-	public int deleteUser(String userId) throws Exception {
+	public int deleteUser(String userId) {
 		User user = userRepository.findByUserId(userId);
-		Profile profile = user.getProfile();
-		ProfileImage profileImage = profile.getProfileImage();
-		profileRepository.delete(profile);
-		profileImageRepository.delete(profileImage);
-		return userRepository.deleteByUserId(userId);
+		Long profileId = user.getProfile().getProfileId();
+		userRepository.deleteByUserId(userId);
+		return profileRepository.deleteByProfileId(profileId);
 	}
 	
 	@Override
-	public User checkUser(String type, String value) throws Exception {
-		User user = null;
-		if ("id".equals(type)) {
-			user = userRepository.findByUserId(value);
-		} else if ("nickname".equals(type)) {
-			user = userRepository.findByNickname(value);
-		} else if ("email".equals(type)) {
-			user = userRepository.findByEmail(value);
-		} else {
-			// 타입 잘못된경우
-			return null;
-		}
-		return user;
+	public User checkUser(String type, String value) {
+		if ("id".equals(type)) return userRepository.findByUserId(value);
+		else if ("nickname".equals(type)) return userRepository.findByNickname(value);
+		else if ("email".equals(type)) return userRepository.findByEmail(value);
+		return null;
 	}
 	
 	
 	@Override
-	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+	public void saveRefreshToken(String userId, String refreshToken) {
 		User user = userRepository.findByUserId(userId);
 		user.setRefreshToken(refreshToken);
 		userRepository.save(user);
 	}
 	
 	@Override
-	public String getRefreshToken(String userId) throws Exception {
+	public String getRefreshToken(String userId) {
 		User user = userRepository.findByUserId(userId);
-		if (user == null) {
-			return null;
-		}
-		return user.getRefreshToken();
+		return user != null ? user.getRefreshToken() : null;
 	}
 	
 	@Override
-	public void delRefreshToken(String userId) throws Exception {
+	public void delRefreshToken(String userId) {
 		User user = userRepository.findByUserId(userId);
 		user.setRefreshToken(null);
 		userRepository.save(user);
 	}
 	
+	@Override
+	public Map<String, Object> searchUser (String keyword, int pageNo) {
+		Map<String, Object> searchResult = new HashMap<>();
+		Slice<User> slice = userRepository.findAllByNicknameLike("%" + keyword + "%", PageRequest.of(pageNo, 20));
+		List<SearchUserDto> list = new ArrayList<>();
+		slice.forEach(x -> list.add(SearchUserDto.toDto(x)));
+		searchResult.put("users", list);
+		searchResult.put("isLast", slice.isLast());
+		return searchResult;
+	}
+	@Override
+	public User socialLogin(User userDto, String refreshToken) {
+		User user = userRepository.findByUserId(userDto.getUserId());
+		System.out.println(userDto);
+		if(user==null) {
+			user = userRepository.findByEmail(userDto.getEmail());
+			if(user!=null)
+				return null;
+			user = new User();
+			// Profile Build
+			Profile profile = new Profile();
+			profileRepository.save(profile);
+			// User Build
+			user.setUserId(userDto.getUserId());
+			user.setNickname(userDto.getUserId());
+			user.setEmail(userDto.getEmail());
+			user.setProfile(profile);
+			user.setJoinDate(LocalDateTime.now());
+			user.setType(userDto.getType());
+			user.setRefreshToken(refreshToken);
+			
+			user = userRepository.save(user);
+		}
+		user.setRefreshToken(refreshToken);
+		userRepository.save(user);
+		
+		return user;
+	}
 }

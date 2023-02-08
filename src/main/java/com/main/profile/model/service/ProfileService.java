@@ -1,20 +1,22 @@
 package com.main.profile.model.service;
 
-import com.main.profile.model.dto.FollowDto;
+import com.main.profile.model.dto.GetFollowDto;
 import com.main.profile.model.dto.ProfileDto;
 
 import java.util.List;
 
 public interface ProfileService {
-	public int modifyProfile(ProfileDto profileDto) throws Exception;
+	int modifyProfile(ProfileDto profileDto);
 	
-	public ProfileDto getProfile(String userId) throws Exception;
+	ProfileDto getProfile(String userId);
 	
-	public List<FollowDto> getFollow(String type, String userId) throws Exception;
+	List<GetFollowDto> getFollow(String type, String userId);
 	
-	public int doFollow(String type, String userId, String targetId) throws Exception;
+	int doFollow(String type, String userId, String targetId);
 	
-	public void deleteProfileImage(String userId) throws Exception;
+	void deleteProfileImage(String userId);
+	
+	boolean checkFollow(String userId, String targetId);
 }
 
 

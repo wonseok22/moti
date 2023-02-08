@@ -2,10 +2,7 @@ package com.main.profile.model.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -14,15 +11,11 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @ToString
 public class Profile {
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long profileId;
 	private String userDesc;
-	private int follower;
-	private int following;
-	
-	@OneToOne
-	@JoinColumn(name = "profileImageId")
-	private ProfileImage profileImage;
-	
+	private String profileImageUrl;
 	
 }

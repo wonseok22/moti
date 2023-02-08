@@ -1,6 +1,5 @@
 package com.main.profile.model.dto;
 
-
 import lombok.*;
 
 @Setter
@@ -13,5 +12,4 @@ public class FollowDto {
 	private String followingNickname;
 	private String followerId;
 	private String followingId;
-	
 }

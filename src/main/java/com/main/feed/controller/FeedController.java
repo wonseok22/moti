@@ -41,13 +41,13 @@ public class FeedController {
 	// ------------------------------------------------------------------
 	
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
-	@PostMapping
+	@PostMapping("")
 	public ResponseEntity<?> writeFeed(
 			@RequestPart @ApiParam(value = "피드 작성 정보", required = true) WriteFeedDto writeFeedDto,
-			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
+			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Feed feed = feedService.writeFeed(writeFeedDto, images);
@@ -68,7 +68,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -79,7 +79,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "조회하는 유저 ID", required = true) String userId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			FeedDto feed = feedService.viewFeed(feedId, userId);
@@ -88,7 +88,7 @@ public class FeedController {
 				logger.debug("피드 조회 결과 : {}", "피드 존재하지 않음");
 				resultMap.put("message", "존재하지 않는 피드");
 				status = HttpStatus.ACCEPTED;
-				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+				return new ResponseEntity<>(resultMap, status);
 			}
 			logger.debug("피드 조회 결과 : {}", "성공");
 			resultMap.put("feed", feed);
@@ -101,20 +101,19 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
-	// 파일 첨부 배제됨
 	@ApiOperation(value = "피드 수정", notes = "피드 수정 API", response = Map.class)
 	@PutMapping("/{feedId}")
 	public ResponseEntity<?> modifyFeed(
 			@PathVariable @ApiParam(value = "수정할 피드 ID", required = true) Long feedId,
 			@RequestPart @ApiParam(value = "수정할 내용", required = true) String content,
-			@RequestPart @ApiParam(value = "이미지 정보", required = false) List<MultipartFile> images) {
+			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Feed feed = feedService.modifyFeed(feedId, content, images);
@@ -135,7 +134,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -145,7 +144,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "삭제할 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			int result = feedService.deleteFeed(feedId);
@@ -170,7 +169,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -184,7 +183,7 @@ public class FeedController {
 			@RequestBody @ApiParam(value = "댓글 내용", required = true) WriteCommentDto writeCommentDto) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Comment comment = feedService.writeComment(writeCommentDto);
@@ -204,7 +203,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -214,7 +213,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "삭제할 댓글 ID", required = true) Long commentId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			int result = feedService.deleteComment(commentId);
@@ -234,7 +233,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -249,7 +248,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			Like like = feedService.addLike(userId, feedId);
@@ -269,7 +268,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -280,7 +279,7 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "좋아요 누른 피드 ID", required = true) Long feedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
 			int result = feedService.deleteLike(userId, feedId);
@@ -300,7 +299,7 @@ public class FeedController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
 	
@@ -309,39 +308,41 @@ public class FeedController {
 	// ------------------------------------------------------------------
 	
 	@ApiOperation(value = "피드 검색", notes = "검색어 기반 피드 검색 API", response = Map.class)
-	@GetMapping("/search/{userId}/{keyword}/{kind}/{pageNo}")
+	@GetMapping("/search/{userId}/{keyword}/{kind}/{minFeedId}")
 	public ResponseEntity<?> searchFeed(
 			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,
-			@PathVariable @ApiParam(value = "검색 종류(default, playlist, content)", required = true) String kind,
-			@PathVariable @ApiParam(value = "페이지 번호(0부터 시작)", required = true) int pageNo) {
+			@PathVariable @ApiParam(value = "검색 종류(default, playlist, content, userId)", required = true) String kind,
+			@PathVariable @ApiParam(value = "이전 페이지에서 가장 마지막에 불러온 피드 ID", required = true) Long minFeedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 		
 		try {
-			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, pageNo);
-			if (searchResult == null) {
-				logger.debug("피드 조회 결과 : {}", "피드 존재하지 않음");
+			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, minFeedId);
+			if (searchResult.get("feeds") == null) {
+				logger.debug("피드 검색 결과 : {}", "피드 존재하지 않음");
+				resultMap.put("feeds", null);
 				resultMap.put("message", "존재하지 않는 피드");
 				status = HttpStatus.ACCEPTED;
-				return new ResponseEntity<Map<String, Object>>(resultMap, status);
+				return new ResponseEntity<>(resultMap, status);
 			}
-			logger.debug("피드 조회 결과 : {}", "성공");
+			logger.debug("피드 검색 결과 : {}", "성공");
+			resultMap.put("keyword", searchResult.get("keyword"));
 			resultMap.put("feeds", searchResult.get("feeds"));
+			resultMap.put("minFeedId", searchResult.get("minFeedId"));
 			resultMap.put("isLast", searchResult.get("isLast"));
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("피드 조회 실패 : {}", e);
+			logger.error("피드 검색 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 		
 	}
-	
 	
 }

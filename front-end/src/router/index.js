@@ -43,7 +43,7 @@ const checkAccessToken = (to, from, next) => {
       'access-token' : store.state.accessToken,
     },
     data :{
-      "userId" : store.state.id,
+      "userId" : userId,
     },
   })
   // accessToken 유효

@@ -113,9 +113,9 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public int deleteUser(String userId) {
 		User user = userRepository.findByUserId(userId);
-		Profile profile = user.getProfile();
-		profileRepository.delete(profile);
-		return userRepository.deleteByUserId(userId);
+		Long profileId = user.getProfile().getProfileId();
+		userRepository.deleteByUserId(userId);
+		return profileRepository.deleteByProfileId(profileId);
 	}
 	
 	@Override

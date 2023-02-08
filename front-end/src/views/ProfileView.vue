@@ -169,7 +169,9 @@
       </div>
     </div>
 
-
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment/>
+    </div>
   </div>
 </template>
 
@@ -179,6 +181,8 @@ import SearchMyPl from '@/components/SearchMyPl.vue'
 import SearchAchieve from '@/components/SearchAchieve.vue'
 import FollowerList from "@/components/FollowerList.vue"
 import FollowingList from "@/components/FollowingList.vue"
+import FeedComment from '@/components/FeedComment.vue'
+
 export default {
   name: 'ProfileView',
   data() {
@@ -201,6 +205,7 @@ export default {
     SearchAchieve,
     FollowerList,
     FollowingList,
+    FeedComment,
   },
   created() {
     this.$axios({
@@ -393,7 +398,12 @@ export default {
         name: 'profile',
       }).catch(() => {location.reload();});
     }
-  }
+  },
+  computed: {
+    isCommentClicked() {
+      return this.$store.getters.isCommentClicked
+    }
+  },  
 }
 </script>
 

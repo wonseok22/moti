@@ -34,6 +34,8 @@ export default new Vuex.Store({
     nowPL: null,
     nowFeed: null,
     profileTargetId:null,
+    isComment: false,
+    scrollY : null,
     
     // 로그인에서 사용하는 모달 관련 데이터
     openModal: false,
@@ -48,6 +50,9 @@ export default new Vuex.Store({
       } else {
         return false
       }
+    },
+    isCommentClicked(state) {
+      return state.isComment
     }
   },
   mutations: {
@@ -140,6 +145,18 @@ export default new Vuex.Store({
       state.openModal = false
       state.modalReload = false
     },
+    //댓글 창 띄우기
+    COMMENT_CHANGE(state) {
+      if(state.isComment){
+        state.isComment = false
+      }
+      else{
+        state.isComment = true
+      }
+    },
+    SCROLL_HEIGHT(state, height) {
+      state.scrollY = height
+    }
   },
   actions: {
     // 유저정보 받기(회원가입 시)
@@ -426,16 +443,6 @@ export default new Vuex.Store({
         method:'get',
         url:`${this.$baseUrl}/feed/${feedId}/${this.state.id}`
       })
-      // .then((res) => {
-      //     const data = {
-      //       feedData: res.data.feed
-      //     }
-      //     console.log(data)
-      //     context.commit('GET_FEED', data)
-      // })
-      // .catch((error) => {
-      //     console.log(`피드 상세보기 가져오기 실패: status ${error.response.status}`)
-      // })
     },
     //피드 상세정보 저장
     putSingleFeed(context, payload) {
@@ -443,6 +450,12 @@ export default new Vuex.Store({
         feedData: payload
       }
       context.commit('GET_FEED', data)
+    },
+    showComment(context) {
+      context.commit('COMMENT_CHANGE')
+    },
+    putScrollHeight(context, height) {
+      context.commit('SCROLL_HEIGHT', height)
     },
     //댓글 작성
     writeComment(context, payload) {

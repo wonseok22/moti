@@ -1,12 +1,16 @@
 .feed-comment {
-    background-color: white;
-    position: fixed;
-    top: 0;
-    right: 100%;
     display: flex;
     flex-direction: column;
     width: 100vw;
     height: 100vh;
+    overflow: scroll;
+}
+
+.comment-page {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
 }
 
 .comment-header {
@@ -21,10 +25,14 @@
         font-size: 25px;
         margin-left: 10px;
     }
+
+    p {
+        font-weight: bold;
+    }
 }
 
 .comments-list {
-    padding-bottom: 55px
+    padding-bottom: 55px;
 }
 
 .single-comment {

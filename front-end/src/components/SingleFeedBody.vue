@@ -91,12 +91,14 @@ export default {
     },
     methods: {
         async moveToComment() {
+            const y = window.scrollY
+            console.log(y)
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
-            await this.$EventBus.$emit(this.BodyData.feedId)
-            //await this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}}).catch(() => {})
-            
+            await this.$store.dispatch("showComment")
+            this.$store.dispatch("putScrollHeight", y)
+            document.body.style.overflow = "hidden"
         },
         makeLike() {
             this.$store.dispatch("makeLike", this.BodyData.feedId)
@@ -123,7 +125,7 @@ export default {
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
-        // console.log(this.BodyData)
+        console.log(this.BodyData)
     }
 }
 

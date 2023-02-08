@@ -198,7 +198,7 @@ public class FeedServiceImpl implements FeedService {
 				List<FeedDto> followingFeeds = (List<FeedDto>) result.get("feeds");
 				List<FeedDto> followingAndAllFeeds = new ArrayList<>();
 				followingFeeds.forEach(x -> followingAndAllFeeds.add(x));
-				Slice<Feed> allFeedsSlice = feedRepository.findAllByUser_UserIdNotInAndFeedIdLessThanOrderByFeedIdDesc(followingList, minFeedId, PageRequest.of(0, 10));
+				Slice<Feed> allFeedsSlice = feedRepository.findAllByUser_UserIdNotInAndFeedIdLessThanOrderByFeedIdDesc(followingList, Long.MAX_VALUE, PageRequest.of(0, 10));
 				
 				Map<String, Object> secondMap = toSearchList(userId, allFeedsSlice);
 				List<FeedDto> temp = (List<FeedDto>) secondMap.get("feeds");

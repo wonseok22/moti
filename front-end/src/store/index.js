@@ -5,6 +5,19 @@ import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
+const save = (context, payloadToken, payloadInfo) => {
+  return new Promise((resolve) => {
+    const promise1 = context.commit('SAVE_TOKEN', payloadToken)
+    const promise2 = context.commit('GET_USER_INFO', payloadInfo)
+    Promise.all([promise1, promise2])
+      .then(() => {
+        console.log('resolve!')
+        resolve()
+      })
+  })
+}
+
+
 export default new Vuex.Store({
   plugins: [
     createPersistedState(),
@@ -56,7 +69,8 @@ export default new Vuex.Store({
           console.log(`알 수 없는 회원 정보가 입력되었습니다: ${key}`)
         }
       }
-      console.log(state)
+      console.log('유저 정보 저장 완료')
+      return Promise.resolve()
     },
     // 회원가입 완료 후 저장된 일부 정보 삭제하기(보안상)
     ERASE_INFO(state) {
@@ -74,7 +88,8 @@ export default new Vuex.Store({
       }
       // 토근 정상 저장 여부 확인
       if ( state.accessToken && state.refreshToken ) {
-        console.log('토큰이 정상적으로 저장되었습니다.')
+        console.log('토큰 저장 완료')
+        return Promise.resolve()
       } else {
         // 로그인에 실패했을 경우
         if (payload.length == 2) {
@@ -95,7 +110,7 @@ export default new Vuex.Store({
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
       state.myPL = payload.myPL
-      console.log(state.myPL)
+      // console.log(state.myPL)
     },
     // 나의 미션 저장
     GET_MY_MISSION(state, payload) {
@@ -161,11 +176,10 @@ export default new Vuex.Store({
               id: response.data.userId,
               nickname: response.data.nickname,
             }
-            context.commit('SAVE_TOKEN', payloadToken)
-            context.commit('GET_USER_INFO', payloadInfo)
-
-            // 피드 페이지로 이동
-            this.$router.push({ name: 'feed' })
+            save(context, payloadToken, payloadInfo)
+              .then(() => {
+                this.$router.push({ name: 'feed' })
+              })
             }
         })
         .catch((error) => {
@@ -179,10 +193,6 @@ export default new Vuex.Store({
     // 로그아웃
     logout(context) {
       context.commit('LOGOUT')
-      const payload = {
-        content: '로그아웃 되었습니다.'
-      }
-      context.commit('MODAL_OPEN', payload)
       this.$router.push({ name: 'login' })
     },
     // 이메일 인증 요청
@@ -272,30 +282,39 @@ export default new Vuex.Store({
     tokenRegeneration(context) {
       console.log('access token 재발급 요청')
       const UserDto = {
-        'refresh-token' : context.state.refreshToken
+        userId: context.state.id
       }
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/users/refresh`,
+        headers: {
+          'refresh-token' : context.state.refreshToken,
+        },
         data: UserDto
       })
         .then((response) => {
           // refresh token 유효 -> access token 갱신
+          console.log('access token 재발급 성공')
           const payload = {
             accessToken: response.data['access-token'],
           }
           context.commit('SAVE_TOKEN', payload)
+          return Promise.resolve()
         })
         .catch((error) => {
           // refresh token 만료 -> 재로그인
           if (error.response.status == '401') {
-            alert('다시 로그인 해주세요.')
+            const params = {
+              error: error.response.status
+            }
+            this.$router.push({ name: 'sessionExpired', params: params })
           } else {
-            alert(`에러가 발생했습니다. 고객센터에 문의해주세요. 에러: ${error.response.status}`)  
+            const params = {
+              error: error.response.status
+            }
+            this.$router.push({ name: 'sessionExpired', params: params })
           }
           // 로그아웃처리
-          context.dispatch('logout')
-          this.$router.push({ name: 'login' })
         })
     },
     // 나의 플레이리스트 정보 가져오기
@@ -336,7 +355,7 @@ export default new Vuex.Store({
           url: `${this.$baseUrl}/playlist/detail/${context.state.id}/${value}`
         })
           .then((response) => {
-            console.log(`플레이리스트별 미션 가져오기 성공(${key}): status ${response.status}`)
+            // console.log(`플레이리스트별 미션 가져오기 성공(${key}): status ${response.status}`)
             // const missions = {
             //   [key]: response.data.myPlaylist
             // }

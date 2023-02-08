@@ -10,26 +10,59 @@ import FeedView from '@/views/FeedView'
 import ProfileView from '@/views/ProfileView'
 import ProfileModifyView from "@/views/ProfileModifyView"
 import UserModifyView from "@/views/UserModifyView"
-//import SearchPage from '@/views/SearchView'
 import LoginForm from '@/components/LoginForm'
-//import MyMissionMain from '@/components/MyMissionMain'
-// import SearchPage from '@/views/SearchView'
 import playlistMain from '@/components/CategoryMain'
 import playlistSelect from '@/components/PlaylistMain'
 import playlistDetail from '@/components/PlaylistDetail'
 import playlistView from '@/views/PlaylistView'
-// import MyMissionMain from '@/components/MyMissionMain'
 import FeedComment from '@/components/FeedComment'
 import AuthCompleteView from '@/views/AuthCompleteView'
-// import FeedPage from '@/views/FeedPage'
 import SearchView from '@/views/SearchView'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
+import SessionExpiredView from '@/views/SessionExpiredView'
+import store from '@/store'
+import axios from 'axios'
 
 
 Vue.use(VueRouter)
+
+const baseUrl = 'https://moti.today/api'
+
+const checkAccessToken = (to, from, next) => {
+  console.log('access token 체크 시작')
+  const userId = store.state.id
+  // api 요청(현재 로그인 유저 회원정보 조회)
+
+  axios({
+    method: 'get',
+    url: `${baseUrl}/users/${userId}`,
+    headers: {
+      'access-token' : store.state.accessToken,
+    }
+  })
+  // accessToken 유효
+    .then(() => {
+      console.log('access token이 유효합니다.')
+      next()
+    })
+    .catch((error) => {
+      // accessToken 만료
+      if (error.response.status == 401) {
+        console.log('access token이 만료되었습니다.')
+        // accessToken 재발급 요청
+        const regenResult = store.dispatch('tokenRegeneration')
+        regenResult.then(() => {
+          // 재발급 성공 시 작업 그대로 진행
+          next()
+        })
+      } else {
+        console.log(error.response.status)
+      }
+    })
+}
 
 const routes = [
   {
@@ -67,36 +100,43 @@ const routes = [
   {
     path: '/feed',
     name: 'feed',
+    beforeEnter: checkAccessToken,
     component: FeedView,
   },
   {
     path: '/feed/create',
     name: 'feedcreate',
+    beforeEnter: checkAccessToken,
     component: FeedCreateView,
   },
   {
     path:'/comment/:feedId',
     name:'comment',
+    beforeEnter: checkAccessToken,
     component:FeedComment,
   },
   {
     path:'/profile',
     name:'profile',
+    beforeEnter: checkAccessToken,
     component: ProfileView,
   },
   {
     path:"/profile/modify",
     name:"profileModifyView",
+    beforeEnter: checkAccessToken,
     component:ProfileModifyView,
   },
   {
     path:"/user/modify",
     name:"userModifyView",
+    beforeEnter: checkAccessToken,
     component:UserModifyView,
   },
   {
     path:'/search',
     name:'search',
+    beforeEnter: checkAccessToken,
     component:SearchView,
   },
   {
@@ -106,10 +146,12 @@ const routes = [
       {
         path: '',
         name: 'my-pl',
+        beforeEnter: checkAccessToken,
         component: MyPLMain,
       },
       {
         path: 'mission',
+        beforeEnter: checkAccessToken,
         component: MyPLMission,
       }
     ]
@@ -121,16 +163,19 @@ const routes = [
       {
         path: '',
         name: 'playlist',
+        beforeEnter: checkAccessToken,
         component: playlistMain,
       },
       {
         path: 'select',
         name: 'playlistSelect',
+        beforeEnter: checkAccessToken,
         component: playlistSelect,
       },
       {
         path: 'detail',
         name: 'playlistDetail',
+        beforeEnter: checkAccessToken,
         component: playlistDetail,
       }
     ]
@@ -152,7 +197,13 @@ const routes = [
   {
     path: '/search',
     name: 'searchView',
+    beforeEnter: checkAccessToken,
     component: SearchView,
+  },
+  {
+    path: '/session-expired/:error',
+    name: 'sessionExpired',
+    component: SessionExpiredView,
   },
   {
     path: '*',

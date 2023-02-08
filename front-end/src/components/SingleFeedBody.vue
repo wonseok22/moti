@@ -123,7 +123,7 @@ export default {
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
-        console.log(this.BodyData)
+        // console.log(this.BodyData)
     }
 }
 

@@ -56,7 +56,6 @@ export default {
       if(this.isMorePage) {
         this.getFeeds()
       }else{
-        console.log('마지막')
         const notification = document.querySelector(".moving-notification")
         notification.classList.add('show')
         setTimeout(() => {
@@ -65,9 +64,9 @@ export default {
       }
     },
     async getFeeds() {
+      console.log(this.payload.pageNum)
       const res = this.$store.dispatch("FeedSearch", this.payload)
       const result = await res
-      // console.log(result)
       this.feeds = this.feeds.concat(result.data.feeds) 
       this.checkNextPage(result)
     },
@@ -80,7 +79,7 @@ export default {
         this.payload.pageNum += 1
       }
       else{
-        this.pageNum += 1
+        this.payload.pageNum += 1
       }
     },
   },

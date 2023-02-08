@@ -110,7 +110,6 @@ export default {
     const introText = document.querySelectorAll(".fade");
     let timer = 300;
     introText.forEach((item) => {
-      console.log(item)
       item.style.animation = `fade 500ms ${(timer += 80)}ms forwards`;
     });
   },

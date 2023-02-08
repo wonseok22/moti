@@ -121,6 +121,14 @@
               <div>로그아웃</div>
             </div>
           </li>
+          <li @click="deleteUser">
+            <div class="menu-items bottom">
+              <span class="material-symbols-outlined">
+              settings_power
+              </span>
+              <div>회원탈퇴</div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -207,6 +215,35 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
+    },
+    deleteUser() {
+      console.log(this.$store.state.accessToken)
+      if(confirm("정말로 탈퇴하시겠습니까??")) {
+        this.$axios({
+        method: 'delete',
+        headers:{
+          'access-token' : this.$store.state.accessToken,
+        },
+          url: `${this.$baseUrl}/users/${this.$store.state.id}`
+        }).then((response) => {
+          console.log(response)
+          if (response.status == 200){
+            alert("쩡상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.")
+            this.$router.push({
+              name: 'landing',
+            }).catch(() => {});
+          } else {
+            alert("회원탈퇴 실패. 재로그인 후 다시 시도하세요")
+            this.$router.push({
+              name: 'landing',
+            }).catch(() => {});
+          }
+        }).catch((error) =>{
+          if(error.response.state == 401){
+            this.$store.dispatch("tokenRegeneration");
+          }
+        })
+      } 
     },
     feed () {
       const bar = document.getElementById("bar");
@@ -392,8 +429,12 @@ export default {
       text-align: left;
       text-decoration: none;
       list-style: none;
-      padding: 5px 0 0 0;
+      padding: 0 0 0 0;
       li {
+        .bottom{
+          position: absolute;
+          bottom: 0;
+        }
         .menu-items{
 
           font-size: 14px;
@@ -404,6 +445,7 @@ export default {
           span{
             margin: 0 15px;
           }
+          
         }
       }
     }

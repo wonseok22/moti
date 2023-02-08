@@ -288,7 +288,8 @@ public class FeedServiceImpl implements FeedService {
 	private void imageUpload(Feed feed, List<MultipartFile> images) {
 		images.forEach(x -> {
 			try {
-				String imagePath = s3Upload.uploadFiles(x, "feedImages");
+				MultipartFile resizedImage = s3Upload.resizeImage(x);
+				String imagePath = s3Upload.uploadFiles(resizedImage, "feedImages");
 				FeedImage feedImage = new FeedImage();
 				feedImage.setFeed(feed);
 				feedImage.setFeedImageUrl(imagePath);

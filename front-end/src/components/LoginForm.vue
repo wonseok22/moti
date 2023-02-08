@@ -25,7 +25,9 @@
       </div>
       <div class="to-kakao">
         <p>또는</p>
-        <img class="kakao-login-img hl" src="@/assets/images/kakao_login.png" alt="kakao-login">
+        <div>
+          <login-kakao></login-kakao>          
+        </div>
       </div>
     </div>
     <basic-modal
@@ -40,12 +42,14 @@
 <script>
 import * as regex from '@/tools/regex.js'
 import BasicModal from '@/components/BasicModal'
+import LoginKakao from '@/components/LoginKakao'
 
 export default {
 	name: 'loginForm',
   components: {
     BasicModal,
-  },
+    LoginKakao,
+},
   data() {
     return {
       id: null,

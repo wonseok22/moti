@@ -30,6 +30,7 @@ store.$baseUrl = baseUrl
 // store에서 router 사용하기
 store.$router = router
 
+
 new Vue({
   store,
   router,

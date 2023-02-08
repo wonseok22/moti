@@ -177,7 +177,7 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Map<String, Object> searchFeed(String userId, String keyword, String kind, int pageNo, Long minFeedId) {
+	public Map<String, Object> searchFeed(String userId, String keyword, String kind, Long minFeedId) {
 		// 검색 종류에 따른 분기
 		if ("default".equals(kind)) {
 			if ("following".equals(keyword)) {
@@ -187,7 +187,7 @@ public class FeedServiceImpl implements FeedService {
 				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
 				
 				// 일단 팔로잉 유저들의 피드들을 가져온다
-				Slice<Feed> followingFeedsSlice = feedRepository.findAllByUser_UserIdInAndFeedIdLessThanOrderByFeedIdDesc(followingList, minFeedId, PageRequest.of(pageNo, 10));
+				Slice<Feed> followingFeedsSlice = feedRepository.findAllByUser_UserIdInAndFeedIdLessThanOrderByFeedIdDesc(followingList, minFeedId, PageRequest.of(0, 10));
 				Map<String, Object> result = toSearchList(userId, followingFeedsSlice);
 				result.put("keyword", "following");
 				
@@ -215,7 +215,7 @@ public class FeedServiceImpl implements FeedService {
 				List<String> followingList = new ArrayList<>();
 				followRepository.findAllByFollowerId(userId).forEach(x -> followingList.add(x.getFollowingId()));
 				followingList.add(userId);
-				Slice<Feed> list = feedRepository.findAllByUser_UserIdNotInAndFeedIdLessThanOrderByFeedIdDesc(followingList, minFeedId, PageRequest.of(pageNo, 10));
+				Slice<Feed> list = feedRepository.findAllByUser_UserIdNotInAndFeedIdLessThanOrderByFeedIdDesc(followingList, minFeedId, PageRequest.of(0, 10));
 				Map<String, Object> result = toSearchList(userId, list);
 				result.put("keyword", "all");
 				return result;
@@ -239,13 +239,13 @@ public class FeedServiceImpl implements FeedService {
 			userPlaylists.forEach(x -> userPlaylistIds.add(x.getUserPlaylistId()));
 			
 			// UserPlaylist ID들을 가지고 DB에서 검색
-			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdInAndFeedIdLessThanOrderByFeedIdDesc(userPlaylistIds, minFeedId, PageRequest.of(pageNo, 10));
+			Slice<Feed> list = feedRepository.findAllByUserPlaylist_UserPlaylistIdInAndFeedIdLessThanOrderByFeedIdDesc(userPlaylistIds, minFeedId, PageRequest.of(0, 10));
 			return toSearchList(userId, list);
 		} else if ("content".equals(kind)) {
-			Slice<Feed> list = feedRepository.findAllByContentLikeAndFeedIdLessThanOrderByFeedIdDesc("%" + keyword + "%", minFeedId, PageRequest.of(pageNo, 10));
+			Slice<Feed> list = feedRepository.findAllByContentLikeAndFeedIdLessThanOrderByFeedIdDesc("%" + keyword + "%", minFeedId, PageRequest.of(0, 10));
 			return toSearchList(userId, list);
 		} else if ("userId".equals(kind)) {
-			Slice<Feed> list = feedRepository.findAllByUser_UserIdAndFeedIdLessThanOrderByFeedIdDesc(keyword, minFeedId, PageRequest.of(pageNo, 10));
+			Slice<Feed> list = feedRepository.findAllByUser_UserIdAndFeedIdLessThanOrderByFeedIdDesc(keyword, minFeedId, PageRequest.of(0, 10));
 			return toSearchList(userId, list);
 		}
 		
@@ -260,7 +260,6 @@ public class FeedServiceImpl implements FeedService {
 	 */
 	private Map<String, Object> toSearchList(String userId, Slice<Feed> list) {
 		Map<String, Object> searchResult = new HashMap<>();
-//		Long minFeedId = feeds.get(feeds.size() - 1).getFeedId();
 		Long minFeedId = Long.MAX_VALUE;
 		
 		// DTO에 담아서 리스트에 삽입

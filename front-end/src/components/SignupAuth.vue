@@ -8,7 +8,7 @@
           <div class="account-id-box">
             <input type="email" id="input-email" class="inputbox" name="input-email" placeholder="이메일 주소" @input="emailInput">
             <button class="double-check btn-green" @click="doubleCheck">중복체크</button>
-            <div v-if="emailActive" class="infobox">
+            <!-- <div v-if="emailActive" class="infobox">
               <p
                 v-for="(condition, idx) in emailConditions"
                 :key="idx"
@@ -16,7 +16,7 @@
               >
                 {{ condition.comment }}
               </p>
-            </div>
+            </div> -->
           </div>
         </div>
         <button v-if="isvalid" id="email-auth-btn" class="btn-green" @click="confirm">이메일 인증</button>
@@ -85,60 +85,59 @@ export default {
       if (!this.emailDoubleChecked) {
         console.log('이메일 중복체크 실행')
         // 이메일 조건을 충족하지 못한 경우
-        if ( !this.emailConditions[0].valid ) {
-          // this.openModal = true
-          // this.modalContent = '이메일 형식을 지켜주세요.'
-          const payload = {
-            content: '이메일 형식을 지켜주세요.'
-          }
-          this.$store.dispatch('modalOpen', payload)
-        }
+        // if ( !this.emailConditions[0].valid ) {
+        //   // this.openModal = true
+        //   // this.modalContent = '이메일 형식을 지켜주세요.'
+        //   const payload = {
+        //     content: '이메일 형식을 지켜주세요.'
+        //   }
+        //   this.$store.dispatch('modalOpen', payload)
+        // }
         // 이메일 조건을 충족한 경우
-        else {
-          // 중복체크
-          this.$axios({
-            method: 'get',
-            url: `${this.$baseUrl}/users/check?type=email&value=${this.email}`
-          })
-            .then((response) => {
-              // 응답 예시
-              // 성공시(이미 존재할 때 ) : 200, already exists
-              // 실패시(없을 때) : 200, success 
-              // 서버 에러시 : 500, fail
+        // 중복체크
+        this.$axios({
+          method: 'get',
+          url: `${this.$baseUrl}/users/check?type=email&value=${this.email}`
+        })
+          .then((response) => {
+            // 응답 예시
+            // 성공시(이미 존재할 때 ) : 200, already exists
+            // 실패시(없을 때) : 200, success 
+            // 서버 에러시 : 500, fail
 
-              // 이미 아이디가 존재할 경우
-              if ( response.data.message === 'already exists' ) {
-                const payload = {
-                  content: '이미 사용 중인 이메일이에요.'
-                }
-                this.$store.dispatch('modalOpen', payload)
-                console.log(`중복체크 결과/message: ${response.data.message}`)
-                this.email = null
-                // 입력된 이메일 삭제
-                const emailTag = document.querySelector('#input-email')
-                emailTag.value = null
-              } else if ( response.data.message === 'success' ) {
-                const payload = {
-                  content: '사용할 수 있는 이메일이에요.'
-                }
-                this.$store.dispatch('modalOpen', payload)
-                console.log(`중복체크 결과/message: ${response.data.message}`)
-                const emailInputTag = document.querySelector('#input-email')
-                // 현재 이메일로 고정
-                emailInputTag.setAttribute('disabled', true)
-                this.emailDoubleChecked = true
-              } else {
-                console.log(response.data.message)
-                const payload = {
-                  content: '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
-                }
-                this.$store.dispatch('modalOpen', payload)
+            // 이미 이메일이 존재할 경우
+            if ( response.data.message === 'already exists' ) {
+              const payload = {
+                content: '이미 사용 중인 이메일이에요.'
               }
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-          }
+              this.$store.dispatch('modalOpen', payload)
+              console.log(`중복체크 결과/message: ${response.data.message}`)
+              this.email = null
+              // 입력된 이메일 삭제
+              const emailTag = document.querySelector('#input-email')
+              emailTag.value = null
+            } else if ( response.data.message === 'success' ) {
+              const payload = {
+                content: '사용할 수 있는 이메일이에요.'
+              }
+              this.$store.dispatch('modalOpen', payload)
+              console.log(`중복체크 결과/message: ${response.data.message}`)
+              const emailInputTag = document.querySelector('#input-email')
+              // 현재 이메일로 고정
+              emailInputTag.setAttribute('disabled', true)
+              this.emailDoubleChecked = true
+            } else {
+              console.log(response.data.message)
+              const payload = {
+                content: '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
+              }
+              this.$store.dispatch('modalOpen', payload)
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        
       }
     },
     // 모달 닫기
@@ -156,20 +155,20 @@ export default {
       }
     },
     // 이메일 조건
-    emailConditions() {
-      let conditions = [{
-        comment: 'X 이메일 형식을 지켜주세요.',
-        valid: false,
-      }]
-      // 골뱅이 포함 여부 확인
-      if (this.email) {
-        if (this.email.includes('@')) {
-        conditions[0].comment = 'O ' + conditions[0].comment.substring(1, )
-        conditions[0].valid = true
-        }
-      }
-      return conditions
-    },
+    // emailConditions() {
+    //   let conditions = [{
+    //     comment: 'X 이메일 형식을 지켜주세요.',
+    //     valid: false,
+    //   }]
+    //   // 골뱅이 포함 여부 확인
+    //   if (this.email) {
+    //     if (this.email.includes('@')) {
+    //     conditions[0].comment = 'O ' + conditions[0].comment.substring(1, )
+    //     conditions[0].valid = true
+    //     }
+    //   }
+    //   return conditions
+    // },
     modalReload() {
       return this.$store.state.modalReload
     },

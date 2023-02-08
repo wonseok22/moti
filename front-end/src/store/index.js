@@ -314,7 +314,6 @@ export default new Vuex.Store({
             }
             this.$router.push({ name: 'sessionExpired', params: params })
           }
-          // 로그아웃처리
         })
     },
     // 나의 플레이리스트 정보 가져오기

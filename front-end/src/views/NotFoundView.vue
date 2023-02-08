@@ -22,7 +22,7 @@ export default {
 
 <style lang="scss">
 #notfound-layout {
-  height: inherit;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

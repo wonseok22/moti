@@ -130,10 +130,10 @@ export default {
 }
 
 .condition-valid {
-  @include condition-isvalid
+  @include condition-isvalid()
 }
 
 .condition-invalid {
-  @include condition-isvalid(rgb(232, 81, 81))
+  @include condition-isvalid($light-red)
 }
 </style>

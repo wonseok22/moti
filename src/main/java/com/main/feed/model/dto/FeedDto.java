@@ -17,6 +17,7 @@ public class FeedDto {
 	private Long feedId; // AI
 	private String userId;
 	private String nickname;
+	private String profileImageUrl;
 	private String achievementImageUrl;
 	private String playlistName;
 	private String missionName;
@@ -44,6 +45,7 @@ public class FeedDto {
 				feed.getFeedId(),
 				userDto.getUserId(),
 				userDto.getNickname(),
+				feed.getUser().getProfile().getProfileImageUrl(),
 				userDto.getAchievementImageUrl(),
 				feed.getUserPlaylist().getPlaylist().getPlaylistName(),
 				feed.getMission().getMissionName(),

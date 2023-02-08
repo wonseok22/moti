@@ -134,6 +134,6 @@ export default {
 }
 
 .condition-invalid {
-  @include condition-isvalid($light-grey)
+  @include condition-isvalid(rgb(232, 81, 81))
 }
 </style>

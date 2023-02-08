@@ -22,8 +22,6 @@ Vue.use(VModal, {dialog: true})
 Vue.prototype.$axios = axios
 store.$axios = axios
 
-Vue.prototype.$EventBus = new Vue();
-
 // const baseUrl = 'http://i8a509.p.ssafy.io:8080'
 const baseUrl = 'https://moti.today/api'
 Vue.prototype.$baseUrl = baseUrl

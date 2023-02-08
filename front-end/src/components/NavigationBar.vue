@@ -1,17 +1,17 @@
 <template>
   <div class="navbar">
     <router-link to="/feed" 
-      class="material-icons-outlined">
+      class="material-symbols-outlined">
       home
     </router-link>
 
     <router-link to="/my-pl" 
-      class="material-icons">
+      class="material-symbols-outlined">
       history_edu
     </router-link>
 
     <router-link to="/search" 
-      class="material-icons">
+      class="material-symbols-outlined">
       search
     </router-link>
 

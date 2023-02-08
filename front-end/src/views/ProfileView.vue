@@ -47,7 +47,7 @@
     <div class="profile-menu">
       <nav id="CategoryNav">
         <div class="profile-feed"  @click="feed()">
-          <span class="material-icons-outlined">
+          <span class="material-symbols-outlined">
           feed
           </span>
         </div>
@@ -57,8 +57,8 @@
           </span>
         </div>
         <div class="profile-achive" @click="achive()">
-          <span class="material-icons-outlined">
-          emoji_events
+          <span class="material-symbols-outlined">
+          workspace_premium
           </span>
         </div>
       </nav>

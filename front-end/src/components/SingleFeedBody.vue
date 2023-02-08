@@ -94,7 +94,8 @@ export default {
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
-            await this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}}).catch(() => {})
+            await this.$EventBus.$emit(this.BodyData.feedId)
+            //await this.$router.push({name:"comment", params: {feedId:this.BodyData.feedId}}).catch(() => {})
             
         },
         makeLike() {

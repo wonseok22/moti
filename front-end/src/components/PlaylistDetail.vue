@@ -1,6 +1,6 @@
 <template>
   <div v-if="plDetail"
-    id="my-pl-mission-layout"
+    id="pl-mission-layout"
   >
     <div id="pl-info-layout">
       <!-- PL 설명 -->
@@ -11,24 +11,28 @@
         </div>
         <!-- PL 상세 -->
         <div id="pl-info-text">
-          <p class="pl-info-title">{{plDetail.playlistName}}</p>
+          <p class="pl-info-title">{{ plDetail.playlistName }}
+            <span @click="openModal" class="material-symbols-outlined">info</span>
+          </p>
           <!-- <span>{{ plDetail.playlistDesc }}</span> -->
           <p class="pl-info-content"> 현재 <span class="strong">{{ plDetail.current }}명</span>이 키우는 중입니다.</p>
           </div>
       </div>
-      <p>일주일 중 5일 미션을 완수하면 [플리] 완수에요. 당일 미션은 자정까지만 수행 가능해요 </p>
+      <div id="pl-mission-guide">
+        <p>7일 중 5일 미션을 수행하면 성장 플랜 성공!</p>
+        <p>하루에 1번 미션 수행 가능해요.</p>
+      </div>
     </div>
 
-    
-    <div id="mission-info-layout">
+    <div id="pl-mission-info-layout">
       <!-- 미션 리스트 -->
-      <article id="mission-list-layout">
-        <div v-for="(mission, idx) in plDetail.missions"
+      <article id="pl-mission-list-layout">
+        <p v-for="(mission, idx) in plDetail.missions"
           :key="idx"
-          class="mission-list-detail"
+          class="pl-mission-list-detail"
         >
         {{ mission.missionName }}
-        </div>
+        </p>
         <!-- 미션 후기 작성 -->
       </article>
     </div>
@@ -36,17 +40,27 @@
     <button v-if="isValid" class="btn-green" @click="addPlaylist">꽃 키우러 가기</button>
     <button v-else class="btn-green-inactive">이미 키우고 있는 꽃이에요.</button>
 
+    <!-- 꽃말 모달 -->
+    <flower-desc
+      v-if="isModalOpened"
+      @close="closeModal"
+      :flowerDesc="plDetail.playlistDesc"
+    >
+    </flower-desc>
+    
     <!-- nav 바 -->
     <NavigationBar/>
   </div>
 </template>
 <script>
 import NavigationBar from '@/components/NavigationBar'
+import FlowerDesc from '@/components/FlowerDesc'
 
 export default {
   name: 'playlistDetail',
   components: {
     NavigationBar,
+    FlowerDesc,
   },
   data() {
     return{
@@ -54,6 +68,7 @@ export default {
       pl: null,
       plDetail: null,
       isValid: false,
+      isModalOpened: false,
     }
   },
   computed: {
@@ -112,6 +127,14 @@ export default {
         .catch((error) =>{
           console.log(error)
       })
+    },
+    // 모달 열기
+    openModal() {
+      this.isModalOpened = true
+    },
+    // 모달 닫기
+    closeModal() {
+      this.isModalOpened = false
     }
   },
   created() {
@@ -122,148 +145,120 @@ export default {
 }
 </script>
 <style lang="scss">
-  // 기본 레이아웃
-  #my-pl-mission-layout {
-    width: $base-width;
-    height: $base-height;
-
-    display: flex;
-    flex-direction: column;
-  }
-
-  // 플레이리스트 정보 레이아웃
-  #pl-info-layout {
-      // width: 100vw;
-      // height: 30%;
-      // padding-top: 30px;
-    width: 100%;
-    height: 25%;
-    padding-top: 50px;
-    margin-bottom: 30px;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  // 플레이리스트 정보
-  #pl-info {
-  display: flex;
+// 기본 레이아웃
+#pl-mission-layout {
   width: 100%;
-  gap: 15px;
-  // height: 100px;
-  // height: 96px;
-  }
+  height: $base-height;
 
-  // 플레이리스트 이미지
-  #pl-info-img {
-  // width: 50% !important;
-  // height: 100%;
-  // align-items: center;
-
-  // img {
-  //     width: 70% !important;
-  //     height: 100% !important;
-  //     object-fit: cover;
-  // }
-
-   width: 25%;
-
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 100%;
-    }
-  }
-
-  // 플레이리스트 상세 정보
-  #pl-info-text {
-    width: 75%;
-    height: 100%;
-    text-align: start;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .pl-info-title {
-        font-size: $fs-4;
-        font-weight: bold;
-        margin: 0px;
-    }
-    .pl-info-content {
-      font-size: $fs-6;
-      color: $dark-grey;
-      margin-bottom: 0px;
-      span {
-        color: $text-base-color;
-        font-weight: bold;
-      }
-    }
-  }
-  .strong {
-      font-weight: bold;
-  }
-  // 미션 수행 가이드
-  #guide {
-  font-size: $fs-6;
-  color: $light-grey;
-  }
-
-  // 미션 정보 레이아웃
-  #mission-info-layout {
-  height: 60%;
-  }
-
-  // 미션 진행상황 레이아웃
-  #mission-progress-layout {
   display: flex;
-  justify-content: space-evenly;
-  }
+  flex-direction: column;
+  align-items: center;
+}
 
-  // 미션 진행상황 박스
-  .mission-progress-box {
-  width: 51px;
-  height: 51px;
+// 플레이리스트 정보 레이아웃
+#pl-info-layout {
+  width: 100%;
+  height: 25%;
+  padding-top: 30px;
   
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+}
 
-  border: 1px solid;
+// 플레이리스트 정보
+#pl-info {
+display: flex;
+width: 100%;
+gap: 10px;
+justify-content: center;
+}
+
+// 플레이리스트 이미지
+#pl-info-img {
+  width: 25%;
+
+  display: flex;
+  align-items: center;
 
   img {
-      height: 100%;
+    width: 100%;
   }
-  }
+}
 
-  // 미션 리스트 레이아웃
-  #mission-list-layout {
+// 플레이리스트 상세 정보
+#pl-info-text {
+  height: 100%;
+  text-align: start;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .pl-info-title {
+    font-size: $fs-4;
+    font-weight: bold;
+    margin: 0px;
+    
+    display: flex;
+    align-items: middle;
+    gap: 5px;
+  }
+  .pl-info-content {
+    font-size: $fs-6;
+    color: $dark-grey;
+    margin-bottom: 0px;
+    span {
+      color: $text-base-color;
+      font-weight: bold;
+    }
+  }
+}
+.strong {
+    font-weight: bold;
+}
+
+// 미션 정보 레이아웃
+#pl-mission-info-layout {
+  margin-top: 30px;
+  height: 50%;
+  // margin-bottom: 30px;
+}
+
+
+// 미션 리스트 레이아웃
+#pl-mission-list-layout {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   gap: 20px;
-  }
+}
 
-  // 미션 디테일
-  .mission-list-detail {
-      box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.08);
-      border-radius: 8.6px;
-      background-color: $light-yellow;
-      width: 100%;
-      height: 36px;
-      // font-size: 18px;
-      line-height: 2;
-  }
+// 미션 디테일
+.pl-mission-list-detail {
+  margin: 0;
+  display: flex;
+  // flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 
-  // 선택된 미션
-  .mission-selected {
-  background-color: $dark-green;
-  color: white;
+  box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.08);
+  border-radius: 8.6px;
+  background-color: $light-yellow;
+  width: 100%;
+
+  min-height: 50px;
+  // height: 46px;
+
+}
+
+#pl-mission-guide {
+  margin-top: 20px;
+  p {
+    margin: 0;
   }
+}
 
 
 </style>

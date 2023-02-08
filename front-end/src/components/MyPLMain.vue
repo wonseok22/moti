@@ -4,7 +4,7 @@
     <header>
       <p id="my-pl-main-name">
         <span>{{ nickname }}</span>
-        의 꽃 목록
+        의 성장 플랜
       </p>
     </header>
     

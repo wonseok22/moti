@@ -122,7 +122,7 @@ export default {
   width: 52px;
   height: 48px;
 
-  background: $light-green;
+  background: $main-green;
   border-radius: 5px 0px 0px 5px;
   border: 1px solid $light-grey;
 }

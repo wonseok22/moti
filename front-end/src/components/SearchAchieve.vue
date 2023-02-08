@@ -1,5 +1,6 @@
 <template>
     <main>
+        <h2>업적</h2>
         <div class="result-box flex">
             <div v-for="(achievement,idx) in achievements" :key="idx" class="achieve-lists">
                 <img :src="achievement.achievementImageUrl" alt="업적 이미지" :class="achievement.achieved ? `` : 'grayscale'"

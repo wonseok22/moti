@@ -398,6 +398,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .modal {
   position: fixed;
   background: rgba(0, 0, 0, 0.5);
@@ -454,6 +455,7 @@ export default {
           bottom: 0;
         }
         .menu-items{
+          line-height: 1.8;
           font-size: 16px;
           font-weight: bold;
           margin: 20px 0;
@@ -563,4 +565,5 @@ export default {
     }
   }
 }
+
 </style>

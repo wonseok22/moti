@@ -87,14 +87,6 @@ export default {
   position: relative;
 }
 
-.condition-valid {
-  @include condition-isvalid
-}
-
-.condition-invalid {
-  @include condition-isvalid($light-grey)
-}
-
 #double-check-id {
   $height: 26px;
 

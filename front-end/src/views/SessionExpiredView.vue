@@ -2,7 +2,8 @@
   <div @keyup.enter="comfirm">
     <div class="session-expired-bg">
       <div class="session-expired-box">
-        <p id="error-comment">{{ errorMessage }}</p>
+        <p>{{ errorMessage1 }}</p>
+        <p>{{ errorMessage2 }}</p>
         <button id="confirm-btn" class="btn-green-sm" @click="comfirm">확인</button>
       </div>
     </div>
@@ -14,20 +15,27 @@ export default {
   name: 'SessionExpiredView',
   data() {
     return {
-      errorMessage: null,
+      errorMessage1: null,
+      errorMessage2: null,
     }
   },
   methods: {
     comfirm() {
-      this.$store.dispatch('logout')
-      this.$router.push('/login')
+      
+      if (this.$route.params.error == 401) {
+        this.$store.dispatch('logout')
+      } else {
+        this.$router.push('/feed')
+      }
     }
   },
   created() {
     if (this.$route.params.error == 401) {
-      this.errorMessage = `세션이 만료되었어요. 다시 로그인 해주세요!`
+      this.errorMessage1 = '세션이 만료되었어요.'
+      this.errorMessage2 = '다시 로그인 해주세요!'
     } else {
-      this.errorMessage = `에러가 발생했어요. 고객센터에 문의해주세요. status: ${this.$route.params.error}`
+      this.errorMessage1 = '에러가 발생했어요.'
+      this.errorMessage2 = `status: ${this.$route.params.error}`
     }
   },
   mounted() {

@@ -18,6 +18,7 @@
     <div class="moving-notification">
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
     </div>
+    <FeedComment/>
   </div>
 </template>
 
@@ -25,24 +26,23 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import MainFeedHeader from '@/components/MainFeedHeader.vue'
 import SingleFeedBody from '../components/SingleFeedBody.vue'
+import FeedComment from '@/components/FeedComment.vue'
 
 export default {
   components: {
     InfiniteLoading,
     MainFeedHeader,
-    SingleFeedBody
+    SingleFeedBody,
+    FeedComment,
   },
   data() {
     return {
-      payload: {
-        pageNum: 0,
-        kind: "following",
-      },
       limit:0,
       newPageNum: 0,
       newKind: "following",
       feeds: [],
       isMorePage: true,
+      minFeedId: 9999999
 
     }
   },
@@ -52,12 +52,13 @@ export default {
         if(this.isMorePage){
           this.$axios({
             method:'get',
-            url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.limit}`
+            url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.limit}/${this.minFeedId}`
           })
           .then((res) => {
             console.log(res.data)
             this.feeds = this.feeds.concat(res.data.feeds)
             $state.loaded()
+            this.minFeedId = res.data.minFeedId
             if(res.data.isLast) {
               $state.complete()
               const notification = document.querySelector(".moving-notification")

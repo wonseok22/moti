@@ -26,5 +26,7 @@ public interface UserService {
 	void delRefreshToken(String userId);
 	
 	Map<String, Object> searchUser(String keyword, int pageNo);
+	User socialLogin(User user, String refreshToken);
+	
 }
 

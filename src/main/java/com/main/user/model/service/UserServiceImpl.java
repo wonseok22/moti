@@ -157,5 +157,32 @@ public class UserServiceImpl implements UserService {
 		searchResult.put("isLast", slice.isLast());
 		return searchResult;
 	}
-	
+	@Override
+	public User socialLogin(User userDto, String refreshToken) {
+		User user = userRepository.findByUserId(userDto.getUserId());
+		System.out.println(userDto);
+		if(user==null) {
+			user = userRepository.findByEmail(userDto.getEmail());
+			if(user!=null)
+				return null;
+			user = new User();
+			// Profile Build
+			Profile profile = new Profile();
+			profileRepository.save(profile);
+			// User Build
+			user.setUserId(userDto.getUserId());
+			user.setNickname(userDto.getUserId());
+			user.setEmail(userDto.getEmail());
+			user.setProfile(profile);
+			user.setJoinDate(LocalDateTime.now());
+			user.setType(userDto.getType());
+			user.setRefreshToken(refreshToken);
+			
+			user = userRepository.save(user);
+		}
+		user.setRefreshToken(refreshToken);
+		userRepository.save(user);
+		
+		return user;
+	}
 }

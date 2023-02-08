@@ -105,6 +105,43 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
+	@ApiOperation(value = "카카오로그인", notes = "access-token, Refresh-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
+	@PostMapping("/kakao")
+	public ResponseEntity<?> socialLogin(
+			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보.", required = true) UserDto userDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		System.out.println(userDto);
+		HttpStatus status;
+		try {
+			User loginUser = userDto.toEntity();
+			
+			String accessToken = jwtService.createAccessToken("userid", loginUser.getUserId());// key, data
+			String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserId());// key, data
+			User user = userService.socialLogin(loginUser, refreshToken);
+			
+			if(user!=null) {
+				logger.debug("로그인 accessToken 정보 : {}", accessToken);
+				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
+				resultMap.put("access-token", accessToken);
+				resultMap.put("refresh-token", refreshToken);
+				resultMap.put("userId", loginUser.getUserId());
+				resultMap.put("nickname", loginUser.getNickname());
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
+			}
+			else {
+				status = HttpStatus.ACCEPTED;
+				resultMap.put("message",ALREADY_EXIST);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<>(resultMap, status);
+	}
 	
 	@ApiOperation(value = "로그아웃", notes = "로그아웃하는 유저의 Refresh Token을 삭제한다.", response = Map.class)
 	@GetMapping("/logout/{userId}")

@@ -313,14 +313,13 @@ public class FeedController {
 			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,
 			@PathVariable @ApiParam(value = "검색 종류(default, playlist, content, userId)", required = true) String kind,
-			@PathVariable @ApiParam(value = "페이지 번호(0부터 시작)", required = true) int pageNo,
 			@PathVariable @ApiParam(value = "이전 페이지에서 가장 마지막에 불러온 피드 ID", required = true) Long minFeedId) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		
 		try {
-			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, pageNo, minFeedId);
+			Map<String, Object> searchResult = feedService.searchFeed(userId, keyword, kind, minFeedId);
 			if (searchResult.get("feeds") == null) {
 				logger.debug("피드 검색 결과 : {}", "피드 존재하지 않음");
 				resultMap.put("feeds", null);

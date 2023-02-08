@@ -41,7 +41,6 @@ export default {
       newPageNum: 0,
       newKind: "following",
       feeds: [],
-      isMorePage: true,
       minFeedId: 9999999
 
     }
@@ -49,43 +48,31 @@ export default {
   methods: {
     infiniteHandler($state) {
       setTimeout(() => {
-        if(this.isMorePage){
-          this.$axios({
-            method:'get',
-            url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.limit}/${this.minFeedId}`
-          })
-          .then((res) => {
-            console.log(res.data)
-            this.feeds = this.feeds.concat(res.data.feeds)
-            $state.loaded()
-            this.minFeedId = res.data.minFeedId
-            if(res.data.isLast) {
-              $state.complete()
-              const notification = document.querySelector(".moving-notification")
-              notification.classList.add('show')
-              setTimeout(() => {
-                notification.classList.remove('show')
-              }, 2000)
-              this.isMorePage = false
+        this.$axios({
+          method:'get',
+          url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.minFeedId}`
+        })
+        .then((res) => {
+          // console.log(res.data)
+          this.feeds = this.feeds.concat(res.data.feeds)
+          $state.loaded()
+          this.minFeedId = res.data.minFeedId
+          if(res.data.isLast) {
+            $state.complete()
+            const notification = document.querySelector(".moving-notification")
+            notification.classList.add('show')
+            setTimeout(() => {
+              notification.classList.remove('show')
+            }, 2000)
+            this.isMorePage = false
+          }
+          else if(res.data.keyword === "all") {
+            if(this.newKind === "following"){
+              this.newKind = "all"
             }
-            else if(res.data.keyword === "all") {
-              if(this.newKind === "following"){
-                this.newKind = "all"
-                this.newPageNum = 1
-                this.limit = 1
-              }
-              else{
-                this.newPageNum += 1
-                this.limit += 1
-              }
-            }
-            else{
-              this.newPageNum += 1
-              this.limit += 1
-            }
-          })
-        }
-      }, 1000)
+          }
+        })
+      }, 500)
     },
 
     handleLoadMore() {

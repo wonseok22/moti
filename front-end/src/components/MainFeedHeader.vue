@@ -1,41 +1,37 @@
 <template>
   <!-- 하나의 피드에서 제목과 유저 프로필에 해당되는 부분 -->
   <div class="feed-header">
-        <span class="material-symbols-outlined"
-        style="color:#A3A3A3; font-size:44px">
-            account_circle
-        </span>
-        <div>   
-            <div>
-                <span class="material-symbols-outlined"
-                style="color:#A3A3A3">
-                    workspace_premium 
-                </span>
-                <!-- <img 
-                v-show="this.profileData.achievementImageUrl !== null" 
-                :src="this.profileData.achievementImageUrl" 
-                alt="achievementImage"> -->
-                <p>{{ HeaderData.nickname }}</p>
-                <div v-show="this.$store.state.nickname !== HeaderData.nickname">
-                    <button 
-                    v-show="!this.Following"
-                    @click="FollowOrUnfollow">
-                        팔로우
-                    </button>
-                    <button
-                    v-show="this.Following" 
-                    style="color:#ababab;"
-                    @click="FollowOrUnfollow">
-                        팔로잉
-                    </button>
-                </div>
-            </div>
-            <p>
-                <span class="playlist-name">"{{ HeaderData.playlistName }}"</span>의 
-                <span class="mission-name">'{{ HeaderData.missionName }}'</span>
-            </p>
-        </div>
+    <div class="feed-header-img-wrap">
+        <img :src="HeaderData.profileImageUrl ? HeaderData.profileImageUrl : profileImageUrl" alt="프로필사진" @click="moveProfile(HeaderData.userId)">
     </div>
+    <div class="feed-header-content">   
+        <div class="feed-header-nickname">
+            <img :src="HeaderData.achievementImageUrl" alt="댜표뱃지" class="feed-header-achieve" v-if="HeaderData.achievementImageUrl">
+            <!-- <img 
+            v-show="this.profileData.achievementImageUrl !== null" 
+            :src="this.profileData.achievementImageUrl" 
+            alt="achievementImage"> -->
+            <p class="feed-header-nickname" @click="moveProfile(HeaderData.userId)">{{ HeaderData.nickname }}</p>
+            <!-- <div v-show="this.$store.state.nickname !== HeaderData.nickname">
+                <button 
+                v-show="!this.Following"
+                @click="FollowOrUnfollow">
+                    팔로우
+                </button>
+                <button
+                v-show="this.Following" 
+                style="color:#ababab;"
+                @click="FollowOrUnfollow">
+                    팔로잉
+                </button>
+            </div> -->
+        </div>
+        <p class="feed-header-mission">
+            <span class="playlist-name">{{ HeaderData.playlistName }}</span><span style="font-size:12px;">의 </span>
+            <span class="mission-name">{{ HeaderData.missionName }}</span>
+        </p>
+    </div>
+</div>
 </template>
 
 <script>
@@ -56,6 +52,7 @@ export default {
     },
     data() {
         return {
+            profileImageUrl:require(`@/assets/images/default_profile.jpg`),
             Following: null,
             profileData: null,
             payload: {
@@ -77,11 +74,47 @@ export default {
             }
             //console.log(this.payload)
             this.$store.dispatch("FollowUnfollow", this.payload)
-        }
+        },
+        moveProfile(userId){
+            this.$store.commit("UPDATE_PROFILE_TARGET_ID",userId);
+            this.$router.push({
+                name: 'profile',
+            }).catch(() => {});
+        },
+
     }
 }
 </script>
 
-<style>
+<style lang="scss">
+.feed-header-img-wrap{
+    background-color: #ccc;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 100%;
+    overflow: hidden;
+    img {
+        width: 50px;
+        height: 50px;
+    }
 
+}
+.feed-header-achieve{
+    width: 14px;
+    height: 14px;
+}
+.feed-header-nickname{
+    font-size: 16px;
+}
+.mission-name{
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.4;
+}  
+
+.playlist-name{
+    line-height: 1.4;
+    font-size: 12px;
+    font-weight: bold;
+}
 </style>

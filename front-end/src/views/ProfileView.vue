@@ -449,6 +449,7 @@ export default {
       padding: 0 0 0 0;
       li {
         .bottom{
+          color: red;
           position: absolute;
           bottom: 0;
         }

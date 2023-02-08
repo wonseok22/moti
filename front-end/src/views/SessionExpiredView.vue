@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     comfirm() {
+      this.$store.dispatch({ name: 'logout '})
       this.$router.push({ name: 'login' })
     }
   },

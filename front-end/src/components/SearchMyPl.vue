@@ -1,5 +1,6 @@
 <template>
     <main>
+      <h2>나의 성장기록</h2>
         <div class="playlist-result-box" >
           <div v-for="(playlist,idx) in playlists" :key="idx" class="playlist-box">
             <div class="playlist-items">

@@ -69,8 +69,8 @@
 
     <div class="profile-detail">
       <div class="profile-detail-slide">
-        <SearchUserId :keyword="`${profile.userId}`"></SearchUserId>
-        <SearchMyPl :keyword="`${profile.userId}`"></SearchMyPl>
+        <SearchUserId :keyword="`${profile.userId}`"  ></SearchUserId>
+        <SearchMyPl :keyword="`${profile.userId}`" @openModalPl="openModalPl"></SearchMyPl>
         <SearchAchieve :keyword="`${profile.userId}`" @openModal="openModal"></SearchAchieve>
       </div>
     </div>
@@ -89,6 +89,14 @@
           대표뱃지 등록
         </button>
         <button @click="modal = false" class="modal-close">
+          닫기
+        </button>
+      </div>
+    </div>
+
+    <div class="pl-modal" v-if="plModal">
+      <div class="pl-white-bg">
+        <button @click="plModal = false" class="modal-close">
           닫기
         </button>
       </div>
@@ -124,7 +132,7 @@
           <li @click="deleteUser">
             <div class="menu-items bottom">
               <span class="material-symbols-outlined">
-              settings_power
+              logout
               </span>
               <div>회원탈퇴</div>
             </div>
@@ -181,7 +189,9 @@ export default {
       isFollow:false,
       modal: false,
       menuModal:false,
+      plModal :false,
       followModal:false,
+      pl:null,
 
     }
   },
@@ -314,6 +324,10 @@ export default {
       this.achievement = achievement;
       this.modal=true;
    },
+   openModalPl(pl) {
+      this.pl = pl;
+      this.plModal=true;
+   },
    menu(){
     this.menuModal = true;
   },
@@ -439,8 +453,7 @@ export default {
           bottom: 0;
         }
         .menu-items{
-
-          font-size: 14px;
+          font-size: 16px;
           font-weight: bold;
           margin: 20px 0;
           padding: 0 5px;
@@ -520,4 +533,33 @@ export default {
      }
     }
   }
+
+  .pl-modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  .pl-white-bg{
+    padding-top: 3px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    background-color: #fff;
+    top: 50%;
+    width: 300px;
+    height: 500px;
+    margin: 130px auto;
+    img {
+      width: 70px;
+      height: 70px;
+    }
+    .modal-close{
+      background-color: #325C3E;
+      font-weight: bold;
+      color:white;
+      border-radius: 7px;
+      padding: 8px 15px;
+      border: 0 solid #000;
+    }
+  }
+}
 </style>

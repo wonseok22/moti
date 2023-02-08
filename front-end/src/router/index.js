@@ -37,11 +37,14 @@ const checkAccessToken = (to, from, next) => {
   // api 요청(현재 로그인 유저 회원정보 조회)
 
   axios({
-    method: 'get',
-    url: `${baseUrl}/users/${userId}`,
+    method: 'post',
+    url: `${baseUrl}/users/check`,
     headers: {
       'access-token' : store.state.accessToken,
-    }
+    },
+    data :{
+      "userId" : store.state.id,
+    },
   })
   // accessToken 유효
     .then(() => {

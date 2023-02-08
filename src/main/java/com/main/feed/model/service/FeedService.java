@@ -29,5 +29,5 @@ public interface FeedService {
 	
 	int deleteLike(String userId, Long feedId);
 	
-	Map<String, Object> searchFeed(String userId, String content, String kind, int pageNo);
+	Map<String, Object> searchFeed(String userId, String content, String kind, int pageNo, Long minFeedId);
 }

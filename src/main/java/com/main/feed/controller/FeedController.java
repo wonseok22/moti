@@ -308,7 +308,7 @@ public class FeedController {
 	// ------------------------------------------------------------------
 	
 	@ApiOperation(value = "피드 검색", notes = "검색어 기반 피드 검색 API", response = Map.class)
-	@GetMapping("/search/{userId}/{keyword}/{kind}/{pageNo}/{minFeedId}")
+	@GetMapping("/search/{userId}/{keyword}/{kind}/{minFeedId}")
 	public ResponseEntity<?> searchFeed(
 			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
 			@PathVariable @ApiParam(value = "검색어", required = true) String keyword,

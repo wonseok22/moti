@@ -208,7 +208,7 @@ export default new Vuex.Store({
     },
 
     // 카카오로그인
-    kakaoLogin(context, payload) {
+    socialLogin(context, payload) {
       // UserDto 객체 정의
       const UserDto = {
         userId: payload.userId,
@@ -218,7 +218,7 @@ export default new Vuex.Store({
       }
       this.$axios({
         method: 'post',
-        url: `${this.$baseUrl}/users/kakao`,
+        url: `${this.$baseUrl}/users/socialLogin`,
         data: UserDto,
       })
         .then((response) => {

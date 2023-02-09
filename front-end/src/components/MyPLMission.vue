@@ -9,8 +9,8 @@
         </div>
         <!-- PL 상세 -->
         <div id="my-pl-info-text">
-          <p>{{ missions.playlist.playlistName }}</p>
-          <span>{{ missions.playlist.playlistDesc }}</span>
+          <p id="my-pl-info-title">{{ missions.playlist.playlistName }}</p>
+          <span id="my-pl-info-content">{{ missions.playlist.playlistDesc }}</span>
         </div>
       </div>
 
@@ -117,14 +117,16 @@ export default {
     },
     // 피드 작성 페이지로 이동
     toCreateFeed() {
-      const missionIdx = this.selected - 1
-      const query = {
-        playlistName: this.missions.playlist.playlistName,
-        userPlaylistId: this.missions.userPlaylistId,
-        missionName: this.missions.playlist.missions[missionIdx].missionName,
-        missionId: this.missions.playlist.missions[missionIdx].missionId
+      if (this.selected) {
+        const missionIdx = this.selected - 1
+        const query = {
+          playlistName: this.missions.playlist.playlistName,
+          userPlaylistId: this.missions.userPlaylistId,
+          missionName: this.missions.playlist.missions[missionIdx].missionName,
+          missionId: this.missions.playlist.missions[missionIdx].missionId
+        }
+        this.$router.push({ name: 'feedcreate', query: query })
       }
-      this.$router.push({ name: 'feedcreate', query: query })
     },
     getNowPL() {
       const params = {
@@ -185,7 +187,7 @@ export default {
 // 기본 레이아웃
 #my-pl-mission-layout {
   width: 100%;
-  height: 100%;
+  height: $base-height;
 
   display: flex;
   flex-direction: column;
@@ -196,20 +198,20 @@ export default {
 #my-pl-info-layout {
   width: 100%;
   height: 25%;
-  margin-top: 50px;
-  margin-bottom: 30px;
+  padding-top: 30px;
   
   display: flex;
   flex-direction: column;
   // justify-content: space-between;
+  align-items: center;
 }
 
 // 플레이리스트 정보
 #my-pl-info {
   display: flex;
-  width: 100%;
-  gap: 15px;
-  // height: 96px;
+  width: 90%;
+  gap: 10px;
+  justify-content: center;
 }
 
 // 플레이리스트 이미지
@@ -226,18 +228,30 @@ export default {
 
 // 플레이리스트 상세 정보
 #my-pl-info-text {
-  width: 75%;
+  height: 100%;
   text-align: start;
+  max-width: 66%;
 
-  p {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+
+  gap: 5px;
+
+  #my-pl-info-title {
     font-size: $fs-4;
     font-weight: bold;
     margin: 0px;
   }
-
-  span {
-    // font-size: $fs-6;
+  #my-pl-info-content {
+    font-size: $fs-6;
     color: $dark-grey;
+    margin-bottom: 0px;
+    span {
+      color: $text-base-color;
+      font-weight: bold;
+    }
   }
 }
 
@@ -249,7 +263,8 @@ export default {
 
 // 미션 정보 레이아웃
 #mission-info-layout {
-  height: 45%;
+  margin-top: 30px;
+  height: 50%;
 }
 
 // 미션 진행상황 레이아웃
@@ -257,6 +272,7 @@ export default {
   display: flex;
   justify-content: space-evenly;
 
+  width: 100%;
   margin-top: 20px;
 }
 
@@ -278,20 +294,26 @@ export default {
 
 // 미션 리스트 레이아웃
 #mission-list-layout {
-  height: 80%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 // 미션 디테일
 .mission-list-detail {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   box-shadow: 1px 3px 2px rgba(0, 0, 0, 0.08);
   border-radius: 8.6px;
   background-color: $light-yellow;
   width: 100%;
-  height: auto;
+
+  min-height: 50px;
 }
 
 // 선택된 미션

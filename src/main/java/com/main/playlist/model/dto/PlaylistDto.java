@@ -20,7 +20,7 @@ public class PlaylistDto {
 	private String playlistName;
 	
 	private String playlistDesc;
-	
+	private String categoryName;
 	private List<Mission> missions;
 	
 	private int total;
@@ -45,6 +45,7 @@ public class PlaylistDto {
 				playlist.getPlaylistId(),
 				playlist.getPlaylistName(),
 				playlist.getPlaylistDesc(),
+				playlist.getCategory().getCategoryName(),
 				mission,
 				totalCnt.get(),
 				currentCnt.get(),

@@ -101,8 +101,9 @@ export default {
 
 }
 .feed-header-achieve{
-    width: 14px;
-    height: 14px;
+    padding-bottom: 5px;
+    width: 18px;
+    height: 18px;
 }
 .feed-header-nickname{
     font-size: 16px;

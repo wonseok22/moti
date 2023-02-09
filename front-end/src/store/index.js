@@ -20,7 +20,18 @@ const save = (context, payloadToken, payloadInfo) => {
 
 export default new Vuex.Store({
   plugins: [
-    createPersistedState(),
+    createPersistedState({
+      reducer: (persistedState) => {
+        const stateFilter = Object.assign({}, persistedState)
+        const blackList = ['isComment']
+  
+        blackList.forEach((item) => {
+          delete stateFilter[item]
+        })
+  
+        return stateFilter
+      }
+    }),
   ],
   state: {
     id: null,

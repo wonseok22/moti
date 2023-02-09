@@ -96,6 +96,7 @@
 
     <div class="pl-modal" v-if="plModal">
       <div class="pl-white-bg">
+        미구현
         <button @click="plModal = false" class="modal-close">
           닫기
         </button>

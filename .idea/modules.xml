@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/babysteps.main.iml" filepath="$PROJECT_DIR$/.idea/modules/babysteps.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.babysteps.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.babysteps.main.iml" />
     </modules>
   </component>
 </project>

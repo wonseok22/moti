@@ -28,7 +28,7 @@ public class ImageProcess {
 			String fileFormat = multipartFile.getContentType().substring(multipartFile.getContentType().lastIndexOf("/") + 1);
 			
 			// 이미지 크기가 충분히 작으면 처리할 필요가 없음
-			if(originalWidth <= 450) return multipartFile;
+			if(originalWidth <= targetWidth) return multipartFile;
 			
 			// 목표로 하는 이미지의 가로 사이즈는 {targetWidth}px
 			int targetHeight = targetWidth * originalHeight / originalWidth;

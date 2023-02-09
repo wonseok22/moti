@@ -67,6 +67,21 @@ const checkAccessToken = (to, from, next) => {
     })
 }
 
+const loginCheck = () => {
+  console.log("로그인 여부 확인")
+  console.log(store.state)
+  console.log(store.state.accessToken)
+  if (store.state.accessToken) {
+    router.push({
+      name:"feed",
+    })
+  } else {
+    router.push({
+      name:"login",
+    })
+  }
+}
+
 const routes = [
   {
     path: '/signup',
@@ -194,7 +209,7 @@ const routes = [
     // 랜딩페이지: 로그인 페이지
     path: '/',
     name: 'landing',
-    redirect: 'login',
+    beforeEnter:loginCheck,
     component: LoginView,
   },
   {

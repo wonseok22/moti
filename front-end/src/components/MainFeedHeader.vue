@@ -44,7 +44,6 @@ export default {
         // this.$store.dispatch("profileCheck", this.HeaderData.userId)
         // const profile_res = this.$store.dispatch("profileCheck", this.HeaderData.userId)
         // const profile_result = await profile_res
-        // console.log(profile_result)
         // this.profileData = profile_result.data.profile
     },
     props: {
@@ -72,7 +71,6 @@ export default {
                 this.payload.type = "follow"
                 this.Following = true
             }
-            //console.log(this.payload)
             this.$store.dispatch("FollowUnfollow", this.payload)
         },
         moveProfile(userId){
@@ -101,8 +99,9 @@ export default {
 
 }
 .feed-header-achieve{
-    width: 14px;
-    height: 14px;
+    padding-bottom: 5px;
+    width: 18px;
+    height: 18px;
 }
 .feed-header-nickname{
     font-size: 16px;

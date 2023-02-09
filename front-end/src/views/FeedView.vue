@@ -18,7 +18,9 @@
     <div class="moving-notification">
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
     </div>
-    <FeedComment/>
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment/>
+    </div>
   </div>
 </template>
 
@@ -37,12 +39,10 @@ export default {
   },
   data() {
     return {
-      limit:0,
-      newPageNum: 0,
       newKind: "following",
       feeds: [],
       minFeedId: 9999999
-
+      
     }
   },
   methods: {
@@ -53,7 +53,6 @@ export default {
           url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.minFeedId}`
         })
         .then((res) => {
-          // console.log(res.data)
           this.feeds = this.feeds.concat(res.data.feeds)
           $state.loaded()
           this.minFeedId = res.data.minFeedId
@@ -74,20 +73,14 @@ export default {
         })
       }, 500)
     },
-
-    handleLoadMore() {
-      // console.log('리스트 추가')
-      if(this.isMorePage) {
-        this.getFeeds()
-      }else{
-        const notification = document.querySelector(".moving-notification")
-        notification.classList.add('show')
-        setTimeout(() => {
-          notification.classList.remove('show')
-        }, 2000)
-      }
-    },
   },
+  computed: {
+    isCommentClicked() {
+      return this.$store.getters.isCommentClicked
+    }
+  },  
+  watch: {
+  }
 }
 </script>
 

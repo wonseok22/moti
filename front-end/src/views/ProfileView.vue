@@ -47,7 +47,7 @@
     <div class="profile-menu">
       <nav id="CategoryNav">
         <div class="profile-feed"  @click="feed()">
-          <span class="material-icons-outlined">
+          <span class="material-symbols-outlined">
           feed
           </span>
         </div>
@@ -57,8 +57,8 @@
           </span>
         </div>
         <div class="profile-achive" @click="achive()">
-          <span class="material-icons-outlined">
-          emoji_events
+          <span class="material-symbols-outlined">
+          workspace_premium
           </span>
         </div>
       </nav>
@@ -95,6 +95,7 @@
 
     <div class="pl-modal" v-if="plModal">
       <div class="pl-white-bg">
+        미구현
         <button @click="plModal = false" class="modal-close">
           닫기
         </button>
@@ -168,7 +169,9 @@
       </div>
     </div>
 
-
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment/>
+    </div>
   </div>
 </template>
 
@@ -178,6 +181,8 @@ import SearchMyPl from '@/components/SearchMyPl.vue'
 import SearchAchieve from '@/components/SearchAchieve.vue'
 import FollowerList from "@/components/FollowerList.vue"
 import FollowingList from "@/components/FollowingList.vue"
+import FeedComment from '@/components/FeedComment.vue'
+
 export default {
   name: 'ProfileView',
   data() {
@@ -200,6 +205,7 @@ export default {
     SearchAchieve,
     FollowerList,
     FollowingList,
+    FeedComment,
   },
   created() {
     this.$axios({
@@ -229,7 +235,6 @@ export default {
       this.$store.dispatch('logout')
     },
     deleteUser() {
-      console.log(this.$store.state.accessToken)
       if(confirm("정말로 탈퇴하시겠습니까??")) {
         this.$axios({
         method: 'delete',
@@ -238,7 +243,6 @@ export default {
         },
           url: `${this.$baseUrl}/users/${this.$store.state.id}`
         }).then((response) => {
-          console.log(response)
           if (response.status == 200){
             alert("쩡상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.")
             this.$router.push({
@@ -392,7 +396,12 @@ export default {
         name: 'profile',
       }).catch(() => {location.reload();});
     }
-  }
+  },
+  computed: {
+    isCommentClicked() {
+      return this.$store.getters.isCommentClicked
+    }
+  },  
 }
 </script>
 

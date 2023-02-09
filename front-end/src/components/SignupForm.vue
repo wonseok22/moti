@@ -156,7 +156,6 @@ export default {
     },
     // 아이디 중복 체크
     doubleCheck() {
-      console.log('아이디 중복체크 실행')
       // 임시로 중복체크 true로 바꿔줌
       // this.idDoubleChecked = true
       
@@ -182,18 +181,15 @@ export default {
             if ( response.data.message === 'already exists' ) {
               this.openModal = true
               this.modalContent = '이미 사용 중인 아이디에요.'
-              console.log(`중복체크 결과/message: ${response.data.message}`)
               this.id = null
             } else if ( response.data.message === 'success' ) {
               this.openModal = true
               this.modalContent = '사용할 수 있는 아이디에요.'
-              console.log(`중복체크 결과/message: ${response.data.message}`)
               const idInputTag = document.querySelector('#input-id')
               // 현재 아이디로 고정
               idInputTag.setAttribute('disabled', true)
               this.idDoubleChecked = true
             } else {
-              console.log(response.data.message)
               this.openModal = true
               this.modalContent = '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
             }

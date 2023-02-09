@@ -1,7 +1,9 @@
 <template>
   <div class="feed-comment">
     <div class="comment-header">
-      <span class="material-symbols-outlined">
+      <span
+      @click="closePage"
+      class="material-symbols-outlined">
       arrow_back
       </span>
       <p>
@@ -72,7 +74,7 @@ export default {
         missionName: this.$store.state.nowFeed.missionName,
         nickname: this.$store.state.nowFeed.nickname,
         playlistName: this.$store.state.nowFeed.playlistName,
-        feedId: this.$route.params.feedId,
+        feedId: this.$store.state.nowFeed.feedId,
       },
       feedBodyData: {
         content: this.$store.state.nowFeed.content,
@@ -80,11 +82,11 @@ export default {
         hit: this.$store.state.nowFeed.hit,
         feedImages: this.$store.state.nowFeed.feedImages,
         comments: this.$store.state.nowFeed.comments,
-        feedId: this.$route.params.feedId,
+        feedId: this.$store.state.nowFeed.feedId,
       },
       writeCommentData: {
         userId: this.$store.state.id,
-        feedId: this.$route.params.feedId,
+        feedId: this.$store.state.nowFeed.feedId,
         content: null
       },
       feed: this.$store.state.nowFeed
@@ -102,24 +104,28 @@ export default {
     writeComment() {
       this.$store.dispatch("writeComment", this.writeCommentData)
       this.$refs.commentTextarea.value = ""
-      const doc = document.querySelector(".comments-list") 
-      window.scrollBy({
-        top:doc.scrollHeight,
-        left:0,
-        behavior:'smooth'
+      const doc = document.querySelector(".feed-comment") 
+      const textarea = this.$refs.commentTextarea
+      textarea.style.height = 'auto'
+      doc.scrollTo({
+        top: (doc.scrollHeight + 50),
+        behavior:"smooth"
       })
     },
     showModal(commentId) {
       const payload = {
         commentId: commentId,
-        feedId: this.$route.params.feedId,
+        feedId: this.$store.state.nowFeed.feedId,
       }
       this.$store.dispatch('deleteComment', payload)
-    }
+    },
+    closePage() {
+      this.$store.dispatch("showComment")
+      document.body.style.overflow = "scroll"
+      window.scrollTo(0, this.$store.state.scrollY)
+    },
   },
   created() {
-    console.log(this.$store.state.nowFeed.nickname)
-    console.log(this.$store.state.id)
   },  
   mounted() {
     window.scrollTo(0,0);

@@ -75,14 +75,11 @@ export default {
   },
   methods: {
     getPlaylist() {
-      console.log('플레이리스트를 가져옵니다.')
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/playlist/detail/${this.pl}`
       }).then((response) => {
-          console.log(`플레이리스트 가져오기 성공: status ${response.status}`)
-          this.plDetail = response.data.playlist
-          console.log(this.plDetail)
+          this.plDetail = response.data.playlistName
       }).catch((error) =>{
         console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
       })
@@ -104,10 +101,8 @@ export default {
           //   window.location.reload()
           // } 
           if (response.data.message === 'success') {
-              console.log(`플레이리스트 추가 완료: status ${response.data.status}`)
               this.moveMyPlaylist();
           } else {
-            console.log(response.data.message)
             alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
           }
       }).catch((error) =>{

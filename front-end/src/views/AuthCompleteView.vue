@@ -15,13 +15,11 @@ export default {
   methods: {
     // 이메일 인증 코드 발송
     emailAuthCode() {
-      console.log(this.$route.query.code)
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/users/email?code=${this.$route.query.code}`
       })
-        .then((response) => {
-          console.log(`이메일 인증 코드 발송 완료: status ${response.status}`)
+        .then(() => {
         })
         .catch((error) => {
           console.log(`이메일 인증 코드 발송 실패: status ${error.response.status}`)

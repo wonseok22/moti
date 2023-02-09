@@ -159,7 +159,6 @@ export default {
     },
     // 미션 리스트
     missions() {
-      console.log(this.$store.state.nowPL)
       return this.$store.state.nowPL
     },
     myMissionUpdated() {

@@ -32,7 +32,6 @@ Vue.use(VueRouter)
 const baseUrl = 'https://moti.today/api'
 
 const checkAccessToken = (to, from, next) => {
-  console.log('access token 체크 시작')
   const userId = store.state.id
   // api 요청(현재 로그인 유저 회원정보 조회)
 
@@ -48,13 +47,11 @@ const checkAccessToken = (to, from, next) => {
   })
   // accessToken 유효
     .then(() => {
-      console.log('access token이 유효합니다.')
       next()
     })
     .catch((error) => {
       // accessToken 만료
       if (error.response.status == 401) {
-        console.log('access token이 만료되었습니다.')
         // accessToken 재발급 요청
         const regenResult = store.dispatch('tokenRegeneration')
         regenResult.then(() => {
@@ -65,6 +62,18 @@ const checkAccessToken = (to, from, next) => {
         console.log(error.response.status)
       }
     })
+}
+
+const loginCheck = () => {
+  if (store.state.accessToken) {
+    router.push({
+      name:"feed",
+    })
+  } else {
+    router.push({
+      name:"login",
+    })
+  }
 }
 
 const routes = [
@@ -194,7 +203,7 @@ const routes = [
     // 랜딩페이지: 로그인 페이지
     path: '/',
     name: 'landing',
-    redirect: 'login',
+    beforeEnter:loginCheck,
     component: LoginView,
   },
   {

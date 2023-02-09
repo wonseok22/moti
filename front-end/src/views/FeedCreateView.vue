@@ -8,7 +8,7 @@
     </header>
     <section id="feed-create-section">
       <!-- 카테고리 이름 -->
-      <p>행복</p>
+      <p>{{ missionInfo.categoryName}}</p>
       <!-- 플레이리스트 이름 -->
       <p>{{ missionInfo.playlistName }}</p>
       <!-- 미션 이름 -->
@@ -57,15 +57,28 @@
         <span><label for="feed-create-footer-checkbox" class="text-active-normal">피드 비공개</label></span>
       </div> -->
     </footer>
+    <basic-modal
+      v-if="openModal"
+      :content="modalContent"
+      @close="modalClose"
+    >
+    </basic-modal>
   </div>
 </template>
 
 <script>
-
+import BasicModal from '@/components/BasicModal'
+import { basicModalMixin } from '@/tools/basicModalMixin.js'
 
 
 export default {
   name: 'FeedCreateView',
+  components: {
+    BasicModal,
+  },
+  mixins: [
+    basicModalMixin,
+  ],
   data() {
     return {
       content: null,
@@ -125,7 +138,12 @@ export default {
     // 이미지 받기
     inputImage(event) {
       if (event) {
-        this.images = event.target.files
+        if (event.target.files.length > 10) {
+          this.modalContent = '사진은 10장 이하로만 등록 가능해요.'
+          this.openModal = true
+        } else {
+          this.images = event.target.files
+        }
       }
       
       if (this.images) {

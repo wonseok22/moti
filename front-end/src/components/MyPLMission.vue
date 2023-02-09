@@ -122,7 +122,8 @@ export default {
           playlistName: this.missions.playlist.playlistName,
           userPlaylistId: this.missions.userPlaylistId,
           missionName: this.missions.playlist.missions[missionIdx].missionName,
-          missionId: this.missions.playlist.missions[missionIdx].missionId
+          missionId: this.missions.playlist.missions[missionIdx].missionId,
+          categoryName: this.missions.playlist.categoryName,
         }
         this.$router.push({ name: 'feedcreate', query: query })
       }

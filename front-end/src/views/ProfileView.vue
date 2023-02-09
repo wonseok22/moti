@@ -81,23 +81,41 @@
         <h3>{{ achievement.achievementName }}</h3>
         <img :src="achievement.achievementImageUrl" alt="업적 이미지">
         <p>{{ achievement.achievementDesc }}</p>
-        <button v-if="achievement.achieved && isMyProfile && (achievement.achievementImageUrl === profile.achievementImageUrl)" @click="deleteAchieve()" class="modal-close" style="margin-right:5px;">
+        <button v-if="achievement.achieved && isMyProfile && (achievement.achievementImageUrl === profile.achievementImageUrl)" @click="deleteAchieve()" class="modal-btn" style="margin-right:5px;">
           대표뱃지 삭제
         </button>
-        <button v-if="achievement.achieved && isMyProfile && (achievement.achievementImageUrl !== profile.achievementImageUrl)" @click="registAchieve(achievement.achievementId)" class="modal-close" style="margin-right:5px;">
+        <button v-if="achievement.achieved && isMyProfile && (achievement.achievementImageUrl !== profile.achievementImageUrl)" @click="registAchieve(achievement.achievementId)" class="modal-btn" style="margin-right:5px;">
           대표뱃지 등록
         </button>
         <button @click="modal = false" class="modal-close">
-          닫기
+          X
         </button>
       </div>
     </div>
 
     <div class="pl-modal" v-if="plModal">
       <div class="pl-white-bg">
-        미구현
+        <div class="pl-img-wrap">
+          <img class="pl-img" :src="pl.playlist.flower.flowerImageUrl" alt="플레이리스트 아이콘"  :class="pl.done < 5 ? 'grayscale' : ''">
+        </div>
+        <div class="pl-title">{{ pl.playlist.playlistName }}</div>
+        <div class="pl-desc">{{ pl.playlist.playlistDesc }}</div>
+        <div class="pl-date">시작날짜 : {{ pl.startDate }}</div>
+        <div class="pl-icon">
+          <img src="@/assets/images/1_soil.png" alt="진행도 이미지" :class="pl.done < 1 ? 'grayscale' : ''">
+          <img src="@/assets/images/2_watering_can.png" alt="진행도 이미지" :class="pl.done < 2 ? 'grayscale' : ''">
+          <img src="@/assets/images/3_sprout.png" alt="진행도 이미지" :class="pl.done < 3 ? 'grayscale' : ''">
+          <img src="@/assets/images/4_sun.png" alt="진행도 이미지" :class="pl.done < 4 ? 'grayscale' : ''">
+          <img :src="pl.playlist.flower.flowerImageUrl" alt="진행도 이미지" :class="pl.done < 5 ? 'grayscale' : ''">
+        </div>
+        <button @click="plModal = false" class="pl-btn" v-if="(pl.done > 4 || !pl.isDone) ">
+          발자취 보기
+        </button>
+        <button @click="plRetry(pl.userPlaylistId)" class="pl-btn" v-if="(pl.done < 5 && pl.isDone)&& isMyProfile">
+          재도전
+        </button>
         <button @click="plModal = false" class="modal-close">
-          닫기
+          X
         </button>
       </div>
     </div>
@@ -310,6 +328,18 @@ export default {
       console.log(error)
     })
   },
+  plRetry(userPlaylistId){
+    if(confirm("정말로 재도전 하시겠습니까?")){
+      this.$axios({
+        method: 'put',
+        url: `${this.$baseUrl}/playlist/${userPlaylistId}`
+      }).then(() => {
+        // console.log(response)
+        }).catch((error) =>{
+          console.log(error)
+        })
+    } 
+  },
   unfollow() {
     this.$axios({
       method: 'get',
@@ -413,11 +443,11 @@ export default {
   width: 100%;
   height: 100%;
   .white-bg{
+    position: relative;
     padding-top: 3px;
     padding-bottom: 10px;
     border-radius: 20px;
     background-color: #fff;
-    top: 50%;
     width: 300px;
     height: 250px;
     margin: 300px auto;
@@ -426,14 +456,28 @@ export default {
       height: 70px;
     }
     .modal-close{
-      background-color: #325C3E;
+      position: absolute;
+      top: 10px;
+      left: 85%;
+      font-size: 20px;
+      background-color: #ffffff;
+      font-weight: bold;
+      color:rgb(0, 0, 0);
+      border-radius: 7px;
+      padding: 8px 8px;
+      border: 0 solid #000;
+    }
+  }
+  .modal-btn{
+      background-color: $main-green;
       font-weight: bold;
       color:white;
       border-radius: 7px;
       padding: 8px 15px;
       border: 0 solid #000;
+      bottom: 20px;
+      margin: 0 auto;
     }
-  }
 }
 
 .menu-modal {
@@ -476,6 +520,7 @@ export default {
         }
       }
     }
+   
   }
   @keyframes menuSlidein {
     from {
@@ -551,25 +596,71 @@ export default {
   width: 100%;
   height: 100%;
   .pl-white-bg{
+    position: relative;
     padding-top: 3px;
     padding-bottom: 10px;
     border-radius: 20px;
     background-color: #fff;
-    top: 50%;
     width: 300px;
-    height: 500px;
-    margin: 130px auto;
+    height: 380px;
+    margin: 200px auto;
     img {
       width: 70px;
       height: 70px;
     }
     .modal-close{
-      background-color: #325C3E;
+      position: absolute;
+      top: 10px;
+      left: 85%;
+      font-size: 20px;
+      background-color: #ffffff;
+      font-weight: bold;
+      color:rgb(0, 0, 0);
+      border-radius: 7px;
+      padding: 8px 8px;
+      border: 0 solid #000;
+    }
+    .pl-img-wrap{
+      margin-top: 20px;
+    }
+    .pl-title{
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px auto;
+    }
+    .pl-desc{
+      height: 70px;
+      width: 80%;
+      margin: 10px auto;
+      font-size: 14px;
+      font-family: "LINESeedKR-Rg";
+    }
+    .pl-date{
+      margin: 10px auto;
+      font-size: 14px;
+    }
+    .pl-icon{
+      width: 75%;
+      margin: 20px auto;
+      justify-content: space-between;
+      display: flex;
+      img{
+        width: 40px;
+        height: 40px;
+        .grayscale {
+          filter: grayscale(100%);
+        }
+      }
+    }
+    .pl-btn{
+      background-color: $main-green;
       font-weight: bold;
       color:white;
       border-radius: 7px;
       padding: 8px 15px;
       border: 0 solid #000;
+      bottom: 20px;
+      margin: 0 auto;
     }
   }
 }

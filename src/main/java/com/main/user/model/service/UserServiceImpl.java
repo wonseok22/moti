@@ -1,10 +1,17 @@
 package com.main.user.model.service;
 
+import com.main.feed.model.repository.CommentRepository;
+import com.main.feed.model.repository.FeedImageRepository;
+import com.main.feed.model.repository.FeedRepository;
+import com.main.feed.model.repository.LikeRepository;
+import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.profile.model.entity.Profile;
+import com.main.profile.model.repository.FollowRepository;
 import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.dto.SearchUserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
+import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -21,10 +28,31 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
-	ProfileRepository profileRepository;
+	private FeedRepository feedRepository;
+	
+	@Autowired
+	private FeedImageRepository feedImageRepository;
+	
+	@Autowired
+	private CommentRepository commentRepository;
+	
+	@Autowired
+	private LikeRepository likeRepository;
+	
+	@Autowired
+	private FollowRepository followRepository;
+	
+	@Autowired
+	private UserPlaylistRepository userPlaylistRepository;
+	
+	@Autowired
+	private ProfileRepository profileRepository;
+	
+	@Autowired
+	private S3Upload s3Upload;
 	
 	@Override
 	public User getUser(String userId) {
@@ -113,7 +141,29 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public int deleteUser(String userId) {
 		User user = userRepository.findByUserId(userId);
-		Long profileId = user.getProfile().getProfileId();
+		Profile profile = user.getProfile();
+		Long profileId = profile.getProfileId();
+		commentRepository.deleteAllByUser_UserId(userId);
+		likeRepository.deleteAllByUser_UserId(userId);
+		feedRepository.findAllByUser_UserId(userId).forEach(x -> {
+			feedImageRepository.findAllByFeed_FeedId(x.getFeedId()).forEach(y -> {
+				try {
+					s3Upload.fileDelete(y.getFeedImageUrl().split(".com/")[1]);
+				} catch (Exception e) {
+					System.err.println("피드 사진 삭제 중 에러 발생");
+					e.printStackTrace();
+				}
+			});
+		}); // 해당 유저가 쓴 피드의 이미지를 서버에서 모두 삭제
+		try {
+			s3Upload.fileDelete(profile.getProfileImageUrl().split(".com/")[1]);
+		} catch (Exception e) {
+			System.err.println("프로필 사진 삭제 중 에러 발생");
+			e.printStackTrace();
+		} // 해당 유저의 프로필 이미지를 서버에서 삭제
+		userPlaylistRepository.deleteAllByUser_UserId(userId);
+		followRepository.deleteAllByFollowingId(userId);
+		followRepository.deleteAllByFollowerId(userId);
 		userRepository.deleteByUserId(userId);
 		return profileRepository.deleteByProfileId(profileId);
 	}
@@ -125,7 +175,6 @@ public class UserServiceImpl implements UserService {
 		else if ("email".equals(type)) return userRepository.findByEmail(value);
 		return null;
 	}
-	
 	
 	@Override
 	public void saveRefreshToken(String userId, String refreshToken) {

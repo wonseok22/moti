@@ -32,7 +32,6 @@ public class ProfileController {
 	private static final String FAIL = "fail";
 	private static final String ALREADY_EXIST = "already exists";
 	
-	
 	@Autowired
 	private ProfileService profileService;
 	

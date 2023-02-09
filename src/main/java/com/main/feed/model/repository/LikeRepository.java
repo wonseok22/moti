@@ -11,4 +11,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 	Like findByFeed_FeedIdAndUser_UserId(Long feedId, String userId);
 	
 	int deleteAllByFeed_FeedId (Long feedId);
+	
+	int deleteAllByUser_UserId (String userId);
 }

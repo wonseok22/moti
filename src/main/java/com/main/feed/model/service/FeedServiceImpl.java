@@ -87,7 +87,7 @@ public class FeedServiceImpl implements FeedService {
 		feedRepository.save(feed);
 		
 		// 이미지 처리
-		if (1024 < images.get(0).getSize()) imageUpload(feed, images);
+		if (1024 < images.get(0).getSize()) uploadFeedImages(feed, images);
 		
 		return feed;
 	}
@@ -115,18 +115,10 @@ public class FeedServiceImpl implements FeedService {
 		feed.setContent(content);
 		if (1024 < images.get(0).getSize()) {
 			// 이미지가 새로 업로드 되면 있던 사진 모두 삭제
-			feedImageRepository.findAllByFeed_FeedId(feedId).forEach(x -> {
-				try {
-					s3Upload.fileDelete(x.getFeedImageUrl().split(".com/")[1]);
-				} catch (Exception e) {
-					System.err.println("사진 삭제 중 에러 발생");
-					e.printStackTrace();
-				}
-				feedImageRepository.delete(x);
-			});
+			deleteFeedImages(feedId);
 			
 			// 새 이미지 서버에 업로드 후 DB에 주소 저장
-			imageUpload(feed, images);
+			uploadFeedImages(feed, images);
 		}
 		return feedRepository.save(feed);
 	}
@@ -138,6 +130,9 @@ public class FeedServiceImpl implements FeedService {
 		
 		// 해당 feedId의 피드가 존재하지 않으면 -1 반환
 		if (feed == null) return -1;
+		
+		// 이미지들 먼저 삭제
+		deleteFeedImages(feedId);
 		
 		// 사진, 댓글, 좋아요 모두 삭제 후 피드 삭제 해야 함
 		feedImageRepository.deleteAllByFeed_FeedId(feedId);
@@ -289,7 +284,7 @@ public class FeedServiceImpl implements FeedService {
 	 * @param feed 이미지가 포함된 피드 정보
 	 * @param images 이미지 정보
 	 */
-	private void imageUpload(Feed feed, List<MultipartFile> images) {
+	private void uploadFeedImages (Feed feed, List<MultipartFile> images) {
 		// 각각의 이미지 x에 대해 리사이즈 처리
 		images.forEach(x -> {
 			try {
@@ -303,6 +298,18 @@ public class FeedServiceImpl implements FeedService {
 				System.err.println("사진 업로드 중 에러 발생");
 				e.printStackTrace();
 			}
+		});
+	}
+	
+	private void deleteFeedImages(Long feedId) {
+		feedImageRepository.findAllByFeed_FeedId(feedId).forEach(x -> {
+			try {
+				s3Upload.fileDelete(x.getFeedImageUrl().split(".com/")[1]);
+			} catch (Exception e) {
+				System.err.println("사진 삭제 중 에러 발생");
+				e.printStackTrace();
+			}
+			feedImageRepository.delete(x);
 		});
 	}
 	

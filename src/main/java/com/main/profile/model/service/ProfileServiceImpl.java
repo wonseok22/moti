@@ -8,6 +8,7 @@ import com.main.profile.model.entity.Follow;
 import com.main.profile.model.entity.Profile;
 import com.main.profile.model.repository.CurrentStatRepository;
 import com.main.profile.model.repository.FollowRepository;
+import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.ImageProcess;
@@ -24,6 +25,9 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ProfileRepository profileRepository;
 	
 	@Autowired
 	private FollowRepository followRepository;
@@ -56,7 +60,7 @@ public class ProfileServiceImpl implements ProfileService {
 				if (profile.getProfileImageUrl() != null) {
 					s3Upload.fileDelete(profile.getProfileImageUrl().split("com/")[1]);
 				}
-				String ImagePath = s3Upload.uploadFiles(imageProcess.resizeImage(profileDto.getImage(), 90), "profileImages");
+				String ImagePath = s3Upload.uploadFiles(imageProcess.resizeImage(profileDto.getImage(), 180), "profileImages");
 				profile.setProfileImageUrl(ImagePath);
 			}
 			
@@ -66,6 +70,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 			
 			userRepository.save(user);
+			profileRepository.save(profile);
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +87,7 @@ public class ProfileServiceImpl implements ProfileService {
 			Profile profile = user.getProfile();
 			s3Upload.fileDelete(profile.getProfileImageUrl().split("com/")[1]);
 			profile.setProfileImageUrl(null);
-			userRepository.save(user);
+			profileRepository.save(profile);
 		} catch (Exception e) {
 			System.err.println("프로필 이미지 삭제 중 에러 발생");
 			e.printStackTrace();

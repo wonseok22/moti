@@ -31,6 +31,9 @@
         </div>
       </div>
     </div>
+    <!-- 쿠키 사용 안내 문구 -->
+    <span style="color:#A2A2A2; font-size:12px; font-weight: bold; font-family:'LINESeedKR-Th';position: relative; bottom: -90px;">
+      모티는 사용자 경험 개선을 위해 쿠키를 사용합니다</span>
     <basic-modal
       v-if="openModal"
       :content="modalContent"

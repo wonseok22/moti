@@ -89,6 +89,7 @@ import * as regex from '@/tools/regex.js'
 import BasicModal from '@/components/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
 import LoginKakao from '@/components/LoginKakao'
+
 export default {
 	name: 'SignupForm',
   components: {
@@ -120,7 +121,7 @@ export default {
     // id 입력 받기
     idInput(event) {
       this.idActive = true
-      // 띄어쓰기 및 특수문자 제거
+      // 한글 -> 영어
       const regexResult = regex.characterCheck(event.target.value)
       this.id = regexResult[0]
       if (regexResult[1]) {

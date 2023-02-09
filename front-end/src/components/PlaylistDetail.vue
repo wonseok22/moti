@@ -75,11 +75,12 @@ export default {
   },
   methods: {
     getPlaylist() {
+
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/playlist/detail/${this.pl}`
       }).then((response) => {
-          this.plDetail = response.data.playlistName
+          this.plDetail = response.data.playlist
       }).catch((error) =>{
         console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
       })
@@ -164,7 +165,7 @@ export default {
 #pl-info {
 display: flex;
 width: 100%;
-gap: 10px;
+gap: 20px;
 justify-content: center;
 }
 
@@ -216,18 +217,25 @@ justify-content: center;
 // 미션 정보 레이아웃
 #pl-mission-info-layout {
   margin-top: 30px;
+  width: 90%;
   height: 50%;
+  
   // margin-bottom: 30px;
 }
 
 
 // 미션 리스트 레이아웃
 #pl-mission-list-layout {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+
+  p {
+    padding: 0 10px;
+  }
 }
 
 // 미션 디테일
@@ -244,7 +252,8 @@ justify-content: center;
   width: 100%;
 
   min-height: 50px;
-  // height: 46px;
+
+  word-break: keep-all;
 
 }
 

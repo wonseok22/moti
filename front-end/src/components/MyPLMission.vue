@@ -33,14 +33,14 @@
     <div id="mission-info-layout">
       <!-- 미션 리스트 -->
       <article id="mission-list-layout">
-        <div v-for="(mission, idx) in missions.playlist.missions"
+        <p v-for="(mission, idx) in missions.playlist.missions"
           :key="idx"
           class="mission-list-detail"
           :id="`mission-${idx+1}`"
           @click="select(idx)"
         >
         {{ mission.missionName }}
-        </div>
+        </p>
       </article>
     </div>
     <!-- 미션 후기 작성 -->
@@ -122,7 +122,8 @@ export default {
           playlistName: this.missions.playlist.playlistName,
           userPlaylistId: this.missions.userPlaylistId,
           missionName: this.missions.playlist.missions[missionIdx].missionName,
-          missionId: this.missions.playlist.missions[missionIdx].missionId
+          missionId: this.missions.playlist.missions[missionIdx].missionId,
+          categoryName: this.missions.playlist.categoryName,
         }
         this.$router.push({ name: 'feedcreate', query: query })
       }
@@ -208,7 +209,7 @@ export default {
 #my-pl-info {
   display: flex;
   width: 90%;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
 }
 
@@ -246,6 +247,7 @@ export default {
     font-size: $fs-6;
     color: $dark-grey;
     margin-bottom: 0px;
+    word-break: keep-all;
     span {
       color: $text-base-color;
       font-weight: bold;
@@ -261,6 +263,7 @@ export default {
 
 // 미션 정보 레이아웃
 #mission-info-layout {
+  width: 90%;
   margin-top: 30px;
   height: 50%;
 }
@@ -297,6 +300,10 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+
+  p {
+    padding: 0 10px;
+  }
 }
 
 // 미션 디테일
@@ -312,6 +319,8 @@ export default {
   width: 100%;
 
   min-height: 50px;
+
+  word-break: keep-all;
 }
 
 // 선택된 미션

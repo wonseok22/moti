@@ -1,5 +1,6 @@
 <template>
   <div id="pl-main-layout">
+    
     <div class="pl-main-select">
       <select class="pl-main-option" v-model="selectedId"  @change="change">
         <option
@@ -12,7 +13,11 @@
         ></option>           
       </select>
     </div>
-      
+    
+    <p id="pl-main-title">
+      당신의 <span>성장 플랜</span>을 선택해주세요
+    </p>
+
     <div id="pl-list">
       <div 
         v-for="(pl, idx) in plList"
@@ -88,11 +93,37 @@ export default {
 $header-height: 46px;
 
 #pl-main-layout {
-  height: $base-height;
-  width: $base-width;
+  height: 100vh;
+  width: 90%;
 
 }
-.pl-main-option{
+
+#pl-main-title {
+  // position: relative;
+  height: 70px;
+  // left: 5px;
+  font-size: 19px;
+  font-weight: bold;
+  margin: 0 auto;
+  
+  // display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  
+  span {
+    color: $main-green;
+  }
+}
+
+.pl-main-select{
+  margin: 50px 0 30px 0;
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pl-main-option {
   width: 100px;
   height: 35px;
   position: relative;
@@ -102,12 +133,8 @@ $header-height: 46px;
   padding: 0 10px;
   background-color: $main-green;
   border: 0px solid #000;
-  
 }
-.pl-main-select{
-  margin: 100px 0 70px 0;
-  width: $base_width;
-}
+
 
 #category-main-main {
   height: 100%;
@@ -119,13 +146,14 @@ $header-height: 46px;
 }
 
 #pl-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
 .pl {
-  width: 304px;
+  width: 100%;
   height: 210px;
   
   background: $light-yellow;

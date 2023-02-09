@@ -27,6 +27,7 @@
     data() {
         return {
             feeds:null,
+            minFeedId: 99999,
         }
     },
     watch: {
@@ -34,7 +35,7 @@
             if (this.keyword != "") {
                 this.$axios({
                     method: 'get',
-                    url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.keyword}/playlist/0`
+                    url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.keyword}/playlist/${this.minFeedId}`
                     }).then((response) => {
                     this.feeds = response.data.feeds;
                     }).catch((error) =>{

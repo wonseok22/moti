@@ -1,12 +1,13 @@
 <template>
   <div class="feed-page">
     <div class="title-box">
-      <p>moti</p>
+      <p id="main-logo">moti</p>
     </div>
     <div class="feed-lists">
       <div v-for="feed in this.feeds" :key="feed.feedId">
         <MainFeedHeader
-        v-bind:HeaderData="feed"/>
+        v-bind:HeaderData="feed"
+        @deleteFeed="deleteFeed"/>
         <SingleFeedBody
         v-bind:BodyData="feed"/>
       </div>
@@ -18,9 +19,16 @@
     <div class="moving-notification">
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
     </div>
-    <div v-if="isCommentClicked" class="comment-page">
-      <FeedComment/>
-    </div>
+    <transition>
+      <div v-if="isCommentClicked" class="comment-page">
+        <FeedComment/>
+      </div>
+    </transition>
+    <!-- <div class="feed-delete-modal">
+      <div class="feed-delete-modal-body">
+
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -36,6 +44,9 @@ export default {
     MainFeedHeader,
     SingleFeedBody,
     FeedComment,
+  },
+  mixins: {
+
   },
   data() {
     return {
@@ -73,6 +84,9 @@ export default {
         })
       }, 500)
     },
+    deleteFeed(feedId) {
+      console.log(feedId)
+    }
   },
   computed: {
     isCommentClicked() {
@@ -84,6 +98,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+#main-logo {
+  font-size: $fs-0;
+}
 
+  //   .slide-leave-active {
+  //       animation: slide-out 1s ease-out forwards;
+  //       transition: opacity .5s;
+  //       opacity: 1;
+  //   }
 </style>

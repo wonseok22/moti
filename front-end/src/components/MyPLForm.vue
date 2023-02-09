@@ -37,9 +37,11 @@ export default {
   },
   computed: {
     complete() {
+      // console.log(this.myPL.done)
       return this.myPL.done
     },
     incomplete() {
+      // console.log(5 - this.complete)
       return 5 - this.complete
     },
     // 플레이리스트
@@ -56,7 +58,7 @@ export default {
       // ms 단위 남은 기간
       const remain_ms = end.getTime() - now.getTime()
       // day 단위 남은 기간
-      const remain_day = remain_ms / (1000*60*60*24)
+      const remain_day = remain_ms / (1000 * 60 * 60 * 24)
 
       // 1일 이상 남은 경우
       if (remain_day > 1) {
@@ -65,9 +67,9 @@ export default {
         // 1일 미만으로 남은 경우 시간 단위
         const remain_hour = String(remain_day * 24)
         if (remain_hour.indexOf('.') == 2) {
-          return String(remain_day).substring(0, 2) + '시간'
+          return String(remain_hour).substring(0, 2) + '시간'
         } else {
-          return String(remain_day).substring(0, 1) + '시간'
+          return String(remain_hour).substring(0, 1) + '시간'
         }
       }
     }

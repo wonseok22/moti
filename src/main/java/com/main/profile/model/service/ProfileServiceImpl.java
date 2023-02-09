@@ -56,7 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
 				if (profile.getProfileImageUrl() != null) {
 					s3Upload.fileDelete(profile.getProfileImageUrl().split("com/")[1]);
 				}
-				String ImagePath = s3Upload.uploadFiles(imageProcess.resizeImage(profileDto.getImage(), 90), "profileImages");
+				String ImagePath = s3Upload.uploadFiles(imageProcess.resizeImage(profileDto.getImage(), 180), "profileImages");
 				profile.setProfileImageUrl(ImagePath);
 			}
 			

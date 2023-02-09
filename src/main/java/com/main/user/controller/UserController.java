@@ -107,8 +107,8 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
-	@ApiOperation(value = "카카오로그인", notes = "access-token, Refresh-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
-	@PostMapping("/kakao")
+	@ApiOperation(value = "소셜로그인", notes = "access-token, Refresh-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
+	@PostMapping("/socialLogin")
 	public ResponseEntity<?> socialLogin(
 			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보.", required = true) UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();

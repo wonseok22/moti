@@ -3,6 +3,7 @@ export const basicModalMixin = {
 		return {
 			openModal: false,
       modalContent: null,
+			reload: false,
 		}
 	},
 	methods: {
@@ -10,6 +11,7 @@ export const basicModalMixin = {
     modalClose() {
       this.openModal = false
       this.modalContent = null
+			this.reload = false
     }
 	}
 }

@@ -76,7 +76,6 @@
     </div>
     <NavigationBar></NavigationBar>
 
-
     <div class="modal" v-if="modal">
       <div class="white-bg">
         <h3>{{ achievement.achievementName }}</h3>

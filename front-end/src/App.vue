@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <router-view/>
-    <width-warning-view
+    <!-- <width-warning-view
       v-if="tooWide"
     >
-    </width-warning-view>
+    </width-warning-view> -->
   </div>
 </template>
 

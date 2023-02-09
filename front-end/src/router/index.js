@@ -25,7 +25,8 @@ import FeedCreateView from '@/views/FeedCreateView'
 import SessionExpiredView from '@/views/SessionExpiredView'
 import store from '@/store'
 import axios from 'axios'
-
+// Google Analytics
+import VueGtag from 'vue-gtag'
 
 Vue.use(VueRouter)
 
@@ -229,5 +230,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+//Google Analytics setup
+Vue.use(VueGtag, {
+  config: { id: "G-D2267Q4M3G" }
+}, router);
 
 export default router

@@ -55,8 +55,8 @@ export default {
 }
 @font-face {
     font-family: 'LINESeedKR-Th';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/LINESeedKR-Bd.woff2') format('woff2');
-    font-weight: 700;
+    src: url('https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Th.eot');
+    src:url('https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Th.woff') format('woff');
     font-style: normal;
 }
 @font-face {

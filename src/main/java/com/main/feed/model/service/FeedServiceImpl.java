@@ -21,6 +21,7 @@ import com.main.playlist.model.repository.PlaylistRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.profile.model.repository.FollowRepository;
 import com.main.user.model.repository.UserRepository;
+import com.main.util.ImageProcess;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +69,9 @@ public class FeedServiceImpl implements FeedService {
 	
 	@Autowired
 	private S3Upload s3Upload;
+	
+	@Autowired
+	private ImageProcess imageProcess;
 	
 	@Override
 	public Feed writeFeed(WriteFeedDto writeFeedDto, List<MultipartFile> images) {
@@ -286,10 +290,11 @@ public class FeedServiceImpl implements FeedService {
 	 * @param images 이미지 정보
 	 */
 	private void imageUpload(Feed feed, List<MultipartFile> images) {
+		// 각각의 이미지 x에 대해 리사이즈 처리
 		images.forEach(x -> {
 			try {
-				MultipartFile resizedImage = s3Upload.resizeImage(x);
-				String imagePath = s3Upload.uploadFiles(resizedImage, "feedImages");
+				x = imageProcess.resizeImage(x, 450);
+				String imagePath = s3Upload.uploadFiles(x, "feedImages");
 				FeedImage feedImage = new FeedImage();
 				feedImage.setFeed(feed);
 				feedImage.setFeedImageUrl(imagePath);

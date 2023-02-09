@@ -25,8 +25,9 @@
       </div>
       <div class="to-kakao">
         <p>또는</p>
-        <div>
-          <login-kakao></login-kakao>          
+        <div style="display: flex; justify-content:space-around">
+          <login-kakao></login-kakao>    
+          <login-google></login-google>     
         </div>
       </div>
     </div>
@@ -43,12 +44,14 @@
 import * as regex from '@/tools/regex.js'
 import BasicModal from '@/components/BasicModal'
 import LoginKakao from '@/components/LoginKakao'
+import LoginGoogle from '@/components/LoginGoogle'
 
 export default {
 	name: 'loginForm',
   components: {
     BasicModal,
     LoginKakao,
+    LoginGoogle
 },
   data() {
     return {

@@ -3,7 +3,7 @@
     class="kakao_btn"
     src="@/assets/images/kakaotalk_logo.png"
     @click="loginWithKakao"
-    style="width: 50px; cursor: pointer"
+    style="width: 40px; height:40px; cursor: pointer"
   />
 </template>
 
@@ -12,7 +12,7 @@ import { mapActions } from "vuex";
 export default {
   name: "LoginKakao",
   methods: {
-    ...mapActions(["kakaoLogin"]),
+    ...mapActions(["socialLogin"]),
     loginWithKakao() {
       window.Kakao.Auth.login({
         scope: "profile_nickname, account_email",
@@ -34,7 +34,7 @@ export default {
               email: emails,
               type: "kakao",
             }
-            this.kakaoLogin(req_body)
+            this.socialLogin(req_body)
           }
         },
       });

@@ -45,6 +45,7 @@
       v-if="isModalOpened"
       @close="closeModal"
       :flowerDesc="plDetail.playlistDesc"
+      :flowerImage="plDetail.flower.flowerImageUrl"
     >
     </flower-desc>
     

@@ -45,6 +45,7 @@
       v-if="isModalOpened"
       @close="closeModal"
       :flowerDesc="plDetail.playlistDesc"
+      :flowerImage="plDetail.flower.flowerImageUrl"
     >
     </flower-desc>
     
@@ -81,6 +82,7 @@ export default {
         url: `${this.$baseUrl}/playlist/detail/${this.pl}`
       }).then((response) => {
           this.plDetail = response.data.playlist
+          console.log(this.plDetail)
       }).catch((error) =>{
         console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
       })

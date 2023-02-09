@@ -19,7 +19,6 @@ export default {
   methods: {
     comfirm() {
       if (this.reload) {
-        console.log('새로고침')
         location.reload()
       }
       this.$emit('close')

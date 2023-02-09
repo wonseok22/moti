@@ -37,7 +37,6 @@ export default {
     },
     // 인증 메일 재발송
     AuthRestart() {
-      console.log('이메일 인증 메일을 재발송합니다.')
       this.timeCounter = 300
       location.reload()
     },

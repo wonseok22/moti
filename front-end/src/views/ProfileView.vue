@@ -76,7 +76,6 @@
     </div>
     <NavigationBar></NavigationBar>
 
-
     <div class="modal" v-if="modal">
       <div class="white-bg">
         <h3>{{ achievement.achievementName }}</h3>
@@ -96,6 +95,7 @@
 
     <div class="pl-modal" v-if="plModal">
       <div class="pl-white-bg">
+        미구현
         <button @click="plModal = false" class="modal-close">
           닫기
         </button>
@@ -235,7 +235,6 @@ export default {
       this.$store.dispatch('logout')
     },
     deleteUser() {
-      console.log(this.$store.state.accessToken)
       if(confirm("정말로 탈퇴하시겠습니까??")) {
         this.$axios({
         method: 'delete',
@@ -244,7 +243,6 @@ export default {
         },
           url: `${this.$baseUrl}/users/${this.$store.state.id}`
         }).then((response) => {
-          console.log(response)
           if (response.status == 200){
             alert("쩡상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.")
             this.$router.push({

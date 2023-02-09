@@ -4,9 +4,9 @@
     <div class="feed-text">
         <p v-show="isThereImage === 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
         <p v-show="isThereImage !== 0">{{ BodyData.content }}</p>
-        <!-- <button v-if="isThereImage !== 0">
-            <p>더보기</p>
-        </button> -->
+        <button v-if="isThereImage !== 0">
+            <p id="see-more">더보기</p>
+        </button>
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
     <carousel
@@ -92,7 +92,6 @@ export default {
     methods: {
         async moveToComment() {
             const y = window.scrollY
-            console.log(y)
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
@@ -125,11 +124,13 @@ export default {
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
-        console.log(this.BodyData)
     }
 }
 
 </script>
 
-<style>
+<style lang="scss">
+#see-more {
+    margin-left: 5px;
+}
 </style>

@@ -2,7 +2,7 @@
   <div id="category-main-layout">
     <main id="category-main-main">
       <p id="category-main-name">
-        마음속에 들어있는 <span>동기</span> 는 무엇인가요?
+        어떤 분야에서 성장하고 싶나요?
       </p>
       <div id="category-list">
         <div 
@@ -54,7 +54,6 @@ export default {
       }).then((response) => {
         this.categoryList = response.data.categories;
         this.categoryTitleList = this.categoryList.map(e => e.categoryName)
-        console.log("카테고리 받아오기 성공")
       }).catch((error) =>{
         console.log(error)
       })
@@ -65,6 +64,7 @@ export default {
 $header-height: 46px;
 
 #category-main-layout {
+  width: 90%;
   height: $base-height;
   display: flex;
   flex-direction: column;
@@ -73,7 +73,6 @@ $header-height: 46px;
 
 #category-main-name {
   position: relative;
-  width: $base-width;
   height: 70px;
   // left: 5px;
   font-size: 19px;
@@ -91,7 +90,8 @@ $header-height: 46px;
 }
 
 #category-main-main {
-  height: 100%;
+  width: 90%;
+  height: 70%;
 
   display: flex;
   flex-direction: column;
@@ -102,6 +102,7 @@ $header-height: 46px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
   height: 70%;
   gap: 30px;
 }

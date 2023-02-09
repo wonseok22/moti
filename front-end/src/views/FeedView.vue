@@ -1,7 +1,7 @@
 <template>
   <div class="feed-page">
     <div class="title-box">
-      <p>moti</p>
+      <p id="main-logo">moti</p>
     </div>
     <div class="feed-lists">
       <div v-for="feed in this.feeds" :key="feed.feedId">
@@ -64,7 +64,6 @@ export default {
           url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.minFeedId}`
         })
         .then((res) => {
-          // console.log(res.data)
           this.feeds = this.feeds.concat(res.data.feeds)
           $state.loaded()
           this.minFeedId = res.data.minFeedId
@@ -99,20 +98,10 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-  // .slide-enter{
-  //     transform: translateX(-50px);
-  //     opacity: 1;
-  //   }
-
-  //   .slide-enter-active{
-  //       animation: slide-in 1s ease-out forwards;
-  //       transition: opacity .5s;
-  //   }
-
-  //   .slide-leave-to {
-  //     transform: translateX(50px);
-  //   }
+<style lang="scss">
+#main-logo {
+  font-size: $fs-0;
+}
 
   //   .slide-leave-active {
   //       animation: slide-out 1s ease-out forwards;

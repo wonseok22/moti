@@ -75,14 +75,12 @@ export default {
   },
   methods: {
     getPlaylist() {
-      console.log('플레이리스트를 가져옵니다.')
+
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/playlist/detail/${this.pl}`
       }).then((response) => {
-          console.log(`플레이리스트 가져오기 성공: status ${response.status}`)
           this.plDetail = response.data.playlist
-          console.log(this.plDetail)
       }).catch((error) =>{
         console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
       })
@@ -104,10 +102,8 @@ export default {
           //   window.location.reload()
           // } 
           if (response.data.message === 'success') {
-              console.log(`플레이리스트 추가 완료: status ${response.data.status}`)
               this.moveMyPlaylist();
           } else {
-            console.log(response.data.message)
             alert('알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.')
           }
       }).catch((error) =>{
@@ -169,7 +165,7 @@ export default {
 #pl-info {
 display: flex;
 width: 100%;
-gap: 10px;
+gap: 20px;
 justify-content: center;
 }
 
@@ -221,18 +217,25 @@ justify-content: center;
 // 미션 정보 레이아웃
 #pl-mission-info-layout {
   margin-top: 30px;
+  width: 90%;
   height: 50%;
+  
   // margin-bottom: 30px;
 }
 
 
 // 미션 리스트 레이아웃
 #pl-mission-list-layout {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+
+  p {
+    padding: 0 10px;
+  }
 }
 
 // 미션 디테일
@@ -249,7 +252,8 @@ justify-content: center;
   width: 100%;
 
   min-height: 50px;
-  // height: 46px;
+
+  word-break: keep-all;
 
 }
 

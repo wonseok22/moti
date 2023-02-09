@@ -88,7 +88,6 @@ methods: {
     // 닉네임 조건을 충족한 경우
     else {
       // 중복체크
-      console.log('닉네임 중복체크 실행')
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/users/check?type=nickname&value=${this.nickname}`
@@ -109,7 +108,6 @@ methods: {
             this.modalContent = '사용할 수 있는 닉네임이에요.'
             this.nicknameDoubleChecked = true
           } else {
-            console.log(response.data.message)
             this.openModal = true
             this.modalContent = '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
           }

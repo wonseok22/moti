@@ -83,7 +83,6 @@ export default {
     doubleCheck() {
       // 중복체크가 아직 진행되지 않은 경우
       if (!this.emailDoubleChecked) {
-        console.log('이메일 중복체크 실행')
         // 이메일 조건을 충족하지 못한 경우
         // if ( !this.emailConditions[0].valid ) {
         //   // this.openModal = true
@@ -111,7 +110,6 @@ export default {
                 content: '이미 사용 중인 이메일이에요.'
               }
               this.$store.dispatch('modalOpen', payload)
-              console.log(`중복체크 결과/message: ${response.data.message}`)
               this.email = null
               // 입력된 이메일 삭제
               const emailTag = document.querySelector('#input-email')
@@ -121,13 +119,11 @@ export default {
                 content: '사용할 수 있는 이메일이에요.'
               }
               this.$store.dispatch('modalOpen', payload)
-              console.log(`중복체크 결과/message: ${response.data.message}`)
               const emailInputTag = document.querySelector('#input-email')
               // 현재 이메일로 고정
               emailInputTag.setAttribute('disabled', true)
               this.emailDoubleChecked = true
             } else {
-              console.log(response.data.message)
               const payload = {
                 content: '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
               }

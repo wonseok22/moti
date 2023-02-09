@@ -11,9 +11,9 @@
       </p>
     </div>
     <MainFeedHeader
-    v-bind:HeaderData="feedHeaderData"/>
+    v-bind:HeaderData="this.$store.state.nowFeed"/>
     <SingleFeedBody
-    v-bind:BodyData="feedBodyData"/>
+    v-bind:BodyData="this.$store.state.nowFeed"/>
     <div class="comments-list">
       <div 
       v-for="(item) in this.$store.state.nowFeed.comments"
@@ -22,8 +22,7 @@
         :CommentData="{
           comment: item,
           feed: feed,
-        }"
-        @deleteComment="showModal"/>
+        }"/>
       </div>
     </div>
     <div ref="commentInput" class="comment-input">
@@ -47,17 +46,7 @@
       form="commentForm">
         <p>게시</p>
       </button>
-      <!-- <button
-      v-show="this.writeCommentData.content.length == 0"
-      type="submit"
-      form="commentForm"
-      style="color:#A4D1C2">
-        <p>게시</p>
-      </button> -->
     </div>
-    <!-- <p class="letter-counts">
-      {{ this.commentLength }} / 100
-    </p> -->
   </div>
 </template>
 
@@ -70,20 +59,6 @@ export default {
   name: 'FeedComment',
   data() {
     return {
-      feedHeaderData : {
-        missionName: this.$store.state.nowFeed.missionName,
-        nickname: this.$store.state.nowFeed.nickname,
-        playlistName: this.$store.state.nowFeed.playlistName,
-        feedId: this.$store.state.nowFeed.feedId,
-      },
-      feedBodyData: {
-        content: this.$store.state.nowFeed.content,
-        likes: this.$store.state.nowFeed.likes,
-        hit: this.$store.state.nowFeed.hit,
-        feedImages: this.$store.state.nowFeed.feedImages,
-        comments: this.$store.state.nowFeed.comments,
-        feedId: this.$store.state.nowFeed.feedId,
-      },
       writeCommentData: {
         userId: this.$store.state.id,
         feedId: this.$store.state.nowFeed.feedId,
@@ -129,6 +104,7 @@ export default {
   },  
   mounted() {
     window.scrollTo(0,0);
+
   },
   components: {
     MainFeedHeader,

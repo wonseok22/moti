@@ -46,7 +46,7 @@
 
     <!-- 댓글 버튼 -->
         <span 
-        v-show="this.$route.params.feedId === undefined"
+        v-show="!this.$store.state.isComment"
         @click="moveToComment" 
         class="material-symbols-outlined"
         style="color:#A3A3A3;">
@@ -54,7 +54,7 @@
         </span>
 
         <span 
-        v-show="this.$route.params.feedId !== undefined"
+        v-show="this.$store.state.isComment"
         class="material-symbols-outlined"
         style="color:#04C584;">
             mode_comment

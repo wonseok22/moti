@@ -1,31 +1,29 @@
 <template>
   <div>
     <div class="single-comment">
-      <span class="material-symbols-outlined"
-      style="color:#A3A3A3; font-size:44px">
-          account_circle
-      </span>
-      <div>
+      <div class="comment-img-wrap">
+        <img :src="CommentData.comment.profileImageUrl ? CommentData.comment.profileImageUrl : profileImageUrl" alt="프로필사진" 
+        @click="moveProfile(CommentData.comment.userId)">
+      </div>
+      <div class="comment-text">
         <div>
-          <p class="comment-nickname">{{ CommentData.comment.nickname }}</p>
-          <!-- <button 
-          v-show="this.$store.state.nickname == CommentData.nickname"
-          class="material-icons-outlined">
-            delete
-          </button> -->
+          <p class="comment-nickname"
+          @click="moveProfile(CommentData.comment.userId)">
+            {{ CommentData.comment.nickname }}
+          </p>
           <button 
           class="material-icons-outlined"
-          v-show="(CommentData.comment.nickname === this.$store.state.nickname) || (CommentData.feed.nickname === this.$store.state.nickname) "
-          v-on:click="tabOpened = true">
+          v-show="((CommentData.comment.nickname === this.$store.state.nickname) || (CommentData.feed.nickname === this.$store.state.nickname)) && this.horiOpened"
+          @click="horiClicked">
             more_horiz
           </button>
         </div>
-          <p class="comment-content">{{ CommentData.comment.content }}</p>
+        <p class="comment-content">{{ CommentData.comment.content }}</p>
       </div>
       <div class="more-modal" 
       v-show="tabOpened" 
       v-click-outside="onClickOutside"
-      @click="showFinalModal">
+      @click="deleteComment">
         <p>삭제</p>
       </div>
     </div>
@@ -48,32 +46,34 @@ export default {
     data() {
       return {
         tabOpened: false,
+        horiOpened: true,
+        profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       }
     },
     methods: {
+      horiClicked() {
+        this.tabOpened = true
+        this.horiOpened = false
+      }, 
       onClickOutside () {
         this.tabOpened = false
+        this.horiOpened = true
       },
-      showFinalModal() {
-        this.$emit('deleteComment', this.CommentData.commentId)
+      deleteComment() {
+        const payload = {
+          commentId: this.CommentData.comment.commentId,
+          feedId: this.$store.state.nowFeed.feedId,
+        }
+        this.$store.dispatch('deleteComment', payload)
         this.tabOpened = false
-      //   this.$modal.show('dialog',{
-      //   text:'삭제 콜?',
-      //   buttons: [
-      //     {
-      //       title: '아뇨, 그대로 두겠습니다.',
-      //       handler: () => {
-      //         this.$modal.hide('dialog')
-      //       }
-      //     },
-      //     {
-      //       title:'네,, 삭제하겠습니다.',
-      //       handler:() => {
-      //         alert('진짜 지웠네')
-      //       }
-      //     }
-      //   ]
-      // })
+      },
+      moveProfile(userId){
+          this.$store.commit("UPDATE_PROFILE_TARGET_ID",userId);
+          this.$store.dispatch("showComment")
+          document.body.style.overflow = "scroll"
+          this.$router.push({
+              name: 'profile',
+          }).catch(() => {});
       },
     }
 }

@@ -7,36 +7,48 @@
     <div class="feed-header-content">   
         <div class="feed-header-nickname">
             <img :src="HeaderData.achievementImageUrl" alt="댜표뱃지" class="feed-header-achieve" v-if="HeaderData.achievementImageUrl">
-            <!-- <img 
-            v-show="this.profileData.achievementImageUrl !== null" 
-            :src="this.profileData.achievementImageUrl" 
-            alt="achievementImage"> -->
+
             <p class="feed-header-nickname" @click="moveProfile(HeaderData.userId)">{{ HeaderData.nickname }}</p>
-            <!-- <div v-show="this.$store.state.nickname !== HeaderData.nickname">
-                <button 
-                v-show="!this.Following"
-                @click="FollowOrUnfollow">
-                    팔로우
-                </button>
-                <button
-                v-show="this.Following" 
-                style="color:#ababab;"
-                @click="FollowOrUnfollow">
-                    팔로잉
-                </button>
-            </div> -->
         </div>
         <p class="feed-header-mission">
             <span class="playlist-name">{{ HeaderData.playlistName }}</span><span style="font-size:12px;">의 </span>
             <span class="mission-name">{{ HeaderData.missionName }}</span>
         </p>
     </div>
+    <transition name="fade">
+        <span 
+            class="material-icons-outlined"
+            v-show="(HeaderData.userId === this.$store.state.id) && this.horiOpened"
+            @click="horiClicked">
+            more_vert
+        </span>
+    </transition>
+    <transition name="slide-fade" mode="out-in">
+        <div 
+        v-if="tabOpened" class="more-option"
+        v-click-outside="onClickOutside">
+            <span class="material-symbols-outlined"
+            style="color:aqua;">
+                edit
+            </span>
+            <span class="material-symbols-outlined"
+            style="color:red"
+            @click="deleteFeed">
+                delete
+            </span>
+        </div>
+    </transition>
 </div>
 </template>
 
 <script>
+import vClickOutside from 'v-click-outside'
+
 export default {
     name: "MainFeedHeader",
+    directives: {
+      clickOutside: vClickOutside.directive
+    },
     async created() {
         const check_res = this.$store.dispatch("followCheck", this.HeaderData.userId)
         const check_result = await check_res
@@ -58,7 +70,8 @@ export default {
                 targetId: null,
                 type: null,
             },
-        
+            horiOpened: true,
+            tabOpened: false,
         }
     },
     methods: {
@@ -79,42 +92,50 @@ export default {
                 name: 'profile',
             }).catch(() => {});
         },
-
+        horiClicked() {
+            this.tabOpened = true
+            this.horiOpened = false
+        }, 
+        onClickOutside () {
+            this.tabOpened = false
+            this.horiOpened = true
+         },
+         deleteFeed() {
+            this.$emit("deleteFeed", this.HeaderData.feedId)
+         }
     }
 }
 </script>
 
-<style lang="scss">
-.feed-header-img-wrap{
-    background-color: #ccc;
-    width: 50px !important;
-    height: 50px !important;
-    border-radius: 100%;
-    overflow: hidden;
-    img {
-        object-fit: cover;
-        width: 50px;
-        height: 50px;
-    }
+<style scoped lang="scss">
 
-}
-.feed-header-achieve{
-    padding-bottom: 5px;
-    width: 18px;
-    height: 18px;
-}
-.feed-header-nickname{
-    font-size: 16px;
-}
-.mission-name{
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 1.4;
-}  
+.slide-fade-enter {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  
+  .slide-fade-enter-active,
+  .slide-fade-leave-active {
+    transition: all 0.2s ease;
+  }
+  
+  .slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+  }
 
-.playlist-name{
-    line-height: 1.4;
-    font-size: 12px;
-    font-weight: bold;
+.fade-enter{
+    opacity: 0;
 }
+
+.fade-enter-active,
+.fade-leave-active{
+    transition: opacity 0.2s ease-out;
+}
+
+.fade-leave-to{
+    opacity: 0;
+}
+
+
 </style>

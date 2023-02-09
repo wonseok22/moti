@@ -53,6 +53,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     width: 100%;
 
@@ -171,6 +172,12 @@
     background: #FFFFFF;
     border-radius: 5px 5px 0px 0px;
 
+    .material-icons-outlined {
+        color: #ABABAB;
+        position: absolute;
+        right: 10px;
+    }
+
     .feed-header-content {
         width: 80%;
         display: flex;
@@ -190,14 +197,6 @@
             font-weight: bolder;
         }
 
-        button {
-            margin-left: 10px;
-            color: #049CF1;
-            border: none;
-            border-radius: 3px;
-            background-color: #FFFFFF;
-            font-weight: bolder;
-        }
     }
 
     p {
@@ -234,4 +233,64 @@
 
 .moving-notification.show {
     transform: translateY(-84px)
+}
+
+.more-option {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.feed-header-img-wrap{
+    background-color: #ccc;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 100%;
+    overflow: hidden;
+    img {
+        object-fit: cover;
+        width: 50px;
+        height: 50px;
+    }
+
+}
+.feed-header-achieve{
+    width: 14px;
+    height: 14px;
+}
+.feed-header-nickname{
+    font-size: 16px;
+}
+.mission-name{
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.4;
+}  
+
+.playlist-name{
+    line-height: 1.4;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.feed-delete-modal {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+
+
+    .feed-delete-modal-body {
+        position: relative;
+        width: 70%;
+        height: 30%;
+        background-color: white;
+        border-radius: 5%;
+    }
 }

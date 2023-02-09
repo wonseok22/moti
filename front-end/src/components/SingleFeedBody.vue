@@ -4,9 +4,9 @@
     <div class="feed-text">
         <p v-show="isThereImage === 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
         <p v-show="isThereImage !== 0">{{ BodyData.content }}</p>
-        <button v-if="isThereImage !== 0">
+        <!-- <button v-if="isThereImage !== 0">
             <p>더보기</p>
-        </button>
+        </button> -->
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
     <carousel
@@ -46,7 +46,7 @@
 
     <!-- 댓글 버튼 -->
         <span 
-        v-show="this.$route.params.feedId === undefined"
+        v-show="!this.$store.state.isComment"
         @click="moveToComment" 
         class="material-symbols-outlined"
         style="color:#A3A3A3;">
@@ -54,7 +54,7 @@
         </span>
 
         <span 
-        v-show="this.$route.params.feedId !== undefined"
+        v-show="this.$store.state.isComment"
         class="material-symbols-outlined"
         style="color:#04C584;">
             mode_comment

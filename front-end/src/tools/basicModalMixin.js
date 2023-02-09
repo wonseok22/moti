@@ -2,7 +2,7 @@ export const basicModalMixin = {
 	data() {
 		return {
 			openModal: false,
-      modalContent: null,
+    modalContent: null,
 		}
 	},
 	methods: {

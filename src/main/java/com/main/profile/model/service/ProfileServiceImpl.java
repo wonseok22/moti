@@ -10,6 +10,7 @@ import com.main.profile.model.repository.CurrentStatRepository;
 import com.main.profile.model.repository.FollowRepository;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
+import com.main.util.ImageProcess;
 import com.main.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private S3Upload s3Upload;
 	
+	@Autowired
+	private ImageProcess imageProcess;
+	
 	@Override
 	public int modifyProfile(ProfileDto profileDto) {
 		
@@ -52,7 +56,7 @@ public class ProfileServiceImpl implements ProfileService {
 				if (profile.getProfileImageUrl() != null) {
 					s3Upload.fileDelete(profile.getProfileImageUrl().split("com/")[1]);
 				}
-				String ImagePath = s3Upload.uploadFiles(profileDto.getImage(), "profileImages");
+				String ImagePath = s3Upload.uploadFiles(imageProcess.resizeImage(profileDto.getImage(), 50), "profileImages");
 				profile.setProfileImageUrl(ImagePath);
 			}
 			

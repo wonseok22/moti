@@ -30,17 +30,17 @@ public class ImageProcess {
 			// 이미지 크기가 충분히 작으면 처리할 필요가 없음
 			if(originalWidth <= 450) return multipartFile;
 			
-			// 목표로 하는 이미지의 가로 사이즈는 450px
+			// 목표로 하는 이미지의 가로 사이즈는 {targetWidth}px
 			int targetHeight = targetWidth * originalHeight / originalWidth;
 			
-			// 이미지 처리, SMOOTH 스케일을 주면 속도보다 이미지의 부드러움, FAST 스케일을 주면 부드러움 보단 속도
+			// 이미지 처리(SMOOTH 스케일을 주면 속도보다 이미지의 부드러움, FAST 스케일을 주면 부드러움 보단 속도)
 			Image resizedImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
 			BufferedImage newImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
 			Graphics graphics = newImage.getGraphics();
 			graphics.drawImage(resizedImage, 0, 0, null);
 			graphics.dispose();
 			
-			// 리사이즈된 이미지를 MultipartFile로 바꾸기 위한 전처리
+			// 리사이즈된 이미지를 MultipartFile 로 바꾸기 위한 전처리
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(newImage, fileFormat, baos);
 			baos.flush();

@@ -34,8 +34,10 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
 	@Autowired
 	private MailService mailService;
+	
 	@Autowired
 	private JwtService jwtService;
 	

@@ -270,8 +270,20 @@ export default new Vuex.Store({
 
     // 로그아웃
     logout(context) {
-      context.commit('LOGOUT')
-      this.$router.push({ name: 'login' })
+      console.log('로그아웃')
+      // 로그아웃 요청
+      this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/users/logout/${context.state.id}`,
+      })
+        .then(() => {
+          console.log('로그아웃 완료')
+          context.commit('LOGOUT')
+          this.$router.push({ name: 'login' })
+        })
+        .catch((error) => {
+          console.log(`로그아웃 실패: status: ${error.response.status}`)
+        })
     },
     // 이메일 인증 요청
     authStart(context, payload) {

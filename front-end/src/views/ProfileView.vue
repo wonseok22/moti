@@ -236,7 +236,6 @@ export default {
       this.$store.dispatch('logout')
     },
     deleteUser() {
-      console.log(this.$store.state.accessToken)
       if(confirm("정말로 탈퇴하시겠습니까??")) {
         this.$axios({
         method: 'delete',
@@ -245,7 +244,6 @@ export default {
         },
           url: `${this.$baseUrl}/users/${this.$store.state.id}`
         }).then((response) => {
-          console.log(response)
           if (response.status == 200){
             alert("쩡상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.")
             this.$router.push({

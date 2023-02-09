@@ -108,8 +108,7 @@ export default {
         },
         data: formData,
       })
-        .then((response) => {
-          console.log(response)
+        .then(() => {
           this.$router.push({ name: 'feed' })
         })
         .catch((error) => {
@@ -166,7 +165,6 @@ export default {
     // 비공개 여부
     // isprivateCheck() {
     //   this.isprivate = !this.isprivate
-    //   console.log(this.isprivate)
     // },
     // 이미지 삭제
     deleteImage(target) {

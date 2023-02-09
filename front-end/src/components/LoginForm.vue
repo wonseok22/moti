@@ -86,7 +86,6 @@ export default {
     // 로그인
     login() {
       if (this.isvalid) {
-        console.log('로그인 실행')
         const payload = {
           id: this.id,
           password: this.password,

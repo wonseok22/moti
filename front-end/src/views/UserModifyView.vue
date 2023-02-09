@@ -92,7 +92,6 @@ export default {
     })
         .then(() => {
             // 성공, 실패 로직
-            console.log("비밀번호 수정 성공")
             this.$router.push({ name: 'profile' })
         })
         .catch((error) => {

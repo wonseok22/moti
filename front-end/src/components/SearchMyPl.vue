@@ -42,7 +42,6 @@
                 } 
                 this.playlists[this.playlists.length - 1].push(e)
               })
-              console.log(this.playlists)
             }).catch((error) =>{
             console.log(error);
         })

@@ -37,9 +37,11 @@ export default {
   },
   computed: {
     complete() {
+      // console.log(this.myPL.done)
       return this.myPL.done
     },
     incomplete() {
+      // console.log(5 - this.complete)
       return 5 - this.complete
     },
     // 플레이리스트

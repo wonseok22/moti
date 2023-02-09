@@ -25,6 +25,8 @@
         name="feed-create-input" 
         id="feed-create-input"
         maxlength="500"
+        placeholder="미션에 대한 후기나 감상을 공유해보세요! 
+사진(최대 10장)을 이용하면 더 좋아요!"
       >
         </textarea>
     </article>
@@ -261,6 +263,13 @@ $feed-create-footer-height: 5%;
   height: 100%;
   border: none;
   resize: none;
+
+  font-size: $fs-6;
+  color: $dark-grey;
+
+  &::placeholder {
+    color: $light-grey;
+  }
 
   &:focus {
     outline: none;

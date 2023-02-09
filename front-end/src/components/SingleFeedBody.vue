@@ -5,7 +5,7 @@
         <p v-show="isThereImage === 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
         <p v-show="isThereImage !== 0">{{ BodyData.content }}</p>
         <button v-if="isThereImage !== 0">
-            <p>더보기</p>
+            <p id="see-more">더보기</p>
         </button>
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
@@ -129,5 +129,8 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss">
+#see-more {
+    margin-left: 5px;
+}
 </style>

@@ -243,6 +243,7 @@ export default new Vuex.Store({
     // 로그아웃
     logout(context) {
       context.commit('LOGOUT')
+      
       this.$router.push({ name: 'login' })
     },
     // 이메일 인증 요청

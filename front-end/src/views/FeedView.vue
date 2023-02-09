@@ -1,7 +1,7 @@
 <template>
   <div class="feed-page">
     <div class="title-box">
-      <p>moti</p>
+      <p id="main-logo">moti</p>
     </div>
     <div class="feed-lists">
       <div v-for="feed in this.feeds" :key="feed.feedId">
@@ -91,6 +91,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+#main-logo {
+  font-size: $fs-0;
+}
 
 </style>

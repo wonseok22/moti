@@ -11,7 +11,6 @@ const save = (context, payloadToken, payloadInfo) => {
     const promise2 = context.commit('GET_USER_INFO', payloadInfo)
     Promise.all([promise1, promise2])
       .then(() => {
-        console.log('resolve!')
         resolve()
       })
   })
@@ -81,11 +80,8 @@ export default new Vuex.Store({
           state.email = value
         } else if (key === 'nickname') {
           state.nickname = value
-        } else {
-          console.log(`알 수 없는 회원 정보가 입력되었습니다: ${key}`)
         }
       }
-      console.log('유저 정보 저장 완료')
       return Promise.resolve()
     },
     // 회원가입 완료 후 저장된 일부 정보 삭제하기(보안상)
@@ -104,7 +100,6 @@ export default new Vuex.Store({
       }
       // 토근 정상 저장 여부 확인
       if ( state.accessToken && state.refreshToken ) {
-        console.log('토큰 저장 완료')
         return Promise.resolve()
       } else {
         // 로그인에 실패했을 경우
@@ -112,7 +107,6 @@ export default new Vuex.Store({
           state.modalOpen = true
           state.modalContent = '아이디 또는 비밀번호를 확인해주세요.'
         }
-        console.log('토큰 저장에 실패했습니다.')
       }
     },
     // 로그아웃
@@ -126,7 +120,6 @@ export default new Vuex.Store({
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
       state.myPL = payload.myPL
-      // console.log(state.myPL)
     },
     // 나의 미션 저장
     GET_MY_MISSION(state, payload) {
@@ -135,12 +128,9 @@ export default new Vuex.Store({
     },
     GET_NOW_PL(state, payload) {
       state.nowPL = state.myMission[payload.userPlaylistId]
-      //console.log(state.myPL)
-      console.log(`플레이리스트 출력: ${state.myPL}`)
     },
     GET_FEED(state, payload) {
       state.nowFeed = payload.feedData
-      //console.log(state.nowFeed)
     },
     // 모달 열기
     MODAL_OPEN(state, payload) {
@@ -193,9 +183,8 @@ export default new Vuex.Store({
               content: '아이디 또는 비밀번호를 확인해주세요.'
             }
             context.commit('MODAL_OPEN', payload)
-            console.log(`로그인 실패: status ${response.status}`)
+            
           } else {
-            console.log(`로그인 응답 status: ${response.status}`)
             const payloadToken = {
               accessToken: response.data['access-token'],
               refreshToken: response.data['refresh-token'],
@@ -210,26 +199,23 @@ export default new Vuex.Store({
               })
             }
         })
-        .catch((error) => {
+        .catch(() => {
           const payload = {
               content: '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
             }
             context.commit('MODAL_OPEN', payload)
-          console.log(`로그인 실패: status ${error.response.status}`)
         })
     },
 
     // 카카오로그인
     kakaoLogin(context, payload) {
       // UserDto 객체 정의
-      console.log(payload)
       const UserDto = {
         userId: payload.userId,
         nickname : payload.userName,
         email : payload.email,
         type : payload.type,
       }
-      console.log(UserDto)
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/users/kakao`,
@@ -241,9 +227,7 @@ export default new Vuex.Store({
               content: '해당 이메일로 가입된 일반 사용자가 있습니다.'
             }
             context.commit('MODAL_OPEN', payload)
-            console.log(`로그인 실패: status ${response.status}`)
           } else {
-            console.log(`로그인 응답 status: ${response.status}`)
             const payloadToken = {
               accessToken: response.data['access-token'],
               refreshToken: response.data['refresh-token'],
@@ -259,25 +243,22 @@ export default new Vuex.Store({
             this.$router.push({ name: 'feed' })
             }
         })
-        .catch((error) => {
+        .catch(() => {
           const payload = {
               content: '알 수 없는 에러가 발생했습니다. 고객센터에 문의해주세요.'
             }
             context.commit('MODAL_OPEN', payload)
-          console.log(`로그인 실패: status ${error.response.status}`)
         })
     },
 
     // 로그아웃
     logout(context) {
-      console.log('로그아웃')
       // 로그아웃 요청
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/users/logout/${context.state.id}`,
       })
         .then(() => {
-          console.log('로그아웃 완료')
           context.commit('LOGOUT')
           this.$router.push({ name: 'login' })
         })
@@ -287,7 +268,6 @@ export default new Vuex.Store({
     },
     // 이메일 인증 요청
     authStart(context, payload) {
-      console.log('인증 메일을 보냈습니다.')
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/users/email`,
@@ -299,7 +279,6 @@ export default new Vuex.Store({
           console.log(`인증 메일 전송 성공/status:${response.status}`)
         })
         .catch((error) => {
-          console.log(`인증 메일 전송 실패: ${error}`)
           if (error.response.status == 500)  {
             const payload = {
               content: '이메일 발송에 실패했어요. 고객센터에 문의해주세요 :(',
@@ -321,14 +300,11 @@ export default new Vuex.Store({
         method: 'get',
         url: `${this.$baseUrl}/users/auth?email=${payload.email}`,
       })
-        .then((response) => {
-          console.log('이메일 인증 성공')
-          console.log(response)
+        .then(() => {
           context.commit('GET_USER_INFO', payload)
           this.$router.push({ path: '/signup/nickname'})
         })
         .catch((error) => {
-          console.log('이메일 인증 실패')
           const payload = {
             content: '이메일 인증에 실패했어요. 다시 시도해주세요.',
             reload: true,
@@ -348,7 +324,6 @@ export default new Vuex.Store({
         email: context.state.email,
         nickname: context.state.nickname,
       }
-      console.log(UserDto)
       this.$axios({
         method: 'post',
         url: `${this.$baseUrl}/users`,
@@ -358,9 +333,7 @@ export default new Vuex.Store({
           if (response.status == 202) {
             alert('202 응답')
           } else {
-            console.log('회원가입 완료')
             context.commit('ERASE_INFO')
-            console.log(response.data.message)
             this.$router.push({ name: 'login' })
           }
         })
@@ -370,7 +343,6 @@ export default new Vuex.Store({
     },
     // 토큰 재발급
     tokenRegeneration(context) {
-      console.log('access token 재발급 요청')
       const UserDto = {
         userId: context.state.id
       }
@@ -384,7 +356,6 @@ export default new Vuex.Store({
       })
         .then((response) => {
           // refresh token 유효 -> access token 갱신
-          console.log('access token 재발급 성공')
           const payload = {
             accessToken: response.data['access-token'],
           }
@@ -413,7 +384,6 @@ export default new Vuex.Store({
         url: `${this.$baseUrl}/playlist/current/${context.state.id}`
       })
         .then((response) => {
-          // console.log(`유저 플레이리스트 가져오기 성공: status ${response.status}`)
           const myPLList = response.data.currentPlaylists
           // 진행 중인 플레이리스트가 있을 경우 플레이리스트 저장 및 미션 가져오기
           if (myPLList) {
@@ -434,7 +404,6 @@ export default new Vuex.Store({
     },
     // 내 플레이리스트별 미션 정보 가져오기
     getMyMission(context, payload) {
-      console.log('플레이리스트별 미션 가져오기 실행')
       // 내 플레이리스트별 미션 모아둘 리스트
       const payloadMission = {}
 
@@ -444,7 +413,6 @@ export default new Vuex.Store({
           url: `${this.$baseUrl}/playlist/detail/${context.state.id}/${value}`
         })
           .then((response) => {
-            // console.log(`플레이리스트별 미션 가져오기 성공(${key}): status ${response.status}`)
             // const missions = {
             //   [key]: response.data.myPlaylist
             // }
@@ -487,7 +455,6 @@ export default new Vuex.Store({
         feedId: payload.feedId,
         content: payload.content
       }
-      //console.log(writeCommentDto)
       this.$axios({
         method:'post',
         url:`${this.$baseUrl}/feed/comment`,
@@ -517,7 +484,6 @@ export default new Vuex.Store({
         return this.dispatch('getSingleFeed', payload.feedId)
       })
       .then((res) => {
-        console.log(res)
         const data = {
           feedData: res.data.feed
         }
@@ -533,8 +499,7 @@ export default new Vuex.Store({
         method:'post',
         url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
       })
       .catch((error) => {
         console.log(error)

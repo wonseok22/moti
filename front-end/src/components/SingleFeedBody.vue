@@ -92,7 +92,6 @@ export default {
     methods: {
         async moveToComment() {
             const y = window.scrollY
-            console.log(y)
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
@@ -125,7 +124,6 @@ export default {
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
-        console.log(this.BodyData)
     }
 }
 

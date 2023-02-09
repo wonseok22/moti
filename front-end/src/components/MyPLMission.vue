@@ -92,7 +92,6 @@ export default {
       for (i; i <= this.missions.done; i += 1) {
         this.progress[i] = true
       }
-      console.log(this.progress)
     },
     // 인증할 미션 선택
     select(idx) {
@@ -159,7 +158,6 @@ export default {
     },
     // 미션 리스트
     missions() {
-      console.log(this.$store.state.nowPL)
       return this.$store.state.nowPL
     },
     myMissionUpdated() {

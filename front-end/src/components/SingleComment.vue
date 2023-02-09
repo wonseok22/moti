@@ -41,7 +41,6 @@ export default {
       clickOutside: vClickOutside.directive
     },
     mounted() {
-      // console.log(this.CommentData)
     },
     props: {
         CommentData: Object,

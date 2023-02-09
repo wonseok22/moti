@@ -53,7 +53,6 @@ export default {
           url: `${this.$baseUrl}/feed/search/${this.$store.state.id}/${this.newKind}/default/${this.minFeedId}`
         })
         .then((res) => {
-          // console.log(res.data)
           this.feeds = this.feeds.concat(res.data.feeds)
           $state.loaded()
           this.minFeedId = res.data.minFeedId

@@ -54,7 +54,6 @@ export default {
       }).then((response) => {
         this.categoryList = response.data.categories;
         this.categoryTitleList = this.categoryList.map(e => e.categoryName)
-        console.log("카테고리 받아오기 성공")
       }).catch((error) =>{
         console.log(error)
       })

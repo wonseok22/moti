@@ -126,8 +126,6 @@ export default {
     },
   },
   created() {
-    console.log(this.$store.state.nowFeed.nickname)
-    console.log(this.$store.state.id)
   },  
   mounted() {
     window.scrollTo(0,0);

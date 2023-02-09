@@ -75,11 +75,12 @@ export default {
   },
   methods: {
     getPlaylist() {
+
       this.$axios({
         method: 'get',
         url: `${this.$baseUrl}/playlist/detail/${this.pl}`
       }).then((response) => {
-          this.plDetail = response.data.playlistName
+          this.plDetail = response.data.playlist
       }).catch((error) =>{
         console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
       })

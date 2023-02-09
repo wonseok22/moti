@@ -33,35 +33,39 @@ const baseUrl = 'https://moti.today/api'
 
 const checkAccessToken = (to, from, next) => {
   const userId = store.state.id
-  // api 요청(현재 로그인 유저 회원정보 조회)
-
-  axios({
-    method: 'post',
-    url: `${baseUrl}/users/check`,
-    headers: {
-      'access-token' : store.state.accessToken,
-    },
-    data :{
-      "userId" : userId,
-    },
-  })
-  // accessToken 유효
-    .then(() => {
-      next()
+  // 로그인이 안 되어 있는 경우
+  if (!userId) {
+    router.push({ name: "login" })
+  } else {
+    // api 요청(현재 로그인 유저 회원정보 조회)
+    axios({
+      method: 'post',
+      url: `${baseUrl}/users/check`,
+      headers: {
+        'access-token' : store.state.accessToken,
+      },
+      data :{
+        "userId" : userId,
+      },
     })
-    .catch((error) => {
-      // accessToken 만료
-      if (error.response.status == 401) {
-        // accessToken 재발급 요청
-        const regenResult = store.dispatch('tokenRegeneration')
-        regenResult.then(() => {
-          // 재발급 성공 시 작업 그대로 진행
-          next()
-        })
-      } else {
-        console.log(error.response.status)
-      }
-    })
+    // accessToken 유효
+      .then(() => {
+        next()
+      })
+      .catch((error) => {
+        // accessToken 만료
+        if (error.response.status == 401) {
+          // accessToken 재발급 요청
+          const regenResult = store.dispatch('tokenRegeneration')
+          regenResult.then(() => {
+            // 재발급 성공 시 작업 그대로 진행
+            next()
+          })
+        } else {
+          console.log(error.response.status)
+        }
+      })
+  }
 }
 
 const loginCheck = () => {

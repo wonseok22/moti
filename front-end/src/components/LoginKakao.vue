@@ -29,7 +29,7 @@ export default {
             if (this.$route.path != "/") this.$router.push({ name: "home" })
           } else {
             const req_body = {
-              userId: "kakao_" + res.id,
+              userId: "kakao" + res.id,
               userName: kakao_account.profile.nickname,
               email: emails,
               type: "kakao",

@@ -108,7 +108,7 @@
           <img src="@/assets/images/4_sun.png" alt="진행도 이미지" :class="pl.done < 4 ? 'grayscale' : ''">
           <img :src="pl.playlist.flower.flowerImageUrl" alt="진행도 이미지" :class="pl.done < 5 ? 'grayscale' : ''">
         </div>
-        <button @click="plModal = false" class="pl-btn" v-if="(pl.done > 4 || !pl.isDone) ">
+        <button @click="openFeedMyRecord(pl.userPlaylistId, pl.playlist.flower.flowerImageUrl)" class="pl-btn" v-if="(pl.done > 4 || !pl.isDone) ">
           발자취 보기
         </button>
         <button @click="plRetry(pl.userPlaylistId)" class="pl-btn" v-if="(pl.done < 5 && pl.isDone)&& isMyProfile">
@@ -190,6 +190,10 @@
     <div v-if="isCommentClicked" class="comment-page">
       <FeedComment/>
     </div>
+
+    <div v-if="recordView" class="comment-page">
+      <FeedMyRecord :feeds="myRecord" :flowerImageUrl="flowerImageUrl"  @closeRecordModal="closeRecordModal"></FeedMyRecord>
+    </div>
   </div>
 </template>
 
@@ -200,6 +204,7 @@ import SearchAchieve from '@/components/SearchAchieve.vue'
 import FollowerList from "@/components/FollowerList.vue"
 import FollowingList from "@/components/FollowingList.vue"
 import FeedComment from '@/components/FeedComment.vue'
+import FeedMyRecord from "@/components/FeedMyRecord.vue"
 
 export default {
   name: 'ProfileView',
@@ -214,6 +219,9 @@ export default {
       plModal :false,
       followModal:false,
       pl:null,
+      recordView:false,
+      myRecord:null,
+      flowerImageUrl:null,
 
     }
   },
@@ -224,6 +232,7 @@ export default {
     FollowerList,
     FollowingList,
     FeedComment,
+    FeedMyRecord,
   },
   created() {
     this.$axios({
@@ -363,6 +372,9 @@ export default {
       this.pl = pl;
       this.plModal=true;
    },
+   closeRecordModal(){
+    this.recordView=false
+   },
    menu(){
     this.menuModal = true;
   },
@@ -427,11 +439,27 @@ export default {
       this.$router.push({
         name: 'profile',
       }).catch(() => {location.reload();});
-    }
+    },
+    openFeedMyRecord(userPlaylistId, flowerImageUrl){
+      this.recordView = true
+      this.plModal = false
+      this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/feed/search/${this.$store.state.targetUd}/${userPlaylistId}`
+      }).then((response) => {
+        if (response.data.message ==="success"){
+          this.myRecord = response.data.feeds
+          this.flowerImageUrl = flowerImageUrl
+        } 
+        }).catch((error) =>{
+          console.log(error)
+        })
+    },
   },
   computed: {
     isCommentClicked() {
       return this.$store.getters.isCommentClicked
+      
     }
   },  
 }

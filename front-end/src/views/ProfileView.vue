@@ -400,7 +400,7 @@ export default {
         "achievementId" : achievementId
       }
     }).then(() => {
-      alert("대표업적 등록 성공")
+      alert("대표뱃지가 등록되었습니다.")
       location.reload();
     }).catch((error) =>{
         console.log(error)
@@ -415,7 +415,7 @@ export default {
         "achievementId" : 0
       }
     }).then(() => {
-      alert("대표업적 삭제 성공")
+      alert("대표뱃지가 삭제되었습니다.")
       location.reload();
       
     }).catch((error) =>{

@@ -50,7 +50,7 @@
     gap: 12px;
     width: 100vw;
 
-    padding: 10px;
+    padding: 0 10px;
     margin-top: 5px;
 
     .more-modal {
@@ -118,6 +118,7 @@
     height: 40px !important;
     border-radius: 100%;
     overflow: hidden;
+    margin-bottom: 3px;
     img {
         object-fit: cover;
         width: 40px;
@@ -133,8 +134,8 @@
     text-align: start;
     font-size: 14px;
     font-weight: bolder;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 0;
+    line-height: 1;
 }
 
 .comment-content {
@@ -143,8 +144,8 @@
     word-break: keep-all;
     text-align: start;
     font-size: 14px;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 5px;
+    margin-bottom: 8px;
 }
 
 .comment-input {
@@ -154,7 +155,6 @@
     align-items: flex-end;
     bottom: 0px;
     width: 100%;
-    padding-left: 3px;
     padding-right: 3px;
     border-top: solid 1px $light-grey;
     justify-content: space-evenly;
@@ -162,17 +162,17 @@
     
     span {
         align-self: flex-end;
-        margin-bottom: 3px;
+        margin-bottom: 1px;
     }
 
     form {
-        width: 73%;
+        width: 75%;
         margin-top: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
     }
 
     textarea {
-        width: 90%;
+        width: 100%;
         resize: none;
         border: none;
         word-break: keep-all;

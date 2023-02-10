@@ -90,6 +90,7 @@ public class UserController {
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("userId", loginUser.getUserId());
 				resultMap.put("nickname", loginUser.getNickname());
+				resultMap.put("type", loginUser.getType());
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			} else {
@@ -128,6 +129,7 @@ public class UserController {
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("userId", user.getUserId());
 				resultMap.put("nickname", user.getNickname());
+				resultMap.put("type", user.getType());
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			}

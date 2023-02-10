@@ -1,6 +1,5 @@
 package com.main.profile.controller;
 
-import com.main.profile.model.dto.FollowDto;
 import com.main.profile.model.dto.GetFollowDto;
 import com.main.profile.model.dto.ProfileDto;
 import com.main.profile.model.service.ProfileService;
@@ -131,11 +130,12 @@ public class ProfileController {
 	@GetMapping("/follow")
 	public ResponseEntity<?> getFollow(
 			@ApiParam(value = "팔로워, 팔로잉 목록을 요청할 유저의 ID", required = true) @RequestParam String userId,
+			@ApiParam(value = "조회당할 유저의 ID", required = true) @RequestParam String targetId,
 			@ApiParam(value = "follower / following", required = true)@RequestParam String type) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		try {
-			List<GetFollowDto> followList = profileService.getFollow(type, userId);
+			List<GetFollowDto> followList = profileService.getFollow(type, userId, targetId);
 			// 유저 팔로워 요청 처리
 			resultMap.put("message", SUCCESS);
 			resultMap.put("followerList", followList);

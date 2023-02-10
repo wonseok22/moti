@@ -13,4 +13,5 @@ public class GetFollowDto {
 	private String userId;
 	private String nickname;
 	private String profileImageUrl;
+	private boolean isFollowing;
 }

@@ -150,7 +150,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 	
 	@Override
-	public List<GetFollowDto> getFollow(String type, String userId) {
+	public List<GetFollowDto> getFollow (String type, String userId, String targetId) {
 		List<Follow> follows;
 		
 		// Dto로 전달하기 위해 DtoList 생성
@@ -158,7 +158,7 @@ public class ProfileServiceImpl implements ProfileService {
 		
 		// 팔로워 목록 요청인지 팔로잉 목록 요청인지
 		if ("follower".equals(type)) {
-			follows = followRepository.findAllByFollowingId(userId);
+			follows = followRepository.findAllByFollowingId(targetId);
 			
 			follows.forEach(x -> {
 				User user = userRepository.findByUserId(x.getFollowerId());
@@ -167,12 +167,13 @@ public class ProfileServiceImpl implements ProfileService {
 						new GetFollowDto(
 								x.getFollowerId(),
 								user.getNickname(),
-								user.getProfile().getProfileImageUrl()
+								user.getProfile().getProfileImageUrl(),
+								followRepository.findByFollowerIdAndFollowingId(userId, user.getUserId()) != null
 						)
 				);
 			});
 		} else {
-			follows = followRepository.findAllByFollowerId(userId);
+			follows = followRepository.findAllByFollowerId(targetId);
 			
 			follows.forEach(x -> {
 				User user = userRepository.findByUserId(x.getFollowingId());
@@ -181,7 +182,8 @@ public class ProfileServiceImpl implements ProfileService {
 						new GetFollowDto(
 								x.getFollowingId(),
 								user.getNickname(),
-								user.getProfile().getProfileImageUrl()
+								user.getProfile().getProfileImageUrl(),
+								userId == targetId ? true : followRepository.findByFollowerIdAndFollowingId(userId, user.getUserId()) != null
 						)
 				);
 			});

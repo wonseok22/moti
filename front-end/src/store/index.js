@@ -37,6 +37,7 @@ export default new Vuex.Store({
     password: null,
     email: null,
     nickname: null,
+    type:null,
     accessToken: null,
     refreshToken: null,
     myPL: null,
@@ -80,6 +81,9 @@ export default new Vuex.Store({
           state.email = value
         } else if (key === 'nickname') {
           state.nickname = value
+        }
+        else if (key === 'type') {
+          state.type = value
         }
       }
       return Promise.resolve()

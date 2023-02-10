@@ -21,8 +21,7 @@ export default {
   },
   methods: {
     comfirm() {
-      
-      if (this.$route.params.error == 401) {
+      if (this.$route.params.error == 401 || this.$route.params.error == 202) {
         this.$store.dispatch('logout')
       } else {
         this.$router.push('/feed')
@@ -30,7 +29,7 @@ export default {
     }
   },
   created() {
-    if (this.$route.params.error == 401) {
+    if (this.$route.params.error == 401 || this.$route.params.error == 202) {
       this.errorMessage1 = '세션이 만료되었어요.'
       this.errorMessage2 = '다시 로그인 해주세요!'
     } else {

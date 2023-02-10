@@ -126,8 +126,8 @@ public class UserController {
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
-				resultMap.put("userId", loginUser.getUserId());
-				resultMap.put("nickname", loginUser.getNickname());
+				resultMap.put("userId", user.getUserId());
+				resultMap.put("nickname", user.getNickname());
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			}

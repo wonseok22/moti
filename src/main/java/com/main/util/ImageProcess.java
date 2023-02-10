@@ -27,8 +27,8 @@ public class ImageProcess {
 			int originalWidth = originalImage.getWidth();
 			String fileFormat = multipartFile.getContentType().substring(multipartFile.getContentType().lastIndexOf("/") + 1);
 			
-			// 이미지 크기가 충분히 작으면 처리할 필요가 없음
-			if(originalWidth <= targetWidth) return multipartFile;
+			// 이미지 크기가 충분히 작거나 gif 파일이면(1mb 이하의 gif 파일만 프론트에서 넘어옴) 처리할 필요가 없음
+			if(originalWidth <= targetWidth || "gif".equals(fileFormat)) return multipartFile;
 			
 			// 목표로 하는 이미지의 가로 사이즈는 {targetWidth}px
 			int targetHeight = targetWidth * originalHeight / originalWidth;

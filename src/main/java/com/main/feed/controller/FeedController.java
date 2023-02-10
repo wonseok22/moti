@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,6 @@ public class FeedController {
 	// APIs for FEED
 	// ------------------------------------------------------------------
 	
-	@Transactional
 	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
 	@PostMapping("")
 	public ResponseEntity<?> writeFeed(

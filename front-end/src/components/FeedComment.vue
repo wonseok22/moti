@@ -28,7 +28,7 @@
     <div ref="commentInput" class="comment-input">
      
       <form 
-      v-on:submit.prevent="writeComment"
+      v-on:submit.prevent=""
       id="commentForm">
         <textarea
         ref="commentTextarea"
@@ -39,6 +39,7 @@
         </textarea>
       </form>
       <button
+      @click="writeComment"
       type="submit"
       form="commentForm">
         <p>게시</p>

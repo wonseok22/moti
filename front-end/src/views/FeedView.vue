@@ -4,12 +4,13 @@
       <p id="main-logo">moti</p>
     </div>
     <div class="feed-lists">
-      <div v-for="feed in this.feeds" :key="feed.feedId">
+      <div v-for="(feed, idx) in this.feeds" :key="feed.feedId">
         <MainFeedHeader
         v-bind:HeaderData="feed"
         @deleteFeed="deleteFeed"/>
         <SingleFeedBody
-        v-bind:BodyData="feed"/>
+        :BodyData="feed"
+        :feedIdx="idx"/>
       </div>
       <infinite-loading @infinite="infiniteHandler" spinner="waveDots" :distance="0" direction="bottom">
         <div slot="no-more"></div>
@@ -102,7 +103,6 @@ export default {
 #main-logo {
   font-size: $fs-0;
 }
-
   //   .slide-leave-active {
   //       animation: slide-out 1s ease-out forwards;
   //       transition: opacity .5s;

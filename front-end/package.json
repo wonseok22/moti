@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@types/google.accounts": "^0.0.6",
     "@vue/cli": "^5.0.8",
     "axios": "^1.2.6",
     "core-js": "^3.8.3",

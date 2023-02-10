@@ -8,14 +8,15 @@ import { mapActions } from "vuex";
 export default {
   name: "LoginGoogle",
   mounted() {
+    const client_id = "293618779849-da4im7oh35dq851ro2l9htrvi4ivbtc0.apps.googleusercontent.com"
     window.google.accounts.id.initialize({
-      client_id:
-        "293618779849-da4im7oh35dq851ro2l9htrvi4ivbtc0.apps.googleusercontent.com",
+      client_id: client_id,
       callback: this.handleCredentialResponse,
+      auto_select:true
     });
     window.google.accounts.id.renderButton(
       document.getElementById("buttonDiv"),
-      { type: "icon", theme: "outline", size: "large", shape: "circle" } // customization attributes
+      { type: "icon", theme: "outline", size: "large", shape: "circle", width:'40'} // customization attributes
     );
     //window.google.accounts.id.prompt(); // also display the One Tap dialog
   },

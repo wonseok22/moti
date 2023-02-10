@@ -54,6 +54,7 @@ export default {
       const now = new Date()
       // 끝나는 날짜
       const end = new Date(this.myPL.endDate)
+      console.log(end)
 
       // ms 단위 남은 기간
       const remain_ms = end.getTime() - now.getTime()

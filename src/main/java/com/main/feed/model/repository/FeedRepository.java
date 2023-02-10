@@ -25,4 +25,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 	Slice<Feed> findAllByUser_UserIdAndFeedIdLessThanOrderByFeedIdDesc (String keyword, Long minFeedId, PageRequest of);
 	
 	List<Feed> findAllByUser_UserId (String userId);
+	
+	List<Feed> findAllByUserPlaylist_UserPlaylistId (Long userPlaylistId);
 }

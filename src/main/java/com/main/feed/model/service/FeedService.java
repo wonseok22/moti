@@ -30,4 +30,6 @@ public interface FeedService {
 	int deleteLike(String userId, Long feedId);
 	
 	Map<String, Object> searchFeed (String userId, String content, String kind, Long minFeedId);
+	
+	List<FeedDto> getFootprints (String userId, Long userPlaylistId);
 }

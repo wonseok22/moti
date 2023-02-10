@@ -10,7 +10,7 @@ public interface ProfileService {
 	
 	ProfileDto getProfile(String userId);
 	
-	List<GetFollowDto> getFollow(String type, String userId);
+	List<GetFollowDto> getFollow (String type, String userId, String targetId);
 	
 	int doFollow(String type, String userId, String targetId);
 	

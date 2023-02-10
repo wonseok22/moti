@@ -251,6 +251,21 @@ public class FeedServiceImpl implements FeedService {
 		return null;
 	}
 	
+	@Override
+	public List<FeedDto> getFootprints (String userId, Long userPlaylistId) {
+		List<FeedDto> feedDtos = new ArrayList<>();
+		List<Feed> feeds = feedRepository.findAllByUserPlaylist_UserPlaylistId(userPlaylistId);
+		feeds.forEach(x -> feedDtos.add(FeedDto.toDto(x)));
+		
+		// 피드마다 좋아요 눌렀는지 확인
+		for (FeedDto feedDto : feedDtos) {
+			Like like = likeRepository.findByFeed_FeedIdAndUser_UserId(feedDto.getFeedId(), userId);
+			if (like != null) feedDto.setHit(true);
+		}
+		
+		return feedDtos;
+	}
+	
 	/**
 	 * 검색 결과를 프론트에 보내기 전에 가공하는 메서드
 	 * @param userId 검색하는 유저의 ID

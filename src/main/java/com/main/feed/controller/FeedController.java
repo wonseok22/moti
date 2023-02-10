@@ -345,4 +345,37 @@ public class FeedController {
 		
 	}
 	
+	@ApiOperation(value = "발자취 보기", notes = "특정 UserPlaylist 안에 있는 Feed 들 불러오는 API", response = Map.class)
+	@GetMapping("/search/{userId}/{userPlaylistId}")
+	public ResponseEntity<?> getFootprints(
+			@PathVariable @ApiParam(value = "검색하는 유저 ID", required = true) String userId,
+			@PathVariable @ApiParam(value = "조회하고자 하는 유저플레이리스트 ID", required = true) Long userPlaylistId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status;
+		
+		try {
+			List<FeedDto> footprints = feedService.getFootprints(userId, userPlaylistId);
+			if (footprints == null) {
+				logger.debug("피드 검색 결과 : {}", "피드 존재하지 않음");
+				resultMap.put("feeds", null);
+				resultMap.put("message", "존재하지 않는 피드");
+				status = HttpStatus.ACCEPTED;
+				return new ResponseEntity<>(resultMap, status);
+			}
+			logger.debug("피드 검색 결과 : {}", "성공");
+			resultMap.put("feeds", footprints);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("피드 검색 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<>(resultMap, status);
+		
+	}
+	
 }

@@ -108,6 +108,8 @@ export default new Vuex.Store({
           state.modalContent = '아이디 또는 비밀번호를 확인해주세요.'
         }
       }
+      console.log(state.accessToken)
+      console.log(state.refreshToken)
     },
     // 로그아웃
     LOGOUT(state) {
@@ -355,6 +357,12 @@ export default new Vuex.Store({
         data: UserDto
       })
         .then((response) => {
+          if (response.status == '202') {
+            const params = {
+              error: '202',
+            }
+            this.$router.push({ name: 'sessionExpired', params: params })
+          }
           // refresh token 유효 -> access token 갱신
           const payload = {
             accessToken: response.data['access-token'],
@@ -363,6 +371,7 @@ export default new Vuex.Store({
           return Promise.resolve()
         })
         .catch((error) => {
+          console.log('여기2')
           // refresh token 만료 -> 재로그인
           if (error.response.status == '401') {
             const params = {

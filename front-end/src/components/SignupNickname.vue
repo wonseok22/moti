@@ -8,7 +8,7 @@
           <div class="account-id-box">
             <input type="text" id="input-nickname" class="inputbox" name="input-nickname" placeholder="닉네임" @input="nicknameInput">
             <button class="btn-green double-check" @click="doubleCheck">중복체크</button>
-            <div v-if="nicknameActive">
+            <div v-if="nicknameActive" class="infobox">
               <p
                 v-for="(condition, idx) in nicknameConditions"
                 :key="idx"

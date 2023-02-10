@@ -47,7 +47,7 @@
           </div>
           <!-- 비밀번호 재입력 -->
           <div>
-            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2" @keyup.enter="confirm">
+            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력"  @input="pwInput2" @keyup.enter="confirm">
             <div v-if="pw2Active" class="infobox">
               <p
                 v-for="(condition, idx) in pw2Conditions"
@@ -118,7 +118,6 @@ export default {
     });
   },
   methods: {
-    // id 입력 받기
     idInput(event) {
       this.idActive = true
       // 한글 -> 영어

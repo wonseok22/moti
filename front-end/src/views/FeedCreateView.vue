@@ -26,7 +26,7 @@
         id="feed-create-input"
         maxlength="500"
         placeholder="미션에 대한 후기나 감상을 공유해보세요! 
-사진(최대 10장)을 이용하면 더 좋아요!"
+사진(최대 10장, gif는 1mb 이하)을 이용하면 더 좋아요!"
       >
         </textarea>
     </article>
@@ -94,6 +94,7 @@ export default {
     // 피드 등록
     createFeed() {
       const formData = new FormData()
+
       const writeFeedDto = {
         userId: this.$store.state.id,
         userPlaylistId: this.missionInfo.userPlaylistId,
@@ -111,6 +112,7 @@ export default {
           formData.append('images', img)
         }
       } else {
+        // 이미지가 없을 경우
         const dump = {}
         formData.append('images', new Blob([JSON.stringify(dump)], { type: "application/json" }))
       }
@@ -141,7 +143,36 @@ export default {
           this.modalContent = '사진은 10장 이하로만 등록 가능해요.'
           this.openModal = true
         } else {
-          this.images = event.target.files
+          const dataTransfer = new DataTransfer()
+          const imageArray = Array.from(event.target.files)	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
+          let imgSizeWarning = false
+          imageArray.forEach((img) => {
+            // gif 처리
+            if (img.type === 'image/gif') {
+              if (img.size / 1048576 >= 1) {
+                imgSizeWarning = true
+                return
+              }
+              // 기타 이미지 처리
+            } else if (img.type === 'image/png' || img.type === 'image/jpg' || img.type === 'image/jpeg') {
+                if (img.size / 1048576 >= 5) {
+                  imgSizeWarning = true
+                  return
+                }
+              }
+            dataTransfer.items.add(img)
+          })
+          if (dataTransfer.files.length) {
+            this.images = dataTransfer.files	//제거 처리된 FileList를 돌려줌
+          } else {
+            this.images = null
+          }
+          
+          if (imgSizeWarning) {
+            this.modalContent = 'gif 파일은 1mb 이하, png, jpg는 5mb 이하만 업로드할 수 있어요.'
+            this.openModal = true
+          }
+          
         }
       }
       
@@ -181,6 +212,9 @@ export default {
           idx += 1
         }
       }
+      if (this.images && !this.images.length) {
+        this.images = null
+      }
     },
     // 비공개 여부
     // isprivateCheck() {
@@ -219,6 +253,7 @@ $feed-create-footer-height: 5%;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   padding: 0px 10px;
 }
@@ -270,7 +305,7 @@ $feed-create-footer-height: 5%;
 
 // 피드 작성 부분
 #feed-create-article {
-  height: (100% - $feed-create-footer-height);
+  height: (75% - $feed-create-footer-height);
 }
 
 // 피드 내용 작성
@@ -294,7 +329,7 @@ $feed-create-footer-height: 5%;
 
 // 이미지 프리뷰 레이아웃
 #preview-img-layout {
-  height: 15vh;
+  height: 10%;
   display: flex;
   overflow-x: scroll;
   gap: 10px;

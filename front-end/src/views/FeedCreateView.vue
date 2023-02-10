@@ -150,13 +150,13 @@ export default {
           imageArray.forEach((img) => {
             // gif 처리
             if (img.type === 'image/gif') {
-              if (img.size / 1048576 >= 1) {
+              if (img.size / 1048576 > 1) {
                 imgSizeWarning = true
                 return
               }
               // 기타 이미지 처리
             } else if (img.type === 'image/png' || img.type === 'image/jpg' || img.type === 'image/jpeg') {
-                if (img.size / 1048576 >= 5) {
+                if (img.size / 1048576 > 5) {
                   imgSizeWarning = true
                   return
                 }

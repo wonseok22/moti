@@ -198,6 +198,7 @@ export default new Vuex.Store({
             const payloadInfo = {
               id: response.data.userId,
               nickname: response.data.nickname,
+              type : response.data.type,
             }
             save(context, payloadToken, payloadInfo)
               .then(() => {
@@ -241,6 +242,7 @@ export default new Vuex.Store({
             const payloadInfo = {
               id: response.data.userId,
               nickname: response.data.nickname,
+              type : response.data.type,
             }
             context.commit('SAVE_TOKEN', payloadToken)
             context.commit('GET_USER_INFO', payloadInfo)

@@ -26,10 +26,7 @@
       </div>
     </div>
     <div ref="commentInput" class="comment-input">
-      <span class="material-symbols-outlined"
-      style="color:#A3A3A3; font-size:44px">
-          account_circle
-      </span>
+     
       <form 
       v-on:submit.prevent="writeComment"
       id="commentForm">

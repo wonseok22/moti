@@ -5,7 +5,7 @@
       <input type="text" @input="change" placeholder="검색"/>
     </Header>
     <nav id="CategoryNav">
-      <div class="playlist" @click="playlist()">플레이리스트</div>
+      <div class="playlist" @click="playlist()">성장 플랜</div>
       <div class="feed" @click="feed()">게시글</div>
       <div class="nickname" @click="nickname()">계정</div>
     </nav>
@@ -156,6 +156,7 @@ export default {
           display: flex;
           flex-direction: column;
           gap: 20px;
+          
           width: 100%;
           height: 100%;
           margin: 0 auto;
@@ -164,6 +165,9 @@ export default {
           padding-bottom: 30px;
           // background-color: #bbb;
         }
+      }
+      .feed {
+        background-color: #eee;
       }
     }
   }

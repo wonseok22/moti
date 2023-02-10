@@ -61,6 +61,8 @@ export default {
   justify-content: center;
   align-items: center;
 
+  word-break: keep-all;
+  
   p {
     margin-top: 0px;
   }

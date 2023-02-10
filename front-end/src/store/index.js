@@ -473,7 +473,6 @@ export default new Vuex.Store({
         return this.dispatch('getSingleFeed', writeCommentDto.feedId)
       })
       .then((res) => {
-        console.log(res)
         const data = {
           feedData: res.data.feed
         }

@@ -51,11 +51,12 @@ export default {
     // 진행 중인 플레이리스트 있는지 여부
     noList() {
       // 없으면 true, 있으면 false
-      if (this.$store.state.myPL.length) {
-        return false
-      } else {
-        return true
+      if (this.$store.state.myPL) {
+        if (this.$store.state.myPL.length) {
+          return false
+        }
       }
+      return true
     },
     // 나의 플레이리스트
     myPLArray() {

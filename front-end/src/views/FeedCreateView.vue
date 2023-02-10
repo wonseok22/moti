@@ -26,7 +26,8 @@
         id="feed-create-input"
         maxlength="500"
         placeholder="미션에 대한 후기나 감상을 공유해보세요! 
-사진(최대 10장, gif는 1mb 이하)을 이용하면 더 좋아요!"
+사진을 이용하면 더 좋아요!
+(최대 10장, gif는 1mb, jpg/png는 5mb 이하)"
       >
         </textarea>
     </article>

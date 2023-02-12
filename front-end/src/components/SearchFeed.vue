@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="result-box" > 
+        <div class="result-box feed" > 
           <div v-for="(feed,idx) in feeds" :key="idx" >
               <MainFeedHeader
               :HeaderData="feed"/>

@@ -1,6 +1,5 @@
 <template>
     <main>
-      <h2>나의 게시글</h2>
       <div class="result-box feed" >
         <div v-for="(feed,idx) in feeds" :key="idx" style="margin-bottom:10px">
           <MainFeedHeader

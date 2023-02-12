@@ -36,7 +36,25 @@
             url: `${this.$baseUrl}/playlist/${this.keyword}`
             }).then((response) => {
               const tmp = response.data.myPlaylists;
+
+              let now = new Date();
+              now = String(now.getFullYear()).padStart(2,"0") + "-"
+              + String(now.getMonth() + 1).padStart(2,"0") + "-"
+              + String(now.getDate()).padStart(2,"0") + "T" 
+              + String(now.getHours()).padStart(2,"0") + ":"
+              + String(now.getMinutes()).padStart(2,"0") + ":"
+              + String(now.getSeconds()).padStart(2,"0")
+              
               tmp.map((e) => {
+                var startDate = String(e.startDate).slice(0,4) + "년 " +
+                String(e.startDate).slice(5,7) + "월 " + 
+                String(e.startDate).slice(8,10) + "일"
+                e.startDate = startDate
+                if (now >= e.endDate) {
+                  e["isDone"] = true
+                } else {
+                  e["isDone"] = false
+                }
                 if (this.playlists[this.playlists.length - 1].length == 4) {
                   this.playlists.push(new Array())
                 } 

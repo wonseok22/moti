@@ -146,7 +146,7 @@
 .profile-detail {
     margin-top: 5px;
     width: $base-width;
-    height: 470px;
+    height: 510px;
     position: relative;
     overflow: hidden;
 
@@ -164,7 +164,7 @@
           width: 100%;
           height: 90%;
           margin: 0 auto;
-          padding: 0 20px 70px 20px;
+          padding: 0 10px 70px 10px;
           overflow-y: scroll;
           // background-color: #bbb;
         }
@@ -172,6 +172,7 @@
             background-color:rgb(244,244,244); 
             gap:30px; 
             padding-top:20px;
+            padding-bottom: 0;
         }
       }
     }

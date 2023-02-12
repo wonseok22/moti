@@ -37,6 +37,7 @@ export default new Vuex.Store({
     password: null,
     email: null,
     nickname: null,
+    type:null,
     accessToken: null,
     refreshToken: null,
     myPL: null,
@@ -81,6 +82,9 @@ export default new Vuex.Store({
         } else if (key === 'nickname') {
           state.nickname = value
         }
+        else if (key === 'type') {
+          state.type = value
+        }
       }
       return Promise.resolve()
     },
@@ -108,6 +112,8 @@ export default new Vuex.Store({
           state.modalContent = '아이디 또는 비밀번호를 확인해주세요.'
         }
       }
+      console.log(state.accessToken)
+      console.log(state.refreshToken)
     },
     // 로그아웃
     LOGOUT(state) {
@@ -192,6 +198,7 @@ export default new Vuex.Store({
             const payloadInfo = {
               id: response.data.userId,
               nickname: response.data.nickname,
+              type : response.data.type,
             }
             save(context, payloadToken, payloadInfo)
               .then(() => {
@@ -208,7 +215,7 @@ export default new Vuex.Store({
     },
 
     // 카카오로그인
-    kakaoLogin(context, payload) {
+    socialLogin(context, payload) {
       // UserDto 객체 정의
       const UserDto = {
         userId: payload.userId,
@@ -218,7 +225,7 @@ export default new Vuex.Store({
       }
       this.$axios({
         method: 'post',
-        url: `${this.$baseUrl}/users/kakao`,
+        url: `${this.$baseUrl}/users/socialLogin`,
         data: UserDto,
       })
         .then((response) => {
@@ -235,6 +242,7 @@ export default new Vuex.Store({
             const payloadInfo = {
               id: response.data.userId,
               nickname: response.data.nickname,
+              type : response.data.type,
             }
             context.commit('SAVE_TOKEN', payloadToken)
             context.commit('GET_USER_INFO', payloadInfo)
@@ -355,6 +363,12 @@ export default new Vuex.Store({
         data: UserDto
       })
         .then((response) => {
+          if (response.status == '202') {
+            const params = {
+              error: '202',
+            }
+            this.$router.push({ name: 'sessionExpired', params: params })
+          }
           // refresh token 유효 -> access token 갱신
           const payload = {
             accessToken: response.data['access-token'],
@@ -363,6 +377,7 @@ export default new Vuex.Store({
           return Promise.resolve()
         })
         .catch((error) => {
+          console.log('여기2')
           // refresh token 만료 -> 재로그인
           if (error.response.status == '401') {
             const params = {
@@ -464,7 +479,6 @@ export default new Vuex.Store({
         return this.dispatch('getSingleFeed', writeCommentDto.feedId)
       })
       .then((res) => {
-        console.log(res)
         const data = {
           feedData: res.data.feed
         }

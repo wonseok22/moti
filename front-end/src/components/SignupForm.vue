@@ -47,7 +47,7 @@
           </div>
           <!-- 비밀번호 재입력 -->
           <div>
-            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력" @input="pwInput2" @keyup.enter="confirm">
+            <input type="password" id="input-pw2" class="inputbox" name="input-pw2" placeholder="비밀번호 재입력"  @input="pwInput2" @keyup.enter="confirm">
             <div v-if="pw2Active" class="infobox">
               <p
                 v-for="(condition, idx) in pw2Conditions"
@@ -70,8 +70,9 @@
       </div>
       <div class="to-kakao">
         <p>또는</p>
-        <div>
-          <login-kakao></login-kakao>          
+        <div style="display: flex; justify-content:space-around">
+          <login-kakao></login-kakao>
+          <login-google></login-google>         
         </div>
       </div>
     </div>
@@ -89,12 +90,14 @@ import * as regex from '@/tools/regex.js'
 import BasicModal from '@/components/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
 import LoginKakao from '@/components/LoginKakao'
+import LoginGoogle from '@/components/LoginGoogle'
 
 export default {
 	name: 'SignupForm',
   components: {
     BasicModal,
-    LoginKakao
+    LoginKakao,
+    LoginGoogle
   },
   mixins: [
     basicModalMixin,
@@ -118,7 +121,6 @@ export default {
     });
   },
   methods: {
-    // id 입력 받기
     idInput(event) {
       this.idActive = true
       // 한글 -> 영어

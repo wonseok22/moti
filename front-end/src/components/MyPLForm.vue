@@ -53,7 +53,9 @@ export default {
       // 오늘 날짜
       const now = new Date()
       // 끝나는 날짜
-      const end = new Date(this.myPL.endDate)
+      let end = new Date(this.myPL.endDate)
+
+      end.setHours(end.getHours() + 9)
 
       // ms 단위 남은 기간
       const remain_ms = end.getTime() - now.getTime()

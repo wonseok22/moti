@@ -26,12 +26,9 @@
       </div>
     </div>
     <div ref="commentInput" class="comment-input">
-      <span class="material-symbols-outlined"
-      style="color:#A3A3A3; font-size:44px">
-          account_circle
-      </span>
+     
       <form 
-      v-on:submit.prevent="writeComment"
+      v-on:submit.prevent=""
       id="commentForm">
         <textarea
         ref="commentTextarea"
@@ -42,6 +39,7 @@
         </textarea>
       </form>
       <button
+      @click="writeComment"
       type="submit"
       form="commentForm">
         <p>게시</p>
@@ -77,16 +75,21 @@ export default {
       textarea.style.height = textarea.scrollHeight + 'px'
     },
     writeComment() {
-      this.$store.dispatch("writeComment", this.writeCommentData)
-      this.$refs.commentTextarea.value = ""
-      this.writeCommentData.content = null
-      const doc = document.querySelector(".feed-comment") 
-      const textarea = this.$refs.commentTextarea
-      textarea.style.height = 'auto'
-      doc.scrollTo({
-        top: (doc.scrollHeight + 50),
-        behavior:"smooth"
-      })
+      if(this.writeCommentData.content != "" && this.writeCommentData.content != null){
+        this.$store.dispatch("writeComment", this.writeCommentData)
+        this.$refs.commentTextarea.value = ""
+        this.writeCommentData.content = null
+        const doc = document.querySelector(".feed-comment") 
+        const textarea = this.$refs.commentTextarea
+        textarea.style.height = 'auto'
+        doc.scrollTo({
+          top: (doc.scrollHeight + 50),
+          behavior:"smooth"
+        })
+      } else 
+      {
+        alert("댓글을 입력해주세요.")
+      }
     },
     showModal(commentId) {
       const payload = {

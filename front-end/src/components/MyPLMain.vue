@@ -24,7 +24,7 @@
       <!-- 빈 플레이리스트 박스 -->
       <div @click="toPLSelect" id="empty-pl">
         <i class="material-symbols-outlined">add</i>
-        <p>어떤 식물이 있는지 확인하러 가보기</p>
+        <p>어떤 꽃이 있는지 확인하러 가보기</p>
       </div>
     </main>
     <NavigationBar/>
@@ -51,11 +51,12 @@ export default {
     // 진행 중인 플레이리스트 있는지 여부
     noList() {
       // 없으면 true, 있으면 false
-      if (this.$store.state.myPL.length) {
-        return false
-      } else {
-        return true
+      if (this.$store.state.myPL) {
+        if (this.$store.state.myPL.length) {
+          return false
+        }
       }
+      return true
     },
     // 나의 플레이리스트
     myPLArray() {
@@ -127,6 +128,7 @@ $header-height: 46px;
 
 // 진행 중인 플레이리스트가 없을 경우
 #no-list {
+  margin-top: 50%;
   p:nth-child(1) {
     color: $light-grey;
     font-size: $fs-6;

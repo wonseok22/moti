@@ -82,6 +82,7 @@ export default {
   ],
   data() {
     return {
+      isWriting:false,
       content: null,
       images: null,
       isprivate: false,
@@ -95,43 +96,52 @@ export default {
     // 피드 등록
     createFeed() {
       const formData = new FormData()
-
-      const writeFeedDto = {
-        userId: this.$store.state.id,
-        userPlaylistId: this.missionInfo.userPlaylistId,
-        missionId: this.missionInfo.missionId,
-        content: this.content,
+      
+      if (this.content == "" || this.content == null){
+        alert("내용을 작성해주세요.")
+        return;
       }
-
-      const writeFeedDtoJson = new Blob([JSON.stringify(writeFeedDto)], { type: "application/json" })
-      
-      formData.append('writeFeedDto', writeFeedDtoJson)
-      
-      // 이미지
-      if (this.images) {
-        for (const img of this.images) {
-          formData.append('images', img)
+      if(!this.isWriting){
+        this.isWriting = true
+        const writeFeedDto = {
+          userId: this.$store.state.id,
+          userPlaylistId: this.missionInfo.userPlaylistId,
+          missionId: this.missionInfo.missionId,
+          content: this.content,
         }
-      } else {
-        // 이미지가 없을 경우
-        const dump = {}
-        formData.append('images', new Blob([JSON.stringify(dump)], { type: "application/json" }))
-      }
-      
-      this.$axios({
-        method: 'post',
-        url: `${this.$baseUrl}/feed`,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        data: formData,
-      })
-        .then(() => {
-          this.$router.push({ name: 'feed' })
+  
+        const writeFeedDtoJson = new Blob([JSON.stringify(writeFeedDto)], { type: "application/json" })
+        
+        formData.append('writeFeedDto', writeFeedDtoJson)
+        
+        // 이미지
+        if (this.images) {
+          for (const img of this.images) {
+            formData.append('images', img)
+          }
+        } else {
+          // 이미지가 없을 경우
+          const dump = {}
+          formData.append('images', new Blob([JSON.stringify(dump)], { type: "application/json" }))
+        }
+        
+        this.$axios({
+          method: 'post',
+          url: `${this.$baseUrl}/feed`,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          data: formData,
         })
-        .catch((error) => {
-          console.log(error)
-        })
+          .then(() => {
+            this.isWriting = false
+            this.$router.push({ name: 'feed' })
+          })
+          .catch((error) => {
+            console.log(error)
+            this.isWriting = false
+          })
+        }
     },
     // 작성 내용 저장하기
     inputContent(event) {

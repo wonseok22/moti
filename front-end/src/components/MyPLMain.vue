@@ -60,7 +60,6 @@ export default {
     },
     // 나의 플레이리스트
     myPLArray() {
-      console.log(this.$store.state.myPL)
       return this.$store.state.myPL
     },
     // 유저 닉네임

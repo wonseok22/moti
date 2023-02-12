@@ -180,8 +180,8 @@
         
         <div class="follow-detail">
           <div class="follow-detail-slide">
-            <FollowingList :keyword="`${profile.userId}`"></FollowingList>
-            <FollowerList :keyword="`${profile.userId}`"></FollowerList>
+            <FollowingList :key="followKey" :keyword="`${profile.userId}`" @click-follow="clickFollow"></FollowingList>
+            <FollowerList :key="followerKey" :keyword="`${profile.userId}`" @click-follower="clickFollower"></FollowerList>
           </div>
         </div>
       </div>
@@ -210,6 +210,8 @@ export default {
   name: 'ProfileView',
   data() {
     return {
+      followKey : 0,
+      followerKey: -1,
       profile:null,
       isMyProfile:false,
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
@@ -258,6 +260,14 @@ export default {
       })
   },
   methods: {
+    clickFollow(){
+      console.log(this.followerKey)
+      this.followerKey --;
+    },
+    clickFollower(){
+      console.log(this.followKey)
+      this.followKey ++;
+    },
     logout() {
       this.$store.dispatch('logout')
     },

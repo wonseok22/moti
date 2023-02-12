@@ -1,12 +1,24 @@
 <template>
-  <div class="single-feed">
+  <div>
     <!-- 피드의 글본문에 해당되는 부분 -->
     <div class="feed-text">
-        <p v-show="isThereImage === 0" v-line-clamp:20="2">{{ BodyData.content }}</p>
-        <p v-show="isThereImage !== 0">{{ BodyData.content }}</p>
-        <button v-if="isThereImage !== 0">
-            <p id="see-more">더보기</p>
-        </button>
+        <p 
+            v-if="isThereImage" 
+            v-line-clamp="2" 
+            class="text-not-all"
+            :class="`single-feed-content-${feedIdx}`"
+            >
+            {{ BodyData.content }}
+            </p>
+        <p v-else class="text-all">{{ BodyData.content }}</p>
+            <button 
+                v-if="isThereImage && BodyData.content"
+                :class="`single-feed-btn-${feedIdx}`"
+                >
+                <p 
+                    @click="seeMore" 
+                    id="see-more">더보기</p>
+            </button>
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
     <carousel
@@ -77,6 +89,7 @@ export default {
     name: 'SingleFeed',
     props: {
         BodyData: Object,
+        feedIdx: Number,
     },  
     components: {
         Carousel,
@@ -115,6 +128,14 @@ export default {
                 text: this.BodyData.content,
                 url: window.location.href
             })
+        },
+        // 더 보기
+        seeMore() {
+            const seeMoreContent = document.querySelector(`.single-feed-content-${this.feedIdx}`)
+            seeMoreContent.style.removeProperty('-webkit-line-clamp')
+            const seeMoreBtn = document.querySelector(`.single-feed-btn-${this.feedIdx}`)
+            seeMoreBtn.remove()
+
         }
     },
     computed: {
@@ -130,7 +151,4 @@ export default {
 </script>
 
 <style lang="scss">
-#see-more {
-    margin-left: 5px;
-}
 </style>

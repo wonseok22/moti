@@ -75,15 +75,21 @@ export default {
       textarea.style.height = textarea.scrollHeight + 'px'
     },
     writeComment() {
-      this.$store.dispatch("writeComment", this.writeCommentData)
-      this.$refs.commentTextarea.value = ""
-      const doc = document.querySelector(".feed-comment") 
-      const textarea = this.$refs.commentTextarea
-      textarea.style.height = 'auto'
-      doc.scrollTo({
-        top: (doc.scrollHeight + 50),
-        behavior:"smooth"
-      })
+      if(this.writeCommentData.content != "" && this.writeCommentData.content != null){
+        this.$store.dispatch("writeComment", this.writeCommentData)
+        this.$refs.commentTextarea.value = ""
+        const doc = document.querySelector(".feed-comment") 
+        const textarea = this.$refs.commentTextarea
+        textarea.style.height = 'auto'
+        doc.scrollTo({
+          top: (doc.scrollHeight + 50),
+          behavior:"smooth"
+        })
+      } else 
+      {
+        alert("댓글을 입력해주세요.")
+      }
+        
     },
     showModal(commentId) {
       const payload = {

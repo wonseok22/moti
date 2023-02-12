@@ -28,7 +28,8 @@
         v-if="tabOpened" class="more-option"
         v-click-outside="onClickOutside">
             <span class="material-symbols-outlined"
-            style="color:aqua;">
+            style="color:aqua;"
+            @click="editFeed">
                 edit
             </span>
             <span class="material-symbols-outlined"
@@ -87,6 +88,8 @@ export default {
             this.$store.dispatch("FollowUnfollow", this.payload)
         },
         moveProfile(userId){
+            this.$store.dispatch("showComment")
+            document.body.style.overflow = "scroll"
             this.$store.commit("UPDATE_PROFILE_TARGET_ID",userId);
             this.$router.push({
                 name: 'profile',
@@ -99,15 +102,26 @@ export default {
         onClickOutside () {
             this.tabOpened = false
             this.horiOpened = true
-         },
-         deleteFeed() {
+        },
+        deleteFeed() {
             this.$emit("deleteFeed", this.HeaderData.feedId)
-         }
+        },
+        async editFeed() {
+            const resp = this.$store.dispatch("getSingleFeed", this.HeaderData.feedId)
+            const result = await resp 
+            await this.$store.dispatch("putSingleFeed", result.data.feed)
+            await this.$router.push({
+                name:'FeedEditView',
+                params: {
+                    feedId: this.HeaderData.feedId
+                }
+            })
+        }
     }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 .slide-fade-enter {
     transform: translateX(10px);

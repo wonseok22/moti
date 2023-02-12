@@ -539,23 +539,33 @@ export default new Vuex.Store({
         url: `${this.$baseUrl}/profile/follow/check/${this.state.id}/${targetId}`
       })
     },
-    // 프로필을 체크
-    // async profileCheck(contetx, targetId) {
-    //   return this.$axios.get(`${this.$baseUrl}/profile`, {
-    //     params: {
-    //       userId: targetId,
-    //     }
-    //   })
-    // },
     // 모달 닫기
     modalClose(context) {
       context.commit('MODAL_CLOSE')
     },
     modalOpen(context, payload) {
       context.commit('MODAL_OPEN', payload)
+    },
+    //피드삭제
+    feedDelete(context, feedId) {
+      this.$axios({
+        method:'delete',
+        url:`${this.$baseUrl}/feed/${feedId}`
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   },
-  
+  feedEdit(context, feedId) {
+    this.$axios({
+      method:'put',
+      url:`${this.$baseUrl}/feed/${feedId}`
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  },
   modules: {
   }
 })

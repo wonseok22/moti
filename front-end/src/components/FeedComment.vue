@@ -79,6 +79,7 @@ export default {
     writeComment() {
       this.$store.dispatch("writeComment", this.writeCommentData)
       this.$refs.commentTextarea.value = ""
+      this.writeCommentData.content = null
       const doc = document.querySelector(".feed-comment") 
       const textarea = this.$refs.commentTextarea
       textarea.style.height = 'auto'

@@ -109,14 +109,13 @@ public class FeedController {
 	@PutMapping("/{feedId}")
 	public ResponseEntity<?> modifyFeed(
 			@PathVariable @ApiParam(value = "수정할 피드 ID", required = true) Long feedId,
-			@RequestPart @ApiParam(value = "수정할 내용", required = true) String content,
-			@RequestPart @ApiParam(value = "이미지 정보") List<MultipartFile> images) {
+			@RequestPart @ApiParam(value = "수정할 내용", required = true) String content) {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		
 		try {
-			Feed feed = feedService.modifyFeed(feedId, content, images);
+			Feed feed = feedService.modifyFeed(feedId, content);
 			if (feed != null) {
 				logger.debug("피드 수정 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);

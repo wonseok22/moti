@@ -106,20 +106,14 @@ public class FeedServiceImpl implements FeedService {
 	}
 	
 	@Override
-	public Feed modifyFeed(Long feedId, String content, List<MultipartFile> images) {
+	public Feed modifyFeed (Long feedId, String content) {
 		Feed feed = feedRepository.findByFeedId(feedId);
 		
 		// 해당 feedId의 피드가 존재하지 않으면 null 반환
 		if (feed == null) return null;
 		
 		feed.setContent(content);
-		if (1024 < images.get(0).getSize()) {
-			// 이미지가 새로 업로드 되면 있던 사진 모두 삭제
-			deleteFeedImages(feedId);
-			
-			// 새 이미지 서버에 업로드 후 DB에 주소 저장
-			uploadFeedImages(feed, images);
-		}
+		
 		return feedRepository.save(feed);
 	}
 	

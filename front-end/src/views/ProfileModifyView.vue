@@ -130,7 +130,9 @@ methods: {
         userDesc: this.content,
         nickname : this.nickname,
       }
-        
+    const payload = {
+      nickname: this.nickname,
+    }
     const profileDtoJson = new Blob([JSON.stringify(profileDto)], { type: "application/json" })
     formData.append('profileDto', profileDtoJson)
     // 이미지
@@ -148,6 +150,7 @@ methods: {
     })
       .then(() => {
         // 성공, 실패 로직
+        this.$store.commit("GET_USER_INFO", payload)
         this.$router.push({ name: 'profile' })
       })
       .catch((error) => {

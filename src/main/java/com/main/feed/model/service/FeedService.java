@@ -8,7 +8,6 @@ import com.main.feed.model.entity.Feed;
 import com.main.feed.model.entity.Like;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ public interface FeedService {
 	
 	FeedDto viewFeed(Long feedId, String userId);
 	
-	Feed modifyFeed(Long feedId, String content, List<MultipartFile> images);
+	Feed modifyFeed (Long feedId, String content);
 	
 	int deleteFeed(Long feedId);
 	

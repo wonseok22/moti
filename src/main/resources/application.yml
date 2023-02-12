@@ -33,7 +33,7 @@ spring:
             enable: true
   redis:
     host: moti.today
-    password:
+    password: asdf1234
     port: 6379
 file:
   path: C:/Users/SSAFY/ideaProjects/S08P12A509/upload

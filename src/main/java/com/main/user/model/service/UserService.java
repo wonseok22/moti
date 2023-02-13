@@ -4,9 +4,7 @@ import com.main.user.model.entity.User;
 
 import java.util.Map;
 
-
 public interface UserService {
-	
 	User getUser(String userId); // 회원 정보 상세보기
 	
 	User registerUser (User user) throws Exception; // 회원 가입
@@ -26,7 +24,7 @@ public interface UserService {
 	void delRefreshToken(String userId);
 	
 	Map<String, Object> searchUser(String keyword, int pageNo);
-	User socialLogin(User user, String refreshToken);
 	
+	User socialLogin(User user, String refreshToken);
 }
 

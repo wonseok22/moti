@@ -17,10 +17,9 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
+	
 	private final JavaMailSender javaMailSender;
 	private final SpringTemplateEngine templateEngine;
-	
-	
 	private final RedisUtilImpl redisUtil;
 	
 	@Override
@@ -29,8 +28,6 @@ public class MailServiceImpl implements MailService {
 		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-//        if (type.equals("password")) userService.SetTempPassword(mailMessage.getTo(), authNum);
-		
 		try {
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 			mimeMessageHelper.setTo(mailMessage.getTo()); // 메일 수신자
@@ -38,13 +35,10 @@ public class MailServiceImpl implements MailService {
 			mimeMessageHelper.setText(setContext(authNum, type), true); // 메일 본문 내용, HTML 여부
 			javaMailSender.send(mimeMessage);
 			
-			if (type.equals("email"))
-				redisUtil.setDataExpire(authNum, mailMessage.getTo(), 60 * 5L);
+			if (type.equals("email")) redisUtil.setDataExpire(authNum, mailMessage.getTo(), 60 * 5L);
 			
 			log.info("Success");
-			
 			return authNum;
-			
 		} catch (MessagingException e) {
 			log.info("fail");
 			throw new RuntimeException(e);
@@ -70,6 +64,7 @@ public class MailServiceImpl implements MailService {
 					key.append(random.nextInt(9));
 			}
 		}
+		
 		return key.toString();
 	}
 	
@@ -87,8 +82,7 @@ public class MailServiceImpl implements MailService {
 			redisUtil.deleteData(code);
 			redisUtil.setDataExpire(email, "validate", 60 * 10L);
 			return true;
-		} else
-			return false;
+		} else return false;
 	}
 	
 	@Override
@@ -97,7 +91,7 @@ public class MailServiceImpl implements MailService {
 		if (result != null) {
 			redisUtil.deleteData(email);
 			return true;
-		} else
-			return false;
+		} else return false;
 	}
+	
 }

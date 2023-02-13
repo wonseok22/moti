@@ -62,15 +62,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public User registerUser (User user) throws Exception {
-
-//        Duilicate Check
-//        User userFindById = userRepository.findByUserId(user.getUserId());
-//        User userFindByNickname = userRepository.findByEmail(user.getEmail());
-//        User userFindByEmail = userRepository.findByNickname(user.getNickname());
-//        if (userFindByEmail != null || userFindByNickname != null || userFindById != null){
-//            return null;
-//        }'
-		
 		// Profile Build
 		Profile profile = new Profile();
 		profileRepository.save(profile);
@@ -95,7 +86,6 @@ public class UserServiceImpl implements UserService {
 		user.setType("default");
 		
 		return userRepository.save(user);
-		
 	}
 	
 	@Override
@@ -161,6 +151,7 @@ public class UserServiceImpl implements UserService {
 			System.err.println("프로필 사진 삭제 중 에러 발생");
 			e.printStackTrace();
 		} // 해당 유저의 프로필 이미지를 서버에서 삭제
+		
 		userPlaylistRepository.deleteAllByUser_UserId(userId);
 		followRepository.deleteAllByFollowingId(userId);
 		followRepository.deleteAllByFollowerId(userId);
@@ -229,9 +220,9 @@ public class UserServiceImpl implements UserService {
 			
 			user = userRepository.save(user);
 		}
+		
 		user.setRefreshToken(refreshToken);
 		userRepository.save(user);
-		
 		return user;
 	}
 }

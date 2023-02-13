@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface AchievementService {
-	Achievement registAchievement(Achievement achievement, MultipartFile image) throws SQLException;
+	Achievement registerAchievement (Achievement achievement, MultipartFile image) throws SQLException;
 	
 	List<AchievementDto> getAchievements(String userId) throws SQLException;
 	

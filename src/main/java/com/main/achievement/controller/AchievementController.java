@@ -67,7 +67,7 @@ public class AchievementController {
 			Achievement achievement = new Achievement();
 			achievement.setAchievementName(achievementName);
 			achievement.setAchievementDesc(achievementDesc);
-			Achievement result = achievementService.registAchievement(achievement, image);
+			Achievement result = achievementService.registerAchievement(achievement, image);
 			
 			logger.debug("업적 등록 : {}", result);
 			if (result != null) resultMap.put("message", SUCCESS);

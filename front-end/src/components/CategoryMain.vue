@@ -13,7 +13,7 @@
             <img :src="category.categoryImageUrl" alt="카테고리 로고" />
             <div>{{ category.categoryName }}</div>
           </div>
-          <p>현재 <span>{{category.current }}명</span>이 이 꽃을 키우고 있습니다.</p>
+          <p class="category-current">현재 <span>{{category.current }}명</span>이 이 꽃을 키우고 있습니다.</p>
         </div>
       </div>
     </main>

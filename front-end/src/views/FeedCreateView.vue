@@ -1,46 +1,48 @@
 <template>
   <div id="feed-create-layout">
-    <header id="feed-create-header">
-      <!-- 취소 -->
-      <span @click="goBack" class="text-active">취소</span>
-      <span @click="createFeed" class="text-active">등록</span>
-      <!-- 등록 -->
-    </header>
-    <section id="feed-create-section">
-      <!-- 카테고리 이름 -->
-      <p>{{ missionInfo.categoryName}}</p>
-      <!-- 플레이리스트 이름 -->
-      <p>{{ missionInfo.playlistName }}</p>
-      <!-- 미션 이름 -->
-      <p>{{ missionInfo.missionName }}</p>
-    </section>
-    <div>
-      <hr>
-    </div>
+    <main id="feed-create-main">
+      <header id="feed-create-header">
+        <!-- 취소 -->
+        <span @click="goBack" class="text-active">취소</span>
+        <span @click="createFeed" class="text-active">등록</span>
+        <!-- 등록 -->
+      </header>
+      <section id="feed-create-section">
+        <!-- 카테고리 이름 -->
+        <p>{{ missionInfo.categoryName}}</p>
+        <!-- 플레이리스트 이름 -->
+        <p>{{ missionInfo.playlistName }}</p>
+        <!-- 미션 이름 -->
+        <p>{{ missionInfo.missionName }}</p>
+      </section>
+      <div>
+        <hr>
+      </div>
 
-    <article id="feed-create-article">
-      <!-- 피드 작성 -->
-      <textarea 
-        @input="inputContent" 
-        name="feed-create-input" 
-        id="feed-create-input"
-        maxlength="500"
-        placeholder="미션에 대한 후기나 감상을 공유해보세요! 
-사진을 이용하면 더 좋아요!
-(최대 10장, gif는 1mb, jpg/png는 5mb 이하)"
-      >
-        </textarea>
-    </article>
+      <article id="feed-create-article">
+        <!-- 피드 작성 -->
+        <textarea 
+          @input="inputContent" 
+          name="feed-create-input" 
+          id="feed-create-input"
+          maxlength="500"
+          placeholder="미션에 대한 후기나 감상을 공유해보세요! 
+  사진을 이용하면 더 좋아요!
+  (최대 10장, gif는 1mb, jpg/png는 5mb 이하)"
+        >
+          </textarea>
+      </article>
 
-    <div>
-      <hr>
-    </div>
-    
-    <!-- 이미지 -->
-    <aside 
-      v-show="this.images"
-      id="preview-img-layout">
-    </aside>
+      <div v-show="this.images">
+        <hr>
+      </div>
+      
+      <!-- 이미지 -->
+      <aside 
+        v-show="this.images"
+        id="feed-create-preview-img-layout">
+      </aside>
+    </main>
 
     <footer id="feed-create-footer">
       <!-- 사진 등록 -->
@@ -58,6 +60,7 @@
         <span><label for="feed-create-footer-checkbox" class="text-active-normal">피드 비공개</label></span>
       </div> -->
     </footer>
+
     <basic-modal
       v-if="openModal"
       :content="modalContent"
@@ -197,22 +200,22 @@ export default {
         
         for (const img of this.images) {
           const divTag = document.createElement('div')
-          divTag.setAttribute('class', 'preview-img-div')
-          divTag.setAttribute('id', `preview-img-div-${idx}`)
+          divTag.setAttribute('class', 'feed-create-preview-img-div')
+          divTag.setAttribute('id', `feed-create-preview-img-div-${idx}`)
           // 화살표 함수로 안 쓰면 에러남
           divTag.addEventListener('click', (event) => {
             this.deleteImage(event.target)
           })
           const spanTag = document.createElement('span')
           spanTag.innerText = 'x'
-          spanTag.setAttribute('class', 'preview-img-span')
-          spanTag.setAttribute('id', `preview-img-span-${idx}`)
+          spanTag.setAttribute('class', 'feed-create-preview-img-span')
+          spanTag.setAttribute('id', `feed-create-preview-img-span-${idx}`)
           // 태그 만들기
           const imgTag = document.createElement('img')
           const imgReader = new FileReader()
           imgReader.onload = () => {
             imgTag.src = imgReader.result
-            imgTag.setAttribute('class', 'preview-img')
+            imgTag.setAttribute('class', 'feed-create-preview-img')
           }
           imgReader.readAsDataURL(img)
           
@@ -257,11 +260,11 @@ export default {
 </script>
 
 <style lang="scss">
-$feed-create-footer-height: 5vh;
+$feed-create-footer-height: 5%;
 
 // 기본 레이아웃
 #feed-create-layout {
-  height: 100vh - $feed-create-footer-height;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   // justify-content: center;
@@ -269,8 +272,13 @@ $feed-create-footer-height: 5vh;
   padding: 0px 10px;
 }
 
+#feed-create-main {
+  height: 100% - $feed-create-footer-height;
+}
+
 // header 레이아웃
 #feed-create-header {
+  height: 3%;
   display: flex;
   justify-content: space-between;
   
@@ -316,7 +324,7 @@ $feed-create-footer-height: 5vh;
 
 // 피드 작성 부분
 #feed-create-article {
-  height: 100%;
+  height: 70%;
 }
 
 // 피드 내용 작성
@@ -339,7 +347,7 @@ $feed-create-footer-height: 5vh;
 }
 
 // 이미지 프리뷰 레이아웃
-#preview-img-layout {
+#feed-create-preview-img-layout {
   height: 10%;
   display: flex;
   overflow-x: scroll;
@@ -350,18 +358,18 @@ $feed-create-footer-height: 5vh;
 }
 }
 
-.preview-img-div {
+.feed-create-preview-img-div {
   position: relative;
   
 }
 
-.preview-img {
+.feed-create-preview-img {
   height: 90%;
   max-width: 85px;
   min-width: 40px;
 }
 
-.preview-img-span {
+.feed-create-preview-img-span {
   font-size: $fs-6;
   width: $fs-5;
   height: $fs-5;

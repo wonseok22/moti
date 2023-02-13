@@ -494,14 +494,8 @@ export default {
           achievementId: 0,
         },
       })
-      .then(() => {
-          alert("대표뱃지가 삭제되었습니다.");
-          location.reload();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+<<<<<<< front-end/src/views/ProfileView.vue
+  },
   moveProfile(targetId){
     this.$store.commit("UPDATE_PROFILE_TARGET_ID",targetId);
     this.$router.push({
@@ -527,32 +521,59 @@ export default {
   finalNo() {
     document.body.classList.remove("stop-scroll")
     this.isDelete = false
-  },
-  openFeedMyRecord(userPlaylistId, flowerImageUrl) {
-    this.recordView = true;
-    this.plModal = false;
-    this.$axios({
-      method: "get",
-      url: `${this.$baseUrl}/feed/search/${this.$store.state.targetUd}/${userPlaylistId}`,
-    })
-      .then((response) => {
-        if (response.data.message === "success") {
-          this.myRecord = response.data.feeds;
-          this.flowerImageUrl = flowerImageUrl;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
+  }
 },
 computed: {
-  ...mapState(["type"]),
   isCommentClicked() {
     return this.$store.getters.isCommentClicked
   }
   },  
 }
+=======
+        .then(() => {
+          alert("대표뱃지가 삭제되었습니다.");
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    moveProfile(targetId) {
+      this.$store.commit("UPDATE_PROFILE_TARGET_ID", targetId);
+      this.$router
+        .push({
+          name: "profile",
+        })
+        .catch(() => {
+          location.reload();
+        });
+    },
+    openFeedMyRecord(userPlaylistId, flowerImageUrl) {
+      this.recordView = true;
+      this.plModal = false;
+      this.$axios({
+        method: "get",
+        url: `${this.$baseUrl}/feed/search/${this.$store.state.targetUd}/${userPlaylistId}`,
+      })
+        .then((response) => {
+          if (response.data.message === "success") {
+            this.myRecord = response.data.feeds;
+            this.flowerImageUrl = flowerImageUrl;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  computed: {
+    ...mapState(["type"]),
+    isCommentClicked() {
+      return this.$store.getters.isCommentClicked;
+    },
+  },
+};
+>>>>>>> front-end/src/views/ProfileView.vue
 </script>
 
 <style lang="scss">

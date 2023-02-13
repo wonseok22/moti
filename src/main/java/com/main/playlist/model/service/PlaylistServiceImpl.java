@@ -10,7 +10,6 @@ import com.main.user.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -19,6 +18,7 @@ import java.util.List;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -29,7 +29,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 	private UserPlaylistRepository userPlaylistRepository;
 	
 	@Override
-	public List<UserPlaylistDto> getMyPlaylists(String userId) throws SQLException {
+	public List<UserPlaylistDto> getMyPlaylists(String userId) {
 		List<UserPlaylistDto> userPlaylists = new ArrayList<>();
 		
 		userPlaylistRepository.findByUser_UserId(userId).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
@@ -38,7 +38,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 	}
 	
 	@Override
-	public List<UserPlaylistDto> getCurrentPlaylists(String userId) throws SQLException {
+	public List<UserPlaylistDto> getCurrentPlaylists(String userId) {
 		List<UserPlaylistDto> userPlaylists = new ArrayList<>();
 		
 		userPlaylistRepository.findByUser_UserIdAndEndDateAfter(userId, LocalDateTime.now()).forEach(x -> userPlaylists.add(UserPlaylistDto.toDto(x)));
@@ -47,20 +47,17 @@ public class PlaylistServiceImpl implements PlaylistService {
 	}
 	
 	@Override
-	public UserPlaylistDto getMyPlaylist(Long userPlaylistId) throws SQLException {
-		
+	public UserPlaylistDto getMyPlaylist(Long userPlaylistId) {
 		return UserPlaylistDto.toDto(userPlaylistRepository.findByUserPlaylistId(userPlaylistId));
 	}
 	
 	@Override
-	public PlaylistDto getPlaylist(Long playlistId) throws SQLException {
-		
+	public PlaylistDto getPlaylist(Long playlistId) {
 		return PlaylistDto.toDto(playlistRepository.findByPlaylistId(playlistId));
 	}
 	
 	@Override
-	public UserPlaylist registMyPlaylist(String userId, Long playlistId) throws SQLException {
-		
+	public UserPlaylist registerMyPlaylist (String userId, Long playlistId) {
 		User user = userRepository.findByUserId(userId);
 		
 		Playlist playlist = playlistRepository.findByPlaylistId(playlistId);
@@ -78,11 +75,8 @@ public class PlaylistServiceImpl implements PlaylistService {
 	}
 	
 	@Override
-	public UserPlaylist replayPlaylist(Long userPlaylistId) throws SQLException {
-		
-		
+	public UserPlaylist replayPlaylist(Long userPlaylistId) {
 		UserPlaylist userPlaylist = userPlaylistRepository.findByUserPlaylistId(userPlaylistId);
-		
 		
 		userPlaylist.setEndDate(LocalDateTime.now().plusDays(7).truncatedTo(ChronoUnit.DAYS));
 

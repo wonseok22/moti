@@ -20,6 +20,7 @@ public class Playlist {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long playlistId;
+	
 	@Column(unique = true, nullable = false)
 	private String playlistName;
 	
@@ -34,6 +35,7 @@ public class Playlist {
 	
 	@OneToMany(mappedBy = "playlist")
 	private List<PlaylistMission> playlistMissions = new ArrayList<>();
+	
 	@ManyToOne
 	@JoinColumn(name = "flowerId")
 	private Flower flower;

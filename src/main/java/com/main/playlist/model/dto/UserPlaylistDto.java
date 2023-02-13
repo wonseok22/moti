@@ -12,17 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserPlaylistDto {
 	private Long userPlaylistId;
-	
 	private String userId;
-	
 	private PlaylistDto playlist;
-	
 	private LocalDateTime startDate;
-	
 	private LocalDateTime endDate;
-	
 	private int done;
-	
 	private boolean today;
 	
 	public static UserPlaylistDto toDto(UserPlaylist userPlaylist) {

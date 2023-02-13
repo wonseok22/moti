@@ -17,5 +17,4 @@ public class Mission {
 	
 	@Column(unique = true, nullable = false)
 	private String missionName;
-	
 }

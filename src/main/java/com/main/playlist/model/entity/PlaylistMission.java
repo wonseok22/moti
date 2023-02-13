@@ -13,7 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 public class PlaylistMission {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long playlistMissionId;
@@ -25,5 +24,4 @@ public class PlaylistMission {
 	@ManyToOne
 	@JoinColumn(name = "playlistId")
 	private Playlist playlist;
-	
 }

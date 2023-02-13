@@ -16,17 +16,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 public class PlaylistDto {
 	private Long playlistId;
-	
 	private String playlistName;
-	
 	private String playlistDesc;
 	private String categoryName;
 	private List<Mission> missions;
-	
 	private int total;
-	
 	private int current;
-	
 	private FlowerDto flower;
 	
 	public static PlaylistDto toDto(Playlist playlist) {

@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class FlowerDto {
 	private Long flowerId;
-	
 	private String flowerImageUrl;
 	
 	public static FlowerDto toDto(Flower flower) {

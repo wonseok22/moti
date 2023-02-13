@@ -11,21 +11,13 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class UserDto {
-	
 	private String userId;
-	
 	private String password;
-	
 	private String email;
-	
 	private String nickname;
-	
 	private String type;
-	
 	private int temporary;
-	
 	private LocalDateTime joinDate;
-	
 	private String achievementImageUrl;
 	
 	public static UserDto toDto(User user) {

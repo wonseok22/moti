@@ -11,21 +11,15 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class SearchUserDto {
-
 	private String userId;
 	private String nickname;
 	private String profileImageUrl;
 
-//	private String 대표뱃지Url
-	
 	public static SearchUserDto toDto(User user) {
-		
 		return new SearchUserDto(
 				user.getUserId(),
 				user.getNickname(),
 				user.getProfile().getProfileImageUrl()
 		);
-		
 	}
-
 }

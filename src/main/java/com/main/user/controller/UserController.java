@@ -21,16 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @RequestMapping("/users")
 @Api(tags = {"회원 관리 API"})
 public class UserController {
-	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	private static final String SUCCESS = "success";
-	private static final String FAIL = "fail";
-	private static final String ALREADY_EXIST = "already exists";
 	
 	@Autowired
 	private UserService userService;
@@ -41,14 +36,19 @@ public class UserController {
 	@Autowired
 	private JwtService jwtService;
 	
+	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+	private static final String ALREADY_EXIST = "already exists";
+	
 	@ApiOperation(value = "회원가입", notes = "회원가입 요청 API", response = Map.class)
 	@PostMapping("")
 	public ResponseEntity<?> registerUser(
 			@RequestBody @ApiParam(value = "회원가입 시 필요한 회원정보.", required = true) UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
-			
 			// Builder Pattern을 통해 user 엔티티 생성
 			User user = userDto.toEntity();
 			User result = userService.registerUser(user);
@@ -78,6 +78,7 @@ public class UserController {
 			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보.", required = true) UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
 			User loginUser = userService.loginUser(userDto.toEntity());
 			if (loginUser != null) {
@@ -113,8 +114,8 @@ public class UserController {
 	public ResponseEntity<?> socialLogin(
 			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보.", required = true) UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
-		System.out.println(userDto);
 		HttpStatus status;
+		
 		try {
 			User loginUser = userDto.toEntity();
 			
@@ -147,51 +148,13 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
-	@ApiOperation(value = "네이버로그인", notes = "access-token, Refresh-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
-	@PostMapping("auth/naver")
-	public ResponseEntity<?> naverLogin(
-			@RequestBody @ApiParam(value = "로그인 시 필요한 회원정보.", required = true) Map<String,Object> map) {
-		System.out.println(map);
-		Map<String, Object> resultMap = new HashMap<>();
-		//System.out.println(userDto);
-		HttpStatus status;
-		try {
-			User loginUser = new User();
-			
-			String accessToken = jwtService.createAccessToken("userid", loginUser.getUserId());// key, data
-			String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserId());// key, data
-			User user = userService.socialLogin(loginUser, refreshToken);
-			
-			if(user!=null) {
-				logger.debug("로그인 accessToken 정보 : {}", accessToken);
-				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
-				resultMap.put("access-token", accessToken);
-				resultMap.put("refresh-token", refreshToken);
-				resultMap.put("userId", loginUser.getUserId());
-				resultMap.put("nickname", loginUser.getNickname());
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.OK;
-			}
-			else {
-				status = HttpStatus.ACCEPTED;
-				resultMap.put("message",ALREADY_EXIST);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("로그인 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		return new ResponseEntity<>(resultMap, status);
-	}
-	
 	@ApiOperation(value = "로그아웃", notes = "로그아웃하는 유저의 Refresh Token을 삭제한다.", response = Map.class)
 	@GetMapping("/logout/{userId}")
 	public ResponseEntity<?> logoutUser(
-			@PathVariable @ApiParam(value = "로그아웃 할 아이디.", required = true) String userId) {
+			@PathVariable @ApiParam(value = "로그아웃 할 유저의 ID", required = true) String userId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
 			userService.delRefreshToken(userId);
 			resultMap.put("message", SUCCESS);
@@ -201,6 +164,7 @@ public class UserController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -211,6 +175,7 @@ public class UserController {
 			@RequestBody @ApiParam(value = "수정하려는 회원정보", required = true) UserDto userDto, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
 			try {
 				User result = userService.modifyUser(userDto.toEntity());
@@ -239,14 +204,14 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
-	
 	@ApiOperation(value = "회원탈퇴", notes = "회원정보를 삭제한다.", response = Map.class)
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> deleteUser(
-			@PathVariable @ApiParam(value = "탍퇴할 회원 정보", required = true) String userId, HttpServletRequest request) {
+			@PathVariable @ApiParam(value = "탈퇴할 회원 정보", required = true) String userId, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		String access_token = request.getHeader("access-token");
+		
 		if (access_token == null || "".equals(access_token)) {
 			logger.error("need access-token : {}");
 			resultMap.put("message", FAIL);
@@ -313,11 +278,10 @@ public class UserController {
 
 	@ApiOperation(value = "access-token 유효성 검사", notes = "access-token 유효성 검사.", response = Map.class)
 	@PostMapping("/check")
-	public ResponseEntity<?> checkToken(@RequestBody UserDto userDto, HttpServletRequest request) {
+	public ResponseEntity<?> checkToken(@RequestBody HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.ACCEPTED;
+		HttpStatus status;
 		String token = request.getHeader("access-token");
-		logger.debug("token : {}, userDto : {}", token, userDto);
 
 		//액세스토큰이 유효한지 확인한 후 결과 반환.
 		if (jwtService.checkToken(token)) {
@@ -328,6 +292,7 @@ public class UserController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 
@@ -359,6 +324,7 @@ public class UserController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -367,6 +333,7 @@ public class UserController {
 	public ResponseEntity<?> checkDuplicate(@RequestParam String type, @RequestParam String value) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
 			User result = userService.checkUser(type, value);
 			if (result != null) {
@@ -383,6 +350,7 @@ public class UserController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -405,6 +373,7 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			resultMap.put("message", FAIL);
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -413,6 +382,7 @@ public class UserController {
 	public ResponseEntity<?> validateEmailCheck(@RequestParam String code) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		if (mailService.checkCode(code)) {
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
@@ -420,6 +390,7 @@ public class UserController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.REQUEST_TIMEOUT;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -428,6 +399,7 @@ public class UserController {
 	public ResponseEntity<?> checkAuthentication(@RequestParam String email) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		if (mailService.checkAuthentication(email)) {
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
@@ -435,6 +407,7 @@ public class UserController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.REQUEST_TIMEOUT;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	

@@ -1,6 +1,5 @@
 package com.main.user.model.entity;
 
-
 import com.main.achievement.model.entity.Achievement;
 import com.main.achievement.model.entity.UserAchievement;
 import com.main.feed.model.entity.Comment;
@@ -14,7 +13,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Setter

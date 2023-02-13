@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Service
 public class JwtServiceImpl implements JwtService {
+	
 	private static final String SALT = "babysteps";
 	private static final int ACCESS_TOKEN_EXPIRE_MINUTES = 30; // 분단위
 	private static final int REFRESH_TOKEN_EXPIRE_MINUTES = 2; // 주단위
@@ -78,7 +79,7 @@ public class JwtServiceImpl implements JwtService {
 //			Json Web Signature? 서버에서 인증을 근거로 인증정보를 서버의 private key로 서명 한것을 토큰화 한것
 //			setSigningKey : JWS 서명 검증을 위한  secret key 세팅
 //			parseClaimsJws : 파싱하여 원본 jws 만들기
-			Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
+			Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
 //			Claims 는 Map의 구현체 형태
 			return true;
 		} catch (Exception e) {
@@ -92,18 +93,14 @@ public class JwtServiceImpl implements JwtService {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
 		String jwt = request.getHeader("access-token");
-		Jws<Claims> claims = null;
+		Jws<Claims> claims;
 		try {
 			claims = Jwts.parser().setSigningKey(SALT.getBytes("UTF-8")).parseClaimsJws(jwt);
 		} catch (Exception e) {
 			throw new UnAuthorizedException();
-//			개발환경
-//			Map<String,Object> testMap = new HashMap<>();
-//			testMap.put("userid", userid);
-//			return testMap;
 		}
-		Map<String, Object> value = claims.getBody();
-		return value;
+		
+		return claims.getBody();
 	}
 	
 	@Override

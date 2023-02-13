@@ -1,12 +1,12 @@
 <template>
-    <div id="feed-create-layout">
-      <header id="feed-create-header">
+    <div id="feed-update-layout">
+      <header id="feed-update-header">
         <!-- 취소 -->
         <span @click="goBack" class="text-active">취소</span>
         <span @click="editFeed" class="text-active">수정</span>
         <!-- 등록 -->
       </header>
-      <section id="feed-create-section">
+      <section id="feed-update-section">
         <!-- 카테고리 이름 -->
         <!-- <p>{{ missionInfo.categoryName}}</p> -->
         <!-- 플레이리스트 이름 -->
@@ -18,12 +18,12 @@
         <hr>
       </div>
   
-      <article id="feed-create-article">
+      <article id="feed-update-article">
         <!-- 피드 작성 -->
         <textarea 
           @input="inputContent" 
-          name="feed-create-input" 
-          id="feed-create-input"
+          name="feed-update-input" 
+          id="feed-update-input"
           maxlength="500"
           placeholder="피드의 사진은 수정이 불가능합니다."
         >
@@ -140,10 +140,10 @@
   </script>
   
   <style lang="scss">
-  $feed-create-footer-height: 5%;
+  $feed-update-footer-height: 5%;
   
   // 기본 레이아웃
-  #feed-create-layout {
+  #feed-update-layout {
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -152,7 +152,7 @@
   }
   
   // header 레이아웃
-  #feed-create-header {
+  #feed-update-header {
     display: flex;
     justify-content: space-between;
     
@@ -171,7 +171,7 @@
   }
   
   // 미션명
-  #feed-create-section {
+  #feed-update-section {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -197,12 +197,12 @@
   }
   
   // 피드 작성 부분
-  #feed-create-article {
-    height: (100% - $feed-create-footer-height);
+  #feed-update-article {
+    height: (100% - $feed-update-footer-height);
   }
   
   // 피드 내용 작성
-  #feed-create-input {
+  #feed-update-input {
     width: 100%;
     height: 100%;
     border: none;
@@ -256,8 +256,8 @@
   }
   
   // footer
-  #feed-create-footer {
-    height: $feed-create-footer-height;
+  #feed-update-footer {
+    height: $feed-update-footer-height;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -265,7 +265,7 @@
     margin-bottom: 10px;
   }
   
-  #feed-create-footer-private {
+  #feed-update-footer-private {
     display: flex;
     justify-content: center;
     white-space:nowrap;

@@ -494,65 +494,69 @@ export default {
           achievementId: 0,
         },
       })
-      .then(() => {
-        alert("대표뱃지가 삭제되었습니다.");
-        location.reload();
+        .then(() => {
+          alert("대표뱃지가 삭제되었습니다.");
+          location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deleteFeed(feedId) {
+      document.body.classList.add("stop-scroll")
+      this.isDelete = true
+      this.deleteId = feedId
+    },
+    finalOk() {
+      this.$store.dispatch("feedDelete", this.deleteId)
+      document.body.classList.remove("stop-scroll")
+      // for(let i=0; i<this.feeds.length;i++){
+      //   if(this.feeds[i].feedId === this.deleteId){
+      //     this.feeds.splice(i,1)
+      //   }
+      // }
+      this.isDelete = false
+      window.location.reload()
+    },
+    finalNo() {
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+    },
+    moveProfile(targetId) {
+      this.$store.commit("UPDATE_PROFILE_TARGET_ID", targetId);
+      this.$router
+        .push({
+          name: "profile",
+        })
+        .catch(() => {
+          location.reload();
+        });
+      },
+    openFeedMyRecord(userPlaylistId, flowerImageUrl) {
+      this.recordView = true;
+      this.plModal = false;
+      this.$axios({
+        method: "get",
+        url: `${this.$baseUrl}/feed/search/${this.$store.state.targetUd}/${userPlaylistId}`,
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          if (response.data.message === "success") {
+            this.myRecord = response.data.feeds;
+            this.flowerImageUrl = flowerImageUrl;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
-  moveProfile(targetId){
-    this.$store.commit("UPDATE_PROFILE_TARGET_ID",targetId);
-    this.$router.push({
-      name: 'profile',
-    }).catch(() => {location.reload();});
-  }
-  ,deleteFeed(feedId) {
-    document.body.classList.add("stop-scroll")
-    this.isDelete = true
-    this.deleteId = feedId
+  computed: {
+    ...mapState(["type"]),
+    isCommentClicked() {
+      return this.$store.getters.isCommentClicked;
+    },
   },
-  finalOk() {
-    this.$store.dispatch("feedDelete", this.deleteId)
-    document.body.classList.remove("stop-scroll")
-    // for(let i=0; i<this.feeds.length;i++){
-    //   if(this.feeds[i].feedId === this.deleteId){
-    //     this.feeds.splice(i,1)
-    //   }
-    // }
-    this.isDelete = false
-    window.location.reload()
-  },
-  finalNo() {
-    document.body.classList.remove("stop-scroll")
-    this.isDelete = false
-  },
-  openFeedMyRecord(userPlaylistId, flowerImageUrl) {
-    this.recordView = true;
-    this.plModal = false;
-    this.$axios({
-      method: "get",
-      url: `${this.$baseUrl}/feed/search/${this.$store.state.targetUd}/${userPlaylistId}`,
-    })
-      .then((response) => {
-        if (response.data.message === "success") {
-          this.myRecord = response.data.feeds;
-          this.flowerImageUrl = flowerImageUrl;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-},
-computed: {
-  ...mapState(["type"]),
-  isCommentClicked() {
-    return this.$store.getters.isCommentClicked
-  }
-  },  
-}
+};
 </script>
 
 <style lang="scss">

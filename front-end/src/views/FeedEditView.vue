@@ -25,8 +25,7 @@
           name="feed-update-input" 
           id="feed-update-input"
           maxlength="500"
-          placeholder="미션에 대한 후기나 감상을 공유해보세요! 
-사진(최대 10장)을 이용하면 더 좋아요!"
+          placeholder="피드의 사진은 수정이 불가능합니다."
         >
           </textarea>
       </article>
@@ -40,50 +39,18 @@
         v-show="this.images"
         id="preview-img-layout">
       </aside>
-  
-      <footer id="feed-update-footer">
-        <!-- 사진 등록 -->
-        <label for="image-input"><i class="material-symbols-outlined text-active" id="photo-camera">photo_camera</i></label>
-        <input 
-          @change="inputImage"  
-          type="file" multiple id="image-input" style="visibility:hidden;"
-        >
-        <!-- 피드 비공개 -->
-        <!-- <div id="feed-update-footer-private">
-          <input 
-            @click="isprivateCheck"
-            type="checkbox" id="feed-update-footer-checkbox" name="feed-update-footer-checkbox"
-          >
-          <span><label for="feed-update-footer-checkbox" class="text-active-normal">피드 비공개</label></span>
-        </div> -->
-      </footer>
-      <basic-modal
-        v-if="openModal"
-        :content="modalContent"
-        @close="modalClose"
-      >
-      </basic-modal>
     </div>
   </template>
   
   <script>
-  import BasicModal from '@/components/BasicModal'
-  import { basicModalMixin } from '@/tools/basicModalMixin.js'
-  
-  
+ 
   export default {
     name: 'FeedEditView',
-    components: {
-      BasicModal,
-    },
-    mixins: [
-      basicModalMixin,
-    ],
     data() {
       return {
         content: null,
         images: null,
-        isprivate: false,
+        feedId: this.$store.state.nowFeed.feedId
       }
     },
     methods: {
@@ -93,35 +60,17 @@
       },
       // 피드 등록
       editFeed() {
-        const formData = new FormData()
-        const writeFeedDto = {
-          userId: this.$store.state.id,
-          userPlaylistId: this.$store.state.nowFeed.userPlaylistId,
-          missionId: this.$store.state.nowFeed.missionId,
+        const payload = {
+          feedId: this.$store.state.nowFeed.feedId,
           content: this.content,
         }
-  
-        const writeFeedDtoJson = new Blob([JSON.stringify(writeFeedDto)], { type: "application/json" })
-        
-        formData.append('writeFeedDto', writeFeedDtoJson)
-        
-        // 이미지
-        if (this.images) {
-          for (const img of this.images) {
-            formData.append('images', new Blob([JSON.stringify(img)], { type: "application/json" }))
-          }
-        } else {
-          const dump = {}
-          formData.append('images', new Blob([JSON.stringify(dump)], { type: "application/json" }))
-        }
-        
         this.$axios({
           method: 'put',
-          url: `${this.$baseUrl}/feed/${this.$store.state.nowFeed.feedId}`,
+          url: `${this.$baseUrl}/feed/${this.feedId}`,
           headers: {
             'Content-Type': 'multipart/form-data',
           },
-          data: formData,
+          data: payload
         })
           .then(() => {
             this.$router.push({ name: 'feed' })
@@ -148,21 +97,12 @@
             const divTag = document.createElement('div')
             divTag.setAttribute('class', 'preview-img-div')
             divTag.setAttribute('id', `preview-img-div-${idx}`)
-            // 화살표 함수로 안 쓰면 에러남
-            divTag.addEventListener('click', (event) => {
-              this.deleteImage(event.target)
-            })
-            const spanTag = document.createElement('span')
-            spanTag.innerText = 'x'
-            spanTag.setAttribute('class', 'preview-img-span')
-            spanTag.setAttribute('id', `preview-img-span-${idx}`)
             // 태그 만들기
             const imgTag = document.createElement('img')
             imgTag.src = img
             imgTag.setAttribute('class', 'preview-img')
             
             divTag.append(imgTag)
-            divTag.append(spanTag)
             parentTag.append(divTag)
   
             idx += 1
@@ -174,16 +114,6 @@
       //   this.isprivate = !this.isprivate
       // },
       // 이미지 삭제
-      deleteImage(target) {
-        // data에서 제거
-        const targetIdx = target.id.substring(17, )
-        const dataTransfer = new DataTransfer()
-        let fileArray = Array.from(this.images)	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
-        fileArray.splice(targetIdx, 1)	//해당하는 index의 파일을 배열에서 제거
-        fileArray.forEach(file => { dataTransfer.items.add(file) })
-        this.images = dataTransfer.files	//제거 처리된 FileList를 돌려줌
-        this.inputImage()
-      }
     },
     computed: {
       missionInfo() {
@@ -195,13 +125,16 @@
     },
     mounted() {
         let imageUrls = []
-        for(const img of this.$store.state.nowFeed.feedImages){
+        if(this.$store.state.nowFeed.feedImages){
+          for(const img of this.$store.state.nowFeed.feedImages){
             imageUrls.push(img.feedImageUrl)
+          }
+          this.images = imageUrls
+          this.inputImage()
         }
-        this.images = imageUrls
-        this.inputImage()
         this.content = this.$store.state.nowFeed.content
-        document.querySelector("#feed-update-input").value = this.$store.state.nowFeed.content
+        this.feedId = this.$store.state.nowFeed.feedId
+        document.querySelector("#feed-create-input").value = this.$store.state.nowFeed.content
     }
   }
   </script>

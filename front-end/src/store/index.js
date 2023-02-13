@@ -153,13 +153,11 @@ export default new Vuex.Store({
       state.modalReload = false
     },
     //댓글 창 띄우기
-    COMMENT_CHANGE(state) {
-      if(state.isComment){
-        state.isComment = false
-      }
-      else{
-        state.isComment = true
-      }
+    COMMENT_OPEN(state) {
+      state.isComment = true
+    },
+    COMMENT_CLOSE(state) {
+      state.isComment = false
     },
     SCROLL_HEIGHT(state, height) {
       state.scrollY = height
@@ -458,7 +456,10 @@ export default new Vuex.Store({
       context.commit('GET_FEED', data)
     },
     showComment(context) {
-      context.commit('COMMENT_CHANGE')
+      context.commit('COMMENT_OPEN')
+    },
+    closeComment(context) {
+      context.commit('COMMENT_CLOSE')
     },
     putScrollHeight(context, height) {
       context.commit('SCROLL_HEIGHT', height)

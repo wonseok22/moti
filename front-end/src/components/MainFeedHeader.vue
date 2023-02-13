@@ -9,6 +9,7 @@
             <img :src="HeaderData.achievementImageUrl" alt="댜표뱃지" class="feed-header-achieve" v-if="HeaderData.achievementImageUrl">
 
             <p class="feed-header-nickname" @click="moveProfile(HeaderData.userId)">{{ HeaderData.nickname }}</p>
+            <p class="feed-date">{{ this.date }}</p>
         </div>
         <p class="feed-header-mission">
             <span class="playlist-name">{{ HeaderData.playlistName }}</span><span style="font-size:12px;">의 </span>
@@ -54,6 +55,21 @@ export default {
         const check_res = this.$store.dispatch("followCheck", this.HeaderData.userId)
         const check_result = await check_res
         this.Following = check_result.data.check
+        var date = new Date(this.HeaderData.createdDate);
+        var now = new Date();
+        this.date = new Date(date.getTime() - date.getTimezoneOffset()*60000)
+        let diffTime = (now.getTime() - this.date.getTime())/60000
+        if(diffTime < 60) {
+            this.date = parseInt(diffTime) + "분 전"
+        } else if(diffTime < 1440) {
+            this.date = parseInt(diffTime/60) + "시간 전"
+        } else if(diffTime < 1440 * 30) {
+            if (parseInt(diffTime/ 1440) == 1){
+            this.date = "어제"
+            } else {
+            this.date = parseInt(diffTime/ 1440) + "일 전"
+            }
+        }
         // this.$store.dispatch("profileCheck", this.HeaderData.userId)
         // const profile_res = this.$store.dispatch("profileCheck", this.HeaderData.userId)
         // const profile_result = await profile_res
@@ -73,6 +89,7 @@ export default {
             },
             horiOpened: true,
             tabOpened: false,
+            date:null,
         }
     },
     methods: {

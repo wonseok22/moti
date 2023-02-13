@@ -30,11 +30,11 @@
           <div>{{ profile.playlistCompleteCnt }}</div>
           <div>키운식물</div>
         </div>
-        <div @click="followModal = true">
+        <div @click="openFollowModal">
           <div>{{ profile.following }}</div>
           <div>팔로우</div>
         </div>
-        <div @click="followModal = true">
+        <div @click="openFollowerModal">
           <div>{{ profile.follower }}</div>
           <div>팔로워</div>
         </div>
@@ -192,7 +192,7 @@
       </div>
     </div>
 
-    <div class="follow-modal" v-if="followModal">
+    <div class="follow-modal" v-show="followModal">
       <!-- <div class="follow-modal" > -->
       <div class="follow-modal-close" @click="followModal = false"></div>
       <div class="follow-white-bg">
@@ -294,11 +294,9 @@ export default {
   },
   methods: {
     clickFollow(){
-      console.log(this.followerKey)
       this.followerKey --;
     },
     clickFollower(){
-      console.log(this.followKey)
       this.followKey ++;
     },
     logout() {
@@ -516,7 +514,18 @@ export default {
           console.log(error);
         });
     },
+    openFollowModal() {
+      this.followModal = true
+      this.moveFollowing()
+      
+    },
+    openFollowerModal() {
+      this.followModal = true
+      this.moveFollower()
+      
+    },
   },
+  
   computed: {
     ...mapState(["type"]),
     isCommentClicked() {

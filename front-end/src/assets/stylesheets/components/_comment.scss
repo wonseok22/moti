@@ -38,7 +38,11 @@
 .comments-list {
     padding-bottom: 55px;
 }
-
+.comment-wrap{
+    display: flex;
+    height: 28px;
+    justify-content: start !important;
+}
 .single-comment {
     display: flex;
     position: relative;
@@ -126,9 +130,13 @@
     }
 
 }
-
+.comment-date {
+    font-size: 12px;
+    color: #525252;
+}
 
 .comment-nickname {
+    margin-right: 10px;
     word-wrap: break-word;
     word-break: keep-all;
     text-align: start;

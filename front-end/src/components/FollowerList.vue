@@ -15,76 +15,75 @@
     </main>
   </template>
   
-  <script>
-  
-    export default {
-    name: 'FollowerList',
-    props: {
-        keyword: String,
-    },
-    components: {
-  
+<script>
+export default {
+  name: 'FollowerList',
+  props: {
+      keyword: String,
   },
-    data() {
-        return {
-            follows:null,
-            complete:false,
-            defaultImage:require(`@/assets/images/default_profile.jpg`),
-            userId:this.$store.state.id,
-        }
-    },
-    watch: {
-    },
-    created() {
-      this.$axios({
-          method: 'get',
-          url: `${this.$baseUrl}/profile/follow?targetId=${this.keyword}&type=follower&userId=${this.$store.state.id}`
-          }).then((response) => {
-            this.follows = response.data.followerList;
-            console.log(this.follows)
+  components: {
 
-          }).catch((error) =>{
-          console.log(error);
-      })
+},
+  data() {
+      return {
+          follows:null,
+          complete:false,
+          defaultImage:require(`@/assets/images/default_profile.jpg`),
+          userId:this.$store.state.id,
+      }
+  },
+  watch: {
+  },
+  created() {
+    this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/profile/follow?targetId=${this.keyword}&type=follower&userId=${this.$store.state.id}`
+        }).then((response) => {
+          this.follows = response.data.followerList;
+          console.log(this.follows)
+
+        }).catch((error) =>{
+        console.log(error);
+    })
+  },
+
+  methods : {
+    moveProfile(targetId) {
+      this.$store.commit("UPDATE_PROFILE_TARGET_ID",targetId);
+      this.$router.push({
+        name: 'profile',
+      }).catch(() => {location.reload();});
     },
-  
-    methods : {
-      moveProfile(targetId) {
-        this.$store.commit("UPDATE_PROFILE_TARGET_ID",targetId);
-        this.$router.push({
-          name: 'profile',
-        }).catch(() => {location.reload();});
-      },
-      unFollow(targetId,i) {
-        this.$axios({
-          method: 'get',
-          url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${targetId}?type=unfollow`
-        }).then((response) => {
-          if (response.data.message ==="success"){
-            this.follows[i].following = false;
-            this.$emit("click-follower");
-          } 
-          }).catch((error) =>{
-            console.log(error)
-          })
-      },
-      Follow(targetId,i) {
-        this.$axios({
-          method: 'get',
-          url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${targetId}?type=follow`
-        }).then((response) => {
-          if (response.data.message ==="success"){
-            this.follows[i].following = true;
-            this.$emit("click-follower");
-          } 
+    unFollow(targetId,i) {
+      this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${targetId}?type=unfollow`
+      }).then((response) => {
+        if (response.data.message ==="success"){
+          this.follows[i].following = false;
+          this.$emit("click-follower");
+        } 
         }).catch((error) =>{
           console.log(error)
         })
-      },
-    }
+    },
+    Follow(targetId,i) {
+      this.$axios({
+        method: 'get',
+        url: `${this.$baseUrl}/profile/follow/${this.$store.state.id}/${targetId}?type=follow`
+      }).then((response) => {
+        if (response.data.message ==="success"){
+          this.follows[i].following = true;
+          this.$emit("click-follower");
+        } 
+      }).catch((error) =>{
+        console.log(error)
+      })
+    },
   }
-  </script>
-  <style lang="scss">
+}
+</script>
+<style lang="scss">
   .follow-info {
     align-items: center;
 

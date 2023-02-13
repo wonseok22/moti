@@ -76,13 +76,7 @@ const loginCheck = (to, from, next) => {
     next()
   }
 }
-// const loginCheckInLogin = () => {
-//   if (store.state.accessToken) {
-//     router.push({
-//       name:"feed",
-//     })
-//   } 
-// }
+
 const routes = [
   {
     path: '/signup',

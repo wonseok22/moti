@@ -76,6 +76,9 @@ export default {
     },
     // 이메일 입력
     emailInput(event) {
+      if (this.emailDoubleChecked) {
+        this.emailDoubleChecked = false
+      }
       this.emailActive = true
       this.email = event.target.value
     },
@@ -120,9 +123,9 @@ export default {
                   content: '사용할 수 있는 이메일이에요.'
                 }
                 this.$store.dispatch('modalOpen', payload)
-                const emailInputTag = document.querySelector('#input-email')
+                // const emailInputTag = document.querySelector('#input-email')
                 // 현재 이메일로 고정
-                emailInputTag.setAttribute('disabled', true)
+                // emailInputTag.setAttribute('disabled', true)
                 this.emailDoubleChecked = true
               } else {
                 const payload = {

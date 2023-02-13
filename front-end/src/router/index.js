@@ -46,9 +46,6 @@ const checkAccessToken = (to, from, next) => {
       headers: {
         'access-token' : store.state.accessToken,
       },
-      data :{
-        "userId" : userId,
-      },
     })
     // accessToken 유효
       .then(() => {

@@ -70,15 +70,13 @@ const checkAccessToken = (to, from, next) => {
   }
 }
 
-const loginCheck = () => {
+const loginCheck = (to, from, next) => {
   if (store.state.accessToken) {
     router.push({
-      name:"feed",
+      name: "feed",
     })
   } else {
-    router.push({
-      name:"login",
-    })
+    next()
   }
 }
 
@@ -111,6 +109,7 @@ const routes = [
       {
         path: '',
         name: 'login',
+        beforeEnter: loginCheck,
         component: LoginForm
       },
     ],

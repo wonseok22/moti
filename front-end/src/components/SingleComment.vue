@@ -54,7 +54,9 @@ export default {
       var now = new Date();
       this.date = new Date(date.getTime() - date.getTimezoneOffset()*60000)
       let diffTime = (now.getTime() - this.date.getTime())/60000
-      if(diffTime < 60) {
+      if(diffTime < 1){
+        this.date = "방금 전"
+      }else if(diffTime < 60) {
         this.date = parseInt(diffTime) + "분 전"
       } else if(diffTime < 1440) {
         this.date = parseInt(diffTime/60) + "시간 전"

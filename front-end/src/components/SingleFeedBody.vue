@@ -156,10 +156,8 @@ export default {
         this.isThereImage = this.BodyData.feedImages.length
         // 댓글 작성 페이지일 경우
         if (String(this.$options._componentTag) === 'FeedComment') {
-            console.log('durl')
             this.isComment = true
         }
-        console.log(String(this.$options._componentTag))
     }
 }
 

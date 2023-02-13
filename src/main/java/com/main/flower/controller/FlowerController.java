@@ -2,10 +2,6 @@ package com.main.flower.controller;
 
 import com.main.flower.model.entity.Flower;
 import com.main.flower.model.service.FlowerService;
-import com.main.playlist.model.dto.PlaylistDto;
-import com.main.playlist.model.dto.UserPlaylistDto;
-import com.main.playlist.model.entity.UserPlaylist;
-import com.main.playlist.model.service.PlaylistService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @Api(tags = {"꽃 관리 API"})
 @RequestMapping("/flower")
 public class FlowerController {
+	
+	@Autowired
+	private FlowerService flowerService;
+	
 	public static final Logger logger = LoggerFactory.getLogger(FlowerController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	private static final String ALREADY_EXIST = "already exists";
-	@Autowired
-	private FlowerService flowerService;
 
 	@ApiOperation(value = "꽃 등록", notes = "꽃 등록 API", response = Map.class)
 	@PostMapping("")
@@ -41,7 +37,7 @@ public class FlowerController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		try {
-			Flower flower = flowerService.registFlower(image);
+			Flower flower = flowerService.registerFlower(image);
 			
 			if(flower!=null) {
 				logger.debug("꽃 정보 : {}", flower);
@@ -51,14 +47,13 @@ public class FlowerController {
 			else{
 				resultMap.put("message", FAIL);
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("꽃 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
 }

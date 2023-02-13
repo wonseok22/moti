@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div :id="`feed-${feedIdx}`">
     <!-- 피드의 글본문에 해당되는 부분 -->
     <div class="feed-text">
         <p 
-            v-if="isThereImage && !isCommentCheck" 
+            v-if="isThereImage && !isCommentCheck && overThreeLines" 
             v-line-clamp="2" 
             class="text-not-all"
             :class="`single-feed-content-${feedIdx}`"
             >
             {{ BodyData.content }}
-            </p>
+        </p>
         <p 
-            v-else 
+            v-else
             class="text-all"
         >
             {{ BodyData.content }}
         </p>
         <button 
-            v-if="isThereImage && BodyData.content && !isCommentCheck"
+            v-if="isThereImage && BodyData.content && !isCommentCheck && overThreeLines"
             :class="`single-feed-btn-${feedIdx}`"
             >
             <p 
@@ -106,6 +106,7 @@ export default {
             likeCnt: this.BodyData.likes,
             isThereImage: 0,
             isComment: false,
+            overThreeLines: false,
         }
     },
     methods: {
@@ -158,7 +159,18 @@ export default {
         if (String(this.$options._componentTag) === 'FeedComment') {
             this.isComment = true
         }
-    }
+    },
+    mounted() {
+        const feedContentTag = document.querySelector(`#feed-${this.feedIdx} > .feed-text > p`)
+        const tagHeight = feedContentTag.offsetHeight
+        // const lineHeight = parseInt(feedContentTag.style.lineHeight)
+        const lines = tagHeight / (1.15 * 16)
+        
+        if (lines >= 3) {
+            this.overThreeLines = true
+        }
+        
+    },
 }
 
 </script>

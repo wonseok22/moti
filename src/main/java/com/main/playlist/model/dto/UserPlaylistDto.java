@@ -30,5 +30,4 @@ public class UserPlaylistDto {
 				userPlaylist.getToday() == 0 ? false : true
 		);
 	}
-	
 }

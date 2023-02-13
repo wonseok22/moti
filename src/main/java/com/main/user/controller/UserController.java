@@ -278,7 +278,7 @@ public class UserController {
 
 	@ApiOperation(value = "access-token 유효성 검사", notes = "access-token 유효성 검사.", response = Map.class)
 	@PostMapping("/check")
-	public ResponseEntity<?> checkToken(@RequestBody HttpServletRequest request) {
+	public ResponseEntity<?> checkToken(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		String token = request.getHeader("access-token");

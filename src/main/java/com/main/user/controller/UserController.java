@@ -71,7 +71,6 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
-	
 	@ApiOperation(value = "로그인", notes = "access-token, Refresh-token과 로그인 결과 메세지를 반환한다.", response = Map.class)
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(
@@ -123,7 +122,7 @@ public class UserController {
 			String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserId());// key, data
 			User user = userService.socialLogin(loginUser, refreshToken);
 			
-			if(user!=null) {
+			if(user != null) {
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
 				resultMap.put("access-token", accessToken);
@@ -245,7 +244,6 @@ public class UserController {
 		
 		return new ResponseEntity<>(resultMap, status);
 	}
-	
 	
 	@ApiOperation(value = "회원정보 조회", notes = "회원정보를 반환한다.", response = Map.class)
 	@GetMapping("/{userId}")

@@ -257,14 +257,14 @@ export default {
 </script>
 
 <style lang="scss">
-$feed-create-footer-height: 5%;
+$feed-create-footer-height: 5vh;
 
 // 기본 레이아웃
 #feed-create-layout {
-  height: 100vh;
+  height: 100vh - $feed-create-footer-height;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
 
   padding: 0px 10px;
 }
@@ -316,7 +316,7 @@ $feed-create-footer-height: 5%;
 
 // 피드 작성 부분
 #feed-create-article {
-  height: (75% - $feed-create-footer-height);
+  height: 100%;
 }
 
 // 피드 내용 작성
@@ -379,8 +379,10 @@ $feed-create-footer-height: 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
-  margin-bottom: 10px;
+
+  position: fixed;
+  width: 100vw;
+  bottom: 0px;
 }
 
 #feed-create-footer-private {

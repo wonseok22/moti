@@ -494,42 +494,6 @@ export default {
           achievementId: 0,
         },
       })
-<<<<<<< front-end/src/views/ProfileView.vue
-  },
-  moveProfile(targetId){
-    this.$store.commit("UPDATE_PROFILE_TARGET_ID",targetId);
-    this.$router.push({
-      name: 'profile',
-    }).catch(() => {location.reload();});
-  }
-  ,deleteFeed(feedId) {
-    document.body.classList.add("stop-scroll")
-    this.isDelete = true
-    this.deleteId = feedId
-  },
-  finalOk() {
-    this.$store.dispatch("feedDelete", this.deleteId)
-    document.body.classList.remove("stop-scroll")
-    // for(let i=0; i<this.feeds.length;i++){
-    //   if(this.feeds[i].feedId === this.deleteId){
-    //     this.feeds.splice(i,1)
-    //   }
-    // }
-    this.isDelete = false
-    window.location.reload()
-  },
-  finalNo() {
-    document.body.classList.remove("stop-scroll")
-    this.isDelete = false
-  }
-},
-computed: {
-  isCommentClicked() {
-    return this.$store.getters.isCommentClicked
-  }
-  },  
-}
-=======
         .then(() => {
           alert("대표뱃지가 삭제되었습니다.");
           location.reload();
@@ -537,6 +501,26 @@ computed: {
         .catch((error) => {
           console.log(error);
         });
+    },
+    deleteFeed(feedId) {
+      document.body.classList.add("stop-scroll")
+      this.isDelete = true
+      this.deleteId = feedId
+    },
+    finalOk() {
+      this.$store.dispatch("feedDelete", this.deleteId)
+      document.body.classList.remove("stop-scroll")
+      // for(let i=0; i<this.feeds.length;i++){
+      //   if(this.feeds[i].feedId === this.deleteId){
+      //     this.feeds.splice(i,1)
+      //   }
+      // }
+      this.isDelete = false
+      window.location.reload()
+    },
+    finalNo() {
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
     },
     moveProfile(targetId) {
       this.$store.commit("UPDATE_PROFILE_TARGET_ID", targetId);
@@ -547,7 +531,7 @@ computed: {
         .catch(() => {
           location.reload();
         });
-    },
+      },
     openFeedMyRecord(userPlaylistId, flowerImageUrl) {
       this.recordView = true;
       this.plModal = false;
@@ -573,7 +557,6 @@ computed: {
     },
   },
 };
->>>>>>> front-end/src/views/ProfileView.vue
 </script>
 
 <style lang="scss">

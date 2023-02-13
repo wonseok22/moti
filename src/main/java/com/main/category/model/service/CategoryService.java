@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CategoryService {
 	
-	Category registCategory(Category category, MultipartFile image) throws SQLException;
+	Category registerCategory (Category category, MultipartFile image) throws SQLException;
 	
 	List<CategoryDto> getCategories() throws SQLException;
 	

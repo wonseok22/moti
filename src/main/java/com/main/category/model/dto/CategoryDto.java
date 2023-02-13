@@ -13,11 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 public class CategoryDto {
 	private Long categoryId;
-	
 	private String categoryName;
-	
 	private String categoryImageUrl;
-	
 	private int current;
 	
 	public static Category toEntity(CategoryDto categoryDto) {

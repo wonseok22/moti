@@ -3,7 +3,6 @@ package com.main.category.controller;
 import com.main.category.model.dto.CategoryDto;
 import com.main.category.model.entity.Category;
 import com.main.category.model.service.CategoryService;
-import com.main.feed.model.dto.WriteFeedDto;
 import com.main.playlist.model.dto.PlaylistDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,18 +19,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @Api(tags = {"카테고리 관리 API"})
 @RequestMapping("/category")
 public class CategoryController {
+	
+	@Autowired
+	private CategoryService categoryService;
+	
 	public static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	private static final String ALREADY_EXIST = "already exists";
-	@Autowired
-	private CategoryService categoryService;
 	
 	@ApiOperation(value = "카테고리 조회", notes = "카테고리 요청 API", response = Map.class)
 	@GetMapping("")
@@ -40,12 +40,10 @@ public class CategoryController {
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		try {
 			List<CategoryDto> categories = categoryService.getCategories();
-			
 			logger.debug("카테고리 목록 : {}", categories);
 			resultMap.put("categories", categories);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.OK;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("카테고리 조회 실패 : {}", e);
@@ -58,7 +56,7 @@ public class CategoryController {
 	
 	@ApiOperation(value = "카테고리 등록", notes = "카테고리 생성 API", response = Map.class)
 	@PostMapping("")
-	public ResponseEntity<?> registCategory(
+	public ResponseEntity<?> registerCategory(
 			@RequestPart @ApiParam(value = "카테고리 정보", required = true) String categoryName,
 			@RequestPart @ApiParam(value = "이미지 정보", required = true) MultipartFile image) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -66,7 +64,7 @@ public class CategoryController {
 		try {
 			Category category = new Category();
 			category.setCategoryName(categoryName);
-			Category result = categoryService.registCategory(category, image);
+			Category result = categoryService.registerCategory(category, image);
 			
 			logger.debug("카테고리 등록 : {}", result);
 			if (result != null)

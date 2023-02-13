@@ -68,6 +68,7 @@ const checkAccessToken = (to, from, next) => {
 }
 
 const loginCheck = () => {
+  console.log(store.state.accessToken)
   if (store.state.accessToken) {
     router.push({
       name:"feed",
@@ -78,7 +79,13 @@ const loginCheck = () => {
     })
   }
 }
-
+// const loginCheckInLogin = () => {
+//   if (store.state.accessToken) {
+//     router.push({
+//       name:"feed",
+//     })
+//   } 
+// }
 const routes = [
   {
     path: '/signup',
@@ -104,11 +111,12 @@ const routes = [
   {
     path: '/login',
     component: LoginView,
+    // beforeEnter:loginCheckInLogin,
     children: [
       {
         path: '',
         name: 'login',
-        component: LoginForm
+        component: LoginForm,
       },
     ],
   },

@@ -145,6 +145,7 @@ public class UserServiceImpl implements UserService {
 				}
 			});
 		}); // 해당 유저가 쓴 피드의 이미지를 서버에서 모두 삭제
+		
 		try {
 			s3Upload.fileDelete(profile.getProfileImageUrl().split(".com/")[1]);
 		} catch (Exception e) {
@@ -197,18 +198,24 @@ public class UserServiceImpl implements UserService {
 		searchResult.put("isLast", slice.isLast());
 		return searchResult;
 	}
+	
 	@Override
 	public User socialLogin(User userDto, String refreshToken) {
 		User user = userRepository.findByUserId(userDto.getUserId());
-		System.out.println(userDto);
-		if(user==null) {
+		
+		// 해당 ID로 가입된 유저가 없으면 가입 시도
+		if(user == null) {
 			user = userRepository.findByEmail(userDto.getEmail());
-			if(user!=null)
-				return null;
+			
+			// 해당 Email로 가입된 유저가 있으면 종료
+			if(user != null) return null;
+			
 			user = new User();
+			
 			// Profile Build
 			Profile profile = new Profile();
 			profileRepository.save(profile);
+			
 			// User Build
 			user.setUserId(userDto.getUserId());
 			user.setNickname(userDto.getUserId());
@@ -217,12 +224,11 @@ public class UserServiceImpl implements UserService {
 			user.setJoinDate(LocalDateTime.now());
 			user.setType(userDto.getType());
 			user.setRefreshToken(refreshToken);
-			
-			user = userRepository.save(user);
 		}
 		
 		user.setRefreshToken(refreshToken);
 		userRepository.save(user);
 		return user;
 	}
+	
 }

@@ -88,7 +88,7 @@ export default {
             this.$store.dispatch("FollowUnfollow", this.payload)
         },
         moveProfile(userId){
-            this.$store.dispatch("showComment")
+            this.$store.dispatch("closeComment")
             document.body.style.overflow = "scroll"
             this.$store.commit("UPDATE_PROFILE_TARGET_ID",userId);
             this.$router.push({

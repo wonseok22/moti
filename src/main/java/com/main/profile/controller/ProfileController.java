@@ -45,6 +45,7 @@ public class ProfileController {
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
 			try {
 				if (profileImage != null) {
@@ -57,7 +58,7 @@ public class ProfileController {
 					logger.debug("수정된 프로필 정보 : {}", profileDto.toString());
 					status = HttpStatus.OK;
 				} else {
-					// 프로필 수정  실패한 경우 실패 메시지 반환, 회워 정보 유효 X,  204 응답 코드
+					// 프로필 수정  실패한 경우 실패 메시지 반환, 회원 정보 유효 X,  204 응답 코드
 					resultMap.put("message", FAIL);
 					status = HttpStatus.ACCEPTED;
 				}
@@ -71,6 +72,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -80,6 +82,7 @@ public class ProfileController {
 			@ApiParam(value = "프로필을 요청할 유저의 ID", required = true) @RequestParam String userId) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
 			ProfileDto profileDto = profileService.getProfile(userId);
 			if (profileDto != null) {
@@ -98,6 +101,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -107,6 +111,7 @@ public class ProfileController {
 			@ApiParam(value = "프로필 사진을 삭제할 유저의 ID", required = true) @PathVariable String userId, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		if (jwtService.checkToken(request.getHeader("access-token"))) {
 			try {
 				profileService.deleteProfileImage(userId);
@@ -123,6 +128,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -134,6 +140,7 @@ public class ProfileController {
 			@ApiParam(value = "follower / following", required = true)@RequestParam String type) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
 			List<GetFollowDto> followList = profileService.getFollow(type, userId, targetId);
 			// 유저 팔로워 요청 처리
@@ -146,6 +153,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	
@@ -157,6 +165,7 @@ public class ProfileController {
 			@ApiParam(value = "follow/unfollow", required = true) @RequestParam String type) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
+		
 		try {
 			int result = profileService.doFollow(type, userId, targetId);
 			if (result == 1) {
@@ -196,6 +205,7 @@ public class ProfileController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
 		return new ResponseEntity<>(resultMap, status);
 	}
 	

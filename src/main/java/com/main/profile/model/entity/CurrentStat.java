@@ -43,6 +43,4 @@ public class CurrentStat {
 	private int fifthdayCompleteCnt;
 	private int followerCnt;
 	private int followingCnt;
-	
-	
 }

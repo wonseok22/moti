@@ -122,6 +122,9 @@ export default {
   },
   methods: {
     idInput(event) {
+      if (this.idDoubleChecked) {
+        this.idDoubleChecked = false
+      }
       this.idActive = true
       // 한글 -> 영어
       const regexResult = regex.characterCheck(event.target.value)
@@ -187,9 +190,9 @@ export default {
             } else if ( response.data.message === 'success' ) {
               this.openModal = true
               this.modalContent = '사용할 수 있는 아이디에요.'
-              const idInputTag = document.querySelector('#input-id')
+              // const idInputTag = document.querySelector('#input-id')
               // 현재 아이디로 고정
-              idInputTag.setAttribute('disabled', true)
+              // idInputTag.setAttribute('disabled', true)
               this.idDoubleChecked = true
             } else {
               this.openModal = true

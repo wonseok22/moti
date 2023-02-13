@@ -56,6 +56,7 @@ export default {
       let end = new Date(this.myPL.endDate)
 
       end.setHours(end.getHours() + 9)
+      
 
       // ms 단위 남은 기간
       const remain_ms = end.getTime() - now.getTime()
@@ -64,7 +65,7 @@ export default {
 
       // 1일 이상 남은 경우
       if (remain_day > 1) {
-        return String(remain_day).substring(0, 1) + '일'
+        return String(remain_day + 1).substring(0, 1) + '일'
       } else {
         // 1일 미만으로 남은 경우 시간 단위
         const remain_hour = String(remain_day * 24)

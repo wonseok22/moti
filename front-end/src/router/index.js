@@ -46,9 +46,6 @@ const checkAccessToken = (to, from, next) => {
       headers: {
         'access-token' : store.state.accessToken,
       },
-      data :{
-        "userId" : userId,
-      },
     })
     // accessToken 유효
       .then(() => {
@@ -79,7 +76,13 @@ const loginCheck = (to, from, next) => {
     next()
   }
 }
-
+// const loginCheckInLogin = () => {
+//   if (store.state.accessToken) {
+//     router.push({
+//       name:"feed",
+//     })
+//   } 
+// }
 const routes = [
   {
     path: '/signup',
@@ -105,6 +108,7 @@ const routes = [
   {
     path: '/login',
     component: LoginView,
+    // beforeEnter:loginCheckInLogin,
     children: [
       {
         path: '',

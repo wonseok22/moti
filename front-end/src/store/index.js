@@ -122,6 +122,19 @@ export default new Vuex.Store({
       state.nickname = null
       state.accessToken = null
       state.refreshToken = null
+      state.password= null
+      state.myPL= null
+      state.myMission= null
+      state.nowPL= null
+      state.nowFeed= null
+      state.profileTargetId=null
+      state.isComment= false
+      state.scrollY = null
+      
+      // 로그인에서 사용하는 모달 관련 데이터
+      state.openModal= false
+      state.modalContent= null
+      state.modalReload= false
     },
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
@@ -153,13 +166,11 @@ export default new Vuex.Store({
       state.modalReload = false
     },
     //댓글 창 띄우기
-    COMMENT_CHANGE(state) {
-      if(state.isComment){
-        state.isComment = false
-      }
-      else{
-        state.isComment = true
-      }
+    COMMENT_OPEN(state) {
+      state.isComment = true
+    },
+    COMMENT_CLOSE(state) {
+      state.isComment = false
     },
     SCROLL_HEIGHT(state, height) {
       state.scrollY = height
@@ -268,6 +279,7 @@ export default new Vuex.Store({
       })
         .then(() => {
           context.commit('LOGOUT')
+          // console.log(this.$store.state.accessToken)
           this.$router.push({ name: 'login' })
         })
         .catch((error) => {
@@ -458,7 +470,10 @@ export default new Vuex.Store({
       context.commit('GET_FEED', data)
     },
     showComment(context) {
-      context.commit('COMMENT_CHANGE')
+      context.commit('COMMENT_OPEN')
+    },
+    closeComment(context) {
+      context.commit('COMMENT_CLOSE')
     },
     putScrollHeight(context, height) {
       context.commit('SCROLL_HEIGHT', height)

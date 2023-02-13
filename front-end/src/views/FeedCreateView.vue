@@ -33,20 +33,22 @@
           </textarea>
       </article>
 
-      <div v-show="this.images">
-        <hr>
-      </div>
-      
-      <!-- 이미지 -->
-      <aside 
-        v-show="this.images"
-        id="feed-create-preview-img-layout">
-      </aside>
     </main>
 
     <footer id="feed-create-footer">
+      <div id="feed-create-footer-img-box">
+        <div id="feed-create-footer-hr" v-show="this.images">
+          <hr>
+        </div>
+        
+        <!-- 이미지 -->
+        <aside 
+          v-show="this.images"
+          id="feed-create-preview-img-layout">
+        </aside>
+      </div>
       <!-- 사진 등록 -->
-      <label for="image-input"><i class="material-symbols-outlined text-active" id="photo-camera">photo_camera</i></label>
+      <label image-input-label for="image-input"><i class="material-symbols-outlined text-active" id="photo-camera">photo_camera</i></label>
       <input 
         @change="inputImage"  
         type="file" multiple id="image-input" style="visibility:hidden;"
@@ -260,16 +262,17 @@ export default {
 </script>
 
 <style lang="scss">
-$feed-create-footer-height: 5%;
+$feed-create-footer-height: 10%;
 
 // 기본 레이아웃
 #feed-create-layout {
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  // justify-content: center;
+  // align-items: center;
 
-  padding: 0px 10px;
+  padding: 0 10px;
 }
 
 #feed-create-main {
@@ -298,6 +301,7 @@ $feed-create-footer-height: 5%;
 
 // 미션명
 #feed-create-section {
+  height: 8%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -324,7 +328,7 @@ $feed-create-footer-height: 5%;
 
 // 피드 작성 부분
 #feed-create-article {
-  height: 70%;
+  height: 80%;
 }
 
 // 피드 내용 작성
@@ -346,16 +350,21 @@ $feed-create-footer-height: 5%;
   }
 }
 
+#feed-create-footer-img-box {
+  height: 100%;
+  width: 100%;
+}
+
 // 이미지 프리뷰 레이아웃
 #feed-create-preview-img-layout {
-  height: 10%;
+  height: 80%;
   display: flex;
   overflow-x: scroll;
   gap: 10px;
 
   &::-webkit-scrollbar {
   display: none;
-}
+  }
 }
 
 .feed-create-preview-img-div {
@@ -385,12 +394,14 @@ $feed-create-footer-height: 5%;
 #feed-create-footer {
   height: $feed-create-footer-height;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
 
   position: fixed;
-  width: 100vw;
+  width: 100%;
   bottom: 0px;
+  left: 10px;
 }
 
 #feed-create-footer-private {
@@ -405,5 +416,19 @@ $feed-create-footer-height: 5%;
   'wght' 400,
   'GRAD' 0,
   'opsz' 48
+}
+
+#feed-create-footer-hr {
+  width: 100%;
+}
+
+#image-input {
+  height: 0;
+}
+
+#image-input-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 </style>

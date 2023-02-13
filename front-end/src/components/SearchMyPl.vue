@@ -46,6 +46,7 @@
               + String(now.getSeconds()).padStart(2,"0")
               
               tmp.map((e) => {
+                
                 var startDate = String(e.startDate).slice(0,4) + "년 " +
                 String(e.startDate).slice(5,7) + "월 " + 
                 String(e.startDate).slice(8,10) + "일"

@@ -3,22 +3,27 @@
     <!-- 피드의 글본문에 해당되는 부분 -->
     <div class="feed-text">
         <p 
-            v-if="isThereImage" 
+            v-if="isThereImage && !isCommentCheck" 
             v-line-clamp="2" 
             class="text-not-all"
             :class="`single-feed-content-${feedIdx}`"
             >
             {{ BodyData.content }}
             </p>
-        <p v-else class="text-all">{{ BodyData.content }}</p>
-            <button 
-                v-if="isThereImage && BodyData.content"
-                :class="`single-feed-btn-${feedIdx}`"
-                >
-                <p 
-                    @click="seeMore" 
-                    id="see-more">더보기</p>
-            </button>
+        <p 
+            v-else 
+            class="text-all"
+        >
+            {{ BodyData.content }}
+        </p>
+        <button 
+            v-if="isThereImage && BodyData.content && !isCommentCheck"
+            :class="`single-feed-btn-${feedIdx}`"
+            >
+            <p 
+                @click="seeMore" 
+                id="see-more">더보기</p>
+        </button>
     </div>
     <!-- 피드의 이미지에 해당되는 부분 -->
     <carousel
@@ -100,6 +105,7 @@ export default {
             isLike: this.BodyData.hit,
             likeCnt: this.BodyData.likes,
             isThereImage: 0,
+            isComment: false,
         }
     },
     methods: {
@@ -141,10 +147,19 @@ export default {
     computed: {
         webShareApiSupported() {
             return navigator.share
+        },
+        isCommentCheck() {
+            return this.$store.state.isComment
         }
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
+        // 댓글 작성 페이지일 경우
+        if (String(this.$options._componentTag) === 'FeedComment') {
+            console.log('durl')
+            this.isComment = true
+        }
+        console.log(String(this.$options._componentTag))
     }
 }
 

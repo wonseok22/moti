@@ -63,7 +63,8 @@
 
     <div class="profile-detail">
       <div class="profile-detail-slide">
-        <SearchUserId :keyword="`${profile.userId}`"></SearchUserId>
+        <SearchUserId :keyword="`${profile.userId}`"  
+        @deleteFeed="deleteFeed"></SearchUserId>
         <SearchMyPl :keyword="`${profile.userId}`" @openModalPl="openModalPl"></SearchMyPl>
         <SearchAchieve :keyword="`${profile.userId}`" @openModal="openModal"></SearchAchieve>
       </div>
@@ -226,6 +227,16 @@
         @closeRecordModal="closeRecordModal"
       ></FeedMyRecord>
     </div>
+    <div class="feed-delete-modal"
+      v-show="isDelete">
+        <div class="feed-delete-modal-body">
+          <p> 해당 피드를 정말로 삭제하시겠습니까?</p>
+          <div>
+            <button @click="finalNo">취소</button>
+            <button @click="finalOk">삭제</button>
+          </div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -250,14 +261,16 @@ export default {
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       isFollow:false,
       modal: false,
-      menuModal: false,
-      plModal: false,
-      followModal: false,
-      pl: null,
+      menuModal:false,
+      plModal :false,
+      followModal:false,
+      pl:null,
+      isDelete: false,
+      deleteId: null,
       recordView: false,
       myRecord: null,
       flowerImageUrl: null,
-    };
+    }
   },
   components: {
     SearchUserId,
@@ -487,6 +500,26 @@ export default {
           console.log(error);
         });
     },
+    deleteFeed(feedId) {
+      document.body.classList.add("stop-scroll")
+      this.isDelete = true
+      this.deleteId = feedId
+    },
+    finalOk() {
+      this.$store.dispatch("feedDelete", this.deleteId)
+      document.body.classList.remove("stop-scroll")
+      // for(let i=0; i<this.feeds.length;i++){
+      //   if(this.feeds[i].feedId === this.deleteId){
+      //     this.feeds.splice(i,1)
+      //   }
+      // }
+      this.isDelete = false
+      window.location.reload()
+    },
+    finalNo() {
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+    },
     moveProfile(targetId) {
       this.$store.commit("UPDATE_PROFILE_TARGET_ID", targetId);
       this.$router
@@ -496,7 +529,7 @@ export default {
         .catch(() => {
           location.reload();
         });
-    },
+      },
     openFeedMyRecord(userPlaylistId, flowerImageUrl) {
       this.recordView = true;
       this.plModal = false;

@@ -78,6 +78,7 @@ export default {
       if(this.writeCommentData.content != "" && this.writeCommentData.content != null){
         this.$store.dispatch("writeComment", this.writeCommentData)
         this.$refs.commentTextarea.value = ""
+        this.writeCommentData.content = null
         const doc = document.querySelector(".feed-comment") 
         const textarea = this.$refs.commentTextarea
         textarea.style.height = 'auto'
@@ -89,7 +90,6 @@ export default {
       {
         alert("댓글을 입력해주세요.")
       }
-        
     },
     showModal(commentId) {
       const payload = {
@@ -99,7 +99,7 @@ export default {
       this.$store.dispatch('deleteComment', payload)
     },
     closePage() {
-      this.$store.dispatch("showComment")
+      this.$store.dispatch("closeComment")
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)
     },

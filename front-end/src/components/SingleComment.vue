@@ -97,7 +97,7 @@ export default {
       },
       moveProfile(userId){
           this.$store.commit("UPDATE_PROFILE_TARGET_ID",userId);
-          this.$store.dispatch("showComment")
+          this.$store.dispatch("closeComment")
           document.body.style.overflow = "scroll"
           this.$router.push({
               name: 'profile',

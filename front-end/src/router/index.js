@@ -23,6 +23,7 @@ import MyPLMission from '@/components/MyPLMission'
 import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
 import SessionExpiredView from '@/views/SessionExpiredView'
+import FeedEditView from '@/views/FeedEditView.vue'
 import store from '@/store'
 import axios from 'axios'
 // Google Analytics
@@ -128,6 +129,12 @@ const routes = [
     name:'comment',
     beforeEnter: checkAccessToken,
     component:FeedComment,
+  },
+  {
+    path:'/feed/edit/:feedId',
+    name:'FeedEditView',
+    beforeEnter: checkAccessToken,
+    component: FeedEditView,
   },
   {
     path:'/profile',

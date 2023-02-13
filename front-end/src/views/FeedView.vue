@@ -20,16 +20,19 @@
     <div class="moving-notification">
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
     </div>
-    <transition>
-      <div v-if="isCommentClicked" class="comment-page">
-        <FeedComment/>
-      </div>
-    </transition>
-    <!-- <div class="feed-delete-modal">
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment/>
+    </div>
+    <div class="feed-delete-modal"
+    v-show="isDelete">
       <div class="feed-delete-modal-body">
-
+        <p> 해당 피드를 정말로 삭제하시겠습니까?</p>
+        <div>
+          <button @click="finalNo">취소</button>
+          <button @click="finalOk">삭제</button>
+        </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -53,8 +56,9 @@ export default {
     return {
       newKind: "following",
       feeds: [],
-      minFeedId: 9999999
-      
+      minFeedId: 9999999,
+      isDelete: false,
+      deleteId: null,
     }
   },
   methods: {
@@ -86,8 +90,33 @@ export default {
       }, 500)
     },
     deleteFeed(feedId) {
-      console.log(feedId)
+      const nowHeight = window.scrollY
+      document.querySelector(".feed-delete-modal").style.top = `${nowHeight}px`
+      document.body.classList.add("stop-scroll")
+      this.isDelete = true
+      this.deleteId = feedId
+    },
+    finalOk() {
+      this.$store.dispatch("feedDelete", this.deleteId)
+      document.body.classList.remove("stop-scroll")
+      // for(let i=0; i<this.feeds.length;i++){
+      //   if(this.feeds[i].feedId === this.deleteId){
+      //     this.feeds.splice(i,1)
+      //   }
+      // }
+      this.isDelete = false
+      window.location.reload()
+    },
+    finalNo() {
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+    },
+    closePage() {
+      this.$store.dispatch("closeComment")
+      document.body.style.overflow = "scroll"
+      window.scrollTo(0, this.$store.state.scrollY)
     }
+
   },
   computed: {
     isCommentClicked() {
@@ -95,7 +124,12 @@ export default {
     }
   },  
   watch: {
-  }
+  },
+  mounted () {
+    window.onpageshow = () => {
+      this.closePage()
+    }
+  },
 }
 </script>
 

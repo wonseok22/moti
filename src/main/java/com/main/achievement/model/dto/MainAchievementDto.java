@@ -1,9 +1,6 @@
 package com.main.achievement.model.dto;
 
-import com.main.achievement.model.entity.UserAchievement;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

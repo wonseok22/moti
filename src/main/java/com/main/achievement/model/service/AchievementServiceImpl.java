@@ -32,7 +32,7 @@ public class AchievementServiceImpl implements AchievementService {
 	private S3Upload s3Upload;
 	
 	@Override
-	public Achievement registAchievement(Achievement achievement, MultipartFile image) {
+	public Achievement registerAchievement (Achievement achievement, MultipartFile image) {
 		try {
 			String ImagePath = s3Upload.uploadFiles(image, "achievementImages");
 			achievement.setAchievementImageUrl(ImagePath);

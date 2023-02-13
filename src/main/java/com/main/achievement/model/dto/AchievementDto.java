@@ -13,13 +13,9 @@ import java.time.LocalDateTime;
 public class AchievementDto {
 	private Long achievementId;
 	private String achievementName;
-	
 	private String achievementDesc;
-	
 	private String achievementImageUrl;
-	
 	private boolean achieved = false;
-	
 	private LocalDateTime achievedDate;
 	
 	public static AchievementDto toDto(Achievement achievement) {
@@ -28,9 +24,7 @@ public class AchievementDto {
 		achievementDto.setAchievementName(achievement.getAchievementName());
 		achievementDto.setAchievementDesc(achievement.getAchievementDesc());
 		achievementDto.setAchievementImageUrl(achievement.getAchievementImageUrl());
-		
 		return achievementDto;
-		
 	}
 }
 

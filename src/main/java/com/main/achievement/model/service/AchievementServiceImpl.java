@@ -1,6 +1,5 @@
 package com.main.achievement.model.service;
 
-
 import com.main.achievement.model.dto.AchievementDto;
 import com.main.achievement.model.dto.MainAchievementDto;
 import com.main.achievement.model.dto.UserAchievementDto;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,23 +32,20 @@ public class AchievementServiceImpl implements AchievementService {
 	private S3Upload s3Upload;
 	
 	@Override
-	public Achievement registAchievement(Achievement achievement, MultipartFile image) throws SQLException {
-		
+	public Achievement registAchievement(Achievement achievement, MultipartFile image) {
 		try {
 			String ImagePath = s3Upload.uploadFiles(image, "achievementImages");
 			achievement.setAchievementImageUrl(ImagePath);
 			return achievementRepository.save(achievement);
-			
 		} catch (Exception e) {
 			System.err.println("업적 이미지 업로드 중 에러 발생");
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
 	
 	@Override
-	public List<AchievementDto> getAchievements(String userId) throws SQLException {
+	public List<AchievementDto> getAchievements(String userId) {
 		List<AchievementDto> achievements = new ArrayList<>();
 		List<UserAchievementDto> userAchievements = new ArrayList<>();
 		
@@ -65,18 +60,14 @@ public class AchievementServiceImpl implements AchievementService {
 	}
 	
 	@Override
-	public User setMainAchievement(MainAchievementDto mainAchievementDto) throws SQLException {
+	public User setMainAchievement(MainAchievementDto mainAchievementDto) {
 		User user = userRepository.findByUserId(mainAchievementDto.getUserId());
-		
-		
 		if(mainAchievementDto.getAchievementId()==0){
 			user.setAchievement(null);
-		}
-		else{
+		} else{
 			Achievement achievement = achievementRepository.findByAchievementId(mainAchievementDto.getAchievementId());
 			user.setAchievement(achievement);
 		}
-		
 		return userRepository.save(user);
 	}
 }

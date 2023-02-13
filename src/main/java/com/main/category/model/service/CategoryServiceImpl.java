@@ -1,6 +1,5 @@
 package com.main.category.model.service;
 
-
 import com.main.category.model.dto.CategoryDto;
 import com.main.category.model.entity.Category;
 import com.main.category.model.repository.CategoryRepository;
@@ -24,18 +23,15 @@ public class CategoryServiceImpl implements CategoryService {
 	private S3Upload s3Upload;
 	
 	@Override
-	public Category registCategory(Category category, MultipartFile image) throws SQLException {
-		
+	public Category registerCategory (Category category, MultipartFile image) throws SQLException {
 		try {
 			String ImagePath = s3Upload.uploadFiles(image, "categoryImages");
 			category.setCategoryImageUrl(ImagePath);
 			return categoryRepository.save(category);
-			
 		} catch (Exception e) {
 			System.err.println("카테고리 이미지 업로드 중 에러 발생");
 			e.printStackTrace();
 		}
-		
 		
 		return null;
 	}

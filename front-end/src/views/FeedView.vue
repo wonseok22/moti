@@ -129,12 +129,6 @@ export default {
       document.body.classList.remove("stop-scroll")
       this.isDelete = false
     },
-    closePage() {
-      this.$store.dispatch("closeComment")
-      document.body.style.overflow = "scroll"
-      window.scrollTo(0, this.$store.state.scrollY)
-    }
-
   },
   computed: {
     isCommentClicked() {

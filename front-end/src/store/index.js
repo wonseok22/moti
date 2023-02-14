@@ -47,6 +47,7 @@ export default new Vuex.Store({
     profileTargetId:null,
     isComment: false,
     scrollY : null,
+    feedIdx: null,
     
     // 로그인에서 사용하는 모달 관련 데이터
     openModal: false,

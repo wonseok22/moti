@@ -4,6 +4,7 @@
     width: 100vw;
     height: 100vh;
     overflow: scroll;
+    padding-top: 40px;
 }
 
 .comment-page {
@@ -20,9 +21,9 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    position:sticky;
+    position:fixed;
     top: 0px;
-    z-index: 999;
+    
 
     .material-symbols-outlined {
         font-size: 25px;
@@ -160,7 +161,7 @@
     position: fixed;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
     bottom: 0px;
     width: 100%;
     padding-right: 3px;
@@ -169,8 +170,8 @@
     background-color: white;
     
     span {
-        align-self: flex-end;
-        margin-bottom: 1px;
+        margin-left: 15px;
+        margin-top: 4px;
     }
 
     form {

@@ -1,9 +1,16 @@
 <template>
   <div class="navbar">
-    <router-link to="/feed" 
-      class="material-symbols-outlined">
+    <div v-if="!isNotHome()" 
+      class="material-symbols-outlined"
+      @click="goUp">
       home
-    </router-link>
+    </div>
+
+    <div v-else
+      class="material-symbols-outlined nav-active"
+      @click="goUp">
+      home
+    </div>
 
     <div v-if="plActive"
       @click="goPl"
@@ -54,15 +61,32 @@ export default {
     isNotProfile() {
       return this.$router.history.current["path"] === "/profile"
     },
+    isNotHome() {
+      return this.$router.history.current["path"] === "/feed"
+    },
     goPl() {
       this.$router.push({ name: 'my-pl' })
         .catch(() => { 
           location.reload()
         })
     },
+    goUp() {
+      console.log(this.$router.history.current["path"])
+      if(this.$router.history.current["path"] === "/feed"){
+        window.scrollTo({
+          top:0,
+          left:0,
+          behavior:'smooth'
+        })
+      }
+      else{
+        this.$router.push({name: 'feed'})
+      }
+    },
   },
   created() {
-    console.log(this.plActive)
+
+    //console.log(this.plActive)
   }
 }
 </script>

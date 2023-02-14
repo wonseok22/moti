@@ -30,7 +30,7 @@
         <div class="pl-total">누적 참여자 수 : {{ pl.total }}명</div>
       </div>
     </div>
-    <NavigationBar/>
+    <NavigationBar :plActive="true"/>
   </div>
 </template>
 

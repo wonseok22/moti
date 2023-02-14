@@ -27,7 +27,7 @@
         <p>어떤 꽃이 있는지 확인하러 가보기</p>
       </div>
     </main>
-    <NavigationBar/>
+    <NavigationBar :plActive="true"/>
   </div>
 </template>
 

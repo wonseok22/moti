@@ -10,29 +10,24 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @AllArgsConstructor
-public class UserDto {
+public class SocialLoginDto {
 	private String userId;
-	private String password;
 	private String email;
 	private String nickname;
 	private String type;
-	private int temporary;
 	private LocalDateTime joinDate;
 	private String achievementImageUrl;
-	public static UserDto toDto(User user) {
-		return new UserDto(
+	private boolean initial;
+	public static SocialLoginDto toDto(User user) {
+		return new SocialLoginDto(
 				user.getUserId(),
-				user.getPassword(),
 				user.getEmail(),
 				user.getNickname(),
 				user.getType(),
-				user.getTemporary(),
 				user.getJoinDate(),
-				user.getAchievement()==null?null:user.getAchievement().getAchievementImageUrl()
+				user.getAchievement()==null?null:user.getAchievement().getAchievementImageUrl(),
+				false
 		);
 	}
 	
-	public User toEntity() {
-		return new User(userId, password, email, nickname, null, type, null, temporary, joinDate, null, null, null, null, null, null,null);
-	}
 }

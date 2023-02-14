@@ -2,6 +2,7 @@ package com.main.user.controller;
 
 import com.main.user.model.dto.MailMessage;
 import com.main.user.model.dto.MailPost;
+import com.main.user.model.dto.SocialLoginDto;
 import com.main.user.model.dto.UserDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.service.JwtService;
@@ -120,7 +121,7 @@ public class UserController {
 			
 			String accessToken = jwtService.createAccessToken("userid", loginUser.getUserId());// key, data
 			String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserId());// key, data
-			User user = userService.socialLogin(loginUser, refreshToken);
+			SocialLoginDto user = userService.socialLogin(loginUser, refreshToken);
 			
 			if(user != null) {
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
@@ -130,6 +131,7 @@ public class UserController {
 				resultMap.put("userId", user.getUserId());
 				resultMap.put("nickname", user.getNickname());
 				resultMap.put("type", user.getType());
+				resultMap.put("initial",user.isInitial());
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			}

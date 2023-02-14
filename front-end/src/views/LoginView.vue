@@ -27,24 +27,21 @@
 <script>
 export default {
 	name: 'LoginView',
-  methods: {
-    go() {
-      this.$router.push({ path: '/authcomplete' })
+  data() {
+    return {
+      timer: 300,
     }
   },
   mounted() {
     const introText = document.querySelectorAll(".fade");
-    let timer = 300;
     introText.forEach((item) => {
-      item.style.animation = `fade 500ms ${(timer += 90)}ms forwards`;
+      item.style.animation = `fade 500ms ${(this.timer += 90)}ms forwards`;
     });
-  }
-  // created() {
-  //   // 이미 로그인되어 있을 경우 피드로 이동
-  //   if (this.$store.getters.isLoggedIn) {
-  //     this.$router.push({ name: 'feed' })
-  //   }
-  // }
+
+    setTimeout(() => {
+      this.$router.push({ name: 'login' })
+    }, '2000')
+  },
 }
 </script>
 

@@ -114,8 +114,8 @@ export default {
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
+            await this.$store.dispatch("putScrollHeight", y)
             await this.$store.dispatch("showComment")
-            this.$store.dispatch("putScrollHeight", y)
             document.body.style.overflow = "hidden"
         },
         makeLike() {
@@ -156,10 +156,10 @@ export default {
         this.isThereImage = this.BodyData.feedImages.length
         // 댓글 작성 페이지일 경우
         if (String(this.$options._componentTag) === 'FeedComment') {
-            console.log('durl')
+            // console.log('durl')
             this.isComment = true
         }
-        console.log(String(this.$options._componentTag))
+        //console.log(String(this.$options._componentTag))
     }
 }
 

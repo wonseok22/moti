@@ -20,6 +20,8 @@ import com.main.playlist.model.repository.MissionRepository;
 import com.main.playlist.model.repository.PlaylistRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.profile.model.repository.FollowRepository;
+import com.main.user.model.dto.SearchUserDto;
+import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.ImageProcess;
 import com.main.util.S3Upload;
@@ -258,6 +260,21 @@ public class FeedServiceImpl implements FeedService {
 		}
 		
 		return feedDtos;
+	}
+	
+	@Override
+	public List<SearchUserDto> getLike (Long feedId) {
+		List<Like> likes = likeRepository.findAllByFeed_FeedId(feedId);
+		List<SearchUserDto> result = new ArrayList<>();
+		likes.forEach(x -> {
+			User user = x.getUser();
+			result.add(new SearchUserDto(
+					user.getUserId(),
+					user.getNickname(),
+					user.getProfile().getProfileImageUrl()
+			));
+		});
+		return result;
 	}
 	
 	/**

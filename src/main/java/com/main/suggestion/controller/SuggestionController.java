@@ -29,7 +29,7 @@ public class SuggestionController {
 	@Autowired
 	private SuggestionService suggestionService;
 	
-	@ApiOperation(value = "피드 작성", notes = "피드 작성 API", response = Map.class)
+	@ApiOperation(value = "건의 작성", notes = "건의 작성 API", response = Map.class)
 	@PostMapping("")
 	public ResponseEntity<?> writeSuggestion(
 			@RequestBody @ApiParam(value = "건의 내용", required = true) SuggestionDto suggestionDto) {
@@ -40,17 +40,17 @@ public class SuggestionController {
 		try {
 			Suggestion suggestion = suggestionService.writeSuggestion(suggestionDto);
 			if (suggestion != null) {
-				logger.debug("피드 등록 결과 : {}", "성공");
+				logger.debug("건의 등록 결과 : {}", "성공");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.OK;
 			} else {
-				logger.debug("피드 등록 결과 : {}", "실패");
+				logger.debug("건의 등록 결과 : {}", "실패");
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("피드 등록 실패 : {}", e);
+			logger.error("건의 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

@@ -5,6 +5,7 @@
                 <MainFeedHeader
                 :HeaderData="feed"/>
                 <SingleFeedBody
+                @openLikeModal="openLikeModal"
                 :BodyData="feed"/>
             </div>
         </div>
@@ -49,7 +50,9 @@
     },
 
     methods : {
-
+        openLikeModal(data) {
+        this.$emit("openLikeModal", data)
+      }
 
     }
   }

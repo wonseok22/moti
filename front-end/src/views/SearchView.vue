@@ -14,12 +14,31 @@
     </div>
     <div class="SearchResult">
       <div class="SearchResult-slide">
-        <SearchPlaylist :keyword="keyword"></SearchPlaylist>
-        <SearchFeed :keyword="keyword"></SearchFeed>
-        <SearchNickname :keyword="keyword"></SearchNickname>
+        <SearchPlaylist :keyword="keyword" @openLikeModal="openLikeModal"></SearchPlaylist>
+        <SearchFeed :keyword="keyword" @openLikeModal="openLikeModal"></SearchFeed>
+        <SearchNickname :keyword="keyword" ></SearchNickname>
       </div>
     </div>
     <NavigationBar></NavigationBar>
+
+    <div class="like-modal" v-show="likeModal">
+      <div class="like-modal-close" @click="likeModal = false"></div>
+      <div class="like-white-bg">
+        <h3>좋아요 목록</h3>
+        <div class="like-list">
+          <div  v-for="(like,idx) in likes" :key="idx" class="like-item"  @click="moveProfile(like.userId)">
+            <div class="like-img-wrap">
+              <img :src="like.profileImageUrl ? like.profileImageUrl : defaultImage" alt="프로필사진" class="like-img">
+            </div>
+            <div class="like-nickname-wrap">
+              <img :src="like.achievementImageUrl" alt="대표뱃지" class="like-achieve" v-if="like.achievementImageUrl">
+              <div class="like-nickname">{{ like.nickname  }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -33,11 +52,29 @@ export default {
   data() {
     return {
       keyword : "",
+      likeModal:false,
+      likes:null,
+      defaultImage:require(`@/assets/images/default_profile.jpg`),
+
     }
   },
   created() {
   },
   methods: {
+    openLikeModal(data) {
+      this.$axios({
+          method: "get",
+          url: `${this.$baseUrl}/feed/like/${data.feedId}`,
+        })
+          .then((response) => {
+           this.likes = response.data.list
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      this.likeModal = true
+      this.likeData = data
+    },
     change(event) {
       this.keyword=event.target.value;
     },

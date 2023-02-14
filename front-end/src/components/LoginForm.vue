@@ -1,5 +1,11 @@
 <template>
   <div class="account-layout">
+    <div class="title-box">
+      <span class="fade">m</span>
+      <span class="fade">o</span>
+      <span class="fade">t</span>
+      <span class="fade">i</span>
+    </div>
     <div>
       <!-- <p class="guide-comment">로그인</p> -->
       <!-- 로그인 Form -->
@@ -54,12 +60,13 @@ export default {
   components: {
     BasicModal,
     LoginKakao,
-    LoginGoogle
+    LoginGoogle,
 },
   data() {
     return {
       id: null,
       password: null,
+      timer: 300,
     }
   },
   methods: {
@@ -125,6 +132,12 @@ export default {
       return this.$store.state.modalContent
     }
   },
+  mounted() {
+    const introText = document.querySelectorAll(".fade");
+    introText.forEach((item) => {
+      item.style.animation = `fade 500ms ${(this.timer += 90)}ms forwards`;
+    });
+  }
 }
 </script>
 

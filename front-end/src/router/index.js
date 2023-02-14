@@ -18,12 +18,15 @@ import playlistView from '@/views/PlaylistView'
 import FeedComment from '@/components/FeedComment'
 import AuthCompleteView from '@/views/AuthCompleteView'
 import SearchView from '@/views/SearchView'
+import onBoarding from '@/components/OnBoarding'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
+import MissionCreateView from '@/views/MissionCreateView'
 import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
 import SessionExpiredView from '@/views/SessionExpiredView'
 import FeedEditView from '@/views/FeedEditView.vue'
+import LandingView from '@/views/LandingView'
 import store from '@/store'
 import axios from 'axios'
 // Google Analytics
@@ -105,12 +108,22 @@ const routes = [
     // beforeEnter:loginCheckInLogin,
     children: [
       {
+        path: 'landing',
+        name: 'landing',
+        component: LandingView
+      },
+      {
         path: '',
         name: 'login',
         beforeEnter: loginCheck,
         component: LoginForm
       },
     ],
+  },
+  {
+    path: '/onBoarding',
+    name: 'onBoarding',
+    component: onBoarding,
   },
   {
     path: '/feed',
@@ -202,6 +215,12 @@ const routes = [
     ]
   },
   {
+    path: '/mission',
+    name: 'MissionCreateView',
+    beforeEnter: checkAccessToken,
+    component: MissionCreateView,
+  },
+  {
     // 이메일 인증 성공 페이지
     path:'/authcomplete',
     name:'authcomplete',
@@ -211,9 +230,7 @@ const routes = [
   {
     // 랜딩페이지: 로그인 페이지
     path: '/',
-    name: 'landing',
-    beforeEnter:loginCheck,
-    component: LoginView,
+    redirect: '/login/landing',
   },
   {
     path: '/search',

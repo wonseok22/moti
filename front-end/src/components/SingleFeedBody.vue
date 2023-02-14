@@ -42,7 +42,7 @@
     </carousel>
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
-        <p>좋아요 {{ this.likeCnt }}개</p>
+        <p @click="moveLikeList(BodyData)">좋아요 {{ this.likeCnt }}개</p>
         <p @click="moveToComment">댓글 {{  BodyData.comments.length }}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
@@ -110,6 +110,9 @@ export default {
         }
     },
     methods: {
+        moveLikeList(data) {
+            this.$emit("openLikeModal", data)
+        }, 
         async moveToComment() {
             const y = window.scrollY
             this.$store.state.feedIdx = this.feedIdx
@@ -131,11 +134,38 @@ export default {
             this.likeCnt -= 1
         },
         shareViaWebShare() {
-            navigator.share({
-                title: this.$store.state.nowFeed.missionName,
-                text: this.BodyData.content,
-                url: window.location.href
-            })
+            console.log(this.BodyData)
+            let imageUrl = this.BodyData.feedImages.length != 0? this.BodyData.feedImages[0].feedImageUrl:""
+            console.log(imageUrl)
+            window.Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: `${this.BodyData.playlistName}의 ${this.BodyData.missionName}`,
+                description: this.BodyData.content,
+                imageUrl: imageUrl,
+                link: {
+                mobileWebUrl: 'https://moti.today/feed',
+                webUrl: 'https://moti.today/feed',
+                },
+            },
+            itemContent: {
+                profileText: this.BodyData.nickname,
+                profileImageUrl: this.BodyData.profileImageUrl,
+            },
+            social: {
+                likeCount: this.BodyData.likes,
+                commentCount: this.BodyData.comments.length,
+            },
+            buttons: [
+                {
+                title: '웹으로 이동',
+                link: {
+                    mobileWebUrl: 'https://moti.today/feed',
+                    webUrl: 'https://moti.today/feed',
+                },
+                },
+            ],
+            });
         },
         // 더 보기
         seeMore() {
@@ -171,7 +201,6 @@ export default {
         if (lines >= 3) {
             this.overThreeLines = true
         }
-        
     },
     beforeUpdate() {
         this.isLike = this.isLiked

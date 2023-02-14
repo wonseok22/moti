@@ -4,6 +4,8 @@ import com.main.feed.model.entity.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
 	int deleteByUser_UserIdAndFeed_FeedId(String userId, Long feedId);
@@ -13,4 +15,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 	int deleteAllByFeed_FeedId (Long feedId);
 	
 	int deleteAllByUser_UserId (String userId);
+	
+	List<Like> findAllByFeed_FeedId (Long feedId);
 }

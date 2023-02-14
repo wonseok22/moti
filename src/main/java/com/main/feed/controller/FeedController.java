@@ -1,12 +1,15 @@
 package com.main.feed.controller;
 
 import com.main.feed.model.dto.FeedDto;
+import com.main.feed.model.dto.LikeDto;
 import com.main.feed.model.dto.WriteCommentDto;
 import com.main.feed.model.dto.WriteFeedDto;
 import com.main.feed.model.entity.Comment;
 import com.main.feed.model.entity.Feed;
 import com.main.feed.model.entity.Like;
 import com.main.feed.model.service.FeedService;
+import com.main.user.model.dto.SearchUserDto;
+import com.main.user.model.dto.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -301,6 +304,39 @@ public class FeedController {
 		return new ResponseEntity<>(resultMap, status);
 		
 	}
+	
+	@ApiOperation(value = "좋아요 누른 사람들 조회", notes = "피드에 대한 좋아요 누른 사람들 조회 API", response = Map.class)
+	@GetMapping("/like/{feedId}")
+	public ResponseEntity<?> getLike(
+			@PathVariable @ApiParam(value = "조회할 피드 ID", required = true) Long feedId) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status;
+		
+		try {
+			List<SearchUserDto> result = feedService.getLike(feedId);
+			if (result == null) {
+				logger.debug("좋아요 조회 결과 : {}", "좋아요 존재하지 않음");
+				resultMap.put("result", null);
+				resultMap.put("message", "존재하지 않는 피드");
+				status = HttpStatus.ACCEPTED;
+				return new ResponseEntity<>(resultMap, status);
+			}
+			logger.debug("좋아요 조회 결과 : {}", "성공");
+			resultMap.put("list", result);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("좋아요 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<>(resultMap, status);
+		
+	}
+	
 	
 	// ------------------------------------------------------------------
 	// API for SEARCH

@@ -318,6 +318,7 @@ public class UserController {
 				logger.debug("access-token 재발급 완료.");
 				resultMap.put("access-token", accessToken);
 				resultMap.put("message", SUCCESS);
+				status = HttpStatus.OK;
 			}
 		} else {
 			logger.debug("refresh-token 만료.");

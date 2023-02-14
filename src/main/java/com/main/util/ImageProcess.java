@@ -1,5 +1,11 @@
 package com.main.util;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.jpeg.JpegDirectory;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +27,13 @@ public class ImageProcess {
 	@Transactional
 	public MultipartFile resizeImage (MultipartFile multipartFile, int targetWidth) {
 		try {
+//			// MultipartFile 을 File 로 변환
+//			File file = new File(multipartFile.getOriginalFilename());
+//			file.createNewFile();
+//			FileOutputStream fos = new FileOutputStream(file);
+//			fos.write(multipartFile.getBytes());
+//			fos.close();
+			
 			// 이미지 처리를 위해 버퍼드이미지로 변환해야 함
 			BufferedImage originalImage = ImageIO.read(multipartFile.getInputStream());
 			int originalHeight = originalImage.getHeight();
@@ -39,6 +52,37 @@ public class ImageProcess {
 			Graphics graphics = newImage.getGraphics();
 			graphics.drawImage(resizedImage, 0, 0, null);
 			graphics.dispose();
+			
+			// JPG 파일 회전 처리 부분
+			if ("JPEG".equals(fileFormat) || "JPG".equals(fileFormat)) {
+				// 회전 정보를 알아내기 위해 사진의 Metadata를 가져옴
+				int rotate = 1;
+				Metadata metadata;
+				Directory directory;
+//				JpegDirectory jpegDirectory;
+				try {
+					metadata = ImageMetadataReader.readMetadata(multipartFile.getInputStream());
+					directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+//					jpegDirectory = metadata.getFirstDirectoryOfType(JpegDirectory.class);
+					rotate = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+				} catch (Exception e) {
+					System.err.println("이미지 메타데이터 불러오는 중 에러 발생");
+					e.printStackTrace();
+				}
+				
+				// Metadata 기반으로 사진을 회전시킴
+				switch (rotate) {
+					case 3:
+						newImage = Scalr.rotate(newImage, Scalr.Rotation.CW_180, null);
+						break;
+					case 6:
+						newImage = Scalr.rotate(newImage, Scalr.Rotation.CW_90, null);
+						break;
+					case 8:
+						newImage = Scalr.rotate(newImage, Scalr.Rotation.CW_270, null);
+						break;
+				}
+			}
 			
 			// 리사이즈된 이미지를 MultipartFile 로 바꾸기 위한 전처리
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();

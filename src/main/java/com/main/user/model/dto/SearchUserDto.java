@@ -14,12 +14,14 @@ public class SearchUserDto {
 	private String userId;
 	private String nickname;
 	private String profileImageUrl;
+	private String achievementImageUrl;
 
 	public static SearchUserDto toDto(User user) {
 		return new SearchUserDto(
 				user.getUserId(),
 				user.getNickname(),
-				user.getProfile().getProfileImageUrl()
+				user.getProfile().getProfileImageUrl(),
+				user.getAchievement().getAchievementImageUrl()
 		);
 	}
 }

@@ -266,14 +266,8 @@ public class FeedServiceImpl implements FeedService {
 	public List<SearchUserDto> getLike (Long feedId) {
 		List<Like> likes = likeRepository.findAllByFeed_FeedId(feedId);
 		List<SearchUserDto> result = new ArrayList<>();
-		likes.forEach(x -> {
-			User user = x.getUser();
-			result.add(new SearchUserDto(
-					user.getUserId(),
-					user.getNickname(),
-					user.getProfile().getProfileImageUrl()
-			));
-		});
+		likes.forEach(x -> result.add(SearchUserDto.toDto(x.getUser())));
+		
 		return result;
 	}
 	

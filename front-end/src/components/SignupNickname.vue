@@ -56,6 +56,9 @@ export default {
   methods: {
     // 닉네임 입력 받기
     nicknameInput(event) {
+      if (this.nicknameDoubleChecked) {
+        this.nicknameDoubleChecked = false
+      }
       this.nicknameActive = true
       // 띄어쓰기 및 특수문자 제거
       const regexResult = regex.characterCheckNickname(event.target.value)
@@ -98,9 +101,9 @@ export default {
               } else if ( response.data.message === 'success' ) {
                 this.openModal = true
                 this.modalContent = '사용할 수 있는 닉네임이에요.'
-                const idInputTag = document.querySelector('#input-nickname')
+                // const idInputTag = document.querySelector('#input-nickname')
                 // 현재 닉네임으로 고정
-                idInputTag.setAttribute('disabled', true)
+                // idInputTag.setAttribute('disabled', true)
                 this.nicknameDoubleChecked = true
               } else {
                 this.openModal = true

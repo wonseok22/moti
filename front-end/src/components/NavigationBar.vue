@@ -5,10 +5,17 @@
       home
     </router-link>
 
-    <router-link to="/my-pl" 
+    <div v-if="plActive"
+      @click="goPl"
+      class="material-symbols-outlined nav-active">
+      history_edu
+    </div>
+
+    <div v-else
+      @click="goPl"
       class="material-symbols-outlined">
       history_edu
-    </router-link>
+    </div>
 
     <router-link to="/search" 
       class="material-symbols-outlined">
@@ -20,10 +27,11 @@
       account_circle
     </div>
 
-    <div v-if="isNotProfile()"
-    @click="change()"
-      class="material-symbols-outlined"
-      style="color:#04C584;">
+    <div 
+      v-else
+      @click="change()"
+      class="material-symbols-outlined nav-active"
+    >
       account_circle
     </div>
 
@@ -33,6 +41,9 @@
 <script>
 export default {
   name:'NavigationBar',
+  props: {
+    plActive: Boolean,
+  },
   methods:{
     change() {
      this.$store.commit("UPDATE_PROFILE_TARGET_ID",this.$store.state.id);
@@ -42,12 +53,19 @@ export default {
     },
     isNotProfile() {
       return this.$router.history.current["path"] === "/profile"
-    }
+    },
+    goPl() {
+      this.$router.push({ name: 'my-pl' })
+        .catch(() => { 
+          location.reload()
+        })
+    },
+  },
+  created() {
+    console.log(this.plActive)
   }
 }
 </script>
 
 <style scoped lang="scss">
-  
-  a {text-decoration: none;}
 </style>

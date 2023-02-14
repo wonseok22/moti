@@ -112,8 +112,6 @@ export default new Vuex.Store({
           state.modalContent = '아이디 또는 비밀번호를 확인해주세요.'
         }
       }
-      console.log(state.accessToken)
-      console.log(state.refreshToken)
     },
     // 로그아웃
     LOGOUT(state) {
@@ -122,6 +120,19 @@ export default new Vuex.Store({
       state.nickname = null
       state.accessToken = null
       state.refreshToken = null
+      state.password= null
+      state.myPL= null
+      state.myMission= null
+      state.nowPL= null
+      state.nowFeed= null
+      state.profileTargetId=null
+      state.isComment= false
+      state.scrollY = null
+      
+      // 로그인에서 사용하는 모달 관련 데이터
+      state.openModal= false
+      state.modalContent= null
+      state.modalReload= false
     },
     // 나의 플레이리스트 저장
     GET_MY_PL(state, payload) {
@@ -266,10 +277,17 @@ export default new Vuex.Store({
       })
         .then(() => {
           context.commit('LOGOUT')
+          // console.log(this.$store.state.accessToken)
           this.$router.push({ name: 'login' })
         })
         .catch((error) => {
-          console.log(`로그아웃 실패: status: ${error.response.status}`)
+          // 로그인 되지 않은 아이디로 로그아웃 시도할 때
+          if (error.response.status == 500) {
+            context.commit('LOGOUT')
+            this.$router.push({ name: 'login' })
+          } else {
+            console.log(`로그아웃 실패: status: ${error.response.status}`)
+          }
         })
     },
     // 이메일 인증 요청
@@ -375,7 +393,6 @@ export default new Vuex.Store({
           return Promise.resolve()
         })
         .catch((error) => {
-          console.log('여기2')
           // refresh token 만료 -> 재로그인
           if (error.response.status == '401') {
             const params = {

@@ -48,7 +48,7 @@
     <button v-else :class="[ isvalid ? 'btn-green': 'btn-green-inactive' ]" @click="toCreateFeed">미션 후기 작성</button>
 
     <!-- nav 바 -->
-    <NavigationBar/>
+    <NavigationBar :plActive="true"/>
   </div>
 </template>
 

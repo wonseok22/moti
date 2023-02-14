@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div id="buttonDiv"></div>
+    <div id="button-div"></div>
   </div>
 </template>
+
 <script>
 import { mapActions } from "vuex";
 export default {
@@ -15,7 +16,7 @@ export default {
       auto_select:true
     });
     window.google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"),
+      document.getElementById("button-div"),
       { type: "icon", theme: "outline", size: "large", shape: "circle", width:'40'} // customization attributes
     );
     //window.google.accounts.id.prompt(); // also display the One Tap dialog
@@ -52,3 +53,5 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+</style>

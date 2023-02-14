@@ -17,7 +17,7 @@
         </div>
       </div>
     </main>
-    <NavigationBar/>
+    <NavigationBar :plActive="true"/>
   </div>
 </template>
   

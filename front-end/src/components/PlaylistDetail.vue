@@ -50,7 +50,7 @@
     </flower-desc>
     
     <!-- nav 바 -->
-    <NavigationBar/>
+    <NavigationBar :plActive="true"/>
   </div>
 </template>
 <script>

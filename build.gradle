@@ -37,6 +37,12 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
+    // JPG 이미지 메타데이터 확인
+    implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+    
+    // 이미지 회전
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

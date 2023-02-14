@@ -61,9 +61,6 @@ export default {
         })
     },
   },
-  created() {
-    console.log(this.plActive)
-  }
 }
 </script>
 

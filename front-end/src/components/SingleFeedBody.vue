@@ -169,7 +169,6 @@ export default {
         if (lines >= 3) {
             this.overThreeLines = true
         }
-        
     },
 }
 

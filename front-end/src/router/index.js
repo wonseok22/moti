@@ -25,6 +25,7 @@ import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
 import SessionExpiredView from '@/views/SessionExpiredView'
 import FeedEditView from '@/views/FeedEditView.vue'
+import LandingView from '@/views/LandingView'
 import store from '@/store'
 import axios from 'axios'
 // Google Analytics
@@ -105,6 +106,11 @@ const routes = [
     component: LoginView,
     // beforeEnter:loginCheckInLogin,
     children: [
+      {
+        path: 'landing',
+        name: 'landing',
+        component: LandingView
+      },
       {
         path: '',
         name: 'login',
@@ -218,9 +224,7 @@ const routes = [
   {
     // 랜딩페이지: 로그인 페이지
     path: '/',
-    name: 'landing',
-    beforeEnter:loginCheck,
-    component: LoginView,
+    redirect: '/login/landing',
   },
   {
     path: '/search',

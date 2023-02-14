@@ -8,23 +8,25 @@
 import { mapActions } from "vuex";
 export default {
   name: "LoginGoogle",
-  mounted() {
+  created() {
     const client_id = "293618779849-da4im7oh35dq851ro2l9htrvi4ivbtc0.apps.googleusercontent.com"
     window.google.accounts.id.initialize({
       client_id: client_id,
       callback: this.handleCredentialResponse,
       auto_select:true
-    });
+    })
+  },
+  mounted() {
     window.google.accounts.id.renderButton(
       document.getElementById("button-div"),
-      { type: "icon", theme: "outline", size: "large", shape: "circle", width:'40'} // customization attributes
-    );
+      { type: "icon", theme: "outline", size: "large", shape: "circle", width:'40', height: '40'} // customization attributes
+    )
     //window.google.accounts.id.prompt(); // also display the One Tap dialog
   },
   methods: {
     ...mapActions(["socialLogin"]),
     handleCredentialResponse(response) {
-      const responsePayload = this.decodeJwtResponse(response.credential);
+      const responsePayload = this.decodeJwtResponse(response.credential)
 
       const req_body = {
         userId: "google" + responsePayload.sub,
@@ -34,7 +36,7 @@ export default {
       };
     //   console.log(responsePayload)
     //   console.log(req_body)
-      this.socialLogin(req_body);
+      this.socialLogin(req_body)
     },
     decodeJwtResponse(token) {
       var base64Url = token.split(".")[1];
@@ -54,4 +56,8 @@ export default {
 };
 </script>
 <style lang="scss">
+#button-div {
+  width: 40px;
+  height: 40px;
+}
 </style>

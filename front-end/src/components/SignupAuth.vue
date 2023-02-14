@@ -20,7 +20,7 @@
           </div>
         </div>
         <button v-if="isvalid" id="email-auth-btn" class="btn-green" @click="confirm">이메일 인증</button>
-        <button v-else class="btn-green-inactive" id="email-auth-btn">이메일 인증</button>
+        <button v-else class="btn-green-inactive" id="email-auth-btn" @click="doubleCheckeWarning">이메일 인증</button>
       </div>
     </div>
     <auth-modal
@@ -145,6 +145,14 @@ export default {
     modalClose() {
       this.$store.dispatch('modalClose')
     },
+    doubleCheckeWarning() {
+      if (!this.emailDoubleChecked) {
+        const payload = {
+          content: '이메일 중복체크를 진행해주세요.'
+        }
+        this.$store.dispatch('modalOpen', payload)
+      }
+    }
   },
   computed: {
     // 이메일 입력되었는지 여부 return

@@ -20,7 +20,7 @@
           </div>
         </div>
         <button v-if="isvalid" id="register-btn" class="btn-green" @click="register">완료</button>
-        <button v-else id="register-btn" class="btn-green-inactive">완료</button>
+        <button v-else id="register-btn" class="btn-green-inactive" @click="doubleCheckeWarning">완료</button>
       </div>
     </div>
     <basic-modal
@@ -121,6 +121,12 @@ export default {
         nickname: this.nickname,
       }
       this.$store.dispatch('register', payload)
+    },
+    doubleCheckeWarning() {
+      if (!this.nicknameDoubleChecked) {
+        this.openModal = true
+        this.modalContent = '닉네임 중복체크를 진행해주세요.'
+      }
     }
   },
   computed: {
@@ -145,7 +151,7 @@ export default {
         }
       }
       return conditions
-    }
+    },
   },
   created() {
     // 아이디, 비밀번호, 이메일 입력이 안 된 상태에서는 접근 불가

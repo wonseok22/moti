@@ -297,6 +297,7 @@ export default {
       .then((response) => {
         if (response.status == 202) {
           alert("202 응답");
+          this.$store.dispatch('logout')
         }
         this.profile = response.data.profile;
         if (this.profile.profileImageUrl) {

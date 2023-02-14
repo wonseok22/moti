@@ -1,15 +1,15 @@
 package com.main.user.model.dto;
 
+import com.main.achievement.model.entity.Achievement;
+import com.main.profile.model.entity.Profile;
 import com.main.user.model.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class SearchUserDto {
 	private String userId;
 	private String nickname;
@@ -17,11 +17,13 @@ public class SearchUserDto {
 	private String achievementImageUrl;
 
 	public static SearchUserDto toDto(User user) {
+		Profile profile = user.getProfile();
+		Achievement achievement = user.getAchievement();
 		return new SearchUserDto(
 				user.getUserId(),
 				user.getNickname(),
-				user.getProfile().getProfileImageUrl(),
-				user.getAchievement().getAchievementImageUrl()
+				profile == null ? null : profile.getProfileImageUrl(),
+				achievement == null ? null : achievement.getAchievementImageUrl()
 		);
 	}
 }

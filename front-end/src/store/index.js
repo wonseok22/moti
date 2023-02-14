@@ -257,7 +257,12 @@ export default new Vuex.Store({
             context.commit('GET_USER_INFO', payloadInfo)
 
             // 피드 페이지로 이동
-            this.$router.push({ name: 'feed' })
+            if(response.data.initial){
+              this.$router.push({ name: 'onBoarding' })
+            }
+            else{
+              this.$router.push({ name: 'feed'})
+            }
             }
         })
         .catch(() => {
@@ -358,7 +363,7 @@ export default new Vuex.Store({
             alert('202 응답')
           } else {
             context.commit('LOGOUT')
-            this.$router.push({ name: 'login' })
+            this.$router.push({ name: 'onBoarding' })
           }
         })
         .catch((error) => {

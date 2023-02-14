@@ -177,6 +177,14 @@
               <div>비밀번호 변경</div>
             </div>
           </li>
+          <li @click="moveCreateMission">
+            <div class="menu-items">
+              <span class="material-symbols-outlined">
+              inventory_2
+              </span>
+              <div>성장플랜 건의함</div>
+            </div>
+          </li>
           <li @click="logout">
             <div class="menu-items">
               <span class="material-symbols-outlined"> settings_power </span>
@@ -312,6 +320,11 @@ export default {
     clickFollower(){
       this.followKey ++;
     },
+    moveCreateMission() {
+      this.$router.push({
+        name: "MissionCreateView",
+      });
+    },
     logout() {
       this.$store.dispatch("logout");
     },
@@ -326,7 +339,7 @@ export default {
         })
           .then((response) => {
             if (response.status == 200) {
-              alert("쩡상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.");
+              alert("정상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.");
               this.$store.commit("LOGOUT");
               this.$router
                 .push({

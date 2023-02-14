@@ -9,6 +9,7 @@
         v-bind:HeaderData="feed"
         @deleteFeed="deleteFeed"/>
         <SingleFeedBody
+        @openLikeModal="openLikeModal"
         :BodyData="feed"
         :feedIdx="idx"/>
       </div>
@@ -16,6 +17,7 @@
         <div slot="no-more"></div>
       </infinite-loading>
     </div>
+    
     <NavigationBar></NavigationBar>
     <div class="moving-notification">
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
@@ -33,6 +35,28 @@
         </div>
       </div>
     </div>
+
+
+    <div class="like-modal" v-show="likeModal">
+      <div class="like-modal-close" @click="likeModal = false"></div>
+      <div class="like-white-bg">
+        <h3>좋아요 목록</h3>
+        <div class="like-list">
+          <div  v-for="(like,idx) in likes" :key="idx" class="like-item"  @click="moveProfile(like.userId)">
+            <div class="like-img-wrap">
+              <img :src="like.profileImageUrl ? like.profileImageUrl : defaultImage" alt="프로필사진" class="like-img">
+            </div>
+            <div class="like-nickname-wrap">
+              <img :src="like.achievementImageUrl" alt="대표뱃지" class="like-achieve" v-if="like.achievementImageUrl">
+              <div class="like-nickname">{{ like.nickname  }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
 </template>
 
@@ -76,10 +100,38 @@ export default {
       minFeedId: 9999999,
       isDelete: false,
       deleteId: null,
+      likeModal:false,
+      likes:null,
+      defaultImage:require(`@/assets/images/default_profile.jpg`),
+
 
     }
   },
   methods: {
+    moveProfile(targetId) {
+      this.$store.commit("UPDATE_PROFILE_TARGET_ID", targetId);
+      this.$router
+        .push({
+          name: "profile",
+        })
+        .catch(() => {
+          location.reload();
+        });
+      },
+    openLikeModal(data) {
+      this.$axios({
+          method: "get",
+          url: `${this.$baseUrl}/feed/like/${data.feedId}`,
+        })
+          .then((response) => {
+           this.likes = response.data.list
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      this.likeModal = true
+      this.likeData = data
+    },
     infiniteHandler($state) {
       setTimeout(() => {
         this.$axios({

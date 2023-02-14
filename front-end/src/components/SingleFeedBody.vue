@@ -42,7 +42,7 @@
     </carousel>
     <!-- 좋아요와 댓글개수와 관련되는 부분 -->
     <div class="like-comments">
-        <p>좋아요 {{ this.likeCnt }}개</p>
+        <p @click="moveLikeList(BodyData)">좋아요 {{ this.likeCnt }}개</p>
         <p @click="moveToComment">댓글 {{  BodyData.comments.length }}개</p>
     </div>
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
@@ -110,6 +110,9 @@ export default {
         }
     },
     methods: {
+        moveLikeList(data) {
+            this.$emit("openLikeModal", data)
+        }, 
         async moveToComment() {
             const y = window.scrollY
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)

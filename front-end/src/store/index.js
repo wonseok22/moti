@@ -344,7 +344,7 @@ export default new Vuex.Store({
       // UserDto 객체 정의
       const UserDto = {
         userId: context.state.id,
-        password: context.state.password,
+        password: context.stassTokente.password,
         email: context.state.email,
         nickname: context.state.nickname,
       }
@@ -368,7 +368,7 @@ export default new Vuex.Store({
     // 토큰 재발급
     tokenRegeneration(context) {
       const UserDto = {
-        userId: context.state.id
+        "userId": context.state.id
       }
       this.$axios({
         method: 'post',
@@ -379,8 +379,7 @@ export default new Vuex.Store({
         data: UserDto
       })
         .then((response) => {
-          console.log(context.state)
-          console.log(response.status)
+
           if (response.status == '202') {
             const params = {
               error: '202',

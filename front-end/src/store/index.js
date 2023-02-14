@@ -379,6 +379,7 @@ export default new Vuex.Store({
         data: UserDto
       })
         .then((response) => {
+          console.log(context.state)
           console.log(response.status)
           if (response.status == '202') {
             const params = {

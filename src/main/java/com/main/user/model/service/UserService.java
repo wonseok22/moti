@@ -1,5 +1,6 @@
 package com.main.user.model.service;
 
+import com.main.user.model.dto.SocialLoginDto;
 import com.main.user.model.entity.User;
 
 import java.util.Map;
@@ -25,6 +26,6 @@ public interface UserService {
 	
 	Map<String, Object> searchUser(String keyword, int pageNo);
 	
-	User socialLogin(User user, String refreshToken);
+	SocialLoginDto socialLogin(User user, String refreshToken);
 }
 

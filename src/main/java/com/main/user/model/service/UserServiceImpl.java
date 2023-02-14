@@ -9,6 +9,7 @@ import com.main.profile.model.entity.Profile;
 import com.main.profile.model.repository.FollowRepository;
 import com.main.profile.model.repository.ProfileRepository;
 import com.main.user.model.dto.SearchUserDto;
+import com.main.user.model.dto.SocialLoginDto;
 import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.S3Upload;
@@ -200,9 +201,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User socialLogin(User userDto, String refreshToken) {
+	public SocialLoginDto socialLogin(User userDto, String refreshToken) {
 		User user = userRepository.findByUserId(userDto.getUserId());
-		
+		SocialLoginDto socialLoginDto;
 		// 해당 ID로 가입된 유저가 없으면 가입 시도
 		if(user == null) {
 			user = userRepository.findByEmail(userDto.getEmail());
@@ -224,11 +225,15 @@ public class UserServiceImpl implements UserService {
 			user.setJoinDate(LocalDateTime.now());
 			user.setType(userDto.getType());
 			user.setRefreshToken(refreshToken);
+			socialLoginDto = SocialLoginDto.toDto(user);
+			socialLoginDto.setInitial(true);
 		}
+		else
+			socialLoginDto = SocialLoginDto.toDto(user);
 		
 		user.setRefreshToken(refreshToken);
 		userRepository.save(user);
-		return user;
+		return socialLoginDto;
 	}
 	
 }

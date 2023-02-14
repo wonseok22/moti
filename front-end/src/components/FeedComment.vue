@@ -99,6 +99,7 @@ export default {
       this.$store.dispatch('deleteComment', payload)
     },
     closePage() {
+      console.log(this.$store.state.scrollY)
       this.$store.dispatch("closeComment")
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)

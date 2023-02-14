@@ -134,7 +134,7 @@
         }
         this.content = this.$store.state.nowFeed.content
         this.feedId = this.$store.state.nowFeed.feedId
-        document.querySelector("#feed-create-input").value = this.$store.state.nowFeed.content
+        document.querySelector("#feed-update-input").value = this.$store.state.nowFeed.content
     }
   }
   </script>

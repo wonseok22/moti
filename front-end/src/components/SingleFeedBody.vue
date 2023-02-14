@@ -115,8 +115,8 @@ export default {
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
+            await this.$store.dispatch("putScrollHeight", y)
             await this.$store.dispatch("showComment")
-            this.$store.dispatch("putScrollHeight", y)
             document.body.style.overflow = "hidden"
         },
         makeLike() {

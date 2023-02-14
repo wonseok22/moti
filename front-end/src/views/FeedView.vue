@@ -43,6 +43,23 @@ import SingleFeedBody from '../components/SingleFeedBody.vue'
 import FeedComment from '@/components/FeedComment.vue'
 
 export default {
+  beforeRouteLeave(to,from,next){
+    if(this.$store.state.isComment){
+      document.body.style.overflow = "scroll"
+      this.$store.dispatch("closeComment")
+      next(false)
+      //nextTick을 통해 렌더링이 완전히 이루어졌음을 확인
+      this.$nextTick(() => {
+        //setTimeout을 통해 크롬의 기본 scroll anchor 현상보다 먼저 일어나지 않도록 한다
+        setTimeout(() => {
+          window.scrollTo(0, this.$store.state.scrollY)
+        }, 1)
+      })
+    }
+    else{
+      next()
+    }
+  },
   components: {
     InfiniteLoading,
     MainFeedHeader,
@@ -59,6 +76,7 @@ export default {
       minFeedId: 9999999,
       isDelete: false,
       deleteId: null,
+
     }
   },
   methods: {
@@ -124,11 +142,6 @@ export default {
     }
   },  
   watch: {
-  },
-  mounted () {
-    window.onpageshow = () => {
-      this.closePage()
-    }
   },
 }
 </script>

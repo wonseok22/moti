@@ -18,6 +18,7 @@ import playlistView from '@/views/PlaylistView'
 import FeedComment from '@/components/FeedComment'
 import AuthCompleteView from '@/views/AuthCompleteView'
 import SearchView from '@/views/SearchView'
+import onBoarding from '@/components/OnBoarding'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
 import MissionCreateView from '@/views/MissionCreateView'
@@ -118,6 +119,11 @@ const routes = [
         component: LoginForm
       },
     ],
+  },
+  {
+    path: '/onBoarding',
+    name: 'onBoarding',
+    component: onBoarding,
   },
   {
     path: '/feed',

@@ -89,10 +89,10 @@ export default new Vuex.Store({
       return Promise.resolve()
     },
     // 회원가입 완료 후 저장된 일부 정보 삭제하기(보안상)
-    ERASE_INFO(state) {
-      state.password = null
-      state.email = null
-    },
+    // LOGOUT(state) {
+    //   state.password = null
+    //   state.email = null
+    // },
     // 토큰 저장하기
     SAVE_TOKEN(state, payload) {
       for (let [key, value] of Object.entries(payload)) {
@@ -357,7 +357,7 @@ export default new Vuex.Store({
           if (response.status == 202) {
             alert('202 응답')
           } else {
-            context.commit('ERASE_INFO')
+            context.commit('LOGOUT')
             this.$router.push({ name: 'login' })
           }
         })

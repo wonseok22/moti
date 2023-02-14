@@ -59,7 +59,7 @@
         }).then((response) => {
           if (response.data.message ==="success"){
             this.follows[i].following = false;
-            this.$emit("click-follow");
+            this.$emit("click-follow",-1);
           } 
           }).catch((error) =>{
             console.log(error)
@@ -72,7 +72,7 @@
         }).then((response) => {
           if (response.data.message ==="success"){
             this.follows[i].following = true;
-            this.$emit("click-follow");
+            this.$emit("click-follow",1);
           } 
         }).catch((error) =>{
           console.log(error)

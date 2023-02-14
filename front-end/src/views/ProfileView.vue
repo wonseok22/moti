@@ -314,11 +314,13 @@ export default {
       });
   },
   methods: {
-    clickFollow(){
+    clickFollow(adding){
       this.followerKey --;
+      this.profile.following += adding;
     },
-    clickFollower(){
+    clickFollower(adding){
       this.followKey ++;
+      this.profile.following += adding;
     },
     moveCreateMission() {
       this.$router.push({

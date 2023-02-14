@@ -104,7 +104,8 @@ export default {
   align-items: center;
   padding: 0px;
   margin: 20px;
-  margin-top: 100px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   gap: 26px;
 
   // position: absolute;

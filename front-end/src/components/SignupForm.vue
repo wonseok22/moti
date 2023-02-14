@@ -60,7 +60,7 @@
           </div>
         </div>
         <button v-if="isvalid" class="btn-green" @click="confirm">다음</button>
-        <button v-else class="btn-green-inactive">다음</button>
+        <button v-else class="btn-green-inactive" @click="doubleCheckeWarning">다음</button>
       </div>
     </div>
     <div class="account-sub">
@@ -221,6 +221,12 @@ export default {
     toLogin() {
       this.$router.push({ name: 'login' })
     },
+    doubleCheckeWarning() {
+      if (!this.idDoubleChecked) {
+        this.openModal = true
+        this.modalContent = '아이디 중복체크를 진행해주세요.'
+      }
+    }
   },
   computed: {
     // input이 제대로 입력되었는지 여부 return

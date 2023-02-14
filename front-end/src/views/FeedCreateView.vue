@@ -3,22 +3,23 @@
     <main id="feed-create-main">
       <header id="feed-create-header">
         <!-- 취소 -->
-        <span @click="goBack" class="text-active">취소</span>
-        <span @click="createFeed" class="text-active">등록</span>
+        <span  @click="goBack" class="material-symbols-outlined text-active">arrow_back</span>
         <!-- 등록 -->
+        <span  @click="createFeed" class="material-symbols-outlined text-active">send</span>
       </header>
       <section id="feed-create-section">
-        <!-- 카테고리 이름 -->
-        <p>{{ missionInfo.categoryName}}</p>
+        <!-- 카테고리 이름 - 플레이리스트 이름 -->
+        <p>{{ missionInfo.categoryName }} &nbsp; - &nbsp; {{ missionInfo.playlistName }}</p>
         <!-- 플레이리스트 이름 -->
-        <p>{{ missionInfo.playlistName }}</p>
+        <!-- <p>{{ missionInfo.playlistName }}</p> -->
         <!-- 미션 이름 -->
         <p>{{ missionInfo.missionName }}</p>
       </section>
+
       <div>
         <hr>
       </div>
-
+      
       <article id="feed-create-article">
         <!-- 피드 작성 -->
         <textarea 
@@ -151,8 +152,18 @@ export default {
     // 작성 내용 저장하기
     inputContent(event) {
       this.content = event.target.value
-    },
+
+      // 글
+      const rowCount = this.content.split(/\r\n|\r|\n/).length
+      // const targetTextarea = document.querySelector('#feed-create-input')
+      console.log(rowCount)
+      // if(rowCount < 4)
+      //     targetTextarea.style.height="52px"; //특정 줄 수 보다 작아지면 height가 이것보다 작아지지 않았으면 한다
+      // else
+      //     targetTextarea.style.height= (rowCount * 18) + "px";
+      //     },
     // 이미지 받기
+    },
     inputImage(event) {
       if (event) {
         if (event.target.files.length > 10) {
@@ -204,14 +215,15 @@ export default {
           const divTag = document.createElement('div')
           divTag.setAttribute('class', 'feed-create-preview-img-div')
           divTag.setAttribute('id', `feed-create-preview-img-div-${idx}`)
-          // 화살표 함수로 안 쓰면 에러남
-          divTag.addEventListener('click', (event) => {
-            this.deleteImage(event.target)
-          })
+          
           const spanTag = document.createElement('span')
           spanTag.innerText = 'x'
           spanTag.setAttribute('class', 'feed-create-preview-img-span')
           spanTag.setAttribute('id', `feed-create-preview-img-span-${idx}`)
+          // 화살표 함수로 안 쓰면 에러남
+          spanTag.addEventListener('click', (event) => {
+            this.deleteImage(event.target)
+          })
           // 태그 만들기
           const imgTag = document.createElement('img')
           const imgReader = new FileReader()
@@ -262,7 +274,7 @@ export default {
 </script>
 
 <style lang="scss">
-$feed-create-footer-height: 10%;
+$feed-create-footer-height: 15%;
 
 // 기본 레이아웃
 #feed-create-layout {
@@ -276,12 +288,15 @@ $feed-create-footer-height: 10%;
 }
 
 #feed-create-main {
-  height: 100% - $feed-create-footer-height;
+  height: 60%;
+
+  display: flex;
+  flex-direction: column;
 }
 
 // header 레이아웃
 #feed-create-header {
-  height: 3%;
+  // height: 3%;
   display: flex;
   justify-content: space-between;
   
@@ -301,7 +316,7 @@ $feed-create-footer-height: 10%;
 
 // 미션명
 #feed-create-section {
-  height: 8%;
+  // height: 8%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -314,21 +329,23 @@ $feed-create-footer-height: 10%;
     font-size: $fs-7;
   }
 
-  // 플레이리스트
-  p:nth-child(2) {
-    font-size: $fs-6;
-  }
+  // // 플레이리스트
+  // p:nth-child(2) {
+  //   font-size: $fs-6;
+  //   color: $main-green;
+  // }
 
   // 미션명
-  p:nth-child(3) {
+  p:nth-child(2) {
     text-align: start;
     font-weight: bold;
+    color: $mission-green;
   }
 }
 
 // 피드 작성 부분
 #feed-create-article {
-  height: 80%;
+  height: 100%;
 }
 
 // 피드 내용 작성
@@ -351,8 +368,8 @@ $feed-create-footer-height: 10%;
 }
 
 #feed-create-footer-img-box {
-  height: 100%;
   width: 100%;
+  height: 70%;
 }
 
 // 이미지 프리뷰 레이아웃
@@ -398,10 +415,10 @@ $feed-create-footer-height: 10%;
   justify-content: flex-end;
   align-items: flex-start;
 
-  position: fixed;
-  width: 100%;
-  bottom: 0px;
-  left: 10px;
+  // position: fixed;
+  // width: 100%;
+  // bottom: 0px;
+  // left: 10px;
 }
 
 #feed-create-footer-private {
@@ -424,11 +441,5 @@ $feed-create-footer-height: 10%;
 
 #image-input {
   height: 0;
-}
-
-#image-input-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
 }
 </style>

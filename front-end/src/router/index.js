@@ -68,7 +68,7 @@ const checkAccessToken = (to, from, next) => {
 }
 
 const loginCheck = (to, from, next) => {
-  if (store.state.accessToken) {
+  if (store.state.id) {
     router.push({
       name: "feed",
     })

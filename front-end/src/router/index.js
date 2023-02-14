@@ -20,6 +20,7 @@ import AuthCompleteView from '@/views/AuthCompleteView'
 import SearchView from '@/views/SearchView'
 import MyPLMain from '@/components/MyPLMain'
 import MyPLMission from '@/components/MyPLMission'
+import MissionCreateView from '@/views/MissionCreateView'
 import NotFoundView from '@/views/NotFoundView'
 import FeedCreateView from '@/views/FeedCreateView'
 import SessionExpiredView from '@/views/SessionExpiredView'
@@ -200,6 +201,12 @@ const routes = [
         component: playlistDetail,
       }
     ]
+  },
+  {
+    path: '/mission',
+    name: 'MissionCreateView',
+    beforeEnter: checkAccessToken,
+    component: MissionCreateView,
   },
   {
     // 이메일 인증 성공 페이지

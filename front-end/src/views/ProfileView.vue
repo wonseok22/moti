@@ -63,8 +63,11 @@
 
     <div class="profile-detail">
       <div class="profile-detail-slide">
-        <SearchUserId :keyword="`${profile.userId}`"  
-        @deleteFeed="deleteFeed"></SearchUserId>
+        <SearchUserId 
+          :keyword="`${profile.userId}`"  
+          @deleteFeed="deleteFeed"
+          @openLikeModal="openLikeModal"
+        ></SearchUserId>
         <SearchMyPl :keyword="`${profile.userId}`" @openModalPl="openModalPl"></SearchMyPl>
         <SearchAchieve :keyword="`${profile.userId}`" @openModal="openModal"></SearchAchieve>
       </div>
@@ -224,6 +227,25 @@
       </div>
     </div>
 
+    <div class="like-modal" v-show="likeModal">
+      <!-- <div class="follow-modal" > -->
+      <div class="like-modal-close" @click="likeModal = false"></div>
+      <div class="like-white-bg">
+        <h3>좋아요 목록</h3>
+        <div class="like-list">
+          <div  v-for="(like,idx) in likes" :key="idx" class="like-item"  @click="moveProfile(like.userId)">
+            <div class="like-img-wrap">
+              <img :src="like.profileImageUrl ? like.profileImageUrl : defaultImage" alt="프로필사진" class="like-img">
+            </div>
+            <div class="like-nickname-wrap">
+              <img :src="like.achievementImageUrl" alt="대표뱃지" class="like-achieve" v-if="like.achievementImageUrl">
+              <div class="like-nickname">{{ like.nickname  }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="isCommentClicked" class="comment-page">
       <FeedComment />
     </div>
@@ -266,6 +288,7 @@ export default {
       followerKey: -1,
       profile:null,
       isMyProfile:false,
+      defaultImage:require(`@/assets/images/default_profile.jpg`),
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       isFollow:false,
       modal: false,
@@ -278,6 +301,8 @@ export default {
       recordView: false,
       myRecord: null,
       flowerImageUrl: null,
+      likeModal:false,
+      likes:null,
     }
   },
   components: {
@@ -315,13 +340,31 @@ export default {
       });
   },
   methods: {
+    openLikeModal(data) {
+      this.$axios({
+          method: "get",
+          url: `${this.$baseUrl}/feed/like/${data.feedId}`,
+        })
+          .then((response) => {
+           this.likes = response.data.list
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      this.likeModal = true
+      this.likeData = data
+    },
     clickFollow(adding){
       this.followerKey --;
-      this.profile.following += adding;
+      if(this.profile.userId === this.$store.state.id){
+        this.profile.following += adding;
+      }
     },
     clickFollower(adding){
       this.followKey ++;
-      this.profile.following += adding;
+      if(this.profile.userId === this.$store.state.id){
+        this.profile.following += adding;
+      }
     },
     moveCreateMission() {
       this.$router.push({
@@ -585,6 +628,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .modal {
   position: fixed;
   background: rgba(0, 0, 0, 0.5);

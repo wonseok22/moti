@@ -1,19 +1,10 @@
 <template>
   <div class="feed-comment">
-    <div class="comment-header">
-      <span
-      @click="closePage"
-      class="material-symbols-outlined">
-      arrow_back
-      </span>
-      <p>
-        댓글
-      </p>
-    </div>
     <MainFeedHeader
-    v-bind:HeaderData="this.$store.state.nowFeed"/>
+    v-bind:HeaderData="this.$store.state.nowFeed"
+    @deleteFeed="deleteFeed"/>
     <SingleFeedBody
-    v-bind:BodyData="this.$store.state.nowFeed"/>
+    :BodyData="this.feed"/>
     <div class="comments-list">
       <div 
       v-for="(item) in this.$store.state.nowFeed.comments"
@@ -42,8 +33,37 @@
       @click="writeComment"
       type="submit"
       form="commentForm">
-        <p>게시</p>
+        <span
+        class="material-symbols-outlined">
+        send
+        </span>
       </button>
+      <!-- <button
+      @click="writeComment"
+      type="submit"
+      form="commentForm">
+        <p>게시</p>
+      </button> -->
+    </div>
+    <div class="comment-header">
+      <span
+      @click="closePage"
+      class="material-symbols-outlined">
+      arrow_back
+      </span>
+      <p>
+        댓글
+      </p>
+    </div>
+    <div class="feed-delete-modal"
+    v-show="isDelete">
+      <div class="feed-delete-modal-body">
+        <p> 해당 피드를 정말로 삭제하시겠습니까?</p>
+        <div>
+          <button @click="finalNo">취소</button>
+          <button @click="finalOk">삭제</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -62,7 +82,9 @@ export default {
         feedId: this.$store.state.nowFeed.feedId,
         content: null
       },
-      feed: this.$store.state.nowFeed
+      feed: this.$store.state.nowFeed,
+      isDelete: false,
+      deleteId: this.$store.state.nowFeed.feedId,
     }
   },
   methods: {
@@ -104,9 +126,26 @@ export default {
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)
     },
+    thisFeedLiked() {
+      this.$emit("thisFeedLiked")
+    },
+    deleteFeed() {
+      const nowHeight = window.scrollY
+      document.querySelector(".feed-delete-modal").style.top = `${nowHeight}px`
+      document.body.classList.add("stop-scroll")
+      this.isDelete = true
+    },
+    finalOk() {
+      this.$store.dispatch("feedDelete", this.deleteId)
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+      window.location.reload()
+    },
+    finalNo() {
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+    },
   },
-  created() {
-  },  
   mounted() {
     window.scrollTo(0,0);
 

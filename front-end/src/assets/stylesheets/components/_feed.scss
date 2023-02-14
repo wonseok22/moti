@@ -142,6 +142,7 @@
         font-size: 16px;
         margin: 0px;
         word-break: break-all;
+        white-space: pre-line;
         // line-height: 1.15;
     }
 
@@ -243,6 +244,14 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+
+    .material-symbols-outlined:nth-child(1){
+        color: $murky-green;
+    }
+
+    .material-symbols-outlined:nth-child(2){
+        color: $light-red;
+    }
 }
 
 .feed-date {

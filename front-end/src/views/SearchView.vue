@@ -2,7 +2,7 @@
   <div>
     <Header id="SearchHeader">
       
-      <input type="text" @input="change" placeholder="검색"/>
+      <input type="text" @input="change" placeholder=" 검색"/>
     </Header>
     <nav id="CategoryNav">
       <div class="playlist" @click="playlist()">성장 플랜</div>

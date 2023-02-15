@@ -3,7 +3,8 @@
         <div class="result-box feed">
             <div v-for="(feed,idx) in feeds" :key="idx" >
                 <MainFeedHeader
-                :HeaderData="feed"/>
+                :HeaderData="feed"
+                @deleteFeed="deleteFeed"/>
                 <SingleFeedBody
                 :BodyData="feed"/>
             </div>
@@ -49,8 +50,10 @@
     },
 
     methods : {
+        deleteFeed(feedId) {
+            this.$emit("deleteFeed", feedId)
 
-
+        }
     }
   }
   </script>

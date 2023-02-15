@@ -22,7 +22,7 @@ export default {
         .then(() => {
         })
         .catch((error) => {
-          console.log(`이메일 인증 코드 발송 실패: status ${error.response.status}`)
+          console.log(`status ${error.response.status}`)
         })
     }
   },

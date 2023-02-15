@@ -290,7 +290,7 @@ public class UserController {
 		} else {
 			logger.debug("refresh-token 만료.");
 			resultMap.put("message", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
+			status = HttpStatus.ACCEPTED;
 		}
 		
 		return new ResponseEntity<>(resultMap, status);

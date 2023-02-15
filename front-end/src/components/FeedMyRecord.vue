@@ -1,5 +1,7 @@
 <template>
-  <div class="record-page scroll">
+  <div 
+    v-if="imgCompleted"
+    class="record-page scroll">
     <div class="record-title-box">
       <span
       @click="closeModal"
@@ -57,7 +59,7 @@ export default {
   },
   props: {
       feeds: Array,
-      flowerImageUrl:String,
+      flowerImageUrl: String,
   },
   mixins: {
 
@@ -71,8 +73,9 @@ export default {
           require("@/assets/images/2_watering_can.png"),
           require("@/assets/images/3_sprout.png"),
           require("@/assets/images/4_sun.png"),
-          this.flowerImageUrl
+          null,
       ],
+      imgCompleted: false,
       
     }
   },
@@ -96,8 +99,12 @@ export default {
     isCommentClicked() {
       return this.$store.getters.isCommentClicked
     }
-  },  
+  },
   watch: {
+    flowerImageUrl() {
+      this.RecoredImageUrls[4] = this.flowerImageUrl
+      this.imgCompleted = true
+    }
   }
 }
 </script>

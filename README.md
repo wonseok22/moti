@@ -1,8 +1,8 @@
 # SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
 
-## 동기부여가 필요한 당신을 위한 SNS- moti
+# 동기부여가 필요한 당신을 위한 SNS- moti
 
-서비스 페이지: [https://moti.today/](https://moti.today/)
+## 서비스 페이지: [https://moti.today/](https://moti.today/)
 
 ## 서비스 소개 영상: {ucc}
 

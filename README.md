@@ -21,7 +21,10 @@
     - 세 개의 큰 카테고리(건강, 관계, 행복) 안에 각각 2개의 성장 플랜이 들어있습니다. 사용자들은 각 성장 플랜을 구성하는 미션들을 확인한 뒤 자신이 원하는 성장 플랜을 최종적으로 선택합니다.
     - 모든 성장 플랜은 해당 성장 플랜의 취지를 가장 잘 나타내는 꽃말을 가진 꽃으로 대표됩니다.
     
-    https://www.notion.so/README-e206721f0d184f4b86d51de111380faa?pvs=4#e5652c2d0f2642d096af160e04622655
+    
+    ![intro_1.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/14412f0c-a8ac-4729-a017-ae5e3c91dcbf/intro_1.gif)
+    
+
     
 
 - 미션 인증 피드 작성

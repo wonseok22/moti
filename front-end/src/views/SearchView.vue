@@ -24,7 +24,7 @@
       </div>
     </div>
     <div v-if="isCommentClicked" class="comment-page">
-      <FeedComment/>
+      <FeedComment @openLikeModal="openLikeModal"/>
     </div>
     <div class="feed-delete-modal"
     v-show="isDelete">

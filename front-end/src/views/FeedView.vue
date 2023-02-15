@@ -23,7 +23,7 @@
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
     </div>
     <div v-if="isCommentClicked" class="comment-page">
-      <FeedComment/>
+      <FeedComment  @openLikeModal="openLikeModal"/>
     </div>
     <div class="feed-delete-modal"
     v-show="isDelete">

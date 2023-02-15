@@ -13,7 +13,9 @@
     <MainFeedHeader
     v-bind:HeaderData="this.$store.state.nowFeed"/>
     <SingleFeedBody
-    v-bind:BodyData="this.$store.state.nowFeed"/>
+    v-bind:BodyData="this.$store.state.nowFeed"
+    @openLikeModal="openLikeModal"
+    />
     <div class="comments-list">
       <div 
       v-for="(item) in this.$store.state.nowFeed.comments"
@@ -104,6 +106,9 @@ export default {
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)
     },
+    openLikeModal(data) {
+        this.$emit("openLikeModal", data)
+      }
   },
   created() {
   },  

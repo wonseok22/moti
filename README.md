@@ -22,8 +22,7 @@
     - 모든 성장 플랜은 해당 성장 플랜의 취지를 가장 잘 나타내는 꽃말을 가진 꽃으로 대표됩니다.
     
     
-    ![intro_1.gif](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/feature-common/readme/docs/images/intro_1.gif)
-    
+   ![아키텍쳐_최종본](/uploads/36108896807ab9090cc3a09069619f68/아키텍쳐_최종본.jpg)
 
     
 

@@ -46,7 +46,7 @@ public class ImageProcess {
 			graphics.dispose();
 			
 			// JPG 파일 회전 처리 부분
-			if ("JPEG".equals(fileFormat) || "JPG".equals(fileFormat)) {
+			if ("jpeg".equals(fileFormat) || "jpg".equals(fileFormat) || "JPEG".equals(fileFormat) || "JPG".equals(fileFormat)) {
 				// 회전 정보를 알아내기 위해 사진의 Metadata를 가져옴
 				int rotate = 1;
 				Metadata metadata;

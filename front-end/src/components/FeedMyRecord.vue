@@ -1,5 +1,5 @@
 <template>
-    <div class="feed-page scroll">
+    <div class="record-page scroll">
       <div class="record-title-box">
         <span
         @click="closeModal"
@@ -18,7 +18,8 @@
           v-bind:HeaderData="feed"
           @deleteFeed="deleteFeed"/>
           <SingleFeedBody
-          v-bind:BodyData="feed"/>
+          v-bind:BodyData="feed"
+          @openLikeModal="openLikeModal"/>
         </div>
 
       </div>
@@ -26,7 +27,10 @@
 
       <transition>
         <div v-if="isCommentClicked" class="comment-page">
-          <FeedComment/>
+          <FeedComment
+          @openLikeModal="openLikeModal"
+          
+          />
         </div>
       </transition>
       <!-- <div class="feed-delete-modal">
@@ -79,9 +83,12 @@
         this.$store.dispatch("showComment")
         document.body.style.overflow = "scroll"
         window.scrollTo(0, this.$store.state.scrollY)
-        },
-        closeModal() {
-          this.$emit("closeRecordModal");
+      },
+      closeModal() {
+        this.$emit("closeRecordModal");
+      },
+      openLikeModal(data) {
+        this.$emit("openLikeModal", data)
       }
     },
     computed: {
@@ -95,6 +102,11 @@
   </script>
   
 <style lang="scss">
+.record-page {
+    background: #E9E9E9;
+    width: 100vw;
+    height: 100vh;
+}
 .record-title-box{
     height: 150px ;
     position: relative;

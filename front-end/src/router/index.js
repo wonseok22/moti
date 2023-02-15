@@ -51,12 +51,9 @@ const checkAccessToken = (to, from, next) => {
       },
     })
     // accessToken 유효
-      .then(() => {
-        next()
-      })
-      .catch((error) => {
-        // accessToken 만료
-        if (error.response.status == 401) {
+      .then((response) => {
+         // accessToken 만료
+         if (response.status == 202) {
           // accessToken 재발급 요청
           const regenResult = store.dispatch('tokenRegeneration')
           regenResult.then(() => {
@@ -64,8 +61,10 @@ const checkAccessToken = (to, from, next) => {
             next()
           })
         } else {
-          console.log(error.response.status)
+          next()
         }
+      })
+      .catch(() => {
       })
   }
 }

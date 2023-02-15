@@ -4,6 +4,7 @@
     v-bind:HeaderData="this.$store.state.nowFeed"
     @deleteFeed="deleteFeed"/>
     <SingleFeedBody
+    @openLikeModal="openLikeModal"
     :BodyData="this.feed"/>
     <div class="comments-list">
       <div 
@@ -126,6 +127,9 @@ export default {
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)
     },
+    openLikeModal(data) {
+        this.$emit("openLikeModal", data)
+      },
     thisFeedLiked() {
       this.$emit("thisFeedLiked")
     },

@@ -413,7 +413,7 @@ export default {
           .then((response) => {
             if (response.status == 200) {
               alert("정상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.");
-              this.$store.commit("LOGOUT");
+              this.$store.dispatch("logout");
               this.$router
                 .push({
                   name: "landing",

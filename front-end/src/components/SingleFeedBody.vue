@@ -55,9 +55,10 @@
         </span>
 
         <span class="material-icons-outlined"
-        v-if="(isLike)"
-        @click="deleteLike"
-        style="color:#FF5B5B;">
+            v-if="isLike"
+            @click="deleteLike"
+            style="color:#FF5B5B;"
+        >
             favorite
         </span>
 
@@ -134,9 +135,9 @@ export default {
             this.likeCnt -= 1
         },
         shareViaWebShare() {
-            console.log(this.BodyData)
+            // console.log(this.BodyData)
             let imageUrl = this.BodyData.feedImages.length != 0? this.BodyData.feedImages[0].feedImageUrl:""
-            console.log(imageUrl)
+            // console.log(imageUrl)
             window.Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
@@ -191,6 +192,7 @@ export default {
         if (String(this.$options._componentTag) === 'FeedComment') {
             this.isComment = true
         }
+        
     },
     mounted() {
         const feedContentTag = document.querySelector(`#feed-${this.feedIdx} > .feed-text > p`)

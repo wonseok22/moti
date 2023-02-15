@@ -21,20 +21,20 @@
     - 세 개의 큰 카테고리(건강, 관계, 행복) 안에 각각 2개의 성장 플랜이 들어있습니다. 사용자들은 각 성장 플랜을 구성하는 미션들을 확인한 뒤 자신이 원하는 성장 플랜을 최종적으로 선택합니다.
     - 모든 성장 플랜은 해당 성장 플랜의 취지를 가장 잘 나타내는 꽃말을 가진 꽃으로 대표됩니다.
     
-    
-   ![아키텍쳐_최종본](/uploads/36108896807ab9090cc3a09069619f68/아키텍쳐_최종본.jpg)
+    ![intro_1](/uploads/1cfd432d2bc42cc684be1c7ae7b7854b/intro_1.gif)
+   
 
     
 
 - 미션 인증 피드 작성
     - 수행한 미션에 대한
     
-    ![intro_2.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fb144f4d-23db-4329-8a8e-01f69a907bbd/intro_2.gif)
+![intro_2](/uploads/3d91987483667a53f8dcc1773455f3d8/intro_2.gif)
     
 
 ## Architecture
 
-![아키텍쳐 최종본.jpg](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6f7a651f-99db-485c-97d6-13701316fca4/%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90_%EC%B5%9C%EC%A2%85%EB%B3%B8.jpg)
+![아키텍쳐_최종본](/uploads/36108896807ab9090cc3a09069619f68/아키텍쳐_최종본.jpg)
 
 ## 기술 스택
 

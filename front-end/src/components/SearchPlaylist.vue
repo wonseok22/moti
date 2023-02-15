@@ -3,7 +3,8 @@
         <div class="result-box feed">
             <div v-for="(feed,idx) in feeds" :key="idx" >
                 <MainFeedHeader
-                :HeaderData="feed"/>
+                :HeaderData="feed"
+                @deleteFeed="deleteFeed"/>
                 <SingleFeedBody
                 @openLikeModal="openLikeModal"
                 :BodyData="feed"/>
@@ -50,10 +51,13 @@
     },
 
     methods : {
+        deleteFeed(feedId) {
+            this.$emit("deleteFeed", feedId)
+
+        },
         openLikeModal(data) {
         this.$emit("openLikeModal", data)
-      }
-
+      },
     }
   }
   </script>

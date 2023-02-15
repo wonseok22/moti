@@ -154,18 +154,8 @@ export default {
     // 작성 내용 저장하기
     inputContent(event) {
       this.content = event.target.value
-
-      // 글
-      const rowCount = this.content.split(/\r\n|\r|\n/).length
-      // const targetTextarea = document.querySelector('#feed-create-input')
-      console.log(rowCount)
-      // if(rowCount < 4)
-      //     targetTextarea.style.height="52px"; //특정 줄 수 보다 작아지면 height가 이것보다 작아지지 않았으면 한다
-      // else
-      //     targetTextarea.style.height= (rowCount * 18) + "px";
-      //     },
-    // 이미지 받기
     },
+    // 이미지 받기
     inputImage(event) {
       if (event) {
         if (event.target.files.length > 10) {

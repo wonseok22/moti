@@ -48,14 +48,14 @@
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">
         <span class="material-symbols-outlined"
-        v-if="(!isLike)"
+        v-if="!isLike"
         @click="makeLike"
         style="color:#A3A3A3;">
             favorite
         </span>
 
         <span class="material-icons-outlined"
-        v-if="(isLike)"
+        v-else
         @click="deleteLike"
         style="color:#FF5B5B;">
             favorite
@@ -107,6 +107,10 @@ export default {
             isThereImage: 0,
             isComment: false,
             overThreeLines: false,
+            payload : {
+                feedIdx: null,
+                value: 0,
+            }
         }
     },
     methods: {
@@ -121,22 +125,32 @@ export default {
             await this.$store.dispatch("putSingleFeed", result.data.feed)
             await this.$store.dispatch("putScrollHeight", y)
             await this.$store.dispatch("showComment")
+            //console.log(this.$store.state.nowFeed)
             document.body.style.overflow = "hidden"
         },
         makeLike() {
+            this.payload.feedIdx = this.feedIdx
+            this.payload.value = 1
+            this.$emit("makeLike", this.payload)
             this.$store.dispatch("makeLike", this.BodyData.feedId)
-            this.isLike = true
-            this.likeCnt += 1
+            if(this.$store.state.isComment){
+                this.isLike = true
+                this.likeCnt += 1
+            }
         },
         deleteLike() {
+            this.payload.feedIdx = this.feedIdx
+            this.payload.value = -1
+            this.$emit("deleteLike", this.payload)
             this.$store.dispatch("deleteLike", this.BodyData.feedId)
-            this.isLike = false
-            this.likeCnt -= 1
+            if(this.$store.state.isComment){
+                this.isLike = false
+                this.likeCnt -= 1
+            }
         },
         shareViaWebShare() {
-            console.log(this.BodyData)
             let imageUrl = this.BodyData.feedImages.length != 0? this.BodyData.feedImages[0].feedImageUrl:""
-            console.log(imageUrl)
+            // console.log(imageUrl)
             window.Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
@@ -183,7 +197,23 @@ export default {
         isCommentCheck() {
             return this.$store.state.isComment
         },
-
+        isLikeChanged() {
+            return this.BodyData.hit
+        },
+        isLikeCntChanged() {
+            return this.BodyData.likes
+        }
+        
+    },
+    watch: {
+        isLikeChanged() {
+            //console.log(this.BodyData.hit)
+            this.isLike = this.BodyData.hit
+        },
+        isLikeCntChanged() {
+            //console.log(this.BodyData.likes)
+            this.likeCnt = this.BodyData.likes
+        }
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
@@ -202,9 +232,6 @@ export default {
             this.overThreeLines = true
         }
     },
-    beforeUpdate() {
-        this.isLike = this.isLiked
-    }
 }
 
 </script>

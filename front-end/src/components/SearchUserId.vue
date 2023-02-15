@@ -9,7 +9,10 @@
           />
           <SingleFeedBody
           @openLikeModal="openLikeModal"
-          :BodyData="feed"/>
+          @makeLike="makeLike"
+          @deleteLike="deleteLike"
+          :BodyData="feed"
+          :feedIdx="idx"/>
         </div>
         <infinite-loading @infinite="infiniteHandler" spinner="waveDots" :distance="0" direction="bottom">
             <div slot="no-more"></div>
@@ -27,6 +30,7 @@
     name: 'SearchUserId',
     props: {
         keyword: String,
+        likeChanged: Object,
     },
     components: {
     InfiniteLoading,
@@ -39,8 +43,22 @@
         minFeedId: 99999,
       }
     },
+    computed: {
+      changedLike() {
+        return this.likeChanged.seed
+      }
+    },
     watch: {
-
+      changedLike() {
+        if(this.likeChanged.value === 1){
+          this.feeds[this.likeChanged.feedIdx].hit = true
+          this.feeds[this.likeChanged.feedIdx].likes += this.likeChanged.value
+        }
+        else{
+          this.feeds[this.likeChanged.feedIdx].hit = false
+          this.feeds[this.likeChanged.feedIdx].likes += this.likeChanged.value
+        }
+      }
     },
     methods : {
       infiniteHandler($state) {
@@ -64,6 +82,12 @@
       },
       openLikeModal(data) {
         this.$emit("openLikeModal", data)
+      },
+      makeLike(payload) {
+        this.$emit("makeLike", payload)
+      },
+      deleteLike(payload) {
+        this.$emit("deleteLike", payload)
       }
     }
   }

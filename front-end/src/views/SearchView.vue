@@ -16,15 +16,18 @@
       <div class="SearchResult-slide">
         <SearchPlaylist :keyword="keyword"
         @deleteFeed="deleteFeed"
-        @openLikeModal="openLikeModal"></SearchPlaylist>
+        @openLikeModal="openLikeModal"
+        @makeLike="makeLike"
+        @deleteLike="deleteLike"
+        :likeChanged = "likeChanged" ></SearchPlaylist>
         <SearchFeed :keyword="keyword"
         @deleteFeed="deleteFeed"
-        @openLikeModal="openLikeModal"></SearchFeed>
+        @openLikeModal="openLikeModal"
+        @makeLike="makeLike2"
+        @deleteLike="deleteLike2"
+        :likeChanged2 = "likeChanged2" ></SearchFeed>
         <SearchNickname :keyword="keyword"></SearchNickname>
       </div>
-    </div>
-    <div v-if="isCommentClicked" class="comment-page">
-      <FeedComment/>
     </div>
     <div class="feed-delete-modal"
     v-show="isDelete">
@@ -37,6 +40,18 @@
       </div>
     </div>
     <NavigationBar></NavigationBar>
+
+    <div v-if="isCommentClicked && (this.pageType == 1)" class="comment-page">
+      <FeedComment
+      @makeLike="makeLike"
+      @deleteLike="deleteLike"/>
+    </div>
+
+    <div v-if="isCommentClicked && (this.pageType == 2)" class="comment-page">
+      <FeedComment
+      @makeLike="makeLike2"
+      @deleteLike="deleteLike2"/>
+    </div>
 
     <div class="like-modal" v-show="likeModal">
       <div class="like-modal-close" @click="likeModal = false"></div>
@@ -92,6 +107,17 @@ export default {
       likeModal:false,
       likes:null,
       defaultImage:require(`@/assets/images/default_profile.jpg`),
+      likeChanged: {
+        feedIdx: null,
+        value: null,
+        seed: 1,
+      },
+      likeChanged2: {
+        feedIdx: null,
+        value: null,
+        seed: 1,
+      },
+      pageType: 1,
     }
   },
   created() {
@@ -115,6 +141,7 @@ export default {
       this.keyword=event.target.value;
     },
     playlist () {
+      this.pageType = 1
       const bar = document.getElementById("bar");
       const slide = document.querySelector(".SearchResult-slide")
       slide.style.left = 0;
@@ -122,6 +149,7 @@ export default {
       
     },
     feed() {
+      this.pageType = 2
       const bar = document.getElementById("bar");
       const slide = document.querySelector(".SearchResult-slide")
       slide.style.left = "-100vw";
@@ -152,6 +180,51 @@ export default {
       document.body.classList.remove("stop-scroll")
       this.isDelete = false
     },
+    makeLike(payload) {
+      if(this.$store.state.isComment){
+        this.likeChanged.feedIdx = this.$store.state.feedIdx
+        this.likeChanged.value = 1
+      }
+      else{
+        this.likeChanged.feedIdx = payload.feedIdx
+        this.likeChanged.value = 1
+      }
+      this.likeChanged.seed *= -1
+    },
+    deleteLike(payload){
+      if(this.$store.state.isComment){
+        this.likeChanged.feedIdx = this.$store.state.feedIdx
+        this.likeChanged.value = -1
+      }
+      else{
+        this.likeChanged.feedIdx = payload.feedIdx
+        this.likeChanged.value = -1
+      }
+      this.likeChanged.seed *= -1
+    },
+    makeLike2(payload) {
+      if(this.$store.state.isComment){
+        this.likeChanged2.feedIdx = this.$store.state.feedIdx
+        this.likeChanged2.value = 1
+      }
+      else{
+        this.likeChanged2.feedIdx = payload.feedIdx
+        this.likeChanged2.value = 1
+      }
+      this.likeChanged2.seed *= -1
+    },
+    deleteLike2(payload){
+      if(this.$store.state.isComment){
+        this.likeChanged2.feedIdx = this.$store.state.feedIdx
+        this.likeChanged2.value = -1
+      }
+      else{
+        this.likeChanged2.feedIdx = payload.feedIdx
+        this.likeChanged2.value = -1
+      }
+      this.likeChanged2.seed *= -1
+    }
+    
   },
   components: {
     FeedComment,

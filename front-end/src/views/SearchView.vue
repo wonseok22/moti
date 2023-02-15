@@ -29,6 +29,9 @@
         <SearchNickname :keyword="keyword"></SearchNickname>
       </div>
     </div>
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment @openLikeModal="openLikeModal"/>
+    </div>
     <div class="feed-delete-modal"
     v-show="isDelete">
       <div class="feed-delete-modal-body">

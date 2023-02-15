@@ -230,7 +230,40 @@
       </div>
     </div>
 
-    <div class="like-modal" v-show="likeModal">
+    
+
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment 
+      @deleteLike="deleteLike"
+      @makeLike="makeLike"
+      @openLikeModal="openLikeModal"
+      />
+    </div>
+
+    
+
+    <div v-if="recordView" class="record-page">
+      <FeedMyRecord
+        :feeds="myRecord"
+        :flowerImageUrl="flowerImageUrl"
+        @closeRecordModal="closeRecordModal"
+        @openLikeModal="openLikeModal"
+      ></FeedMyRecord>
+    </div>
+    
+    <div class="feed-delete-modal"
+      v-show="isDelete">
+        <div class="feed-delete-modal-body">
+          <p> 해당 피드를 정말로 삭제하시겠습니까?</p>
+          <div>
+            <button @click="finalNo">취소</button>
+            <button @click="finalOk">삭제</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="like-modal" v-show="likeModal">
       <!-- <div class="follow-modal" > -->
       <div class="like-modal-close" @click="likeModal = false"></div>
       <div class="like-white-bg">
@@ -249,29 +282,7 @@
       </div>
     </div>
 
-    <div v-if="isCommentClicked" class="comment-page">
-      <FeedComment 
-      @deleteLike="deleteLike"
-      @makeLike="makeLike"/>
-    </div>
 
-    <div v-if="recordView" class="comment-page">
-      <FeedMyRecord
-        :feeds="myRecord"
-        :flowerImageUrl="flowerImageUrl"
-        @closeRecordModal="closeRecordModal"
-      ></FeedMyRecord>
-    </div>
-    <div class="feed-delete-modal"
-      v-show="isDelete">
-        <div class="feed-delete-modal-body">
-          <p> 해당 피드를 정말로 삭제하시겠습니까?</p>
-          <div>
-            <button @click="finalNo">취소</button>
-            <button @click="finalOk">삭제</button>
-          </div>
-        </div>
-      </div>
   </div>
 </template>
 

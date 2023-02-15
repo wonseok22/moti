@@ -292,7 +292,7 @@ export default new Vuex.Store({
             context.commit('LOGOUT')
             this.$router.push({ name: 'login' })
           } else {
-            console.log(`로그아웃 실패: status: ${error.response.status}`)
+            console.log(`status: ${error.response.status}`)
           }
         })
     },
@@ -305,8 +305,8 @@ export default new Vuex.Store({
           email: payload.email
         }
       })
-      .then((response) => {
-          console.log(`인증 메일 전송 성공/status:${response.status}`)
+      .then(() => {
+          // console.log(`인증 메일 전송 성공/status:${response.status}`)
         })
         .catch((error) => {
           if (error.response.status == 500)  {
@@ -350,7 +350,7 @@ export default new Vuex.Store({
       // UserDto 객체 정의
       const UserDto = {
         userId: context.state.id,
-        password: context.stassTokente.password,
+        password: context.state.password,
         email: context.state.email,
         nickname: context.state.nickname,
       }
@@ -435,7 +435,7 @@ export default new Vuex.Store({
           }
         })
         .catch((error) => {
-          console.log(`유저 플레이리스트 가져오기 실패: status ${error.response.status}`)
+          console.log(`status ${error.response.status}`)
         })
     },
     // 내 플레이리스트별 미션 정보 가져오기
@@ -455,7 +455,7 @@ export default new Vuex.Store({
             payloadMission[key] = response.data.myPlaylist
           })
           .catch((error) => {
-            console.log(`플레이리스트별 미션 가져오기 실패: status ${error.response.status}`)
+            console.log(`status ${error.response.status}`)
           })
       }
       // 시간 차이가 발생한다.

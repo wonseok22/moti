@@ -19,7 +19,7 @@
     <transition name="fade">
         <span 
             class="material-icons-outlined"
-            v-show="(HeaderData.userId === this.$store.state.id) && this.horiOpened"
+            v-show="(HeaderData.userId === this.$store.state.id) && this.horiOpened && settingPossible"
             @click="horiClicked">
             more_vert
         </span>
@@ -50,6 +50,9 @@ export default {
       clickOutside: vClickOutside.directive
     },
     async created() {
+        if (this.settingImpossible) {
+            this.settingPossible = false
+        }
         const check_res = this.$store.dispatch("followCheck", this.HeaderData.userId)
         const check_result = await check_res
         this.Following = check_result.data.check
@@ -77,6 +80,7 @@ export default {
     },
     props: {
         HeaderData: Object,
+        settingImpossible: Boolean,
     },
     data() {
         return {
@@ -90,6 +94,7 @@ export default {
             horiOpened: true,
             tabOpened: false,
             date:null,
+            settingPossible: true,
         }
     },
     methods: {
@@ -136,7 +141,7 @@ export default {
                 }
             })
         }
-    }
+    },
 }
 </script>
 

@@ -83,7 +83,7 @@ export default {
       }).then((response) => {
           this.plDetail = response.data.playlist
       }).catch((error) =>{
-        console.log(`플레이리스트 가져오기 실패: status ${error.response.status}`)
+        console.log(`status ${error.response.status}`)
       })
     },
     moveMyPlaylist(){

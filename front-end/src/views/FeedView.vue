@@ -28,6 +28,7 @@
       <FeedComment
       @makeLike="makeLike"
       @deleteLike="deleteLike"/>
+      <FeedComment  @openLikeModal="openLikeModal"/>
     </div>
     <div class="feed-delete-modal"
     v-show="isDelete">

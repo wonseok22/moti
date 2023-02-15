@@ -149,6 +149,7 @@ export default {
             }
         },
         shareViaWebShare() {
+            // console.log(this.BodyData)
             let imageUrl = this.BodyData.feedImages.length != 0? this.BodyData.feedImages[0].feedImageUrl:""
             // console.log(imageUrl)
             window.Kakao.Share.sendDefault({
@@ -221,6 +222,7 @@ export default {
         if (String(this.$options._componentTag) === 'FeedComment') {
             this.isComment = true
         }
+        
     },
     mounted() {
         const feedContentTag = document.querySelector(`#feed-${this.feedIdx} > .feed-text > p`)

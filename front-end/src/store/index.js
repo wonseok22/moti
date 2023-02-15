@@ -304,8 +304,8 @@ export default new Vuex.Store({
           email: payload.email
         }
       })
-      .then((response) => {
-          console.log(`인증 메일 전송 성공/status:${response.status}`)
+      .then(() => {
+          // console.log(`인증 메일 전송 성공/status:${response.status}`)
         })
         .catch((error) => {
           if (error.response.status == 500)  {

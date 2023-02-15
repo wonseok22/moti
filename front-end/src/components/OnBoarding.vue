@@ -7,12 +7,11 @@
       :paginationColor="'#dddddd'"
       paginationPosition="bottom"
       :paginationSize="7"
-      :minSwipeDistance="200"
+      :minSwipeDistance="100"
     >
       <slide class="slide">
         <div class="content">
           <div class="area">
-            <br><br><br><br><br><br><br>
             <div class="title-box">
               <p style="font-size: 52px">moti</p>
             </div>
@@ -20,21 +19,28 @@
           <div class="textarea">작지만 큰 실천을 도와주는 커뮤니티,<br />모티에 오신 걸 환영해요.</div>
         </div>
       </slide>
+
       <slide class="slide">
         <div class="content">
-          <img class="intro-gif" src="@/assets/images/intro_1.gif" alt="" />
+          <div class="area">
+            <img class="intro-gif" src="@/assets/images/intro_1.gif" alt="" />
+          </div>
+          <div class="textarea">가운데 미션수행 탭을 누르면<br />수행할 성장 플랜을 선택할 수 있어요.</div>
         </div>
-        <div class="textarea">가운데 미션수행 탭을 누르면<br />수행할 성장 플랜을 선택할 수 있어요.</div>
       </slide>
+
       <slide class="slide">
         <div class="content">
-          <img class="intro-gif" src="@/assets/images/intro_2.gif" alt="" />
-        </div>
-        <div class="textarea">
-          하루에 한 번<br />마음에 드는 미션 하나를 선택해서 수행하고<br />후기를 작성하면 미션
-          성공이에요.
+          <div class="area">
+            <img class="intro-gif" src="@/assets/images/intro_2.gif" alt="" />
+          </div>
+          <div class="textarea">
+            하루에 한 번<br />마음에 드는 미션 하나를 선택해서 수행하고<br />후기를 작성하면 미션
+            성공이에요.
+          </div>
         </div>
       </slide>
+
       <slide class="slide">
         <div class="content">
           <div class="area">
@@ -76,11 +82,9 @@ export default {
 <style lang="scss">
 .slide {
   height: 95vh;
-  width: auto;
+  // width: auto;
 }
-.area {
-  height: 70vh;
-}
+
 // .legacy-content {
 //   height: 90vh;
 //   display: flex;
@@ -88,18 +92,33 @@ export default {
 //   justify-content: space-around;
 // }
 .content {
-  height: auto;
-  margin-top: 10px;
+  height: 90%;
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+.area {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .intro-gif {
-  height: 70vh;
-  width: auto;
+  height: 90%;
+  object-fit: contain;
 }
+
 .textarea {
   position: relative;
   bottom: 0%;
-  margin-top: 50px;
+  margin-top: 20px;
   font-family: 'LINESeedKR-Rg';
+  // height: 10%;
 }
 .clock-image {
   width: 33vw;

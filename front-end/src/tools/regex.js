@@ -16,29 +16,40 @@ const regExpNum = /[0-9]/
 function characterCheck(str) {
   let adjustedStr = str
   let content = null
-  if ( regExp.test(str) ) {
-    // alert('영어 대소문자와 숫자만 입력해주세요.')
-    content = '영어 대소문자와 숫자만 입력해주세요.'
-    adjustedStr = str.substring( 0, str.length - 1 ) // 입력한 특수문자 한자리 지움
+  
+  let idx = adjustedStr.length - 1
+  while (idx > -1) {
+    // 특수문자가 있을 경우
+    if (regExp.test(adjustedStr[idx])) {
+      adjustedStr = adjustedStr.substring(0, idx)
+      content = '영어 대소문자와 숫자만 입력해주세요.'
+    }
+    idx -= 1
   }
   if (!adjustedStr.length) {
     return [null, content]
   } else {
-    return [adjustedStr, content]
-  }
+      return [adjustedStr, content]
+    }
 }
 
 // 위에서 한글은 포함
 function characterCheckNickname(str) {
   let adjustedStr = str
   let content = null
-  if ( regExp2.test(str) ) {
-    // alert('영어 대소문자, 한글, 숫자만 입력해주세요.')
-    content = '영어 대소문자, 한글, 숫자만 입력해주세요.'
-    adjustedStr = str.substring( 0, str.length - 1 ) // 입력한 특수문자 한자리 지움
-  } 
+
+  let idx = adjustedStr.length - 1
+  while (idx > -1) {
+    // 특수문자가 있을 경우
+    if (regExp2.test(adjustedStr[idx])) {
+      adjustedStr = adjustedStr.substring(0, idx)
+      content = '영어 대소문자, 한글, 숫자만 입력해주세요.'
+    }
+    idx -= 1
+  }
+
   if (!adjustedStr.length) {
-    return [adjustedStr, content]
+    return [null, content]
   } else {
     return [adjustedStr, content]
   }

@@ -62,6 +62,8 @@ public class ImageProcess {
 				
 				// Metadata 기반으로 사진을 회전시킴
 				switch (rotate) {
+					case 1:
+						break;
 					case 3:
 						newImage = Scalr.rotate(newImage, Scalr.Rotation.CW_180, null);
 						break;

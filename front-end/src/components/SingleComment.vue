@@ -103,7 +103,9 @@ export default {
           document.body.style.overflow = "scroll"
           this.$router.push({
               name: 'profile',
-          }).catch(() => {});
+          }).catch(() => {
+            location.reload();
+          });
       },
     }
 }

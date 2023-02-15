@@ -7,7 +7,10 @@
               @deleteFeed="deleteFeed"/>
               <SingleFeedBody
               @openLikeModal="openLikeModal"
-              :BodyData="feed"/>
+              @makeLike="makeLike"
+              @deleteLike="deleteLike"
+              :BodyData="feed"
+              :feedIdx="idx"/>
           </div>
           <infinite-loading 
           @infinite="infiniteHandler" 
@@ -29,6 +32,7 @@
     name: 'SearchFeed',
     props: {
         keyword: String,
+        likeChanged2: Object,
     },
     components: {
     MainFeedHeader,
@@ -39,6 +43,11 @@
       return {
         feeds:[],
         minFeedId:999999,
+      }
+    },
+    computed: {
+      changedLike() {
+        return this.likeChanged2.seed
       }
     },
     watch: {
@@ -54,6 +63,16 @@
                   console.log(error)
               })
             }
+        },
+        changedLike() {
+          if(this.likeChanged2.value === 1){
+            this.feeds[this.likeChanged2.feedIdx].hit = true
+            this.feeds[this.likeChanged2.feedIdx].likes += this.likeChanged2.value
+          }
+          else{
+            this.feeds[this.likeChanged2.feedIdx].hit = false
+            this.feeds[this.likeChanged2.feedIdx].likes += this.likeChanged2.value
+          }
         }
 
     },
@@ -84,6 +103,12 @@
       deleteFeed(feedId) {
         this.$emit("deleteFeed", feedId)
 
+      },
+      makeLike(payload) {
+        this.$emit("makeLike", payload)
+      },
+      deleteLike(payload) {
+        this.$emit("deleteLike", payload)
       }
     }
   }

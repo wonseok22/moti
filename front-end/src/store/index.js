@@ -537,8 +537,6 @@ export default new Vuex.Store({
         method:'post',
         url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
       })
-      .then(() => {
-      })
       .catch((error) => {
         console.log(error)
       })
@@ -548,9 +546,6 @@ export default new Vuex.Store({
       this.$axios({
         method:'delete',
         url:`${this.$baseUrl}/feed/like/${this.state.id}/${feedId}`
-      })
-      .then(() => {
-        
       })
       .catch((error) => {
         console.log(error)

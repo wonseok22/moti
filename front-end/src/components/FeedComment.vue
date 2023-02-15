@@ -4,6 +4,8 @@
     v-bind:HeaderData="this.$store.state.nowFeed"
     @deleteFeed="deleteFeed"/>
     <SingleFeedBody
+    @makeLike="makeLike"
+    @deleteLike="deleteLike"
     @openLikeModal="openLikeModal"
     :BodyData="this.feed"/>
     <div class="comments-list">
@@ -52,9 +54,6 @@
       class="material-symbols-outlined">
       arrow_back
       </span>
-      <p>
-        댓글
-      </p>
     </div>
     <div class="feed-delete-modal"
     v-show="isDelete">
@@ -122,6 +121,10 @@ export default {
       this.$store.dispatch('deleteComment', payload)
     },
     closePage() {
+<<<<<<< front-end/src/components/FeedComment.vue
+      //console.log(this.$store.state.scrollY)
+=======
+>>>>>>> front-end/src/components/FeedComment.vue
       this.$store.dispatch("closeComment")
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)
@@ -148,6 +151,12 @@ export default {
       document.body.classList.remove("stop-scroll")
       this.isDelete = false
     },
+    makeLike(payload) {
+      this.$emit("makeLike", payload)
+    },
+    deleteLike(payload) {
+      this.$emit("deleteLike", payload)
+    }
   },
   mounted() {
     window.scrollTo(0,0);

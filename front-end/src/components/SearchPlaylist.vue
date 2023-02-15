@@ -7,7 +7,10 @@
                 @deleteFeed="deleteFeed"/>
                 <SingleFeedBody
                 @openLikeModal="openLikeModal"
-                :BodyData="feed"/>
+                @makeLike="makeLike"
+                @deleteLike="deleteLike"
+                :BodyData="feed"
+                :feedIdx="idx"/>
             </div>
         </div>
     </main>
@@ -21,6 +24,7 @@
     name: 'SearchPlaylist',
     props: {
         keyword: String,
+        likeChanged: Object,
     },
     components: {
     MainFeedHeader,
@@ -28,9 +32,14 @@
   },
     data() {
         return {
-            feeds:null,
+            feeds:[],
             minFeedId: 99999,
         }
+    },
+    computed: {
+      changedLike() {
+        return this.likeChanged.seed
+      }
     },
     watch: {
         keyword : function() {
@@ -45,6 +54,16 @@
                 })
             }
         },
+        changedLike() {
+            if(this.likeChanged.value === 1){
+            this.feeds[this.likeChanged.feedIdx].hit = true
+            this.feeds[this.likeChanged.feedIdx].likes += this.likeChanged.value
+            }
+            else{
+            this.feeds[this.likeChanged.feedIdx].hit = false
+            this.feeds[this.likeChanged.feedIdx].likes += this.likeChanged.value
+            }
+        }
     },
     created() {
 
@@ -58,6 +77,12 @@
         openLikeModal(data) {
         this.$emit("openLikeModal", data)
       },
+      makeLike(payload) {
+        this.$emit("makeLike", payload)
+      },
+      deleteLike(payload) {
+        this.$emit("deleteLike", payload)
+      }
     }
   }
   </script>

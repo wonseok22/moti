@@ -10,6 +10,8 @@
         @deleteFeed="deleteFeed"/>
         <SingleFeedBody
         @openLikeModal="openLikeModal"
+        @makeLike="makeLike"
+        @deleteLike="deleteLike"
         :BodyData="feed"
         :feedIdx="idx"/>
       </div>
@@ -23,6 +25,9 @@
       <p>모든 피드가 로드되었습니다. <br/>이젠 {{ this.$store.state.nickname }}님의 얘기를 들려주세요!</p>
     </div>
     <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment
+      @makeLike="makeLike"
+      @deleteLike="deleteLike"/>
       <FeedComment  @openLikeModal="openLikeModal"/>
     </div>
     <div class="feed-delete-modal"
@@ -181,6 +186,26 @@ export default {
       document.body.classList.remove("stop-scroll")
       this.isDelete = false
     },
+    makeLike(payload) {
+      if(this.$store.state.isComment){
+        this.feeds[this.$store.state.feedIdx].hit = true
+        this.feeds[this.$store.state.feedIdx].likes += payload.value
+      }
+      else{
+        this.feeds[payload.feedIdx].hit = true
+        this.feeds[payload.feedIdx].likes += payload.value
+      }
+    },
+    deleteLike(payload){
+      if(this.$store.state.isComment){
+        this.feeds[this.$store.state.feedIdx].hit = false
+        this.feeds[this.$store.state.feedIdx].likes += payload.value
+      }
+      else{
+        this.feeds[payload.feedIdx].hit = false
+        this.feeds[payload.feedIdx].likes += payload.value
+      }
+    }
   },
   computed: {
     isCommentClicked() {

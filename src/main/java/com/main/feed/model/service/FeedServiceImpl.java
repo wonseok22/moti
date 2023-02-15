@@ -21,7 +21,6 @@ import com.main.playlist.model.repository.PlaylistRepository;
 import com.main.playlist.model.repository.UserPlaylistRepository;
 import com.main.profile.model.repository.FollowRepository;
 import com.main.user.model.dto.SearchUserDto;
-import com.main.user.model.entity.User;
 import com.main.user.model.repository.UserRepository;
 import com.main.util.ImageProcess;
 import com.main.util.S3Upload;
@@ -130,10 +129,6 @@ public class FeedServiceImpl implements FeedService {
 		// 이미지들 먼저 삭제
 		deleteFeedImages(feedId);
 		
-		// 사진, 댓글, 좋아요 모두 삭제 후 피드 삭제 해야 함
-		feedImageRepository.deleteAllByFeed_FeedId(feedId);
-		commentRepository.deleteAllByFeed_FeedId(feedId);
-		likeRepository.deleteAllByFeed_FeedId(feedId);
 		return feedRepository.deleteByFeedId(feedId);
 	}
 	

@@ -14,6 +14,8 @@ public class Profile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long profileId;
+	
 	private String userDesc;
+	
 	private String profileImageUrl;
 }

@@ -43,13 +43,13 @@ public class Feed {
 	@JoinColumn(name = "categoryId")
 	private Category category;
 	
-	@OneToMany(mappedBy = "feed")
+	@OneToMany(mappedBy = "feed", orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "feed")
+	@OneToMany(mappedBy = "feed", orphanRemoval = true)
 	private List<FeedImage> feedImages = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "feed")
+	@OneToMany(mappedBy = "feed", orphanRemoval = true)
 	private List<Like> likes = new ArrayList<>();
 	
 }

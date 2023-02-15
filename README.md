@@ -27,7 +27,10 @@
   
 
 ## Architecture
-  <img src="/uploads/36108896807ab9090cc3a09069619f68/아키텍쳐_최종본.jpg"  width="600" height="350">
+  <img src="/uploads/36108896807ab9090cc3a09069619f68/아키텍쳐_최종본.jpg"  width="800" height="550">
+
+
+
 ## 기술 스택
 
 ## 

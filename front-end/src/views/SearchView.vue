@@ -2,7 +2,7 @@
   <div>
     <Header id="SearchHeader">
       
-      <input type="text" @input="change" placeholder="검색"/>
+      <input type="text" @input="change" placeholder=" 검색"/>
     </Header>
     <nav id="CategoryNav">
       <div class="playlist" @click="playlist()">성장 플랜</div>
@@ -14,9 +14,26 @@
     </div>
     <div class="SearchResult">
       <div class="SearchResult-slide">
-        <SearchPlaylist :keyword="keyword" @openLikeModal="openLikeModal"></SearchPlaylist>
-        <SearchFeed :keyword="keyword" @openLikeModal="openLikeModal"></SearchFeed>
-        <SearchNickname :keyword="keyword" ></SearchNickname>
+        <SearchPlaylist :keyword="keyword"
+        @deleteFeed="deleteFeed"
+        @openLikeModal="openLikeModal"></SearchPlaylist>
+        <SearchFeed :keyword="keyword"
+        @deleteFeed="deleteFeed"
+        @openLikeModal="openLikeModal"></SearchFeed>
+        <SearchNickname :keyword="keyword"></SearchNickname>
+      </div>
+    </div>
+    <div v-if="isCommentClicked" class="comment-page">
+      <FeedComment/>
+    </div>
+    <div class="feed-delete-modal"
+    v-show="isDelete">
+      <div class="feed-delete-modal-body">
+        <p> 해당 피드를 정말로 삭제하시겠습니까?</p>
+        <div>
+          <button @click="finalNo">취소</button>
+          <button @click="finalOk">삭제</button>
+        </div>
       </div>
     </div>
     <NavigationBar></NavigationBar>
@@ -46,16 +63,35 @@
 import SearchPlaylist from '@/components/SearchPlaylist.vue'
 import SearchFeed from '@/components/SearchFeed.vue'
 import SearchNickname from '@/components/SearchNickname.vue'
+import FeedComment from '@/components/FeedComment.vue'
 // import SingleFeedBody from '../components/SingleFeedBody.vue'
 
 export default {
+  beforeRouteLeave(to,from,next){
+    if(this.$store.state.isComment){
+      document.body.style.overflow = "scroll"
+      this.$store.dispatch("closeComment")
+      next(false)
+      //nextTick을 통해 렌더링이 완전히 이루어졌음을 확인
+      this.$nextTick(() => {
+        //setTimeout을 통해 크롬의 기본 scroll anchor 현상보다 먼저 일어나지 않도록 한다
+        setTimeout(() => {
+          window.scrollTo(0, this.$store.state.scrollY)
+        }, 1)
+      })
+    }
+    else{
+      next()
+    }
+  },
   data() {
     return {
       keyword : "",
+      isDelete: false,
+      deleteId: null,
       likeModal:false,
       likes:null,
       defaultImage:require(`@/assets/images/default_profile.jpg`),
-
     }
   },
   created() {
@@ -78,7 +114,7 @@ export default {
     change(event) {
       this.keyword=event.target.value;
     },
-   playlist () {
+    playlist () {
       const bar = document.getElementById("bar");
       const slide = document.querySelector(".SearchResult-slide")
       slide.style.left = 0;
@@ -98,13 +134,36 @@ export default {
       slide.style.left = "-200vw";
       bar.className = "bar3";
 
-   }
+    },
+    deleteFeed(feedId) {
+      const nowHeight = window.scrollY
+      document.querySelector(".feed-delete-modal").style.top = `${nowHeight}px`
+      document.body.classList.add("stop-scroll")
+      this.isDelete = true
+      this.deleteId = feedId
+    },
+    finalOk() {
+      this.$store.dispatch("feedDelete", this.deleteId)
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+      window.location.reload()
+    },
+    finalNo() {
+      document.body.classList.remove("stop-scroll")
+      this.isDelete = false
+    },
   },
   components: {
+    FeedComment,
     SearchPlaylist,
     SearchFeed,
     SearchNickname,
-  }
+  },
+  computed: {
+    isCommentClicked() {
+      return this.$store.getters.isCommentClicked
+    }
+  }, 
 }
 </script>
 

@@ -64,8 +64,7 @@ const checkAccessToken = (to, from, next) => {
           next()
         }
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(() => {
       })
   }
 }

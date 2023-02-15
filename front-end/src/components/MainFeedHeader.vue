@@ -29,12 +29,10 @@
         v-if="tabOpened" class="more-option"
         v-click-outside="onClickOutside">
             <span class="material-symbols-outlined"
-            style="color:aqua;"
             @click="editFeed">
                 edit
             </span>
             <span class="material-symbols-outlined"
-            style="color:red"
             @click="deleteFeed">
                 delete
             </span>
@@ -126,6 +124,8 @@ export default {
             this.$emit("deleteFeed", this.HeaderData.feedId)
         },
         async editFeed() {
+            this.$store.dispatch("closeComment")
+            document.body.style.overflow = "scroll"
             const resp = this.$store.dispatch("getSingleFeed", this.HeaderData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)

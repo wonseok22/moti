@@ -2,8 +2,18 @@
     <div id="feed-update-layout">
       <header id="feed-update-header">
         <!-- 취소 -->
-        <span @click="goBack" class="text-active">취소</span>
-        <span @click="editFeed" class="text-active">수정</span>
+        <span
+      @click="goBack"
+      class="material-symbols-outlined text-active">
+      arrow_back
+      </span>
+      <span
+      @click="editFeed"
+      class="material-symbols-outlined text-active">
+      send
+      </span>
+        <!-- <span @click="goBack" class="text-active">취소</span> -->
+        <!-- <span @click="editFeed" class="text-active">수정</span> -->
         <!-- 등록 -->
       </header>
       <section id="feed-update-section">
@@ -210,6 +220,7 @@
   
     font-size: $fs-6;
     color: $dark-grey;
+    white-space: pre-line;
   
     &::placeholder {
       color: $light-grey;

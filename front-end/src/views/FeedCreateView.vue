@@ -107,6 +107,8 @@ export default {
         alert("내용을 작성해주세요.")
         return;
       }
+
+
       if(!this.isWriting){
         this.isWriting = true
         const writeFeedDto = {
@@ -357,6 +359,7 @@ $feed-create-footer-height: 15%;
 
   font-size: $fs-6;
   color: $dark-grey;
+  white-space: pre-line;
 
   &::placeholder {
     color: $light-grey;

@@ -48,14 +48,14 @@
     <!-- 좋아요 댓글 공유 버튼에 해당되는 부분 -->
     <div class="feed-btns">
         <span class="material-symbols-outlined"
-        v-show="!this.isLike"
+        v-if="(!isLike)"
         @click="makeLike"
         style="color:#A3A3A3;">
             favorite
         </span>
 
         <span class="material-icons-outlined"
-        v-show="this.isLike"
+        v-if="(isLike)"
         @click="deleteLike"
         style="color:#FF5B5B;">
             favorite
@@ -115,6 +115,7 @@ export default {
         }, 
         async moveToComment() {
             const y = window.scrollY
+            this.$store.state.feedIdx = this.feedIdx
             const resp = this.$store.dispatch("getSingleFeed", this.BodyData.feedId)
             const result = await resp 
             await this.$store.dispatch("putSingleFeed", result.data.feed)
@@ -181,7 +182,8 @@ export default {
         },
         isCommentCheck() {
             return this.$store.state.isComment
-        }
+        },
+
     },
     created( ) {
         this.isThereImage = this.BodyData.feedImages.length
@@ -200,6 +202,9 @@ export default {
             this.overThreeLines = true
         }
     },
+    beforeUpdate() {
+        this.isLike = this.isLiked
+    }
 }
 
 </script>

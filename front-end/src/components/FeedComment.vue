@@ -121,10 +121,6 @@ export default {
       this.$store.dispatch('deleteComment', payload)
     },
     closePage() {
-<<<<<<< front-end/src/components/FeedComment.vue
-      //console.log(this.$store.state.scrollY)
-=======
->>>>>>> front-end/src/components/FeedComment.vue
       this.$store.dispatch("closeComment")
       document.body.style.overflow = "scroll"
       window.scrollTo(0, this.$store.state.scrollY)

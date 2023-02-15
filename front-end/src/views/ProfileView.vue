@@ -63,8 +63,11 @@
 
     <div class="profile-detail">
       <div class="profile-detail-slide">
-        <SearchUserId :keyword="`${profile.userId}`"  
-        @deleteFeed="deleteFeed"></SearchUserId>
+        <SearchUserId 
+          :keyword="`${profile.userId}`"  
+          @deleteFeed="deleteFeed"
+          @openLikeModal="openLikeModal"
+        ></SearchUserId>
         <SearchMyPl :keyword="`${profile.userId}`" @openModalPl="openModalPl"></SearchMyPl>
         <SearchAchieve :keyword="`${profile.userId}`" @openModal="openModal"></SearchAchieve>
       </div>
@@ -177,6 +180,14 @@
               <div>비밀번호 변경</div>
             </div>
           </li>
+          <li @click="moveCreateMission">
+            <div class="menu-items">
+              <span class="material-symbols-outlined">
+              inventory_2
+              </span>
+              <div>성장플랜 건의함</div>
+            </div>
+          </li>
           <li @click="logout">
             <div class="menu-items">
               <span class="material-symbols-outlined"> settings_power </span>
@@ -211,6 +222,25 @@
           <div class="follow-detail-slide">
             <FollowingList :key="followKey" :keyword="`${profile.userId}`" @click-follow="clickFollow"></FollowingList>
             <FollowerList :key="followerKey" :keyword="`${profile.userId}`" @click-follower="clickFollower"></FollowerList>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="like-modal" v-show="likeModal">
+      <!-- <div class="follow-modal" > -->
+      <div class="like-modal-close" @click="likeModal = false"></div>
+      <div class="like-white-bg">
+        <h3>좋아요 목록</h3>
+        <div class="like-list">
+          <div  v-for="(like,idx) in likes" :key="idx" class="like-item"  @click="moveProfile(like.userId)">
+            <div class="like-img-wrap">
+              <img :src="like.profileImageUrl ? like.profileImageUrl : defaultImage" alt="프로필사진" class="like-img">
+            </div>
+            <div class="like-nickname-wrap">
+              <img :src="like.achievementImageUrl" alt="대표뱃지" class="like-achieve" v-if="like.achievementImageUrl">
+              <div class="like-nickname">{{ like.nickname  }}</div>
+            </div>
           </div>
         </div>
       </div>
@@ -275,6 +305,7 @@ export default {
       followerKey: -1,
       profile:null,
       isMyProfile:false,
+      defaultImage:require(`@/assets/images/default_profile.jpg`),
       profileImageUrl:require(`@/assets/images/default_profile.jpg`),
       isFollow:false,
       modal: false,
@@ -287,6 +318,8 @@ export default {
       recordView: false,
       myRecord: null,
       flowerImageUrl: null,
+      likeModal:false,
+      likes:null,
     }
   },
   components: {
@@ -306,6 +339,7 @@ export default {
       .then((response) => {
         if (response.status == 202) {
           alert("202 응답");
+          this.$store.dispatch('logout')
         }
         this.profile = response.data.profile;
         if (this.profile.profileImageUrl) {
@@ -323,11 +357,36 @@ export default {
       });
   },
   methods: {
-    clickFollow(){
-      this.followerKey --;
+    openLikeModal(data) {
+      this.$axios({
+          method: "get",
+          url: `${this.$baseUrl}/feed/like/${data.feedId}`,
+        })
+          .then((response) => {
+           this.likes = response.data.list
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      this.likeModal = true
+      this.likeData = data
     },
-    clickFollower(){
+    clickFollow(adding){
+      this.followerKey --;
+      if(this.profile.userId === this.$store.state.id){
+        this.profile.following += adding;
+      }
+    },
+    clickFollower(adding){
       this.followKey ++;
+      if(this.profile.userId === this.$store.state.id){
+        this.profile.following += adding;
+      }
+    },
+    moveCreateMission() {
+      this.$router.push({
+        name: "MissionCreateView",
+      });
     },
     logout() {
       this.$store.dispatch("logout");
@@ -343,7 +402,7 @@ export default {
         })
           .then((response) => {
             if (response.status == 200) {
-              alert("쩡상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.");
+              alert("정상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.");
               this.$store.commit("LOGOUT");
               this.$router
                 .push({
@@ -586,6 +645,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .modal {
   position: fixed;
   background: rgba(0, 0, 0, 0.5);

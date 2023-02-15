@@ -6,6 +6,7 @@
               :HeaderData="feed"
               @deleteFeed="deleteFeed"/>
               <SingleFeedBody
+              @openLikeModal="openLikeModal"
               :BodyData="feed"/>
           </div>
           <infinite-loading 
@@ -61,6 +62,9 @@
     },
 
     methods : {
+      openLikeModal(data) {
+        this.$emit("openLikeModal", data)
+      },
       infiniteHandler($state) {
         setTimeout(() => {
             this.$axios({

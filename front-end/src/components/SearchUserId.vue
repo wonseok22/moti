@@ -4,8 +4,11 @@
         <div v-for="(feed,idx) in feeds" :key="idx" style="margin-bottom:10px">
           <MainFeedHeader
           :HeaderData="feed"
-          @deleteFeed="deleteFeed"/>
+          @deleteFeed="deleteFeed"
+         
+          />
           <SingleFeedBody
+          @openLikeModal="openLikeModal"
           :BodyData="feed"/>
         </div>
         <infinite-loading @infinite="infiniteHandler" spinner="waveDots" :distance="0" direction="bottom">
@@ -59,6 +62,9 @@
       deleteFeed(feedId) {
         this.$emit("deleteFeed", feedId)
       },
+      openLikeModal(data) {
+        this.$emit("openLikeModal", data)
+      }
     }
   }
   </script>

@@ -14,6 +14,9 @@
                 type="file" multiple id="image-input" style="visibility:hidden;"
             >
         </div>
+        <span class="material-symbols-outlined profile-img-delete" @click="deleteProfileImage">
+          delete_forever
+        </span>
         <!-- <h4>닉네임</h4> -->
         <div class="profile-modify-nickname">
             <input type="text" id="input-box" class="inputbox" name="input-nickname" 
@@ -64,6 +67,26 @@ mixins: [
   basicModalMixin,
 ],
 methods: {
+  deleteProfileImage() {
+    this.profileImageUrl = require(`@/assets/images/default_profile.jpg`);
+    this.$axios({
+        method: 'delete',
+        url: `${this.$baseUrl}/profile/${this.$store.state.id}`,
+        headers:{
+          "access-token" : this.$store.state.accessToken,
+        }
+      })
+        .then((response) => {
+          if(response.status != "200"){
+            alert("프로필 사진 삭제 실패")
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
+    },
+      
   nicknameInput(event) {
     this.nicknameActive = true
     // 띄어쓰기 및 특수문자 제거
@@ -227,7 +250,13 @@ created() {
 
 <style lang="scss">
 $feed-create-footer-height: 5%;
-
+.profile-img-delete{
+  margin-top: 10px;
+  font-size: 28px;
+  color:rgb(253, 110, 110);
+  // color: #fff;
+  
+}
 // 기본 레이아웃
 #profile-modify-layout {
 height: inherit;

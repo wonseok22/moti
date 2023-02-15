@@ -61,7 +61,7 @@ export default {
       }).then((response) => {
         if (response.data.message ==="success"){
           this.follows[i].following = false;
-          this.$emit("click-follower");
+          this.$emit("click-follower",-1);
         } 
         }).catch((error) =>{
           console.log(error)
@@ -74,7 +74,7 @@ export default {
       }).then((response) => {
         if (response.data.message ==="success"){
           this.follows[i].following = true;
-          this.$emit("click-follower");
+          this.$emit("click-follower",1);
         } 
       }).catch((error) =>{
         console.log(error)

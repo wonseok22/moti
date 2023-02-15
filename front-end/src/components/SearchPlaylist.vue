@@ -6,6 +6,7 @@
                 :HeaderData="feed"
                 @deleteFeed="deleteFeed"/>
                 <SingleFeedBody
+                @openLikeModal="openLikeModal"
                 :BodyData="feed"/>
             </div>
         </div>
@@ -53,7 +54,10 @@
         deleteFeed(feedId) {
             this.$emit("deleteFeed", feedId)
 
-        }
+        },
+        openLikeModal(data) {
+        this.$emit("openLikeModal", data)
+      },
     }
   }
   </script>

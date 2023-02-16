@@ -88,6 +88,7 @@ export default {
 
     .follow{     
           margin-left: 10px;
+          padding-top: 2px;
             font-size: 10px;
             height: 20px;
             width: 50px;
@@ -95,15 +96,17 @@ export default {
             border-radius: 5px;
             border: 0px solid #000;
         }
-        .unfollow{
-          margin-left: 10px;
-            font-size: 10px;
-            height: 20px;
-            width: 80px;
-            background-color: rgb(253, 110, 110);
-            border-radius: 5px;
-            border: 0px solid #000;
-            font-weight: bold;
-        }
+      .unfollow{
+        margin-left: 10px;
+        margin-bottom: 2px;
+        padding-top: 2px;
+          font-size: 10px;
+          height: 20px;
+          width: 80px;
+          background-color: rgb(253, 110, 110);
+          border-radius: 5px;
+          border: 0px solid #000;
+          font-weight: bold;
+      }
   }
   </style>

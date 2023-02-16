@@ -45,7 +45,7 @@
 
 <script>
 import * as regex from '@/tools/regex.js'
-import BasicModal from '@/components/BasicModal'
+import BasicModal from '@/components/Common/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
 
 export default {

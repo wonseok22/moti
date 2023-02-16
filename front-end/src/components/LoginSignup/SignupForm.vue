@@ -87,10 +87,10 @@
 
 <script>
 import * as regex from '@/tools/regex.js'
-import BasicModal from '@/components/BasicModal'
+import BasicModal from '@/components/Common/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
-import LoginKakao from '@/components/LoginKakao'
-import LoginGoogle from '@/components/LoginGoogle'
+import LoginKakao from '@/components/LoginSignup/LoginKakao'
+import LoginGoogle from '@/components/LoginSignup/LoginGoogle'
 
 export default {
 	name: 'SignupForm',

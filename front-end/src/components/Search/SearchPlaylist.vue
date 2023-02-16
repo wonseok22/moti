@@ -17,8 +17,8 @@
   </template>
   
   <script>
-    import MainFeedHeader from '@/components/MainFeedHeader.vue'
-    import SingleFeedBody from '../components/SingleFeedBody.vue'
+    import MainFeedHeader from '@/components/Feed/MainFeedHeader.vue'
+    import SingleFeedBody from '@/components/Feed/SingleFeedBody.vue'
 
     export default {
     name: 'SearchPlaylist',

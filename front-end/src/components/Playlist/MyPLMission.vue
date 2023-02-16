@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import NavigationBar from '@/components/NavigationBar'
+import NavigationBar from '@/components/Common/NavigationBar'
 
 // 진행상황 표시하는 이미지
 export default {
@@ -64,10 +64,10 @@ export default {
   data() {
     return {
       progressImg: {
-        1: require('./../assets/images/1_soil.png'),
-        2: require('./../assets/images/2_watering_can.png'),
-        3: require('./../assets/images/3_sprout.png'),
-        4: require('./../assets/images/4_sun.png'),
+        1: require('./../../assets/images/1_soil.png'),
+        2: require('./../../assets/images/2_watering_can.png'),
+        3: require('./../../assets/images/3_sprout.png'),
+        4: require('./../../assets/images/4_sun.png'),
         5: null,
       },
       progress: {

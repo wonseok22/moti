@@ -22,7 +22,7 @@
 </template>
   
 <script>
-import NavigationBar from '@/components/NavigationBar'
+import NavigationBar from '@/components/Common/NavigationBar'
 
 export default {
   name: 'playlistMain',

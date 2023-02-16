@@ -78,11 +78,10 @@
 </template>
 
 <script>
-import SearchPlaylist from '@/components/SearchPlaylist.vue'
-import SearchFeed from '@/components/SearchFeed.vue'
-import SearchNickname from '@/components/SearchNickname.vue'
-import FeedComment from '@/components/FeedComment.vue'
-// import SingleFeedBody from '../components/SingleFeedBody.vue'
+import SearchPlaylist from '@/components/Search/SearchPlaylist.vue'
+import SearchFeed from '@/components/Search/SearchFeed.vue'
+import SearchNickname from '@/components/Search/SearchNickname.vue'
+import FeedComment from '@/components/Comment/FeedComment.vue'
 
 export default {
   beforeRouteLeave(to,from,next){

@@ -7,7 +7,7 @@ import axios from 'axios'
 import VModal from 'vue-js-modal'
 import VueGtag from 'vue-gtag'
 
-import NavigationBar from './components/NavigationBar.vue'
+import NavigationBar from './components/Common/NavigationBar.vue'
 
 
 Vue.component(NavigationBar.name, NavigationBar)

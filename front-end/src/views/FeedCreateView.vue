@@ -50,7 +50,7 @@
       <!-- 사진 등록 -->
       <label image-input-label for="image-input"><i class="material-symbols-outlined text-active" id="photo-camera">photo_camera</i></label>
       <input 
-        @change="inputImage"  
+        @input="inputImage"
         type="file" multiple id="image-input" style="visibility:hidden;"
       >
       <!-- 피드 비공개 -->
@@ -170,6 +170,7 @@ export default {
           const dataTransfer = new DataTransfer()
           const imageArray = Array.from(event.target.files)	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
           let imgSizeWarning = false
+          console.log(imageArray)
           imageArray.forEach((img) => {
             // gif 처리
             if (img.type === 'image/gif') {
@@ -254,6 +255,9 @@ export default {
       fileArray.splice(targetIdx, 1)	//해당하는 index의 파일을 배열에서 제거
       fileArray.forEach(file => { dataTransfer.items.add(file) })
       this.images = dataTransfer.files	//제거 처리된 FileList를 돌려줌
+      const imageInputTag = document.querySelector('#image-input')
+      // input 태그 files도 변경
+      imageInputTag.files = this.images
       this.inputImage()
     },
   },

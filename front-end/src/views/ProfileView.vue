@@ -64,9 +64,12 @@
     <div class="profile-detail">
       <div class="profile-detail-slide">
         <SearchUserId 
-          :keyword="`${profile.userId}`"  
+          :keyword="`${profile.userId}`"
+          :likeChanged = "likeChanged"  
           @deleteFeed="deleteFeed"
           @openLikeModal="openLikeModal"
+          @deleteLike="deleteLike"
+          @makeLike="makeLike"
         ></SearchUserId>
         <SearchMyPl :keyword="`${profile.userId}`" @openModalPl="openModalPl"></SearchMyPl>
         <SearchAchieve :keyword="`${profile.userId}`" @openModal="openModal"></SearchAchieve>
@@ -230,7 +233,10 @@
     
 
     <div v-if="isCommentClicked" class="comment-page">
-      <FeedComment  @openLikeModal="openLikeModal"
+      <FeedComment 
+      @deleteLike="deleteLike"
+      @makeLike="makeLike"
+      @openLikeModal="openLikeModal"
       />
     </div>
 
@@ -330,6 +336,11 @@ export default {
       flowerImageUrl: null,
       likeModal:false,
       likes:null,
+      likeChanged: {
+        feedIdx: null,
+        value: null,
+        seed: 1,
+      }
     }
   },
   components: {
@@ -413,7 +424,7 @@ export default {
           .then((response) => {
             if (response.status == 200) {
               alert("정상적으로 탈퇴되었습니다. moti를 이용해 주셔서 감사합니다.");
-              this.$store.commit("LOGOUT");
+              this.$store.dispatch("logout");
               this.$router
                 .push({
                   name: "landing",
@@ -643,6 +654,28 @@ export default {
       this.moveFollower()
       
     },
+    makeLike(payload) {
+      if(this.$store.state.isComment){
+        this.likeChanged.feedIdx = this.$store.state.feedIdx
+        this.likeChanged.value = 1
+      }
+      else{
+        this.likeChanged.feedIdx = payload.feedIdx
+        this.likeChanged.value = 1
+      }
+      this.likeChanged.seed *= -1
+    },
+    deleteLike(payload){
+      if(this.$store.state.isComment){
+        this.likeChanged.feedIdx = this.$store.state.feedIdx
+        this.likeChanged.value = -1
+      }
+      else{
+        this.likeChanged.feedIdx = payload.feedIdx
+        this.likeChanged.value = -1
+      }
+      this.likeChanged.seed *= -1
+    }
   },
   
   computed: {

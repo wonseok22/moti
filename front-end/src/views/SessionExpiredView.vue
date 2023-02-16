@@ -32,7 +32,7 @@ export default {
     if (this.$route.params.error == 401 || this.$route.params.error == 202) {
       this.errorMessage1 = '세션이 만료되었어요.'
       this.errorMessage2 = '다시 로그인 해주세요!'
-      console.log(this.$route.params.error)
+      // console.log(this.$route.params.error)
     } else {
       this.errorMessage1 = '에러가 발생했어요.'
       this.errorMessage2 = `status: ${this.$route.params.error}`

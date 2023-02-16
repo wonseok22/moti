@@ -1,19 +1,19 @@
 <template>
-    <main>
-        <div class="result-box" style="padding-left : 20px; gap:0px;">
-            <div v-for="(follow,idx) in follows" :key="idx">
-                <div class="follow-info" >
-                  <div class="follow-info-img-wrap" @click="moveProfile(follow.userId)">
-                    <img :src="follow.profileImageUrl ? follow.profileImageUrl : defaultImage" alt="팔로워 프로필사진" class="follow-info-image">
-                  </div>
-                  <div class="follow-info-nickname" @click="moveProfile(follow.userId)">{{ follow.nickname }}</div>
-                  <button v-if="!follow.following && (follow.userId != userId)" class="follow" @click="Follow(follow.userId,idx)">팔로우</button>
-                  <button v-if="follow.following && (follow.userId != userId)" class="unfollow" @click="unFollow(follow.userId,idx)">팔로우 취소</button>
+  <main>
+      <div class="result-box" style="padding-left : 20px; gap:0px;">
+          <div v-for="(follow,idx) in follows" :key="idx">
+              <div class="follow-info" >
+                <div class="follow-info-img-wrap" @click="moveProfile(follow.userId)">
+                  <img :src="follow.profileImageUrl ? follow.profileImageUrl : defaultImage" alt="팔로워 프로필사진" class="follow-info-image">
                 </div>
-            </div>
-        </div>
-    </main>
-  </template>
+                <div class="follow-info-nickname" @click="moveProfile(follow.userId)">{{ follow.nickname }}</div>
+                <button v-if="!follow.following && (follow.userId != userId)" class="follow" @click="Follow(follow.userId,idx)">팔로우</button>
+                <button v-if="follow.following && (follow.userId != userId)" class="unfollow" @click="unFollow(follow.userId,idx)">팔로우 취소</button>
+              </div>
+          </div>
+      </div>
+  </main>
+</template>
   
 <script>
 export default {
@@ -40,7 +40,6 @@ export default {
         url: `${this.$baseUrl}/profile/follow?targetId=${this.keyword}&type=follower&userId=${this.$store.state.id}`
         }).then((response) => {
           this.follows = response.data.followerList;
-          console.log(this.follows)
 
         }).catch((error) =>{
         console.log(error);

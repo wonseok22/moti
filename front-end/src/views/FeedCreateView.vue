@@ -36,12 +36,11 @@
 
     </main>
 
-    <footer id="feed-create-footer">
+    <footer 
+      id="feed-create-footer"
+      :class="{ 'image-none': !images }"
+    >
       <div id="feed-create-footer-img-box">
-        <div id="feed-create-footer-hr" v-show="this.images">
-          <hr>
-        </div>
-        
         <!-- 이미지 -->
         <aside 
           v-show="this.images"
@@ -70,25 +69,32 @@
       @close="modalClose"
     >
     </basic-modal>
+
+    <feed-creating-modal
+      v-if="isWriting"
+    >
+    </feed-creating-modal>
   </div>
 </template>
 
 <script>
 import BasicModal from '@/components/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
+import FeedCreatingModal from '@/components/FeedCreatingModal'
 
 
 export default {
   name: 'FeedCreateView',
   components: {
     BasicModal,
+    FeedCreatingModal,
   },
   mixins: [
     basicModalMixin,
   ],
   data() {
     return {
-      isWriting:false,
+      isWriting: false,
       content: null,
       images: null,
       isprivate: false,
@@ -102,14 +108,13 @@ export default {
     // 피드 등록
     createFeed() {
       const formData = new FormData()
-      
       if (this.content == "" || this.content == null){
-        alert("내용을 작성해주세요.")
-        return;
+        this.openModal = true
+        this.modalContent = "내용을 입력해주세요!"
+        return
       }
 
-
-      if(!this.isWriting){
+      if (!this.isWriting){
         this.isWriting = true
         const writeFeedDto = {
           userId: this.$store.state.id,
@@ -154,18 +159,8 @@ export default {
     // 작성 내용 저장하기
     inputContent(event) {
       this.content = event.target.value
-
-      // 글
-      const rowCount = this.content.split(/\r\n|\r|\n/).length
-      // const targetTextarea = document.querySelector('#feed-create-input')
-      console.log(rowCount)
-      // if(rowCount < 4)
-      //     targetTextarea.style.height="52px"; //특정 줄 수 보다 작아지면 height가 이것보다 작아지지 않았으면 한다
-      // else
-      //     targetTextarea.style.height= (rowCount * 18) + "px";
-      //     },
-    // 이미지 받기
     },
+    // 이미지 받기
     inputImage(event) {
       if (event) {
         if (event.target.files.length > 10) {
@@ -260,7 +255,7 @@ export default {
       fileArray.forEach(file => { dataTransfer.items.add(file) })
       this.images = dataTransfer.files	//제거 처리된 FileList를 돌려줌
       this.inputImage()
-    }
+    },
   },
   computed: {
     missionInfo() {
@@ -289,13 +284,6 @@ $feed-create-footer-height: 15%;
   padding: 0 10px;
 }
 
-#feed-create-main {
-  height: 60%;
-
-  display: flex;
-  flex-direction: column;
-}
-
 // header 레이아웃
 #feed-create-header {
   // height: 3%;
@@ -316,9 +304,15 @@ $feed-create-footer-height: 15%;
   }
 }
 
+#feed-create-main {
+  height: 60%;
+
+  display: flex;
+  flex-direction: column;
+}
+
 // 미션명
 #feed-create-section {
-  // height: 8%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -330,12 +324,6 @@ $feed-create-footer-height: 15%;
   p:nth-child(1) {
     font-size: $fs-7;
   }
-
-  // // 플레이리스트
-  // p:nth-child(2) {
-  //   font-size: $fs-6;
-  //   color: $main-green;
-  // }
 
   // 미션명
   p:nth-child(2) {
@@ -356,6 +344,9 @@ $feed-create-footer-height: 15%;
   height: 100%;
   border: none;
   resize: none;
+  padding: 5px;
+
+  border: 1px solid;
 
   font-size: $fs-6;
   color: $dark-grey;
@@ -373,6 +364,10 @@ $feed-create-footer-height: 15%;
 #feed-create-footer-img-box {
   width: 100%;
   height: 70%;
+}
+
+.image-none {
+  height: auto !important;
 }
 
 // 이미지 프리뷰 레이아웃
@@ -418,10 +413,7 @@ $feed-create-footer-height: 15%;
   justify-content: flex-end;
   align-items: flex-start;
 
-  // position: fixed;
-  // width: 100%;
-  // bottom: 0px;
-  // left: 10px;
+  margin-top: 10px;
 }
 
 #feed-create-footer-private {

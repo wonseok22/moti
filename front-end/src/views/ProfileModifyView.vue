@@ -7,27 +7,34 @@
     </header>
 
     <main class="profile-modify-main">
-        <div class="profile-modify-img">
-            <label for="image-input"><img :src="profileImageUrl" alt="프로필 사진"/><div class="profile-logo">+</div></label>
-            <input 
-                @change="inputImage"  
-                type="file" multiple id="image-input" style="visibility:hidden;"
-            >
-        </div>
-        <span class="material-symbols-outlined profile-img-delete" @click="deleteProfileImage">
-          delete_forever
-        </span>
-        <!-- <h4>닉네임</h4> -->
-        <div class="profile-modify-nickname">
-            <input type="text" id="input-box" class="inputbox" name="input-nickname" 
-            placeholder="닉네임 입력" @input="nicknameInput" :value="nickname">
-            <button class="btn-green" @click="doubleCheck">중복체크</button>
-        </div>
-        
-        <!-- <h4>자기소개</h4> -->
-        <div class="profile-modify-desc">
-            <textarea placeholder="자기소개 입력 (50자 이내)" :value="content" @input="inputContent" class="profile-desc" name="feed-create-input" maxlength="50"></textarea>    
-        </div>
+      <div class="profile-modify-img">
+        <label for="image-input">
+            <div>
+              <img :src="profileImageUrl" alt="프로필 사진"/>
+            </div>
+            <span class="profile-modify-btn">
+              +
+            </span>
+        </label>
+        <input 
+          @change="inputImage"
+          type="file" multiple id="image-input" style="visibility:hidden;"
+        >
+      </div>
+      <span class="material-symbols-outlined profile-img-delete" @click="deleteProfileImage">
+        delete_forever
+      </span>
+      <!-- <h4>닉네임</h4> -->
+      <div class="profile-modify-nickname">
+          <input type="text" id="input-box" class="inputbox" name="input-nickname" 
+          placeholder="닉네임 입력" @input="nicknameInput" :value="nickname">
+          <button class="btn-green" @click="doubleCheck">중복체크</button>
+      </div>
+      
+      <!-- <h4>자기소개</h4> -->
+      <div class="profile-modify-desc">
+          <textarea placeholder="자기소개 입력 (50자 이내)" :value="content" @input="inputContent" class="profile-desc" name="feed-create-input" maxlength="50"></textarea>    
+      </div>
     </main>
     <div class="profile-modify-btn">
         <button class="modify-btn" @click="submit">변경하기</button>
@@ -293,19 +300,42 @@ margin-bottom: 15px;
       overflow: hidden;
       align-items: center;
       vertical-align: middle;
-      // border: 1px solid rgb(223, 223, 223);
-      label {
-          position: relative;
-      }
-      img{
 
-        object-fit: cover;
+      label {
+        display: flex;
+        justify-content: center;
+
+        div {
+          position: relative;
+
+          img {
+          object-fit: cover;
           width: 90px;
           height: 90px;
+          }
+        }
+
+        
       }
 
+      // border: 1px solid rgb(223, 223, 223);
+      
+
   }
-  .profile-modify-img::before{
+  // .profile-modify-img::before{
+  //   content: "+";
+  //   z-index: 9999;
+  //   position: absolute;
+  //   font-size: 20px;
+  //   font-weight: bold;
+  //   width: 22px;
+  //   height: 22px;
+  //   border-radius: 50%;
+  //   left: 57%;
+  //   background-color: rgb(133, 235, 147);
+  // }
+
+  .profile-modify-btn{
     content: "+";
     z-index: 9999;
     position: absolute;

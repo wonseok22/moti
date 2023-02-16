@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import AuthModal from '@/components/AuthModal.vue'
-import BasicModal from '@/components/BasicModal'
+import AuthModal from '@/components/LoginSignup/AuthModal.vue'
+import BasicModal from '@/components/Common/BasicModal'
 // import { basicModalMixin } from '@/tools/basicModalMixin.js'
 
 export default {

@@ -125,7 +125,6 @@ export default {
             await this.$store.dispatch("putSingleFeed", result.data.feed)
             await this.$store.dispatch("putScrollHeight", y)
             await this.$store.dispatch("showComment")
-            //console.log(this.$store.state.nowFeed)
             document.body.style.overflow = "hidden"
         },
         makeLike() {
@@ -149,9 +148,7 @@ export default {
             }
         },
         shareViaWebShare() {
-            // console.log(this.BodyData)
             let imageUrl = this.BodyData.feedImages.length != 0? this.BodyData.feedImages[0].feedImageUrl:""
-            // console.log(imageUrl)
             window.Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
@@ -208,11 +205,9 @@ export default {
     },
     watch: {
         isLikeChanged() {
-            //console.log(this.BodyData.hit)
             this.isLike = this.BodyData.hit
         },
         isLikeCntChanged() {
-            //console.log(this.BodyData.likes)
             this.likeCnt = this.BodyData.likes
         }
     },

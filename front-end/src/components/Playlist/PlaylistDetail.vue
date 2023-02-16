@@ -54,8 +54,8 @@
   </div>
 </template>
 <script>
-import NavigationBar from '@/components/NavigationBar'
-import FlowerDesc from '@/components/FlowerDesc'
+import NavigationBar from '@/components/Common/NavigationBar'
+import FlowerDesc from '@/components/Playlist/FlowerDesc'
 
 export default {
   name: 'playlistDetail',

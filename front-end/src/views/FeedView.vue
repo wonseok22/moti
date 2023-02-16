@@ -67,9 +67,9 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import MainFeedHeader from '@/components/MainFeedHeader.vue'
-import SingleFeedBody from '../components/SingleFeedBody.vue'
-import FeedComment from '@/components/FeedComment.vue'
+import MainFeedHeader from '@/components/Feed/MainFeedHeader.vue'
+import SingleFeedBody from '../components/Feed/SingleFeedBody.vue'
+import FeedComment from '@/components/Comment/FeedComment.vue'
 
 export default {
   beforeRouteLeave(to,from,next){

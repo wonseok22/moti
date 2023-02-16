@@ -71,7 +71,6 @@ export default {
         })
     },
     goUp() {
-      // console.log(this.$router.history.current["path"])
       if(this.$router.history.current["path"] === "/feed"){
         window.scrollTo({
           top:0,

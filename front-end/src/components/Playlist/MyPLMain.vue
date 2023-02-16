@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import MyPlForm from '@/components/MyPLForm'
-import NavigationBar from '@/components/NavigationBar'
+import MyPlForm from '@/components/Playlist/MyPLForm'
+import NavigationBar from '@/components/Common/NavigationBar'
 
 export default {
   name: 'MyPLMain',

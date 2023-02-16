@@ -78,9 +78,9 @@
 </template>
 
 <script>
-import BasicModal from '@/components/BasicModal'
+import BasicModal from '@/components/Common/BasicModal'
 import { basicModalMixin } from '@/tools/basicModalMixin.js'
-import FeedCreatingModal from '@/components/FeedCreatingModal'
+import FeedCreatingModal from '@/components/Feed/FeedCreatingModal'
 
 
 export default {

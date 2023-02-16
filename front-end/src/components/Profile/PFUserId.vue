@@ -14,7 +14,7 @@
           :BodyData="feed"
           :feedIdx="idx"/>
         </div>
-        <infinite-loading @infinite="infiniteHandler" spinner="waveDots" :distance="0" direction="bottom">
+        <infinite-loading @infinite="infiniteHandler" spinner="waveDots" :distance="50" direction="bottom">
             <div slot="no-more"></div>
         </infinite-loading>
       </div>
@@ -22,8 +22,8 @@
   </template>
   
   <script>
-    import MainFeedHeader from '@/components/MainFeedHeader.vue'
-    import SingleFeedBody from '../components/SingleFeedBody.vue'
+    import MainFeedHeader from '@/components/Feed/MainFeedHeader.vue'
+    import SingleFeedBody from '@/components/Feed/SingleFeedBody.vue'
     import InfiniteLoading from 'vue-infinite-loading'
 
     export default {

@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import MainFeedHeader from '@/components/MainFeedHeader.vue'
-import SingleFeedBody from '../components/SingleFeedBody.vue'
-import FeedComment from '@/components/FeedComment.vue'
+import MainFeedHeader from '@/components/Feed/MainFeedHeader.vue'
+import SingleFeedBody from '@/components/Feed/SingleFeedBody.vue'
+import FeedComment from '@/components/Comment/FeedComment.vue'
 
 export default {
   name:'FeedMyRecord',
@@ -80,9 +80,6 @@ export default {
     }
   },
   methods: {
-    // deleteFeed(feedId) {
-    //   console.log(feedId)
-    // },
     closePage() {
       this.$store.dispatch("showComment")
       document.body.style.overflow = "scroll"

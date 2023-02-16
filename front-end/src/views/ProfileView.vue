@@ -288,13 +288,13 @@
 
 <script>
 import { mapState } from "vuex";
-import SearchUserId from "@/components/SearchUserId.vue";
-import SearchMyPl from "@/components/SearchMyPl.vue";
-import SearchAchieve from "@/components/SearchAchieve.vue";
-import FollowerList from "@/components/FollowerList.vue";
-import FollowingList from "@/components/FollowingList.vue";
-import FeedComment from "@/components/FeedComment.vue";
-import FeedMyRecord from "@/components/FeedMyRecord.vue";
+import SearchUserId from "@/components/Profile/PFUserId.vue";
+import SearchMyPl from "@/components/Profile/PFMyPl.vue";
+import SearchAchieve from "@/components/Profile/PFAchieve.vue";
+import FollowerList from "@/components/Common/FollowerList.vue";
+import FollowingList from "@/components/Common/FollowingList.vue";
+import FeedComment from "@/components/Comment/FeedComment.vue";
+import FeedMyRecord from "@/components/Profile/PFMyRecordFeed.vue";
 
 export default {
   name: "ProfileView",

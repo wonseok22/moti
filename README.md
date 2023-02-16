@@ -94,7 +94,7 @@ moti는 우리의 내재적 동기를 증진하고, 미션 공동체감을 형�
   - [API 명세서](https://docs.google.com/spreadsheets/d/1duRRLAfNjpaQ-DNTC_Gr5_93S6W2WguajCkwFq1mzKk/edit?usp=sharing)
   - [UCC](https://drive.google.com/file/d/1yH3LDSlq1AfVlKQXpxzwcc-TjYsNRSsW/view?usp=share_link)
   - 최종 발표 자료
-  - 포팅 매뉴얼
+  - [포팅 매뉴얼](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/master/exec/%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC_A509_moti.pdf)
 
 ## 서비스 상세
 

@@ -53,20 +53,20 @@ export default {
         const check_res = this.$store.dispatch("followCheck", this.HeaderData.userId)
         const check_result = await check_res
         this.Following = check_result.data.check
-        var date = new Date(this.HeaderData.createdDate);
-        var now = new Date();
-        this.date = new Date(date.getTime() - date.getTimezoneOffset()*60000)
-        let diffTime = (now.getTime() - this.date.getTime())/60000
-        if(diffTime < 1){
+        var date = new Date(this.HeaderData.createdDate); // 작성시간
+        var now = new Date(); // 현재시간(-9시간 되어있음)
+        this.date = new Date(date.getTime() - date.getTimezoneOffset()*60000) // 현재시간에 9시간 더함
+        let diffTime = (now.getTime() - this.date.getTime())/60000 // 작성시간 - 현재시간 분단위로
+        if(diffTime < 1){ // 1분 이하일경우
             this.date = "방금 전"
-        }else if(diffTime < 60) {
+        }else if(diffTime < 60) { // 1시간 이하일 경우
             this.date = parseInt(diffTime) + "분 전"
-        } else if(diffTime < 1440) {
+        } else if(diffTime < 1440) { // 24시간 이하일 경우
             this.date = parseInt(diffTime/60) + "시간 전"
-        } else if(diffTime < 1440 * 30) {
-            if (parseInt(diffTime/ 1440) == 1){
+        } else if(diffTime < 1440 * 30) { // 한달 이내일 경우
+            if (parseInt(diffTime/ 1440) == 1){ // 하루 전일경우
             this.date = "어제"
-            } else {
+            } else { // 2일보다 오래된 경우
             this.date = parseInt(diffTime/ 1440) + "일 전"
             }
         }

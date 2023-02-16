@@ -5,8 +5,8 @@
       <input type="text" @input="change" placeholder=" 검색"/>
     </Header>
     <nav id="CategoryNav">
-      <div class="playlist" @click="playlist()">성장 플랜</div>
-      <div class="feed" @click="feed()">게시글</div>
+      <div class="playlist" @click="playlist()">게시글</div>
+      <div class="feed" @click="feed()">성장 플랜</div>
       <div class="nickname" @click="nickname()">계정</div>
     </nav>
     <div class="underbar">
@@ -14,12 +14,12 @@
     </div>
     <div class="SearchResult">
       <div class="SearchResult-slide">
-        <SearchPlaylist :keyword="keyword"
-        @deleteFeed="deleteFeed"
-        @openLikeModal="openLikeModal"></SearchPlaylist>
         <SearchFeed :keyword="keyword"
         @deleteFeed="deleteFeed"
         @openLikeModal="openLikeModal"></SearchFeed>
+        <SearchPlaylist :keyword="keyword"
+        @deleteFeed="deleteFeed"
+        @openLikeModal="openLikeModal"></SearchPlaylist>
         <SearchNickname :keyword="keyword"></SearchNickname>
       </div>
     </div>
@@ -195,10 +195,10 @@ export default {
   font-weight: bold;
 
   .playlist {
-    width: 40%;
+    width: 30%;
   }
   .feed {
-    width: 30%;
+    width: 40%;
   }
   .nickname {
     width: 30%;
@@ -215,13 +215,13 @@ export default {
   }
   
   .bar1 {
-    width: 40%;
+    width: 30%;
     left:0;
     transition:0.3s;
   }
   .bar2 {
-    width: 30%;
-    left: 40%;
+    width: 40%;
+    left: 30%;
     transition: 0.3s;
   }
   .bar3 {

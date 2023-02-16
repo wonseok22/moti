@@ -104,4 +104,4 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
 <br>
 
 ## 팀원 소개
-![팀원소개](/uploads/e01ebe1b3a160bddc8c4d41cdfd109fb/팀원소개.png)
+![팀원 소개](/uploads/2b7030dfe3b2bc7b1ce574d4f449aec7/대지_1.png)

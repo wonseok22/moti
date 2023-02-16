@@ -5,7 +5,7 @@
 ## **서비스 페이지: [https://moti.today/](https://moti.today/)**
 <br>
 
-## **서비스 소개 영상: [moti UCC](https://drive.google.com/file/d/1yH3LDSlq1AfVlKQXpxzwcc-TjYsNRSsW/view?usp=share_link)**
+## **서비스 소개 영상: [moti UCC](https://drive.google.com/file/d/1dT30MbYuRpw9fSWY2WIiPlLdHeZl4Zq5/view?usp=share_link)**
 
 <br>
 
@@ -61,6 +61,11 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
   - 새로운 성장 플랜 아이디가 있다면 프로필의 ‘성장플랜 건의’함에서 성장 플랜과 그에 해당하는 미션을 제안할 수 있습니다.
   
     <img src="./docs/images/suggestion.gif" height="400">
+
+### **온보딩 페이지**
+  - 회원가입 시 온보딩 페이지를 통해 서비스 이용법을 확인할 수 있습니다.
+  
+    <img src="./docs/images/onboarding.gif" height="400">
         
 
 ### **기타 기능**

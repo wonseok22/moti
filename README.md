@@ -48,3 +48,20 @@
 ## 서비스 상세
 
 ## 팀원 소개
+
+
+
+
+
+<img src="/uploads/e449044e461048f3b67ac723e34e3def/고명진.jpg"  width="200" height="260">
+고명진 
+<img src="/uploads/eb88d221ba80e71717aa897b7d5105d6/유다윗.jpg"  width="200" height="260">
+유다윗 
+<img src="/uploads/3d5a87a8120500b55814547e14ce4c89/이상화.jpg"  width="200" height="260">
+이상화 
+<img src="/uploads/1448681f1f5675e45ac1c50bf9a7cedf/이연수.jpg"  width="200" height="260">
+이연수 
+<img src=""  width="200" height="250">~~~~~~~~
+정석진 
+<img src="/uploads/e48f317ca9600aa8edce902b03cac478/한원석.jpg"  width="200" height="260">
+한원석 

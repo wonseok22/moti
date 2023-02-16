@@ -98,9 +98,9 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
   - [와이어 프레임](https://www.figma.com/file/YNlhSos5Lc5T7x8kPRZ9Xa/wireframe?node-id=1%3A4&t=eUwB9h039oUJrfVB-1)
   - [ERD](https://drive.google.com/file/d/162xcVEjiTRk7FI0koiqdyPW6W22sieOB/view?usp=sharing)
   - [API 명세서](https://docs.google.com/spreadsheets/d/1duRRLAfNjpaQ-DNTC_Gr5_93S6W2WguajCkwFq1mzKk/edit?usp=sharing)
-  - [UCC](https://drive.google.com/file/d/1yH3LDSlq1AfVlKQXpxzwcc-TjYsNRSsW/view?usp=share_link)
+  - [UCC](https://drive.google.com/file/d/1dT30MbYuRpw9fSWY2WIiPlLdHeZl4Zq5/view?usp=share_link)
   - 최종 발표 자료
-  - [포팅 매뉴얼](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/master/exec/%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC_A509_moti.pdf)
+  - [포팅 매뉴얼](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/master/exec/%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC_A509_moti.pdf)  - [시연 시나리오](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/master/exec/%EC%8B%9C%EC%97%B0%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4_A509_moti.pdf)
   - [서비스 기획서](https://docs.google.com/document/d/19p0VtpNlteqFQRUuHLccIS_PhBel7xTYJ-Y9FSJ4dSQ/edit?usp=sharing)
   - [유사 서비스 조사](https://docs.google.com/spreadsheets/d/1teaXvvrvGnj2uXY0SJvy8_VOWVV7pqUdUF4t35g7PZA/edit?usp=sharing)
   - [서비스 전략 구상 및 학습](  https://docs.google.com/document/d/1he7Bx1rYmBEvgwee7ZHUk5tWowbOb8AGEAZ-nKhbLx8/edit?usp=sharing)
@@ -109,4 +109,4 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
 <br>
 
 ## 팀원 소개
-
+![팀원소개](/uploads/e01ebe1b3a160bddc8c4d41cdfd109fb/팀원소개.png)

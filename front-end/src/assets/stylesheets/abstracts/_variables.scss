@@ -1,0 +1,119 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+
+/// Regular font family
+/// @type List
+$text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
+
+/// Code (monospace) font family
+/// @type List
+$code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
+
+
+/// Main brand color
+/// @type Color
+$brand-color: rgb(229, 0, 80) !default;
+
+/// Light grey
+/// @type Color
+// $light-grey: rgb(237, 237, 237) !default;
+
+/// Medium grey
+/// @type Color
+$mid-grey: rgb(153, 153, 153) !default;
+
+/// Dark grey
+/// @type Color
+// $dark-grey: rgb(68, 68, 68) !default;
+
+
+/// Breakpoints map
+/// @prop {String} keys - Keys are identifiers mapped to a given length
+/// @prop {Map} values - Values are actual breakpoints expressed in pixels
+$breakpoints: (
+  'small': 320px,
+  'medium': 768px,
+  'large': 1024px,
+) !default;
+
+
+/// Relative or absolute URL where all assets are served from
+/// @type String
+/// @example scss - When using a CDN
+///   $base-url: 'https://cdn.example.com/assets/';
+$base-url: '/assets/' !default;
+
+
+
+//-------직접 정의--------
+/// base 폰트 컬러
+/// @type Color
+$text-base-color: #2D2D2D!default;
+
+/// light yellow
+/// @type Color
+$light-yellow: #FFFDF5 !default;
+
+/// @type Color
+$dark-grey: #777777 !default;
+
+/// @type Color
+$light-grey: #ABABAB !default;
+
+/// @type Color
+$main-green: #04C584 !default;
+
+/// @type Color
+$light-green: #10DF99 !default;
+
+/// @type Color
+$dark-green: #325C3E !default;
+
+/// @type Color
+$murky-green: #A4D1C2 !default;
+
+/// @type Color
+$mission-green: #2C5C3F !default;
+
+/// @type Color
+$light-red: rgb(232, 81, 81) !default;
+
+
+
+
+/// Container's maximum width
+/// @type Length
+$max-width: 1180px !default;
+
+
+/// font size
+$fs-0: 2.5rem !default;
+$fs-1: 2.062rem !default;
+$fs-2: 1.75rem !default;
+$fs-3: 1.438rem !default;
+$fs-4: 1.188rem !default;
+$fs-5: 1rem !default;
+$fs-6: 0.812rem !default;
+$fs-7: 0.688rem !default;
+
+$bold-3: 900; 
+$bold-4: 800; 
+$bold-5: 700; 
+$bold-6: 650; 
+$bold-7: 550; 
+
+/// @type Length
+$account-height: 60% !default;
+
+// HTML 기본 너비
+// $base-width: 360px;
+$base-width: 100vw !default;
+
+// HTML 기본 높이
+// $base-height: 800px;
+$base-height: 100vh !default;
+
+// navbar 높이
+$navbar-height: 56px;

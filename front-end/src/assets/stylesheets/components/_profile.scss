@@ -1,0 +1,246 @@
+.profile-main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-header {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    margin-top: 10px;
+    height: 44px;
+    .profile-nickname{
+
+        display: flex;
+        font-size: 18px;
+        padding-left: 10px;
+        font-weight: 400;
+        justify-content: space-between;
+        align-items: center;
+        .profile-achieve{
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        .follow{
+            margin-left: 8px;
+            top: 10px;
+            font-size: 10px;
+            height: 20px;
+            width: 50px;
+            background-color: rgb(110, 253, 134);
+            border-radius: 5px;
+            border: 0px solid #000;
+            font-weight: bold;
+        }
+        .unfollow{
+            margin-left: 8px;
+            top: 10px;
+            font-size: 10px;
+            height: 20px;
+            width: 80px;
+            background-color: rgb(253, 110, 110);
+            border-radius: 5px;
+            border: 0px solid #000;
+            font-weight: bold;
+        }
+    }
+    button {
+        border: none;
+        background-color: white;
+        font-size: 28px;
+        font-weight: bold;
+    }
+}
+
+.profile-info {
+    flex-direction: column;
+    align-items: flex-start;
+    height: 160px;
+    .profile-info-title{
+        padding: 0 20px 0 20px;
+        display: flex;
+        height: 120px;
+        width: 100%;
+        justify-content: space-between;
+        vertical-align: middle;
+        line-height: 1.4;
+        align-items: center;
+        font-weight: bold;
+        
+        .profile-img-wrap{
+            width: 90px;
+            height: 90px;
+            border-radius: 100%;
+            overflow: hidden;
+            vertical-align: middle;
+            align-items: center;
+            border: 1px solid #dfdfdf;
+            img {
+                object-fit:contain;
+                width: 90px;
+                height: 90px;
+            }
+        }
+    }
+    .profile-info-desc {
+        text-align-last: left;
+        padding-left: 24px;
+        font-size: 14px;
+    }
+}
+
+.main-info {
+    display: flex;
+    align-items: center;
+}
+
+.profile-menu {
+    margin: 5px auto;
+    width: 100%;
+    justify-content:  space-between;
+    #CategoryNav{
+        justify-content: space-around;
+        width: 90%;
+        .profile-feed {
+            width: 30%; 
+        }
+        .profile-pl{
+            width: 30%;
+        }
+        .profile-achive{
+            width: 30%;
+        }
+    }
+} 
+.profile-underbar {
+    margin: 0 auto;
+    width: 90%;
+    border-bottom: 1px solid #ddd;
+    div {
+        position: relative;
+        border-bottom: 2px solid #000;
+        transition-property:left;
+      }
+      
+      .bar1 {
+        width: 33%;
+        left:0;
+        transition:0.3s;
+      }
+      .bar2 {
+        width: 33%;
+        left: 33%;
+        transition: 0.3s;
+      }
+      .bar3 {
+        width: 33%;
+        left: 67%;
+        transition: 0.3s;
+      }
+}
+.profile-detail {
+    margin-top: 5px;
+    width: $base-width;
+    height: 510px;
+    position: relative;
+    overflow: hidden;
+
+    .profile-detail-slide{
+      transition : 0.5s;
+      left:0;
+      position: absolute;
+      width: 300vw;
+      height: 100%;
+      display: flex;
+      main{
+        width: $base_width;
+        height: 100%;
+        .result-box {
+          width: 100%;
+          height: 90%;
+          margin: 0 auto;
+          padding: 0 10px 70px 10px;
+          overflow-y: scroll;
+          // background-color: #bbb;
+        }
+        .feed {
+            background-color:rgb(244,244,244); 
+            gap:30px; 
+            padding-top:20px;
+            padding-bottom: 0;
+        }
+      }
+    }
+  }
+  .follow-detail {
+    margin-top: 5px;
+    width: $base-width;
+    height: 530px;
+    position: relative;
+    overflow: hidden;
+
+    .follow-detail-slide{
+      transition : 0.5s;
+      left:0;
+      position: absolute;
+      width: 300vw;
+      height: 100%;
+      display: flex;
+      main{
+        width: $base_width;
+        height: 100%;
+        .result-box {
+          width: 100%;
+          height:100%;
+          margin: 0 auto;
+          padding: 0 20px;
+          overflow-y: scroll;
+          // background-color: #bbb;
+        }
+      }
+    }
+  }
+
+.follow-menu {
+    margin: 15px auto;
+    width: 100%;
+    justify-content:  space-between;
+    #CategoryNav{
+        
+        justify-content: space-around;
+        width: 90%;
+        .follower {
+            width: 50%; 
+        }
+        .following{
+            width: 50%;
+        }
+
+    }
+} 
+.follow-underbar {
+    margin: 0 auto;
+    width: 90%;
+    border-bottom: 1px solid #ddd;
+    div {
+        position: relative;
+        border-bottom: 2px solid #000;
+        transition-property:left;
+      }
+      
+    .bar1 {
+        width: 50%;
+        left:0;
+        transition:0.3s;
+    }
+    .bar2 {
+        width: 50%;
+        left: 50%;
+        transition: 0.3s;
+    }
+}

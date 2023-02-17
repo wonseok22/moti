@@ -5,7 +5,7 @@
 ## **서비스 페이지: [https://moti.today/](https://moti.today/)**
 <br>
 
-## **서비스 소개 영상: [moti UCC](https://drive.google.com/file/d/1yH3LDSlq1AfVlKQXpxzwcc-TjYsNRSsW/view?usp=share_link)**
+## **서비스 소개 영상: [moti UCC](https://drive.google.com/file/d/1dT30MbYuRpw9fSWY2WIiPlLdHeZl4Zq5/view?usp=share_link)**
 
 <br>
 
@@ -61,6 +61,11 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
   - 새로운 성장 플랜 아이디가 있다면 프로필의 ‘성장플랜 건의’함에서 성장 플랜과 그에 해당하는 미션을 제안할 수 있습니다.
   
     <img src="./docs/images/suggestion.gif" height="400">
+
+### **온보딩 페이지**
+  - 회원가입 시 온보딩 페이지를 통해 서비스 이용법을 확인할 수 있습니다.
+  
+    <img src="./docs/images/onboarding.gif" height="400">
         
 
 ### **기타 기능**
@@ -94,14 +99,14 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
   - [ERD](https://drive.google.com/file/d/162xcVEjiTRk7FI0koiqdyPW6W22sieOB/view?usp=sharing)
   - [API 명세서](https://docs.google.com/spreadsheets/d/1duRRLAfNjpaQ-DNTC_Gr5_93S6W2WguajCkwFq1mzKk/edit?usp=sharing)
   - [UCC](https://drive.google.com/file/d/1dT30MbYuRpw9fSWY2WIiPlLdHeZl4Zq5/view?usp=share_link)
-  - 최종 발표 자료
+  - [최종 발표 자료](https://docs.google.com/presentation/d/1ZXChVFE89xNBRx3cOhbVRrVfJTzH2thE/edit?usp=sharing&ouid=108758873065213490557&rtpof=true&sd=true)
   - [포팅 매뉴얼](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/master/exec/%ED%8F%AC%ED%8C%85%EB%A7%A4%EB%89%B4%EC%96%BC_A509_moti.pdf)  - [시연 시나리오](https://lab.ssafy.com/s08-webmobile2-sub2/S08P12A509/-/blob/master/exec/%EC%8B%9C%EC%97%B0%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4_A509_moti.pdf)
   - [서비스 기획서](https://docs.google.com/document/d/19p0VtpNlteqFQRUuHLccIS_PhBel7xTYJ-Y9FSJ4dSQ/edit?usp=sharing)
   - [유사 서비스 조사](https://docs.google.com/spreadsheets/d/1teaXvvrvGnj2uXY0SJvy8_VOWVV7pqUdUF4t35g7PZA/edit?usp=sharing)
-  - [서비스 전략 구상 및 학습](  https://docs.google.com/document/d/1he7Bx1rYmBEvgwee7ZHUk5tWowbOb8AGEAZ-nKhbLx8/edit?usp=sharing)
+  - [서비스 전략 구상 및 학습]( https://docs.google.com/document/d/1he7Bx1rYmBEvgwee7ZHUk5tWowbOb8AGEAZ-nKhbLx8/edit?usp=sharing)
   
 
 <br>
 
 ## 팀원 소개
-![팀원 소개](/uploads/2b7030dfe3b2bc7b1ce574d4f449aec7/대지_1.png)
+![팀원소개](./docs/images/team_moti.png)

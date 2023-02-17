@@ -20,10 +20,28 @@ repositories {
 
 
 dependencies {
+    //gmail smtp 사용을 위한 설정
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //인증번호에 유효기간 부여를 위한 설정
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // S3 연결
+    implementation group : 'org.springframework.cloud', name:'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
+
+    // 아래 2개는 thymeleaf를 사용하는 경우에만 추가
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
+    // JPG 이미지 메타데이터 확인
+    implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+    
+    // 이미지 회전
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
 
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-web'

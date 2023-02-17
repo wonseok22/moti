@@ -1,0 +1,10 @@
+// a 태그 역할을 할 태그에 
+.hl {
+  filter: brightness(1)
+}
+
+.hl:hover {
+  filter: brightness(0.5);
+  cursor: pointer;
+  
+}

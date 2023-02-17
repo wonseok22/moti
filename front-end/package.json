@@ -1,0 +1,65 @@
+{
+  "name": "front-end",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port 9000",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@types/google.accounts": "^0.0.6",
+    "@vue/cli": "^5.0.8",
+    "axios": "^1.2.6",
+    "core-js": "^3.8.3",
+    "inko": "^1.1.1",
+    "node-sass": "^8.0.0",
+    "sass-loader": "^13.2.0",
+    "v-click-outside": "^3.2.0",
+    "vue": "^2.6.14",
+    "vue-carousel": "^0.18.0",
+    "vue-clamp": "^0.4.1",
+    "vue-click-outside": "^1.1.0",
+    "vue-gtag": "^1.16.1",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-js-modal": "^2.0.1",
+    "vue-line-clamp": "^1.3.2",
+    "vue-material-design-icons": "^5.1.2",
+    "vue-router": "^3.5.1",
+    "vue-textarea-autosize": "^1.1.1",
+    "vue-tiny-slider": "^0.1.39",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

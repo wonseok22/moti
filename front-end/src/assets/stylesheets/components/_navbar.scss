@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 22.5px;
+    gap: 15%;
+
+    position: fixed;
+    width: 100vw;
+    bottom: 0px;
+    height: $navbar-height;
+    left: 0px;
+
+    background: #FFFFFF;
+    border-top: 1px solid #ABABAB;
+    border-radius: 10px 10px 0px 0px;
+
+    .material-icons-outlined {
+        font-size: 38px;
+        color: $light-grey;    
+    }
+
+    .material-icons {
+        font-size: 38px;
+        color: $light-grey;    
+    }
+
+    .material-symbols-outlined {
+        font-size: 38px;
+        color: $light-grey;
+    }
+
+    .router-link-active {
+        color: $main-green;
+    }
+
+}
+
+a {text-decoration: none;}
+
+.nav-active {
+  color: $main-green !important;
+}

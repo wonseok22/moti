@@ -1,0 +1,47 @@
+@charset 'UTF-8';
+@import 'tiny-slider/src/tiny-slider';
+
+// 1. Configuration and helpers
+@import
+  'abstracts/variables',
+  'abstracts/functions',
+  'abstracts/mixins';
+
+// 2. Vendors
+@import
+  'vendors/normalize';
+
+// 3. Base stuff
+@import
+  'base/animations',
+  'base/base',
+  'base/fonts',
+  'base/typography',
+  'base/helpers';
+
+// 4. Layout-related sections
+@import
+  'layout/header',
+  'layout/footer';
+
+// 5. Components
+@import
+  'components/button',
+  'components/guide-comment',
+  'components/inputbox',
+  'components/text-active',
+  'components/navbar',
+  'components/feed',
+  'components/profile',
+  'components/comment',
+  'components/likeModal',
+  'components/record';
+
+
+// 6. Page-specific styles
+@import
+  'pages/home';
+
+// 7. Themes
+@import
+  'themes/default';

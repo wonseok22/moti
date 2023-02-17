@@ -1,0 +1,627 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<div class="trac-content" id="wikipage">
+<h1 id="YTLab030-한영타변환기">YT Lab &lt;030&gt; - 한/영타 변환기</h1>
+
+<p>생각하고 쓴 날짜 : 2004/01/21<br />
+상태 : 완성, 유효</p>
+
+<hr />
+<p>제목이 나타내듯 바로 &#39;한/영타 변환기&#39; 입니다.<br />
+가끔씩 볼 수 있는 &#39;dodls rngka;&#39; 같은 한글을 영어로 친 것이나, &#39;소둇.ㅜㄷㅅ&#39; 같은 영어를 한글로 친 것을 쉽게 원래의 글로 바꿔 줍니다.<br />
+또한 그 반대 방향으로의 변환도 가능합니다.</p>
+
+<p>이 변환기는 한국어 두벌식 자판 &harr; 영문 Qwerty 자판 사이의 변환을 수행합니다.</p>
+
+<p>사용 : 한글로 친 것을 영어로 바꿀 것인지, 영어로 친 것을 한글로 바꿀 것인지 선택합니다. 글을 입력하면 바로 변환됩니다.</p>
+
+<ul>
+	<li>(12/09/19) 여러 브라우저에서 사용할 수 있도록 JavaScript로 변환하였습니다.</li>
+</ul>
+<style type="text/css">#convform th { white-space: nowrap; }
+#convform td { padding-right: 0.8em; }
+#convform textarea { width: 100%; }
+#convform span { padding: 1em; }
+</style>
+<table class="wiki" id="convform">
+	<tbody>
+		<tr>
+			<th style="text-align: right">문장 입력:</th>
+			<td><textarea cols="60" id="txtSource" onkeyup="doConvert();" rows="4"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="text-align: center"><input checked="checked" id="optEtoH" name="Mode" onclick="doConvert();" type="radio" /><label for="optEtoH">영타 &rarr; 한글</label><input id="optHtoE" name="Mode" type="radio" /><label for="optHtoE" onclick="doConvert();">한타 &rarr; 영문</label></td>
+		</tr>
+		<tr>
+			<th style="text-align: right">변환 결과:</th>
+			<td><textarea cols="60" id="txtConv" readonly="readonly" rows="4"></textarea></td>
+		</tr>
+	</tbody>
+</table>
+<script language="JavaScript">
+<!--
+var ENG_KEY = "rRseEfaqQtTdwWczxvgkoiOjpuPhynbml";
+var KOR_KEY = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎㅏㅐㅑㅒㅓㅔㅕㅖㅗㅛㅜㅠㅡㅣ";
+var CHO_DATA = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+var JUNG_DATA = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ";
+var JONG_DATA = "ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ";
+
+function doConvert() {
+	if (optEtoH.checked)
+		txtConv.value = engTypeToKor(txtSource.value);
+	else
+		txtConv.value = korTypeToEng(txtSource.value);
+}
+
+
+
+function korTypeToEng(src) {
+  console.log(src)
+	var res = "";
+	if (src.length == 0)
+		return res;
+
+	for (var i = 0; i < src.length; i++) {
+		var ch = src.charAt(i);
+		var nCode = ch.charCodeAt(0);
+		var nCho = CHO_DATA.indexOf(ch), nJung = JUNG_DATA.indexOf(ch), nJong = JONG_DATA.indexOf(ch);
+		var arrKeyIndex = [-1, -1, -1, -1, -1];
+
+		if (0xac00 <= nCode && nCode <= 0xd7a3) {
+			nCode -= 0xac00;
+			arrKeyIndex[0] = Math.floor(nCode / (21 * 28));			// 초성
+			arrKeyIndex[1] = Math.floor(nCode / 28) % 21;			// 중성
+			arrKeyIndex[3] = nCode % 28 - 1;						// 종성
+		} else if (nCho != -1)			// 초성 자음
+			arrKeyIndex[0] = nCho;
+		else if (nJung != -1)			// 중성
+			arrKeyIndex[1] = nJung;
+		else if (nJong != -1)			// 종성 자음
+			arrKeyIndex[3] = nJong;
+		else							// 한글이 아님
+			res += ch;
+
+		// 실제 Key Index로 변경. 초성은 순서 동일
+		if (arrKeyIndex[1] != -1) {
+			if (arrKeyIndex[1] == 9) {					// ㅘ
+				arrKeyIndex[1] = 27;
+				arrKeyIndex[2] = 19;
+			} else if (arrKeyIndex[1] == 10) {			// ㅙ
+				arrKeyIndex[1] = 27;
+				arrKeyIndex[2] = 20;
+			} else if (arrKeyIndex[1] == 11) {			// ㅚ
+				arrKeyIndex[1] = 27;
+				arrKeyIndex[2] = 32;
+			} else if (arrKeyIndex[1] == 14) {			// ㅝ
+				arrKeyIndex[1] = 29;
+				arrKeyIndex[2] = 23;
+			} else if (arrKeyIndex[1] == 15) {			// ㅞ
+				arrKeyIndex[1] = 29;
+				arrKeyIndex[2] = 24;
+			} else if (arrKeyIndex[1] == 16) {			// ㅟ
+				arrKeyIndex[1] = 29;
+				arrKeyIndex[2] = 32;
+			} else if (arrKeyIndex[1] == 19) {			// ㅢ
+				arrKeyIndex[1] = 31;
+				arrKeyIndex[2] = 32;
+			} else {
+				arrKeyIndex[1] = KOR_KEY.indexOf(JUNG_DATA.charAt(arrKeyIndex[1]));
+				arrKeyIndex[2] = -1;
+			}
+		}
+		if (arrKeyIndex[3] != -1) {
+			if (arrKeyIndex[3] == 2) {					// ㄳ
+				arrKeyIndex[3] = 0
+				arrKeyIndex[4] = 9;
+			} else if (arrKeyIndex[3] == 4) {			// ㄵ
+				arrKeyIndex[3] = 2;
+				arrKeyIndex[4] = 12;
+			} else if (arrKeyIndex[3] == 5) {			// ㄶ
+				arrKeyIndex[3] = 2;
+				arrKeyIndex[4] = 18;
+			} else if (arrKeyIndex[3] == 8) {			// ㄺ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 0;
+			} else if (arrKeyIndex[3] == 9) {			// ㄻ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 6;
+			} else if (arrKeyIndex[3] == 10) {			// ㄼ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 7;
+			} else if (arrKeyIndex[3] == 11) {			// ㄽ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 9;
+			} else if (arrKeyIndex[3] == 12) {			// ㄾ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 16;
+			} else if (arrKeyIndex[3] == 13) {			// ㄿ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 17;
+			} else if (arrKeyIndex[3] == 14) {			// ㅀ
+				arrKeyIndex[3] = 5;
+				arrKeyIndex[4] = 18;
+			} else if (arrKeyIndex[3] == 17) {			// ㅄ
+				arrKeyIndex[3] = 7;
+				arrKeyIndex[4] = 9;
+			} else {
+				arrKeyIndex[3] = KOR_KEY.indexOf(JONG_DATA.charAt(arrKeyIndex[3]));
+				arrKeyIndex[4] = -1;
+			}
+		}
+
+		for (var j = 0; j < 5; j++) {
+			if (arrKeyIndex[j] != -1)
+				res += ENG_KEY.charAt(arrKeyIndex[j]);
+		}
+	}
+
+	return res;
+}
+-->
+</script>
+
+<hr /><br />
+<br />
+<span style="color:#ff0000;"><strong>소스코드</strong></span><br />
+<br />
+<style type="text/css">/*
+
+Google Code style (c) Aahan Krish <geekpanth3r@gmail.com>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: white;
+  color: black;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #800;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-section,
+.hljs-title,
+.hljs-name {
+  color: #008;
+}
+
+.hljs-variable,
+.hljs-template-variable {
+  color: #660;
+}
+
+.hljs-string,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-regexp {
+  color: #080;
+}
+
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-meta,
+.hljs-number,
+.hljs-link {
+  color: #066;
+}
+
+.hljs-title,
+.hljs-doctag,
+.hljs-type,
+.hljs-attr,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-params {
+  color: #606;
+}
+
+.hljs-attribute,
+.hljs-subst {
+  color: #000;
+}
+
+.hljs-formula {
+  background-color: #eee;
+  font-style: italic;
+}
+
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #9B703F
+}
+
+.hljs-addition {
+  background-color: #baeeba;
+}
+
+.hljs-deletion {
+  background-color: #ffc8bd;
+}
+
+.hljs-doctag,
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+</style>
+<pre>
+<code class="hljs"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;Content-Type&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;text/html; charset=UTF-8&quot;</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;wikipage&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;trac-content&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;YTLab030-한영타변환기&quot;</span>&gt;</span>YT Lab &amp;lt;030&amp;gt; - 한/영타 변환기<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+생각하고 쓴 날짜 : 2004/01/21<span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+상태 : 완성, 유효
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">hr</span> /&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+제목이 나타내듯 바로 &#39;한/영타 변환기&#39; 입니다.<span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+가끔씩 볼 수 있는 &#39;dodls rngka;&#39; 같은 한글을 영어로 친 것이나, &#39;소둇.ㅜㄷㅅ&#39; 같은 영어를 한글로 친 것을 쉽게 원래의 글로 바꿔 줍니다.<span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+또한 그 반대 방향으로의 변환도 가능합니다.
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+이 변환기는 한국어 두벌식 자판 &harr; 영문 Qwerty 자판 사이의 변환을 수행합니다.
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+사용 : 한글로 친 것을 영어로 바꿀 것인지, 영어로 친 것을 한글로 바꿀 것인지 선택합니다. 글을 입력하면 바로 변환됩니다.
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>(12/09/19) 여러 브라우저에서 사용할 수 있도록 JavaScript로 변환하였습니다.
+<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="css">
+<span class="hljs-selector-id">#convform</span> <span class="hljs-selector-tag">th</span> { <span class="hljs-attribute">white-space</span>: nowrap; }
+<span class="hljs-selector-id">#convform</span> <span class="hljs-selector-tag">td</span> { <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">0.8em</span>; }
+<span class="hljs-selector-id">#convform</span> <span class="hljs-selector-tag">textarea</span> { <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>; }
+<span class="hljs-selector-id">#convform</span> <span class="hljs-selector-tag">span</span> { <span class="hljs-attribute">padding</span>: <span class="hljs-number">1em</span>; }
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;convform&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;wiki&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">th</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;text-align: right&quot;</span>&gt;</span> 문장 입력:<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;
+</span><span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">textarea</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;txtSource&quot;</span> <span class="hljs-attr">rows</span>=<span class="hljs-string">&quot;4&quot;</span> <span class="hljs-attr">cols</span>=<span class="hljs-string">&quot;60&quot;</span> <span class="hljs-attr">onKeyUp</span>=<span class="hljs-string">&quot;doConvert();&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">textarea</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">colspan</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;text-align: center&quot;</span>&gt;</span>  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;radio&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;optEtoH&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;Mode&quot;</span> <span class="hljs-attr">checked</span>=<span class="hljs-string">&quot;checked&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&quot;doConvert();&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;optEtoH&quot;</span>&gt;</span>영타 &rarr; 한글<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;radio&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;optHtoE&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;Mode&quot;</span>&gt;
+</span><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">&quot;optHtoE&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">&quot;doConvert();&quot;</span>&gt;</span>한타 &rarr; 영문<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>  
+<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">th</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;text-align: right&quot;</span>&gt;</span> 변환 결과:<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">textarea</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;txtConv&quot;</span> <span class="hljs-attr">rows</span>=<span class="hljs-string">&quot;4&quot;</span> <span class="hljs-attr">cols</span>=<span class="hljs-string">&quot;60&quot;</span> <span class="hljs-attr">readonly</span>=<span class="hljs-string">&quot;readonly&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">textarea</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">language</span>=<span class="hljs-string">&quot;JavaScript&quot;</span>&gt;</span><span class="javascript">
+&lt;!--
+<span class="hljs-keyword">var</span> ENG_KEY = <span class="hljs-string">&quot;rRseEfaqQtTdwWczxvgkoiOjpuPhynbml&quot;</span>;
+<span class="hljs-keyword">var</span> KOR_KEY = <span class="hljs-string">&quot;ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎㅏㅐㅑㅒㅓㅔㅕㅖㅗㅛㅜㅠㅡㅣ&quot;</span>;
+<span class="hljs-keyword">var</span> CHO_DATA = <span class="hljs-string">&quot;ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ&quot;</span>;
+<span class="hljs-keyword">var</span> JUNG_DATA = <span class="hljs-string">&quot;ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ&quot;</span>;
+<span class="hljs-keyword">var</span> JONG_DATA = <span class="hljs-string">&quot;ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ&quot;</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">doConvert</span>() </span>{
+	<span class="hljs-keyword">if</span> (optEtoH.checked)
+		txtConv.value = engTypeToKor(txtSource.value);
+	<span class="hljs-keyword">else</span>
+		txtConv.value = korTypeToEng(txtSource.value);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">engTypeToKor</span>(<span class="hljs-params">src</span>) </span>{
+	<span class="hljs-keyword">var</span> res = <span class="hljs-string">&quot;&quot;</span>;
+	<span class="hljs-keyword">if</span> (src.length == <span class="hljs-number">0</span>)
+		<span class="hljs-keyword">return</span> res;
+
+	<span class="hljs-keyword">var</span> nCho = <span class="hljs-number">-1</span>, nJung = <span class="hljs-number">-1</span>, nJong = <span class="hljs-number">-1</span>;		<span class="hljs-comment">// 초성, 중성, 종성</span>
+
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; src.length; i++) {
+		<span class="hljs-keyword">var</span> ch = src.charAt(i);
+		<span class="hljs-keyword">var</span> p = ENG_KEY.indexOf(ch);
+		<span class="hljs-keyword">if</span> (p == <span class="hljs-number">-1</span>) {				<span class="hljs-comment">// 영자판이 아님</span>
+			<span class="hljs-comment">// 남아있는 한글이 있으면 처리</span>
+			<span class="hljs-keyword">if</span> (nCho != <span class="hljs-number">-1</span>) {
+				<span class="hljs-keyword">if</span> (nJung != <span class="hljs-number">-1</span>)				<span class="hljs-comment">// 초성+중성+(종성)</span>
+					res += makeHangul(nCho, nJung, nJong);
+				<span class="hljs-keyword">else</span>							<span class="hljs-comment">// 초성만</span>
+					res += CHO_DATA.charAt(nCho);
+			} <span class="hljs-keyword">else</span> {
+				<span class="hljs-keyword">if</span> (nJung != <span class="hljs-number">-1</span>)				<span class="hljs-comment">// 중성만</span>
+					res += JUNG_DATA.charAt(nJung);
+				<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 복자음</span>
+					res += JONG_DATA.charAt(nJong);
+			}
+			nCho = <span class="hljs-number">-1</span>;
+			nJung = <span class="hljs-number">-1</span>;
+			nJong = <span class="hljs-number">-1</span>;
+			res += ch;
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (p &lt; <span class="hljs-number">19</span>) {			<span class="hljs-comment">// 자음</span>
+			<span class="hljs-keyword">if</span> (nJung != <span class="hljs-number">-1</span>) {
+				<span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">-1</span>) {					<span class="hljs-comment">// 중성만 입력됨, 초성으로</span>
+					res += JUNG_DATA.charAt(nJung);
+					nJung = <span class="hljs-number">-1</span>;
+					nCho = CHO_DATA.indexOf(KOR_KEY.charAt(p));
+				} <span class="hljs-keyword">else</span> {							<span class="hljs-comment">// 종성이다</span>
+					<span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">-1</span>) {				<span class="hljs-comment">// 종성 입력 중</span>
+						nJong = JONG_DATA.indexOf(KOR_KEY.charAt(p));
+						<span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">-1</span>) {			<span class="hljs-comment">// 종성이 아니라 초성이다</span>
+							res += makeHangul(nCho, nJung, nJong);
+							nCho = CHO_DATA.indexOf(KOR_KEY.charAt(p));
+							nJung = <span class="hljs-number">-1</span>;
+						}
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">0</span> &amp;&amp; p == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㄳ</span>
+						nJong = <span class="hljs-number">2</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">3</span> &amp;&amp; p == <span class="hljs-number">12</span>) {			<span class="hljs-comment">// ㄵ</span>
+						nJong = <span class="hljs-number">4</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">3</span> &amp;&amp; p == <span class="hljs-number">18</span>) {			<span class="hljs-comment">// ㄶ</span>
+						nJong = <span class="hljs-number">5</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">0</span>) {			<span class="hljs-comment">// ㄺ</span>
+						nJong = <span class="hljs-number">8</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">6</span>) {			<span class="hljs-comment">// ㄻ</span>
+						nJong = <span class="hljs-number">9</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">7</span>) {			<span class="hljs-comment">// ㄼ</span>
+						nJong = <span class="hljs-number">10</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㄽ</span>
+						nJong = <span class="hljs-number">11</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">16</span>) {			<span class="hljs-comment">// ㄾ</span>
+						nJong = <span class="hljs-number">12</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">17</span>) {			<span class="hljs-comment">// ㄿ</span>
+						nJong = <span class="hljs-number">13</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">18</span>) {			<span class="hljs-comment">// ㅀ</span>
+						nJong = <span class="hljs-number">14</span>;
+					} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">16</span> &amp;&amp; p == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㅄ</span>
+						nJong = <span class="hljs-number">17</span>;
+					} <span class="hljs-keyword">else</span> {						<span class="hljs-comment">// 종성 입력 끝, 초성으로</span>
+						res += makeHangul(nCho, nJung, nJong);
+						nCho = CHO_DATA.indexOf(KOR_KEY.charAt(p));
+						nJung = <span class="hljs-number">-1</span>;
+						nJong = <span class="hljs-number">-1</span>;
+					}
+				}
+			} <span class="hljs-keyword">else</span> {								<span class="hljs-comment">// 초성 또는 (단/복)자음이다</span>
+				<span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">-1</span>) {					<span class="hljs-comment">// 초성 입력 시작</span>
+					<span class="hljs-keyword">if</span> (nJong != <span class="hljs-number">-1</span>) {				<span class="hljs-comment">// 복자음 후 초성</span>
+						res += JONG_DATA.charAt(nJong);
+						nJong = <span class="hljs-number">-1</span>;
+					}
+					nCho = CHO_DATA.indexOf(KOR_KEY.charAt(p));
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">0</span> &amp;&amp; p == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㄳ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">2</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">2</span> &amp;&amp; p == <span class="hljs-number">12</span>) {			<span class="hljs-comment">// ㄵ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">4</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">2</span> &amp;&amp; p == <span class="hljs-number">18</span>) {			<span class="hljs-comment">// ㄶ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">5</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">0</span>) {			<span class="hljs-comment">// ㄺ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">8</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">6</span>) {			<span class="hljs-comment">// ㄻ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">9</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">7</span>) {			<span class="hljs-comment">// ㄼ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">10</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㄽ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">11</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">16</span>) {			<span class="hljs-comment">// ㄾ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">12</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">17</span>) {			<span class="hljs-comment">// ㄿ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">13</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">5</span> &amp;&amp; p == <span class="hljs-number">18</span>) {			<span class="hljs-comment">// ㅀ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">14</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho == <span class="hljs-number">7</span> &amp;&amp; p == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㅄ</span>
+					nCho = <span class="hljs-number">-1</span>;
+					nJong = <span class="hljs-number">17</span>;
+				} <span class="hljs-keyword">else</span> {							<span class="hljs-comment">// 단자음을 연타</span>
+					res += CHO_DATA.charAt(nCho);
+					nCho = CHO_DATA.indexOf(KOR_KEY.charAt(p));
+				}
+			}
+		} <span class="hljs-keyword">else</span> {									<span class="hljs-comment">// 모음</span>
+			<span class="hljs-keyword">if</span> (nJong != <span class="hljs-number">-1</span>) {						<span class="hljs-comment">// (앞글자 종성), 초성+중성</span>
+				<span class="hljs-comment">// 복자음 다시 분해</span>
+				<span class="hljs-keyword">var</span> newCho;			<span class="hljs-comment">// (임시용) 초성</span>
+				<span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">2</span>) {					<span class="hljs-comment">// ㄱ, ㅅ</span>
+					nJong = <span class="hljs-number">0</span>;
+					newCho = <span class="hljs-number">9</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">4</span>) {			<span class="hljs-comment">// ㄴ, ㅈ</span>
+					nJong = <span class="hljs-number">3</span>;
+					newCho = <span class="hljs-number">12</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">5</span>) {			<span class="hljs-comment">// ㄴ, ㅎ</span>
+					nJong = <span class="hljs-number">3</span>;
+					newCho = <span class="hljs-number">18</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">8</span>) {			<span class="hljs-comment">// ㄹ, ㄱ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">0</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㄹ, ㅁ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">6</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">10</span>) {			<span class="hljs-comment">// ㄹ, ㅂ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">7</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">11</span>) {			<span class="hljs-comment">// ㄹ, ㅅ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">9</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">12</span>) {			<span class="hljs-comment">// ㄹ, ㅌ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">16</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">13</span>) {			<span class="hljs-comment">// ㄹ, ㅍ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">17</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">14</span>) {			<span class="hljs-comment">// ㄹ, ㅎ</span>
+					nJong = <span class="hljs-number">7</span>;
+					newCho = <span class="hljs-number">18</span>;
+				} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong == <span class="hljs-number">17</span>) {			<span class="hljs-comment">// ㅂ, ㅅ</span>
+					nJong = <span class="hljs-number">16</span>;
+					newCho = <span class="hljs-number">9</span>;
+				} <span class="hljs-keyword">else</span> {							<span class="hljs-comment">// 복자음 아님</span>
+					newCho = CHO_DATA.indexOf(JONG_DATA.charAt(nJong));
+					nJong = <span class="hljs-number">-1</span>;
+				}
+				<span class="hljs-keyword">if</span> (nCho != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 앞글자가 초성+중성+(종성)</span>
+					res += makeHangul(nCho, nJung, nJong);
+				<span class="hljs-keyword">else</span>                    <span class="hljs-comment">// 복자음만 있음</span>
+					res += JONG_DATA.charAt(nJong);
+
+				nCho = newCho;
+				nJung = <span class="hljs-number">-1</span>;
+				nJong = <span class="hljs-number">-1</span>;
+			}
+			<span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">-1</span>) {						<span class="hljs-comment">// 중성 입력 중</span>
+				nJung = JUNG_DATA.indexOf(KOR_KEY.charAt(p));
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">8</span> &amp;&amp; p == <span class="hljs-number">19</span>) {            <span class="hljs-comment">// ㅘ</span>
+				nJung = <span class="hljs-number">9</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">8</span> &amp;&amp; p == <span class="hljs-number">20</span>) {            <span class="hljs-comment">// ㅙ</span>
+				nJung = <span class="hljs-number">10</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">8</span> &amp;&amp; p == <span class="hljs-number">32</span>) {            <span class="hljs-comment">// ㅚ</span>
+				nJung = <span class="hljs-number">11</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">13</span> &amp;&amp; p == <span class="hljs-number">23</span>) {           <span class="hljs-comment">// ㅝ</span>
+				nJung = <span class="hljs-number">14</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">13</span> &amp;&amp; p == <span class="hljs-number">24</span>) {           <span class="hljs-comment">// ㅞ</span>
+				nJung = <span class="hljs-number">15</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">13</span> &amp;&amp; p == <span class="hljs-number">32</span>) {           <span class="hljs-comment">// ㅟ</span>
+				nJung = <span class="hljs-number">16</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung == <span class="hljs-number">18</span> &amp;&amp; p == <span class="hljs-number">32</span>) {           <span class="hljs-comment">// ㅢ</span>
+				nJung = <span class="hljs-number">19</span>;
+			} <span class="hljs-keyword">else</span> {			<span class="hljs-comment">// 조합 안되는 모음 입력</span>
+				<span class="hljs-keyword">if</span> (nCho != <span class="hljs-number">-1</span>) {			<span class="hljs-comment">// 초성+중성 후 중성</span>
+					res += makeHangul(nCho, nJung, nJong);
+					nCho = <span class="hljs-number">-1</span>;
+				} <span class="hljs-keyword">else</span>						<span class="hljs-comment">// 중성 후 중성</span>
+					res += JUNG_DATA.charAt(nJung);
+				nJung = <span class="hljs-number">-1</span>;
+				res += KOR_KEY.charAt(p);
+			}
+		}
+	}
+
+	<span class="hljs-comment">// 마지막 한글이 있으면 처리</span>
+	<span class="hljs-keyword">if</span> (nCho != <span class="hljs-number">-1</span>) {
+		<span class="hljs-keyword">if</span> (nJung != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 초성+중성+(종성)</span>
+			res += makeHangul(nCho, nJung, nJong);
+		<span class="hljs-keyword">else</span>                		<span class="hljs-comment">// 초성만</span>
+			res += CHO_DATA.charAt(nCho);
+	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">if</span> (nJung != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 중성만</span>
+			res += JUNG_DATA.charAt(nJung);
+		<span class="hljs-keyword">else</span> {						<span class="hljs-comment">// 복자음</span>
+			<span class="hljs-keyword">if</span> (nJong != <span class="hljs-number">-1</span>)
+				res += JONG_DATA.charAt(nJong);
+		}
+	}
+
+	<span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeHangul</span>(<span class="hljs-params">nCho, nJung, nJong</span>) </span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>.fromCharCode(<span class="hljs-number">0xac00</span> + nCho * <span class="hljs-number">21</span> * <span class="hljs-number">28</span> + nJung * <span class="hljs-number">28</span> + nJong + <span class="hljs-number">1</span>);
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">korTypeToEng</span>(<span class="hljs-params">src</span>) </span>{
+	<span class="hljs-keyword">var</span> res = <span class="hljs-string">&quot;&quot;</span>;
+	<span class="hljs-keyword">if</span> (src.length == <span class="hljs-number">0</span>)
+		<span class="hljs-keyword">return</span> res;
+
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; src.length; i++) {
+		<span class="hljs-keyword">var</span> ch = src.charAt(i);
+		<span class="hljs-keyword">var</span> nCode = ch.charCodeAt(<span class="hljs-number">0</span>);
+		<span class="hljs-keyword">var</span> nCho = CHO_DATA.indexOf(ch), nJung = JUNG_DATA.indexOf(ch), nJong = JONG_DATA.indexOf(ch);
+		<span class="hljs-keyword">var</span> arrKeyIndex = [<span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>];
+
+		<span class="hljs-keyword">if</span> (<span class="hljs-number">0xac00</span> &lt;= nCode &amp;&amp; nCode &lt;= <span class="hljs-number">0xd7a3</span>) {
+			nCode -= <span class="hljs-number">0xac00</span>;
+			arrKeyIndex[<span class="hljs-number">0</span>] = <span class="hljs-built_in">Math</span>.floor(nCode / (<span class="hljs-number">21</span> * <span class="hljs-number">28</span>));			<span class="hljs-comment">// 초성</span>
+			arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-built_in">Math</span>.floor(nCode / <span class="hljs-number">28</span>) % <span class="hljs-number">21</span>;			<span class="hljs-comment">// 중성</span>
+			arrKeyIndex[<span class="hljs-number">3</span>] = nCode % <span class="hljs-number">28</span> - <span class="hljs-number">1</span>;						<span class="hljs-comment">// 종성</span>
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nCho != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 초성 자음</span>
+			arrKeyIndex[<span class="hljs-number">0</span>] = nCho;
+		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJung != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 중성</span>
+			arrKeyIndex[<span class="hljs-number">1</span>] = nJung;
+		<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nJong != <span class="hljs-number">-1</span>)			<span class="hljs-comment">// 종성 자음</span>
+			arrKeyIndex[<span class="hljs-number">3</span>] = nJong;
+		<span class="hljs-keyword">else</span>							<span class="hljs-comment">// 한글이 아님</span>
+			res += ch;
+
+		<span class="hljs-comment">// 실제 Key Index로 변경. 초성은 순서 동일</span>
+		<span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] != <span class="hljs-number">-1</span>) {
+			<span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">9</span>) {					<span class="hljs-comment">// ㅘ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">27</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">19</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">10</span>) {			<span class="hljs-comment">// ㅙ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">27</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">20</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">11</span>) {			<span class="hljs-comment">// ㅚ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">27</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">32</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">14</span>) {			<span class="hljs-comment">// ㅝ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">29</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">23</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">15</span>) {			<span class="hljs-comment">// ㅞ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">29</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">24</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">16</span>) {			<span class="hljs-comment">// ㅟ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">29</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">32</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">1</span>] == <span class="hljs-number">19</span>) {			<span class="hljs-comment">// ㅢ</span>
+				arrKeyIndex[<span class="hljs-number">1</span>] = <span class="hljs-number">31</span>;
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">32</span>;
+			} <span class="hljs-keyword">else</span> {
+				arrKeyIndex[<span class="hljs-number">1</span>] = KOR_KEY.indexOf(JUNG_DATA.charAt(arrKeyIndex[<span class="hljs-number">1</span>]));
+				arrKeyIndex[<span class="hljs-number">2</span>] = <span class="hljs-number">-1</span>;
+			}
+		}
+		<span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] != <span class="hljs-number">-1</span>) {
+			<span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">2</span>) {					<span class="hljs-comment">// ㄳ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">0</span>
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">9</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">4</span>) {			<span class="hljs-comment">// ㄵ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">2</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">12</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">5</span>) {			<span class="hljs-comment">// ㄶ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">2</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">18</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">8</span>) {			<span class="hljs-comment">// ㄺ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">0</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">9</span>) {			<span class="hljs-comment">// ㄻ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">6</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">10</span>) {			<span class="hljs-comment">// ㄼ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">7</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">11</span>) {			<span class="hljs-comment">// ㄽ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">9</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">12</span>) {			<span class="hljs-comment">// ㄾ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">16</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">13</span>) {			<span class="hljs-comment">// ㄿ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">17</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">14</span>) {			<span class="hljs-comment">// ㅀ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">5</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">18</span>;
+			} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (arrKeyIndex[<span class="hljs-number">3</span>] == <span class="hljs-number">17</span>) {			<span class="hljs-comment">// ㅄ</span>
+				arrKeyIndex[<span class="hljs-number">3</span>] = <span class="hljs-number">7</span>;
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">9</span>;
+			} <span class="hljs-keyword">else</span> {
+				arrKeyIndex[<span class="hljs-number">3</span>] = KOR_KEY.indexOf(JONG_DATA.charAt(arrKeyIndex[<span class="hljs-number">3</span>]));
+				arrKeyIndex[<span class="hljs-number">4</span>] = <span class="hljs-number">-1</span>;
+			}
+		}
+
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">5</span>; j++) {
+			<span class="hljs-keyword">if</span> (arrKeyIndex[j] != <span class="hljs-number">-1</span>)
+				res += ENG_KEY.charAt(arrKeyIndex[j]);
+		}
+	}
+
+	<span class="hljs-keyword">return</span> res;
+}
+--&gt;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">hr</span> /&gt;</span>
+
+
+출처 : http://www.theyt.net/wiki/한영타변환기</code></pre>
+</div>

@@ -1,0 +1,216 @@
+.feed-comment {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    overflow: scroll;
+    padding-top: 40px;
+}
+
+.comment-page {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.comment-header {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    position:fixed;
+    top: 0px;
+    
+
+    .material-symbols-outlined {
+        font-size: 25px;
+        margin-left: 10px;
+    }
+
+    p {
+        margin-left: 5px;
+        font-weight: bold;
+    }
+}
+
+.comments-list {
+    padding-bottom: 55px;
+}
+.comment-wrap{
+    display: flex;
+    height: 28px;
+    justify-content: start !important;
+}
+.single-comment {
+    display: flex;
+    position: relative;
+    align-items: center;
+    background: #FFFFFF;
+    border-width: 0px 0px 0px 0px;
+    border-style: solid;
+    border-color: #ABABAB;
+    gap: 12px;
+    width: 100vw;
+
+    padding: 0 10px;
+    margin-top: 5px;
+
+    .more-modal {
+        position: absolute;
+        text-align: center;
+        align-self: flex-start;
+        width: 70px;
+        height: 30px;
+
+        right:7px;
+    
+        background-color: white;
+        border: solid 1px #D60000;
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
+        border-radius: 7px;
+        margin-top: 5px;
+
+        font-size: 12px;
+        font-weight: bold;
+        color: #D60000;
+
+        gap: 3px;
+
+        p{
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    > span {
+        align-self: flex-start;
+    }
+    
+
+    > div {
+        width: 85%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:flex-start;
+
+        div {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        
+        }
+
+        button {
+            position: relative;
+            border: none;
+            background-color: white;
+            font-size: 18px;
+            top: 3px;
+            color: #ABABAB;
+        }
+
+    }
+}
+
+.comment-img-wrap{
+    background-color: #ccc;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 100%;
+    overflow: hidden;
+    margin-bottom: 3px;
+    img {
+        object-fit: cover;
+        width: 40px;
+        height: 40px;
+    }
+
+}
+.comment-date {
+    font-size: 12px;
+    color: #979797;
+}
+
+.comment-nickname {
+    margin-right: 8px;
+    word-wrap: break-word;
+    word-break: keep-all;
+    text-align: start;
+    font-size: 14px;
+    font-weight: bolder;
+    margin-bottom: 0;
+    line-height: 1;
+}
+
+.comment-content {
+    width: 100%;
+    word-wrap: break-word;
+    word-break: keep-all;
+    text-align: start;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+
+.comment-input {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    bottom: 0px;
+    width: 100%;
+    padding-right: 3px;
+    border-top: solid 1px $light-grey;
+    justify-content: space-evenly;
+    background-color: white;
+    
+    span {
+        margin-left: 15px;
+        margin-top: 4px;
+    }
+
+    form {
+        width: 75%;
+        margin-top: 10px;
+        margin-bottom: 6px;
+    }
+
+    textarea {
+        width: 100%;
+        resize: none;
+        border: none;
+        word-break: keep-all;
+        align-self: center;
+    }
+
+    textarea:focus {
+        outline: none;
+    }
+
+    textarea::placeholder {
+        opacity: 0.5;
+    }
+
+    button {
+        height: auto;
+        border: none;
+        background-color: white;
+        color: $main-green;
+    }
+}
+
+.letter-counts {
+    align-self: flex-end;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+.final-modal {
+    font-size: 14px;
+    font-weight: bold;
+}

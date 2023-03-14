@@ -106,7 +106,3 @@ SSAFY 2학기 공통PJT(2023.01.03 ~ 2023.02.17)
   - [서비스 전략 구상 및 학습]( https://docs.google.com/document/d/1he7Bx1rYmBEvgwee7ZHUk5tWowbOb8AGEAZ-nKhbLx8/edit?usp=sharing)
   
 
-<br>
-
-## 팀원 소개
-![팀원소개](./docs/images/team_moti.png)

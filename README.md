@@ -5,8 +5,6 @@
 ## **서비스 페이지: [https://moti.today/](https://moti.today/)** (2023.03.14 Server closed)
 <br>
 
-## **서비스 소개 영상: [moti UCC](https://drive.google.com/file/d/1dT30MbYuRpw9fSWY2WIiPlLdHeZl4Zq5/view?usp=share_link)**
-
 <br>
 
 ## **프로젝트 기간**
